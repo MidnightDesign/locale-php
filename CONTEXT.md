@@ -15,3 +15,7 @@ _Avoid_: Convenience layer, simplified API, wrapper
 **Conformance baseline**:
 The exact ECMA-402 and Test262 revisions used to define and reproduce a release's compatibility claims. It records what was verified without limiting development from tracking newer revisions.
 _Avoid_: Supported edition, compatibility ceiling
+
+**Conformant**:
+A claim reserved for a complete spec layer whose applicable semantic behavior passes against its conformance baseline. The porcelain layer is backed by the conformant spec layer but is not itself called conformant because its stronger PHP contract intentionally differs from JavaScript coercion behavior.
+_Avoid_: Mostly conformant, porcelain conformance
