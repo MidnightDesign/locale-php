@@ -2,6 +2,8 @@
 
 Label: `wayfinder:map`
 
+This is the repository's active Wayfinder map. When `/wayfinder` is invoked without another map or destination, resume this map and select its first open, unblocked, unclaimed child ticket.
+
 ## Destination
 
 Reach an implementation-ready specification for a standalone PHP library that provides a deliberately defined subset or faithful adaptation of ECMAScript `Intl.Locale`, with its public API, compatibility promise, locale-data strategy, Test262 transpilation policy, validation approach, and delivery boundaries decided.
@@ -13,10 +15,10 @@ The map is complete when an implementation team can create execution tickets wit
 - Domain: PHP internationalization, Unicode locale identifiers, ECMA-402, ICU/CLDR, and Test262 conformance.
 - Planning only. Do not implement the production library while resolving this map unless the destination is explicitly redrawn.
 - Use `grilling` for product and architecture decisions, `domain-modeling` to establish precise terminology as decisions settle, `research` for external standards/runtime facts, and `prototype` only where a small executable experiment is necessary to make a decision.
-- The user asked not to be questioned while this map is being charted. Questions that require user judgment are preserved as `grilling` tickets rather than answered by assumption.
+- The user asked not to be questioned while this map was being charted. Questions that require user judgment are preserved as `grilling` tickets rather than answered by assumption.
 - Treat [MidnightDesign/calendrics](https://github.com/MidnightDesign/calendrics) as the reference for the two-tier PHP/spec architecture and its Acorn-based Test262 transpilation approach, not as a requirement to copy every design choice.
 - Treat ECMA-402 as normative, Test262 as the conformance corpus, CLDR/ICU as versioned data dependencies, and MDN as explanatory documentation.
-- Local tracker convention: this map is canonical; child tickets live in `issues/`; `Blocked by` records dependencies; the first open, unblocked, unclaimed ticket is the frontier.
+- Local tracker convention: this root file is canonical; child tickets live in `.scratch/intl-locale-for-php/issues/`; `Blocked by` records dependencies; the first open, unblocked, unclaimed ticket is the frontier.
 
 ## Decisions so far
 
