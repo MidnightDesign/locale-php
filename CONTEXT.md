@@ -11,3 +11,7 @@ _Avoid_: Compatibility layer, JavaScript layer
 **Porcelain layer**:
 An idiomatic PHP interface built on the spec layer without redefining its locale semantics.
 _Avoid_: Convenience layer, wrapper
+
+**Conformance baseline**:
+The exact ECMA-402 and Test262 revisions used to define and reproduce a release's compatibility claims. It records what was verified without limiting development from tracking newer revisions.
+_Avoid_: Supported edition, compatibility ceiling
