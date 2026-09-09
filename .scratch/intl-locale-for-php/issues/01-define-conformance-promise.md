@@ -2,6 +2,7 @@
 
 Type: grilling
 Status: open
+Assignee: r.gottesheim@midnight-design.at
 
 ## Question
 
