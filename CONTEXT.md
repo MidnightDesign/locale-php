@@ -9,8 +9,8 @@ The PHP-facing expression of ECMAScript `Intl.Locale` semantics wherever PHP can
 _Avoid_: Compatibility layer, JavaScript layer
 
 **Porcelain layer**:
-An idiomatic PHP interface built on the spec layer without redefining its locale semantics.
-_Avoid_: Convenience layer, wrapper
+A PHP interface that mirrors the spec layer's vocabulary and capabilities while expressing them with stronger PHP-native types and representations. Names diverge from the spec layer only when there is a compelling, documented reason.
+_Avoid_: Convenience layer, simplified API, wrapper
 
 **Conformance baseline**:
 The exact ECMA-402 and Test262 revisions used to define and reproduce a release's compatibility claims. It records what was verified without limiting development from tracking newer revisions.
