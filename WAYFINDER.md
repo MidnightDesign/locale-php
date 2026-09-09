@@ -24,12 +24,12 @@ The map is complete when an implementation team can create execution tickets wit
 
 <!-- One linked gist per resolved child ticket. The full answer lives in that ticket. -->
 
+- [Define the conformance promise](.scratch/intl-locale-for-php/issues/01-define-conformance-promise.md) — Use mirrored spec and strongly typed porcelain tiers; track latest ECMA-402/Test262 with release pins, require the complete surface for 1.0, and reserve conformance claims for fully passing applicable spec-layer behavior.
+
 ## Not yet specified
 
-- The exact PHP object/value model, immutability rules, namespaces, method names, and relationship between a TC39-faithful spec layer and an idiomatic porcelain layer cannot be finalized until the conformance promise is chosen.
 - The precise division between a userland BCP-47 engine, PHP `ext-intl`, ICU-backed queries, and possibly packaged CLDR data depends on the supported platform matrix and capability research.
 - Error and coercion semantics—including which JavaScript behaviors have faithful PHP equivalents and which become documented deviations—depend on the conformance and API decisions.
-- The exact treatment of JavaScript-only Test262 cases such as branding, property descriptors, realms, symbols, constructor metadata, subclassing, observers, and coercion needs a fidelity policy before individual translations can be specified.
 - CI dimensions, golden data, ICU-version expectations, reproducibility controls, and cross-platform coverage depend on the runtime and locale-data strategies.
 - Upstream synchronization, pinned revisions, generated-test review, licensing notices, drift detection, and release/versioning policy depend on the test and data designs.
 - Performance targets, caching, memory budgets, and deployment constraints are not yet sharp enough to ticket before the semantic/data boundary is known.

@@ -23,3 +23,7 @@ _Avoid_: Mostly conformant, porcelain conformance
 **Test intent**:
 The specific observable behavior a Test262 fixture is designed to verify, distinguished from JavaScript mechanisms used incidentally to arrange or assert that behavior.
 _Avoid_: Test syntax, every JavaScript feature used by a fixture
+
+**Inapplicable test**:
+A Test262 fixture whose test intent has no meaningful observable equivalent in PHP. A fixture is not inapplicable merely because its scaffolding uses JavaScript-only machinery or the translator does not yet support it.
+_Avoid_: Untranslatable test, skipped test
