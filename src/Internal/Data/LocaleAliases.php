@@ -1443,8 +1443,9 @@ enum LocaleAliases
 
     public static function assertIntegrity(): void
     {
-        static $verified = false;
-        if ($verified) {
+        /** @var bool|null $verified */
+        static $verified = null;
+        if ($verified === true) {
             return;
         }
 

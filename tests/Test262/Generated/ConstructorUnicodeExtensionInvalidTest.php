@@ -18,7 +18,7 @@ final class ConstructorUnicodeExtensionInvalidTest extends TestCase
     /** @return iterable<string, array{string}> */
     public static function invalidTags(): iterable
     {
-        foreach (array (
+        foreach (array(
   0 => 'da-u',
   1 => 'da-u-',
   2 => 'da-u--',

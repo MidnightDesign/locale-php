@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tools\Test262;
 
 use Midnight\Intl\Spec\Locale;
+use Midnight\Intl\Tools\PhpExporter;
 
 final class IdentifierCanonicalizationPipeline implements FixturePipeline
 {
@@ -69,12 +70,12 @@ final class IdentifierCanonicalizationPipeline implements FixturePipeline
     /** @param array<string, string> $cases */
     private function render(array $cases, string $fixturePath): string
     {
-        $export = preg_replace('/[ \t]+$/m', '', var_export($cases, true));
+        $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($cases));
         if ($export === null) {
             throw new \RuntimeException('Unable to format the generated identifier cases.');
         }
 
-        return <<<PHP
+        $generated = <<<PHP
 <?php
 
 declare(strict_types=1);
@@ -107,5 +108,7 @@ final class IdentifierCanonicalizationTest extends TestCase
     }
 }
 PHP;
+
+        return $generated."\n";
     }
 }

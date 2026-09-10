@@ -366,6 +366,7 @@ final class LocaleIdentifier
 
             return $subdivisionAliases[$type] ?? $type;
         }
+        $matches = [];
         if ($key === 'rg' && preg_match('/^(?<region>[a-z]{2}|[0-9]{3})(?<suffix>zzzz)$/D', $type, $matches) === 1) {
             $region = LocaleAliases::REGION[strtoupper($matches['region'])] ?? strtoupper($matches['region']);
 
@@ -395,7 +396,10 @@ final class LocaleIdentifier
         return $extension;
     }
 
-    /** @param list<string> $values */
+    /**
+     * @param list<string> $values
+     * @param non-empty-string $pattern
+     */
     private static function allMatch(array $values, string $pattern): bool
     {
         foreach ($values as $value) {

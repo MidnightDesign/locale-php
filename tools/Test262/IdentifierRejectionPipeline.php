@@ -6,6 +6,7 @@ namespace Midnight\Intl\Tools\Test262;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Spec\Locale;
+use Midnight\Intl\Tools\PhpExporter;
 
 final class IdentifierRejectionPipeline implements FixturePipeline
 {
@@ -83,13 +84,13 @@ final class IdentifierRejectionPipeline implements FixturePipeline
     /** @param list<string> $tags */
     private function render(array $tags, string $fixturePath): string
     {
-        $export = preg_replace('/[ \t]+$/m', '', var_export($tags, true));
+        $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($tags));
         if ($export === null) {
             throw new \RuntimeException('Unable to format the generated rejection cases.');
         }
         $className = $this->className;
 
-        return <<<PHP
+        $generated = <<<PHP
 <?php
 
 declare(strict_types=1);
@@ -124,5 +125,7 @@ final class {$className} extends TestCase
     }
 }
 PHP;
+
+        return $generated."\n";
     }
 }

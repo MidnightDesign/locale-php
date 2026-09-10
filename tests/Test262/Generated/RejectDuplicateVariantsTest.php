@@ -18,7 +18,7 @@ final class RejectDuplicateVariantsTest extends TestCase
     /** @return iterable<string, array{string}> */
     public static function invalidTags(): iterable
     {
-        foreach (array (
+        foreach (array(
   0 => 'en-emodeng-emodeng',
   1 => 'en-Emodeng-emodeng',
   2 => 'en-emodeng-Emodeng',

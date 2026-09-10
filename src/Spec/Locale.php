@@ -226,8 +226,7 @@ class Locale
         array|object $options,
         string $optionName,
         string $key,
-    ): void
-    {
+    ): void {
         $option = self::readOption($options, $optionName);
         if (!$option->present) {
             return;
@@ -250,8 +249,7 @@ class Locale
         string $optionName,
         string $key,
         array $allowed,
-    ): void
-    {
+    ): void {
         $option = self::readOption($options, $optionName);
         if (!$option->present) {
             return;

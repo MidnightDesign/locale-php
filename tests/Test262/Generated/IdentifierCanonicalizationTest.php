@@ -18,7 +18,7 @@ final class IdentifierCanonicalizationTest extends TestCase
     /** @return iterable<string, array{string, string}> */
     public static function cases(): iterable
     {
-        foreach (array (
+        foreach (array(
   'da-u-ca-gregory-ca-buddhist' => 'da-u-ca-gregory',
   'zh-u-nu-hans-ca-chinese' => 'zh-u-ca-chinese-nu-hans',
   'zh-u-ca-chinese-nu-hans' => 'zh-u-ca-chinese-nu-hans',
