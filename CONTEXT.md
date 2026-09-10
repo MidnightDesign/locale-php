@@ -47,3 +47,7 @@ _Avoid_: Conformance version, CLDR version
 **Public API**:
 The supported PHP contract of both the spec layer and porcelain layer. The `Internal` namespace is not part of this contract.
 _Avoid_: Porcelain API only
+
+**Matrix mutation score**:
+The percentage of applicable mutant-and-extension-mode obligations killed across the complete spec and porcelain production-source campaigns. A mutant that applies in multiple extension modes contributes one obligation per mode; success in one mode cannot conceal a failure in another.
+_Avoid_: Unique-mutant score, average mutation score

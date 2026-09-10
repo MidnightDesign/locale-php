@@ -41,6 +41,7 @@ final class WorkflowContract
         }
 
         self::validateActions($root, $workflows, $failures);
+        self::validateMutationCampaigns($root, $failures);
         self::validateRuntime($workflows['runtime'], $workflows['runtime-lane'], $failures);
         self::validateQuality($workflows['quality'], $failures);
         self::validateScheduled($workflows['scheduled'], $failures);
@@ -83,13 +84,90 @@ final class WorkflowContract
             'vendor/bin/php-cs-fixer',
             'composer data:check',
             'composer test262:check',
-            'composer mutation',
+            'composer "mutation:${{ matrix.campaign }}"',
             'tools/merge-mutation-reports.php',
             'php tools/test-package-install.php',
             'php tools/assert-extension-version.php xdebug 3.5.3',
             'php tools/record-ci-provenance.php',
         ], 'quality workflow', $failures);
-        self::requireScalars($workflow, ['xdebug-3.5.3'], 'quality workflow', $failures);
+        self::requireScalars($workflow, [
+            'xdebug-3.5.3',
+            'test262-upstream',
+            'porcelain',
+            'spec',
+            'infection.${{ matrix.campaign }}.json5',
+        ], 'quality workflow', $failures);
+    }
+
+    /** @param list<string> $failures */
+    private static function validateMutationCampaigns(string $root, array &$failures): void
+    {
+        $expected = [
+            'spec' => [
+                'excludes' => ['/^Locale\\.php$/', '/^Internal\\/Data\\/LocaleAliases\\.php$/'],
+                'suite' => 'test262-upstream',
+            ],
+            'porcelain' => [
+                'excludes' => ['Spec', 'Internal', 'Exception'],
+                'suite' => 'porcelain',
+            ],
+        ];
+        foreach ($expected as $campaign => $contract) {
+            $path = sprintf('%s/infection.%s.json5', $root, $campaign);
+            $config = json_decode(self::read($path, $failures), true);
+            if (!is_array($config)) {
+                $failures[] = sprintf('infection.%s.json5 must contain a JSON object.', $campaign);
+
+                continue;
+            }
+            $source = is_array($config['source'] ?? null) ? $config['source'] : [];
+            if (($source['directories'] ?? null) !== ['src'] || ($source['excludes'] ?? null) !== $contract['excludes']) {
+                $failures[] = sprintf('The %s mutation campaign has an invalid production-source boundary.', $campaign);
+            }
+            if (($config['testFrameworkOptions'] ?? null) !== '--testsuite='.$contract['suite']) {
+                $failures[] = sprintf('The %s mutation campaign must use the %s suite.', $campaign, $contract['suite']);
+            }
+            if (($config['minMsi'] ?? null) !== 100 || ($config['minCoveredMsi'] ?? null) !== 100) {
+                $failures[] = sprintf('The %s mutation campaign must require 100%% MSI.', $campaign);
+            }
+            $mutators = is_array($config['mutators'] ?? null) ? $config['mutators'] : [];
+            if (($mutators['@default'] ?? null) !== true || count($mutators) !== 1) {
+                $failures[] = sprintf('The %s mutation campaign may not suppress mutants.', $campaign);
+            }
+        }
+
+        $composer = json_decode(self::read($root.'/composer.json', $failures), true);
+        $scripts = is_array($composer) && is_array($composer['scripts'] ?? null) ? $composer['scripts'] : [];
+        foreach (array_keys($expected) as $campaign) {
+            $script = $scripts['mutation:'.$campaign] ?? null;
+            if (!is_string($script)
+                || !str_contains($script, '--with-uncovered')
+                || str_contains($script, '--filter')
+                || str_contains($script, '--git-diff')) {
+                $failures[] = sprintf('Composer mutation:%s must mutate uncovered code without source filters.', $campaign);
+            }
+        }
+
+        $applicability = json_decode(self::read($root.'/.ci/mutation-applicability.json', $failures), true);
+        if (!is_array($applicability)
+            || ($applicability['format'] ?? null) !== 1
+            || !is_array($applicability['mutants'] ?? null)) {
+            $failures[] = '.ci/mutation-applicability.json must contain versioned mutant applicability.';
+        }
+
+        self::requireText(
+            self::read($root.'/phpunit.xml.dist', $failures),
+            [
+                '<testsuite name="test262-upstream">',
+                '<directory>tests/Test262/Generated</directory>',
+                '<testsuite name="porcelain">',
+                '<file>tests/LocaleTest.php</file>',
+                '<exclude>tests/Test262/Generated</exclude>',
+                '<exclude>tests/LocaleTest.php</exclude>',
+            ],
+            'phpunit.xml.dist',
+            $failures,
+        );
     }
 
     /** @param list<string> $failures */

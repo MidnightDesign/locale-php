@@ -1,0 +1,18 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": ["src"],
+        "excludes": ["Spec", "Internal", "Exception"]
+    },
+    "testFrameworkOptions": "--testsuite=porcelain",
+    "timeout": 10,
+    "logs": {
+        "json": "build/infection/porcelain/infection.json",
+        "text": "build/infection/porcelain/infection.log"
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100,
+    "mutators": {
+        "@default": true
+    }
+}
