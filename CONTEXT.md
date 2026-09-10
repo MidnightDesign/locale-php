@@ -27,3 +27,11 @@ _Avoid_: Test syntax, every JavaScript feature used by a fixture
 **Inapplicable test**:
 A Test262 fixture whose test intent has no meaningful observable equivalent in PHP. A fixture is not inapplicable merely because its scaffolding uses JavaScript-only machinery or the translator does not yet support it.
 _Avoid_: Untranslatable test, skipped test
+
+**Translation gap**:
+An applicable Test262 check that the current translator or PHP test scaffolding cannot yet express without losing its test intent. It is unfinished conformance work, not an inapplicable test.
+_Avoid_: Unsupported test, skipped test
+
+**Conformance evidence**:
+The reproducible results and provenance that support a release's conformance claim against its exact conformance baseline and release data snapshot.
+_Avoid_: Release report, coverage percentage
