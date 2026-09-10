@@ -4,6 +4,6 @@
 
 The spec constructor distinguishes omitted options from explicit `null`. Explicit `null` throws `Midnight\Intl\Exception\TypeError`. Invalid locale syntax and invalid option values throw `Midnight\Intl\Exception\RangeError`.
 
-This initial slice implements `baseName`, `language`, `script`, `region`, and `toString()`. The remaining `Intl.Locale` properties and methods are unfinished, so this package does not claim ECMA-402 conformance.
+The constructor implements the complete Unicode locale-identifier grammar and all eleven constructor options. `baseName`, `language`, `script`, `region`, `variants`, `calendar`, `caseFirst`, `collation`, `firstDayOfWeek`, `hourCycle`, `numberingSystem`, `numeric`, and `toString()` expose the canonical result. Locale-information and likely-subtag methods remain unfinished, so this package does not claim ECMA-402 conformance.
 
 Use `Midnight\Intl\Locale::fromSpec()` and `Locale::toSpec()` to cross layers explicitly.

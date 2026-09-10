@@ -1,18 +1,48 @@
 {
-    "format": 1,
-    "scope": "initial-language-script-region-slice",
-    "cldr": {
-        "revision": "11299982335beb974c1c63c45265184e759c0f41",
-        "upstreamSha256": "36e807ce72b15304dd993f132216f408351be1c4376edaa2fe9e9547e2efcac1",
-        "source": "resources/data/locale-aliases.json",
-        "sourceSha256": "17800f5a3d654a5702c295f1d12885bedecf96373e6729579832ac9697071af1",
-        "projection": "src/Internal/Data/LocaleAliases.php",
-        "projectionSha256": "a1f77c34ce40e9f42cb97c381b9f35b747071918aa948e6fe4bd940b64aba4e7"
+    "format": 2,
+    "scope": "unicode-locale-identifier-canonicalization",
+    "releaseDataFingerprint": "3d96e29d0c470f3d838cc753736ed65e367723db7f9e4322084792912f8b8362",
+    "inputs": {
+        "unicode": {
+            "version": "17.0.0",
+            "url": "https://www.unicode.org/Public/17.0.0/ucd/UCD.zip",
+            "sha512": "34bf4f3760b72f34d31b9135820458a92efc01be4e068446031849ba8e36b9e30adecb2b7721239441cc026e70a33ad780a753464a6a635cea222c34767755d6",
+            "license": "resources/licenses/UNICODE-3.0.txt"
+        },
+        "cldr": {
+            "version": "48.2",
+            "revision": "11299982335beb974c1c63c45265184e759c0f41",
+            "url": "https://unicode.org/Public/cldr/48.2/core.zip",
+            "sha512": "de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62",
+            "license": "resources/licenses/UNICODE-3.0.txt"
+        },
+        "languageRegistry": {
+            "fileDate": "2026-08-08",
+            "url": "https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry",
+            "sha256": "be21e91b6851f750a7b1a687f11209d46ad5a8471d6b10a1efc8d1dac4c8a926",
+            "license": "resources/licenses/IANA.txt"
+        },
+        "tzdb": {
+            "version": "2026c",
+            "url": "https://data.iana.org/time-zones/releases/tzdata2026c.tar.gz",
+            "sha512": "e0b4b7044b66fbc27bc21d13d18063abcdf78ab58d5ba5fd64bd1a88d86e9d495f45add4d8e65bb6c40249f9c94ca29b72c8ebba8d0e4c468f2965ac77932ef0",
+            "license": "resources/licenses/IANA.txt"
+        }
     },
-    "test262": {
-        "revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93"
+    "projections": {
+        "localeAliases": {
+            "source": "resources/data/locale-aliases.json",
+            "sourceSha256": "5ea7e202fb639c3b80b6db9142e04f0411423ed7e159a0defcdde9ca46aa26b8",
+            "generated": "src/Internal/Data/LocaleAliases.php",
+            "generatedSha256": "d1f2841cf556e886089787fa0f9f4f05962dcd49006d2e3fb0d75329416f4f53"
+        }
     },
-    "ecma402": {
-        "revision": "b1c961988b9a07894b1dc3dc2b5626ea48387d61"
+    "generators": {
+        "tools/import-cldr-aliases.php": "e69f4527e1792952496e31848c3c018d36bacd59a33b03617a5387c5e22ea226",
+        "tools/generate-data.php": "d5ab0a4fc00ae39cf0be0f1de90cf814e7d656fdea08591ca332dec47084ceba"
+    },
+    "conformanceBaseline": {
+        "ecma402": "b1c961988b9a07894b1dc3dc2b5626ea48387d61",
+        "test262": "419d3e0a2273ba01a3bfcbec423f2801425b8e93"
     }
 }

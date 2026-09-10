@@ -9,6 +9,7 @@ use Midnight\Intl\Tools\Test262\EvidenceBuilder;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\FixtureResult;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
+use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
 use Midnight\Intl\Tools\Test262\InventoryAudit;
 
 $root = dirname(__DIR__);
@@ -71,6 +72,11 @@ $assertionIdentities = new AssertionIdentityExtractor();
 $representations = ['associative_array', 'plain_object'];
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
+    'test/intl402/Locale/constructor-unicode-ext-valid.js' => new IdentifierCanonicalizationPipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
     'test/intl402/Locale/getters-missing.js' => new GetterFixturePipeline(
         $assertionIdentities,
         $test262Revision,
