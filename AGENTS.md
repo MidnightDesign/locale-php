@@ -1,6 +1,8 @@
 # Instructions
 
-When `/wayfinder` is invoked without another map, resume the active map in `WAYFINDER.md`. Commit every verified change immediately without asking the user first.
+When `/wayfinder` is invoked without another map, resume the active map in `WAYFINDER.md`.
+
+Make repository changes on a branch and deliver them through a pull request. Keep the default branch unchanged until the pull request is merged.
 
 ## Agent skills
 
