@@ -15,13 +15,20 @@ final class Test262EvidenceTest extends TestCase
      *         test262: array{revision: string, license: array{upstreamSha256: string, committedSha256: string}}
      *     },
      *     inventory: array{fixtureCount: int, complete: bool},
-     *     summary: array{translationGaps: int},
+     *     summary: array{
+     *         translatedFixtures: int,
+     *         passingFixtures: int,
+     *         partiallyTranslatedFixtures: int,
+     *         translationGaps: int,
+     *         executionFailures: int
+     *     },
      *     conformanceClaim: array{eligible: bool},
      *     fixtures: list<array{
      *         path: string,
      *         status: string,
      *         sourceAssertionCount?: int,
      *         executionCount?: int,
+     *         executionFailures?: int,
      *         phpRepresentations?: list<string>,
      *         assertions: list<array{id: string, adaptations?: list<string>, status: string}>
      *     }>
@@ -38,13 +45,20 @@ final class Test262EvidenceTest extends TestCase
          *         test262: array{revision: string, license: array{upstreamSha256: string, committedSha256: string}}
          *     },
          *     inventory: array{fixtureCount: int, complete: bool},
-         *     summary: array{translationGaps: int},
+         *     summary: array{
+         *         translatedFixtures: int,
+         *         passingFixtures: int,
+         *         partiallyTranslatedFixtures: int,
+         *         translationGaps: int,
+         *         executionFailures: int
+         *     },
          *     conformanceClaim: array{eligible: bool},
          *     fixtures: list<array{
          *         path: string,
          *         status: string,
          *         sourceAssertionCount?: int,
          *         executionCount?: int,
+         *         executionFailures?: int,
          *         phpRepresentations?: list<string>,
          *         assertions: list<array{id: string, adaptations?: list<string>, status: string}>
          *     }>
@@ -110,5 +124,25 @@ final class Test262EvidenceTest extends TestCase
 
         self::assertFalse($evidence['conformanceClaim']['eligible']);
         self::assertGreaterThan(0, $evidence['summary']['translationGaps']);
+    }
+
+    public function testSummaryCountsAreDerivedFromFixtureEvidence(): void
+    {
+        $evidence = self::evidence();
+        $passing = 0;
+        $partiallyTranslated = 0;
+        $translated = 0;
+        $executionFailures = 0;
+        foreach ($evidence['fixtures'] as $fixture) {
+            $passing += $fixture['status'] === 'passing' ? 1 : 0;
+            $partiallyTranslated += $fixture['status'] === 'partially_translated' ? 1 : 0;
+            $translated += $fixture['status'] !== 'translation_gap' ? 1 : 0;
+            $executionFailures += $fixture['executionFailures'] ?? 0;
+        }
+
+        self::assertSame($passing, $evidence['summary']['passingFixtures']);
+        self::assertSame($partiallyTranslated, $evidence['summary']['partiallyTranslatedFixtures']);
+        self::assertSame($translated, $evidence['summary']['translatedFixtures']);
+        self::assertSame($executionFailures, $evidence['summary']['executionFailures']);
     }
 }

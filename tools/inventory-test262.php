@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
+
 if ($argc !== 2 || !is_dir($argv[1])) {
     fwrite(STDERR, "Usage: php tools/inventory-test262.php <pinned-test262-checkout>\n");
     exit(1);
@@ -9,6 +11,7 @@ if ($argc !== 2 || !is_dir($argv[1])) {
 
 $checkout = rtrim($argv[1], '/');
 $root = dirname(__DIR__);
+require $root.'/vendor/autoload.php';
 $baselineSource = file_get_contents($root.'/tests/Test262/baseline.json');
 if ($baselineSource === false) {
     throw new RuntimeException('Unable to read tests/Test262/baseline.json.');
@@ -41,68 +44,7 @@ sort($paths);
 $fixtures = [];
 $hashManifest = '';
 $detectedAssertionCount = 0;
-
-function assertionSource(string $source, int $callOffset): string
-{
-    $openParenthesis = strpos($source, '(', $callOffset);
-    if ($openParenthesis === false) {
-        throw new RuntimeException('Unable to locate an assertion argument list.');
-    }
-
-    $depth = 0;
-    $quote = null;
-    $escaped = false;
-    $lineComment = false;
-    $blockComment = false;
-    $length = strlen($source);
-    for ($index = $openParenthesis; $index < $length; ++$index) {
-        $character = $source[$index];
-        $next = $source[$index + 1] ?? '';
-
-        if ($lineComment) {
-            $lineComment = $character !== "\n";
-            continue;
-        }
-        if ($blockComment) {
-            if ($character === '*' && $next === '/') {
-                $blockComment = false;
-                ++$index;
-            }
-            continue;
-        }
-        if ($quote !== null) {
-            if ($escaped) {
-                $escaped = false;
-            } elseif ($character === '\\') {
-                $escaped = true;
-            } elseif ($character === $quote) {
-                $quote = null;
-            }
-            continue;
-        }
-        if ($character === '/' && $next === '/') {
-            $lineComment = true;
-            ++$index;
-            continue;
-        }
-        if ($character === '/' && $next === '*') {
-            $blockComment = true;
-            ++$index;
-            continue;
-        }
-        if (in_array($character, ["'", '"', '`'], true)) {
-            $quote = $character;
-            continue;
-        }
-        if ($character === '(') {
-            ++$depth;
-        } elseif ($character === ')' && --$depth === 0) {
-            return substr($source, $callOffset, $index - $callOffset + 1);
-        }
-    }
-
-    throw new RuntimeException('Unable to locate the end of an assertion argument list.');
-}
+$assertionIdentities = new AssertionIdentityExtractor();
 
 foreach ($paths as $path) {
     $source = file_get_contents($checkout.'/'.$path);
@@ -113,22 +55,9 @@ foreach ($paths as $path) {
     $sha256 = hash('sha256', $source);
     $hashManifest .= strtoupper($sha256).'  '.$path."\n";
     $assertions = [];
-    preg_match_all(
-        '/\b(assert(?:\.[A-Za-z]+)?|verifyProperty|verifyEqualTo)\s*\(/',
-        $source,
-        $calls,
-        PREG_OFFSET_CAPTURE,
-    );
-    foreach ($calls[1] as [$call, $offset]) {
-        $line = substr_count(substr($source, 0, $offset), "\n") + 1;
-        $lineStart = strrpos(substr($source, 0, $offset), "\n");
-        $column = $offset - ($lineStart === false ? -1 : $lineStart);
+    foreach ($assertionIdentities->extract($source, $path) as $identity) {
         $assertions[] = [
-            'id' => sprintf('%s:L%d:C%d:%s', $path, $line, $column, $call),
-            'line' => $line,
-            'column' => $column,
-            'call' => $call,
-            'sha256' => hash('sha256', assertionSource($source, $offset)),
+            ...$identity,
             'status' => in_array($path, [
                 'test/intl402/Locale/getters-missing.js',
                 'test/intl402/Locale/constructor-options-script-valid.js',

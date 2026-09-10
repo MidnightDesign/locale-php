@@ -52,6 +52,31 @@ final class Test262InventoryAuditTest extends TestCase
         }
     }
 
+    public function testTranslatedEvidenceUsesTheCanonicalInventoryIdentities(): void
+    {
+        $inventoryAssertions = [];
+        foreach (self::corpus()['fixtures'] as $fixture) {
+            foreach ($fixture['detectedAssertions'] as $assertion) {
+                $id = $assertion['id'] ?? null;
+                $sha256 = $assertion['sha256'] ?? null;
+                self::assertIsString($id);
+                self::assertIsString($sha256);
+                $inventoryAssertions[$id] = $sha256;
+            }
+        }
+
+        $contents = file_get_contents(dirname(__DIR__).'/Test262/evidence.json');
+        self::assertNotFalse($contents);
+        /** @var array{fixtures: list<array{assertions: list<array{id: string, sha256: string}>}>} $evidence */
+        $evidence = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
+        foreach ($evidence['fixtures'] as $fixture) {
+            foreach ($fixture['assertions'] as $assertion) {
+                self::assertArrayHasKey($assertion['id'], $inventoryAssertions);
+                self::assertSame($inventoryAssertions[$assertion['id']], $assertion['sha256']);
+            }
+        }
+    }
+
     /**
      * @return array{
      *     fixtures: list<array{path: string, detectedAssertions: list<array<string, mixed>>}>,

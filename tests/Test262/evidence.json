@@ -95,9 +95,228 @@
     },
     "fixtures": [
         {
+            "path": "test/intl402/Locale/getters-missing.js",
+            "sha256": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
+            "status": "partially_translated",
+            "reason": "Assertions that require variant support remain translation gaps.",
+            "sourceAssertionCount": 20,
+            "executionCount": 12,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L29:C1:assert.sameValue",
+                    "line": 29,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "bd92d423d1101760ffedafedbaf568da6a127bbf6bfb91ff747ef92817d35552",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L30:C1:assert.sameValue",
+                    "line": 30,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "065b69efb2513e04a0600e86038aa4e1b84cf646cdab279e849a32566d44e256",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L31:C1:assert.sameValue",
+                    "line": 31,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "950c52823fc2084c3c2dce44eeeb52b1e4722db03a68121f56b4659589864414",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L32:C1:assert.sameValue",
+                    "line": 32,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "0032d8f0453784f293fa5228cc3cdc7ab1452ef79f393dfcfe5c2d8a4d7c2919",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L33:C1:assert.sameValue",
+                    "line": 33,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "e3ff6a0ae05f511621c4c97e2be4a14df788512a315b7999efb87dbef1f7d91a",
+                    "status": "translation_gap",
+                    "reason": "The variants property is outside the initial language/script/region slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L37:C1:assert.sameValue",
+                    "line": 37,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "6ab9c1264031939ea207c11552b1632005ab0d1fa8fd1ad4e9dd5b6ca091b458",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L38:C1:assert.sameValue",
+                    "line": 38,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "065b69efb2513e04a0600e86038aa4e1b84cf646cdab279e849a32566d44e256",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L39:C1:assert.sameValue",
+                    "line": 39,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "8ede996c1b464309cd793a553699bfff312470b0753af758e3e2f639288dffa3",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L40:C1:assert.sameValue",
+                    "line": 40,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "0032d8f0453784f293fa5228cc3cdc7ab1452ef79f393dfcfe5c2d8a4d7c2919",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L41:C1:assert.sameValue",
+                    "line": 41,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "e3ff6a0ae05f511621c4c97e2be4a14df788512a315b7999efb87dbef1f7d91a",
+                    "status": "translation_gap",
+                    "reason": "The variants property is outside the initial language/script/region slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L45:C1:assert.sameValue",
+                    "line": 45,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "65f2f473520cdeb96a3d472a250d5b52f7b81add78916b102e3559fcb84725f2",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L46:C1:assert.sameValue",
+                    "line": 46,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "065b69efb2513e04a0600e86038aa4e1b84cf646cdab279e849a32566d44e256",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L47:C1:assert.sameValue",
+                    "line": 47,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "950c52823fc2084c3c2dce44eeeb52b1e4722db03a68121f56b4659589864414",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L48:C1:assert.sameValue",
+                    "line": 48,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "c19b391fbb72ea507516fc1b33f180b96ec85fa85f445e3f63147507c048e1db",
+                    "status": "passing",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L49:C1:assert.sameValue",
+                    "line": 49,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "e3ff6a0ae05f511621c4c97e2be4a14df788512a315b7999efb87dbef1f7d91a",
+                    "status": "translation_gap",
+                    "reason": "The variants property is outside the initial language/script/region slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L53:C1:assert.sameValue",
+                    "line": 53,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "d4e1794c195dd39058b1d2fac7381331d16bf8ea69228f7be4fac392c7b6c751",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L54:C1:assert.sameValue",
+                    "line": 54,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "1c9ae4f58fc7e27c3cf6080a4c199043f0598db42630b0049b87c766cf3ee49b",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L55:C1:assert.sameValue",
+                    "line": 55,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "950c52823fc2084c3c2dce44eeeb52b1e4722db03a68121f56b4659589864414",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L56:C1:assert.sameValue",
+                    "line": 56,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "0032d8f0453784f293fa5228cc3cdc7ab1452ef79f393dfcfe5c2d8a4d7c2919",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js:L57:C1:assert.sameValue",
+                    "line": 57,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "78d3038ea926740bd57ec8a3380c1773d14ef20ccf1af128838e3ab58a045515",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                }
+            ]
+        },
+        {
             "path": "test/intl402/Locale/constructor-options-script-valid.js",
             "sha256": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
             "status": "passing",
+            "reason": null,
             "sourceAssertionCount": 3,
             "executionCount": 30,
             "executionFailures": 0,
@@ -111,6 +330,7 @@
                     "line": 43,
                     "column": 3,
                     "call": "assert.sameValue",
+                    "sha256": "0ff949ebe40249f478bcefae8d3b1f14deb54f1e9c6984aea2ab5ae6904557ca",
                     "status": "passing",
                     "adaptations": [
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
@@ -195,6 +415,7 @@
                     "line": 50,
                     "column": 3,
                     "call": "assert.sameValue",
+                    "sha256": "244db806a6cd8d9d0ea631f95ba01b0b05abfd6c65bfb9d08312541e39684a7c",
                     "status": "passing",
                     "adaptations": [
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
@@ -279,6 +500,7 @@
                     "line": 57,
                     "column": 3,
                     "call": "assert.sameValue",
+                    "sha256": "9280d3546ce2ea434c94803b21aa9deb00ec4737f57f75278cb75342dce22a67",
                     "status": "passing",
                     "adaptations": [
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
@@ -357,137 +579,6 @@
                             "actual": "en-Brai"
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "path": "test/intl402/Locale/getters-missing.js",
-            "sha256": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
-            "status": "partially_translated",
-            "assertions": [
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L29:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L30:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L31:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L32:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L33:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "The variants property is outside the initial language/script/region slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L37:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L38:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L39:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L40:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L41:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "The variants property is outside the initial language/script/region slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L45:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L46:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L47:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L48:C1:assert.sameValue",
-                    "status": "applicable",
-                    "phpRepresentations": [
-                        "direct"
-                    ]
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L49:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "The variants property is outside the initial language/script/region slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L53:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "Variants in the input identifier are outside the initial slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L54:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "Variants in the input identifier are outside the initial slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L55:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "Variants in the input identifier are outside the initial slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L56:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "Variants in the input identifier are outside the initial slice."
-                },
-                {
-                    "id": "test/intl402/Locale/getters-missing.js:L57:C1:assert.sameValue",
-                    "status": "translation_gap",
-                    "reason": "Variants in the input identifier are outside the initial slice."
                 }
             ]
         }

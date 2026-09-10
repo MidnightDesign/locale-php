@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tools\Test262;
 
-final class ConstructorOptionsScriptTranslator
+final class ConstructorOptionsScriptTranslator implements ConstructorFixtureTranslator
 {
+    public function __construct(private readonly AssertionIdentityExtractor $assertionIdentities)
+    {
+    }
+
     /**
      * @return array{
-     *     assertions: list<array{id: string, line: int, column: int, call: 'assert.sameValue'}>,
+     *     assertions: list<array{id: string, line: int, column: int, call: string, sha256: string}>,
      *     cases: list<array{
      *         id: string,
      *         assertionId: string,
@@ -21,7 +25,7 @@ final class ConstructorOptionsScriptTranslator
     public function translate(string $source, string $fixturePath): array
     {
         if (!preg_match('/const validScriptOptions = \[(?<options>.*?)\n\];/s', $source, $optionBlock)) {
-            throw new \RuntimeException('Translation gap: validScriptOptions is not in the supported form.');
+            throw new TranslationGap('validScriptOptions is not in the supported form.');
         }
 
         preg_match_all(
@@ -33,18 +37,19 @@ REGEX,
             PREG_SET_ORDER,
         );
         if (count($optionRows) !== 5) {
-            throw new \RuntimeException(sprintf(
-                'Translation gap: expected 5 script option rows, found %d.',
+            throw new TranslationGap(sprintf(
+                'Expected 5 script option rows, found %d.',
                 count($optionRows),
             ));
         }
 
-        $assertionCount = preg_match_all(
-            '/\b(?:assert\.[A-Za-z]+|verifyProperty|verifyEqualTo)\s*\(/',
-            $source,
-        );
-        if ($assertionCount !== 3) {
-            throw new \RuntimeException('Translation gap: the fixture contains an unsupported assertion construct.');
+        $assertions = $this->assertionIdentities->extract($source, $fixturePath);
+        if (count($assertions) !== 3
+            || array_filter(
+                $assertions,
+                static fn (array $assertion): bool => $assertion['call'] !== 'assert.sameValue',
+            ) !== []) {
+            throw new TranslationGap('The fixture contains an unsupported assertion construct.');
         }
 
         preg_match_all(
@@ -60,28 +65,16 @@ REGEX,
             PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
         );
         if (count($assertionRows) !== 3) {
-            throw new \RuntimeException(sprintf(
-                'Translation gap: expected 3 supported assert.sameValue bodies, found %d.',
+            throw new TranslationGap(sprintf(
+                'Expected 3 supported assert.sameValue bodies, found %d.',
                 count($assertionRows),
             ));
         }
 
-        $assertions = [];
         $caseDefinitions = [];
-        foreach ($assertionRows as $row) {
-            $assertionOffset = $row['assertion'][1];
-            $line = substr_count(substr($source, 0, $assertionOffset), "\n") + 1;
-            $lineStart = strrpos(substr($source, 0, $assertionOffset), "\n");
-            $column = $assertionOffset - ($lineStart === false ? -1 : $lineStart);
-            $id = sprintf('%s:L%d:C%d:assert.sameValue', $fixturePath, $line, $column);
-            $assertions[] = [
-                'id' => $id,
-                'line' => $line,
-                'column' => $column,
-                'call' => 'assert.sameValue',
-            ];
+        foreach ($assertionRows as $assertionIndex => $row) {
             $caseDefinitions[] = [
-                'assertionId' => $id,
+                'assertionId' => $assertions[$assertionIndex]['id'],
                 'tag' => $row['tag'][0],
                 'expression' => $this->parseExpectedExpression($row['expression'][0]),
             ];
@@ -117,7 +110,7 @@ REGEX,
     {
         $normalized = preg_replace('/\s+/', ' ', trim($expression));
         if ($normalized === null) {
-            throw new \RuntimeException('Translation gap: unable to normalize the expected expression.');
+            throw new TranslationGap('Unable to normalize the expected expression.');
         }
 
         if (preg_match(
@@ -142,8 +135,8 @@ REGEX,
             return ['prefix' => $parts[1], 'suffix' => '', 'fallback' => $parts[2]];
         }
 
-        throw new \RuntimeException(sprintf(
-            'Translation gap: unsupported expected expression "%s".',
+        throw new TranslationGap(sprintf(
+            'Unsupported expected expression "%s".',
             $normalized,
         ));
     }

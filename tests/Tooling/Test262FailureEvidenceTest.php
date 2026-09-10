@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests\Tooling;
 
+use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
 use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
+use Midnight\Intl\Tools\Test262\ConstructorFixtureTranslator;
 use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
 use PHPUnit\Framework\TestCase;
-
-require_once dirname(__DIR__, 2).'/tools/Test262/ConstructorOptionsScriptTranslator.php';
 
 final class Test262FailureEvidenceTest extends TestCase
 {
@@ -24,23 +24,21 @@ final class Test262FailureEvidenceTest extends TestCase
         $result = self::pipeline()->run(
             $source,
             'injected-fixture.js',
-            ['associative_array', 'plain_object'],
         );
 
-        self::assertSame('failing', $result['status']);
-        self::assertSame(10, $result['executionFailures']);
+        self::assertSame('failing', $result->evidence()['status']);
+        self::assertSame(10, $result->executionFailures());
     }
 
     public function testAnInjectedRepresentationFailureIsRecorded(): void
     {
-        $result = self::pipeline()->run(
+        $result = self::pipeline(null, ['unsupported-representation'])->run(
             self::fixtureSource(),
             'injected-fixture.js',
-            ['unsupported-representation'],
         );
 
-        self::assertSame('failing', $result['status']);
-        self::assertSame(15, $result['executionFailures']);
+        self::assertSame('failing', $result->evidence()['status']);
+        self::assertSame(15, $result->executionFailures());
     }
 
     public function testAnInjectedTranslationFailureIsRecordedAsAGap(): void
@@ -51,11 +49,34 @@ final class Test262FailureEvidenceTest extends TestCase
         $result = self::pipeline()->run(
             $source,
             'injected-fixture.js',
-            ['associative_array', 'plain_object'],
         );
 
-        self::assertSame('translation_gap', $result['status']);
-        self::assertStringContainsString('Translation gap', $result['reason']);
+        $evidence = $result->evidence();
+
+        self::assertSame('translation_gap', $evidence['status']);
+        self::assertStringContainsString('Translation gap', $evidence['reason'] ?? '');
+        self::assertSame(3, $evidence['sourceAssertionCount']);
+        self::assertCount(3, $evidence['assertions']);
+        foreach ($evidence['assertions'] as $assertion) {
+            self::assertSame('translation_gap', $assertion['status']);
+            self::assertNotEmpty($assertion['id']);
+            self::assertNotEmpty($assertion['sha256']);
+        }
+    }
+
+    public function testAnUnexpectedTranslatorDefectIsNotReportedAsATranslationGap(): void
+    {
+        $translator = new class implements ConstructorFixtureTranslator {
+            public function translate(string $source, string $fixturePath): array
+            {
+                throw new \LogicException('Injected implementation defect.');
+            }
+        };
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Injected implementation defect.');
+
+        self::pipeline($translator)->run(self::fixtureSource(), 'injected-fixture.js');
     }
 
     private static function fixtureSource(): string
@@ -68,12 +89,20 @@ final class Test262FailureEvidenceTest extends TestCase
         return $source;
     }
 
-    private static function pipeline(): ConstructorFixturePipeline
+    /** @param list<string> $representations */
+    private static function pipeline(
+        ?ConstructorFixtureTranslator $translator = null,
+        array $representations = ['associative_array', 'plain_object'],
+    ): ConstructorFixturePipeline
     {
-        $pipelinePath = dirname(__DIR__, 2).'/tools/Test262/ConstructorFixturePipeline.php';
-        self::assertFileExists($pipelinePath);
-        require_once $pipelinePath;
+        $assertionIdentities = new AssertionIdentityExtractor();
 
-        return new ConstructorFixturePipeline(new ConstructorOptionsScriptTranslator());
+        return new ConstructorFixturePipeline(
+            $translator ?? new ConstructorOptionsScriptTranslator($assertionIdentities),
+            $assertionIdentities,
+            $representations,
+            'test262-revision',
+            'ecma402-revision',
+        );
     }
 }

@@ -6,53 +6,36 @@ namespace Midnight\Intl\Tools\Test262;
 
 use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
 
-final class ConstructorFixturePipeline
+final class ConstructorFixturePipeline implements FixturePipeline
 {
-    public function __construct(private readonly ConstructorOptionsScriptTranslator $translator)
-    {
+    /** @param list<string> $representations */
+    public function __construct(
+        private readonly ConstructorFixtureTranslator $translator,
+        private readonly AssertionIdentityExtractor $assertionIdentities,
+        private readonly array $representations,
+        private readonly string $test262Revision,
+        private readonly string $ecma402Revision,
+    ) {
     }
 
-    /**
-     * @param list<string> $representations
-     *
-     * @return array{
-     *     status: 'passing'|'failing',
-     *     sourceAssertionCount: int,
-     *     executionCount: int,
-     *     executionFailures: int,
-     *     phpRepresentations: list<string>,
-     *     assertions: list<array<string, mixed>>,
-     *     generatedCases: array<string, array{
-     *         string,
-     *         string,
-     *         array{type: 'null'}|array{type: 'string'|'stringable', value: string},
-     *         string,
-     *         string
-     *     }>
-     * }|array{
-     *     status: 'translation_gap',
-     *     reason: string,
-     *     executionFailures: 0,
-     *     generatedCases: array{}
-     * }
-     */
-    public function run(string $source, string $fixturePath, array $representations): array
+    public function run(string $source, string $fixturePath): FixtureResult
     {
         try {
             $translation = $this->translator->translate($source, $fixturePath);
-        } catch (\Throwable $error) {
-            return [
-                'status' => 'translation_gap',
-                'reason' => sprintf('%s: %s', $error::class, $error->getMessage()),
-                'executionFailures' => 0,
-                'generatedCases' => [],
-            ];
+        } catch (TranslationGap $gap) {
+            return FixtureResult::translationGap(
+                $fixturePath,
+                $source,
+                $this->representations,
+                $this->assertionIdentities->extract($source, $fixturePath),
+                $gap,
+            );
         }
 
         $generatedCases = [];
         $executionResults = [];
         foreach ($translation['cases'] as $case) {
-            foreach ($representations as $representation) {
+            foreach ($this->representations as $representation) {
                 $executionId = $case['id'].'-'.$representation;
                 $generatedCases[$executionId] = [
                     $case['assertionId'],
@@ -103,14 +86,90 @@ final class ConstructorFixturePipeline
             static fn (array $result): bool => $result['status'] === 'failing',
         ));
 
-        return [
-            'status' => $failureCount === 0 ? 'passing' : 'failing',
-            'sourceAssertionCount' => count($translation['assertions']),
-            'executionCount' => count($executionResults),
-            'executionFailures' => $failureCount,
-            'phpRepresentations' => $representations,
-            'assertions' => $assertions,
-            'generatedCases' => $generatedCases,
-        ];
+        return new FixtureResult(
+            $fixturePath,
+            hash('sha256', $source),
+            $failureCount === 0 ? 'passing' : 'failing',
+            $this->representations,
+            $assertions,
+            count($executionResults),
+            $failureCount,
+            ['tests/Test262/Generated/ConstructorOptionsScriptValidTest.php' => $this->render($generatedCases, $fixturePath)],
+        );
+    }
+
+    /**
+     * @param array<string, array{
+     *     string,
+     *     string,
+     *     array{type: 'null'}|array{type: 'string'|'stringable', value: string},
+     *     string,
+     *     string
+     * }> $cases
+     */
+    private function render(array $cases, string $fixturePath): string
+    {
+        $caseExport = preg_replace('/[ \t]+$/m', '', var_export($cases, true));
+        if ($caseExport === null) {
+            throw new \RuntimeException('Unable to format the generated constructor cases.');
+        }
+
+        return <<<PHP
+<?php
+
+declare(strict_types=1);
+
+// Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
+// This generated translation is governed by tests/Test262/upstream/LICENSE.
+// Source: {$fixturePath} at Test262 {$this->test262Revision}.
+// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+
+namespace Midnight\Intl\Tests\Test262\Generated;
+
+use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+final class ConstructorOptionsScriptValidTest extends TestCase
+{
+    /**
+     * @return array<string, array{
+     *     string,
+     *     string,
+     *     array{type: 'null'}|array{type: 'string'|'stringable', value: string},
+     *     string,
+     *     string
+     * }>
+     */
+    public static function cases(): array
+    {
+        return {$caseExport};
+    }
+
+    /** @param array{type: 'null'}|array{type: 'string'|'stringable', value: string} \$optionValue */
+    #[DataProvider('cases')]
+    public function testTranslatedAssertions(
+        string \$assertionId,
+        string \$tag,
+        array \$optionValue,
+        string \$representation,
+        string \$expected,
+    ): void {
+        \$result = ConstructorOptionAssertion::evaluate(
+            \$tag,
+            'script',
+            \$optionValue,
+            \$representation,
+            \$expected,
+        );
+
+        self::assertSame(
+            'passing',
+            \$result['status'],
+            \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'),
+        );
+    }
+}
+PHP;
     }
 }
