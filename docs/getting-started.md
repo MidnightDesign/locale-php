@@ -5,14 +5,15 @@ Use `Midnight\Intl\Locale` for application code. It is a final, immutable value:
 ```php
 use Midnight\Intl\Locale;
 
-$locale = new Locale('de-Latn-DE');
+$locale = new Locale('de-Latn-DE-u-ca-gregory');
 
 $locale->baseName; // de-Latn-DE
 $locale->language; // de
 $locale->script;   // Latn
 $locale->region;   // DE
+$locale->calendar; // gregory
 ```
 
-The constructor also accepts named `language`, `script`, and `region` options. A non-null option replaces the corresponding input component. `toString()`, string conversion, and JSON serialization return the canonical identifier.
+The constructor accepts named `language`, `script`, `region`, `variants`, `calendar`, `collation`, `firstDayOfWeek`, `hourCycle`, `caseFirst`, `numeric`, and `numberingSystem` options. A non-null option replaces the corresponding input component or Unicode keyword. `toString()`, string conversion, and JSON serialization return the complete canonical identifier.
 
-The initial slice accepts only a language followed by an optional script and region. It rejects other locale syntax until those semantics and their pinned data are delivered.
+Identifiers may contain variants, transformed extensions, Unicode attributes and keywords, other singleton extensions, and private-use subtags. Parsing is strict ASCII and structural: syntactically valid unregistered subtags are accepted, while duplicate variants, duplicate extension singletons, and malformed extension sequences are rejected.

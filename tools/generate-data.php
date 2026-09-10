@@ -7,18 +7,68 @@ require $root.'/vendor/autoload.php';
 
 $sourcePath = $root.'/resources/data/locale-aliases.json';
 $source = file_get_contents($sourcePath);
-
 if ($source === false) {
     fwrite(STDERR, "Unable to read the locale alias projection source.\n");
     exit(1);
 }
 
-/** @var array{cldrRevision: string, upstreamSha256: string, language: array<string, string>, script: array<string, string>, region: array<string, string>} $data */
+/** @var array{
+ *     format: int,
+ *     cldrRevision: string,
+ *     upstreamSha512: string,
+ *     sourceEntries: array<string, string>,
+ *     language: array<string, string>,
+ *     script: array<string, string>,
+ *     region: array<string, string>,
+ *     regionAlternatives: array<string, list<string>>,
+ *     likelyRegion: array<string, string>,
+ *     variant: array<string, string>,
+ *     subdivision: array<string, string>,
+ *     key: array<string, string>,
+ *     type: array<string, array<string, string>>
+ * } $data */
 $data = json_decode($source, true, flags: JSON_THROW_ON_ERROR);
+if ($data['format'] !== 2) {
+    fwrite(STDERR, "The locale alias projection format is incompatible.\n");
+    exit(1);
+}
 
-$language = Midnight\Intl\Tools\PhpExporter::export($data['language']);
-$script = Midnight\Intl\Tools\PhpExporter::export($data['script']);
-$region = Midnight\Intl\Tools\PhpExporter::export($data['region']);
+$constants = '';
+foreach ([
+    'LANGUAGE' => ['language', 'array<string, string>'],
+    'SCRIPT' => ['script', 'array<string, string>'],
+    'REGION' => ['region', 'array<int|string, string>'],
+    'REGION_ALTERNATIVES' => ['regionAlternatives', 'array<int|string, list<string>>'],
+    'LIKELY_REGION' => ['likelyRegion', 'array<string, string>'],
+    'VARIANT' => ['variant', 'array<string, string>'],
+    'SUBDIVISION' => ['subdivision', 'array<string, string>'],
+    'KEY' => ['key', 'array<string, string>'],
+    'TYPE' => ['type', 'array<string, array<string, string>>'],
+] as $constant => [$field, $type]) {
+    $export = preg_replace(
+        '/[ \t]+$/m',
+        '',
+        Midnight\Intl\Tools\PhpExporter::export($data[$field]),
+    );
+    if ($export === null) {
+        throw new RuntimeException(sprintf('Unable to export the %s projection.', $field));
+    }
+    $constants .= sprintf("\n    /** @var %s */\n    public const %s = %s;\n", $type, $constant, $export);
+}
+
+$sourceSha256 = hash('sha256', $source);
+$payloadSha256 = hash('sha256', json_encode([
+    'format' => $data['format'],
+    'language' => $data['language'],
+    'script' => $data['script'],
+    'region' => $data['region'],
+    'regionAlternatives' => $data['regionAlternatives'],
+    'likelyRegion' => $data['likelyRegion'],
+    'variant' => $data['variant'],
+    'subdivision' => $data['subdivision'],
+    'key' => $data['key'],
+    'type' => $data['type'],
+], JSON_THROW_ON_ERROR));
 $generated = <<<PHP
 <?php
 
@@ -28,17 +78,53 @@ namespace Midnight\\Intl\\Internal\\Data;
 
 enum LocaleAliases
 {
+    public const FORMAT = {$data['format']};
+
     /** @var string */
     public const CLDR_REVISION = '{$data['cldrRevision']}';
 
-    /** @var array<string, string> */
-    public const LANGUAGE = {$language};
+    /** @var string */
+    public const CLDR_CORE_SHA512 = '{$data['upstreamSha512']}';
 
-    /** @var array<string, string> */
-    public const SCRIPT = {$script};
+    /** @var string */
+    public const SOURCE_SHA256 = '{$sourceSha256}';
 
-    /** @var array<int|string, string> */
-    public const REGION = {$region};
+    private const PAYLOAD_SHA256 = '{$payloadSha256}';
+{$constants}
+    public static function assertIntegrity(): void
+    {
+        /** @var bool|null \$verified */
+        static \$verified = null;
+        if (\$verified === true) {
+            return;
+        }
+
+        if (!self::supportsFormat(self::FORMAT)) {
+            throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        }
+
+        \$actual = hash('sha256', json_encode([
+            'format' => self::FORMAT,
+            'language' => self::LANGUAGE,
+            'script' => self::SCRIPT,
+            'region' => self::REGION,
+            'regionAlternatives' => self::REGION_ALTERNATIVES,
+            'likelyRegion' => self::LIKELY_REGION,
+            'variant' => self::VARIANT,
+            'subdivision' => self::SUBDIVISION,
+            'key' => self::KEY,
+            'type' => self::TYPE,
+        ], JSON_THROW_ON_ERROR));
+        if (\$actual !== self::PAYLOAD_SHA256) {
+            throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        }
+        \$verified = true;
+    }
+
+    private static function supportsFormat(int \$format): bool
+    {
+        return \$format === 2;
+    }
 }
 PHP;
 $generated .= "\n";
@@ -56,11 +142,20 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{cldr: array{upstreamSha256: string, sourceSha256: string, projectionSha256: string}} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}}} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
-    if ($manifest['cldr']['upstreamSha256'] !== $data['upstreamSha256']
-        || $manifest['cldr']['sourceSha256'] !== hash('sha256', $source)
-        || $manifest['cldr']['projectionSha256'] !== hash('sha256', $generated)) {
+    $fingerprint = hash('sha256', json_encode([
+        'unicode' => $manifest['inputs']['unicode']['sha512'],
+        'cldr' => $manifest['inputs']['cldr']['sha512'],
+        'ianaLanguage' => $manifest['inputs']['languageRegistry']['sha256'],
+        'tzdb' => $manifest['inputs']['tzdb']['sha512'],
+        'projection' => $sourceSha256,
+    ], JSON_THROW_ON_ERROR));
+    if ($manifest['format'] !== 2
+        || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
+        || $manifest['releaseDataFingerprint'] !== $fingerprint
+        || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
+        || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
     }
@@ -68,4 +163,7 @@ if (in_array('--check', $argv, true)) {
     exit(0);
 }
 
-file_put_contents($target, $generated);
+if (file_put_contents($target, $generated) === false) {
+    fwrite(STDERR, "Unable to write the locale alias projection.\n");
+    exit(1);
+}

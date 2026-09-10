@@ -78,13 +78,16 @@ final class Provenance
             ],
             'actions' => $actionPins,
             'conformanceBaseline' => [
-                'ecma402' => self::stringAt($manifest, 'ecma402', 'revision'),
-                'test262' => self::stringAt($manifest, 'test262', 'revision'),
+                'ecma402' => self::stringAt(self::objectAt($manifest, 'conformanceBaseline'), 'ecma402'),
+                'test262' => self::stringAt(self::objectAt($manifest, 'conformanceBaseline'), 'test262'),
             ],
             'releaseDataSnapshot' => [
                 'manifest' => 'resources/data/manifest.json',
                 'fingerprint' => self::sha256($root.'/resources/data/manifest.json'),
-                'cldrRevision' => self::stringAt($manifest, 'cldr', 'revision'),
+                'cldrRevision' => self::stringAt(
+                    self::objectAt(self::objectAt($manifest, 'inputs'), 'cldr'),
+                    'revision',
+                ),
             ],
         ];
     }
@@ -165,18 +168,29 @@ final class Provenance
     }
 
     /** @param array<string, mixed> $data */
-    private static function stringAt(array $data, string $section, string $key): string
+    /** @param array<string, mixed> $data */
+    private static function stringAt(array $data, string $key): string
     {
-        $sectionData = $data[$section] ?? null;
-        if (!is_array($sectionData)) {
-            throw new \RuntimeException(sprintf('Missing object at %s.', $section));
-        }
-
-        $value = $sectionData[$key] ?? null;
+        $value = $data[$key] ?? null;
         if (!is_string($value)) {
-            throw new \RuntimeException(sprintf('Missing string at %s.%s.', $section, $key));
+            throw new \RuntimeException(sprintf('Missing string at %s.', $key));
         }
 
+        return $value;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private static function objectAt(array $data, string $key): array
+    {
+        $value = $data[$key] ?? null;
+        if (!is_array($value)) {
+            throw new \RuntimeException(sprintf('Missing object at %s.', $key));
+        }
+
+        /** @var array<string, mixed> $value */
         return $value;
     }
 

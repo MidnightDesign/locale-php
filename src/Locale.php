@@ -12,6 +12,14 @@ use Midnight\Intl\Spec\Locale as SpecLocale;
  * @property-read string $language
  * @property-read string|null $script
  * @property-read string|null $region
+ * @property-read string|null $variants
+ * @property-read string|null $calendar
+ * @property-read string|null $caseFirst
+ * @property-read string|null $collation
+ * @property-read string|null $firstDayOfWeek
+ * @property-read string|null $hourCycle
+ * @property-read string|null $numberingSystem
+ * @property-read bool $numeric
  * @psalm-api
  */
 final class Locale implements \Stringable, \JsonSerializable
@@ -23,6 +31,14 @@ final class Locale implements \Stringable, \JsonSerializable
         ?string $language = null,
         ?string $script = null,
         ?string $region = null,
+        ?string $variants = null,
+        ?string $calendar = null,
+        ?string $collation = null,
+        ?string $firstDayOfWeek = null,
+        ?string $hourCycle = null,
+        ?string $caseFirst = null,
+        ?bool $numeric = null,
+        ?string $numberingSystem = null,
     ) {
         if ($this->spec !== null) {
             throw new TypeError('Locale is already initialized.');
@@ -32,7 +48,15 @@ final class Locale implements \Stringable, \JsonSerializable
             'language' => $language,
             'script' => $script,
             'region' => $region,
-        ], static fn (?string $value): bool => $value !== null);
+            'variants' => $variants,
+            'calendar' => $calendar,
+            'collation' => $collation,
+            'firstDayOfWeek' => $firstDayOfWeek,
+            'hourCycle' => $hourCycle,
+            'caseFirst' => $caseFirst,
+            'numeric' => $numeric,
+            'numberingSystem' => $numberingSystem,
+        ], static fn (string|bool|null $value): bool => $value !== null);
 
         $this->spec = $options === []
             ? new SpecLocale($tag)

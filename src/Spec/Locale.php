@@ -6,7 +6,7 @@ namespace Midnight\Intl\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
-use Midnight\Intl\Internal\Data\LocaleAliases;
+use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
 
@@ -15,17 +15,19 @@ use Midnight\Intl\Internal\Test262\OptionBag;
  * @property-read string $language
  * @property-read string|null $script
  * @property-read string|null $region
+ * @property-read string|null $variants
+ * @property-read string|null $calendar
+ * @property-read string|null $caseFirst
+ * @property-read string|null $collation
+ * @property-read string|null $firstDayOfWeek
+ * @property-read string|null $hourCycle
+ * @property-read string|null $numberingSystem
+ * @property-read bool $numeric
  * @psalm-api
  */
 class Locale
 {
-    private string $localeBaseName;
-
-    private string $localeLanguage;
-
-    private ?string $localeScript;
-
-    private ?string $localeRegion;
+    private LocaleIdentifier $identifier;
 
     private bool $initialized = false;
 
@@ -49,44 +51,41 @@ class Locale
             throw new TypeError('The locale options must not be null.');
         }
 
-        $matches = [];
-        if (!preg_match('/^(?<language>[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:-(?<script>[A-Za-z]{4}))?(?:-(?<region>[A-Za-z]{2}|[0-9]{3}))?$/D', $tag, $matches)) {
-            throw new RangeError(sprintf('Invalid locale identifier: "%s".', $tag));
-        }
-
-        $this->localeLanguage = self::normalizeLanguage($matches['language']);
-        $this->localeScript = ($matches['script'] ?? '') !== ''
-            ? self::normalizeScript($matches['script'])
-            : null;
-        $this->localeRegion = ($matches['region'] ?? '') !== ''
-            ? self::normalizeRegion($matches['region'])
-            : null;
-        $this->applyAliases();
+        $this->identifier = LocaleIdentifier::parse($tag);
 
         if (is_array($options) || is_object($options)) {
             $languageOption = self::readOption($options, 'language');
-            if ($languageOption->present) {
-                $this->localeLanguage = self::normalizeLanguage(self::toStringValue($languageOption->value));
-            }
-
+            $language = $languageOption->present
+                ? self::toStringValue($languageOption->value)
+                : $this->identifier->language;
             $scriptOption = self::readOption($options, 'script');
-            if ($scriptOption->present) {
-                $this->localeScript = self::normalizeScript(self::toStringValue($scriptOption->value));
-            }
-
+            $script = $scriptOption->present
+                ? self::toStringValue($scriptOption->value)
+                : $this->identifier->script;
             $regionOption = self::readOption($options, 'region');
-            if ($regionOption->present) {
-                $this->localeRegion = self::normalizeRegion(self::toStringValue($regionOption->value));
-            }
+            $region = $regionOption->present
+                ? self::toStringValue($regionOption->value)
+                : $this->identifier->region;
+            $variantsOption = self::readOption($options, 'variants');
+            $variants = $variantsOption->present
+                ? self::toStringValue($variantsOption->value)
+                : ($this->identifier->variants === [] ? null : implode('-', $this->identifier->variants));
+
+            $this->identifier->replaceLanguageId(
+                $language,
+                $script,
+                $region,
+                $variants,
+            );
+
+            self::applyStringKeywordOption($this->identifier, $options, 'calendar', 'ca');
+            self::applyStringKeywordOption($this->identifier, $options, 'collation', 'co');
+            self::applyFirstDayOfWeekOption($this->identifier, $options);
+            self::applyClosedKeywordOption($this->identifier, $options, 'hourCycle', 'hc', ['h11', 'h12', 'h23', 'h24']);
+            self::applyClosedKeywordOption($this->identifier, $options, 'caseFirst', 'kf', ['upper', 'lower', 'false']);
+            self::applyNumericOption($this->identifier, $options);
+            self::applyStringKeywordOption($this->identifier, $options, 'numberingSystem', 'nu');
         }
-
-        $this->applyAliases();
-
-        $this->localeBaseName = implode('-', array_filter([
-            $this->localeLanguage,
-            $this->localeScript,
-            $this->localeRegion,
-        ], static fn (?string $subtag): bool => $subtag !== null));
         $this->initialized = true;
     }
 
@@ -98,10 +97,18 @@ class Locale
 
         return match (true) {
             array_key_exists($name, $this->consumerProperties) => $this->consumerProperties[$name],
-            $name === 'baseName' => $this->localeBaseName,
-            $name === 'language' => $this->localeLanguage,
-            $name === 'script' => $this->localeScript,
-            $name === 'region' => $this->localeRegion,
+            $name === 'baseName' => $this->identifier->baseName(),
+            $name === 'language' => $this->identifier->language,
+            $name === 'script' => $this->identifier->script,
+            $name === 'region' => $this->identifier->region,
+            $name === 'variants' => $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+            $name === 'calendar' => $this->identifier->keyword('ca'),
+            $name === 'caseFirst' => $this->identifier->keyword('kf'),
+            $name === 'collation' => $this->identifier->keyword('co'),
+            $name === 'firstDayOfWeek' => $this->identifier->keyword('fw'),
+            $name === 'hourCycle' => $this->identifier->keyword('hc'),
+            $name === 'numberingSystem' => $this->identifier->keyword('nu'),
+            $name === 'numeric' => in_array($this->identifier->keyword('kn'), ['', 'true'], true),
             default => throw new \Error(sprintf('Undefined property %s::$%s.', self::class, $name)),
         };
     }
@@ -124,7 +131,18 @@ class Locale
     private static function isDeliveredProperty(string $name): bool
     {
         return match ($name) {
-            'baseName', 'language', 'script', 'region' => true,
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants' => true,
             default => false,
         };
     }
@@ -154,7 +172,7 @@ class Locale
             throw new TypeError('Locale is not initialized.');
         }
 
-        return $this->localeBaseName;
+        return $this->identifier->toString();
     }
 
     /**
@@ -202,55 +220,88 @@ class Locale
         throw new TypeError('Locale option cannot be converted to a string.');
     }
 
-    private static function normalizeLanguage(string $language): string
-    {
-        if (!preg_match('/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})$/D', $language)) {
-            throw new RangeError(sprintf('Invalid language subtag: "%s".', $language));
+    /** @param array<array-key, mixed>|object $options */
+    private static function applyStringKeywordOption(
+        LocaleIdentifier $identifier,
+        array|object $options,
+        string $optionName,
+        string $key,
+    ): void {
+        $option = self::readOption($options, $optionName);
+        if (!$option->present) {
+            return;
         }
 
-        return strtolower($language);
+        $value = self::toStringValue($option->value);
+        if (preg_match('/^[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*$/D', $value) !== 1) {
+            throw new RangeError(sprintf('Invalid %s option: "%s".', $optionName, $value));
+        }
+        $identifier->setKeyword($key, strtolower($value));
     }
 
-    private static function normalizeScript(string $script): string
-    {
-        if (!preg_match('/^[A-Za-z]{4}$/D', $script)) {
-            throw new RangeError(sprintf('Invalid script subtag: "%s".', $script));
+    /**
+     * @param array<array-key, mixed>|object $options
+     * @param list<string> $allowed
+     */
+    private static function applyClosedKeywordOption(
+        LocaleIdentifier $identifier,
+        array|object $options,
+        string $optionName,
+        string $key,
+        array $allowed,
+    ): void {
+        $option = self::readOption($options, $optionName);
+        if (!$option->present) {
+            return;
         }
 
-        return ucfirst(strtolower($script));
+        $value = self::toStringValue($option->value);
+        if (!in_array($value, $allowed, true)) {
+            throw new RangeError(sprintf('Invalid %s option: "%s".', $optionName, $value));
+        }
+        $identifier->setKeyword($key, $value);
     }
 
-    private static function normalizeRegion(string $region): string
+    /** @param array<array-key, mixed>|object $options */
+    private static function applyFirstDayOfWeekOption(LocaleIdentifier $identifier, array|object $options): void
     {
-        if (!preg_match('/^(?:[A-Za-z]{2}|[0-9]{3})$/D', $region)) {
-            throw new RangeError(sprintf('Invalid region subtag: "%s".', $region));
+        $option = self::readOption($options, 'firstDayOfWeek');
+        if (!$option->present) {
+            return;
         }
 
-        return strtoupper($region);
+        $value = self::toStringValue($option->value);
+        $weekdays = [
+            '0' => 'sun', '7' => 'sun', 'sun' => 'sun', 'sunday' => 'sun',
+            '1' => 'mon', 'mon' => 'mon', 'monday' => 'mon',
+            '2' => 'tue', 'tue' => 'tue', 'tuesday' => 'tue',
+            '3' => 'wed', 'wed' => 'wed', 'wednesday' => 'wed',
+            '4' => 'thu', 'thu' => 'thu', 'thursday' => 'thu',
+            '5' => 'fri', 'fri' => 'fri', 'friday' => 'fri',
+            '6' => 'sat', 'sat' => 'sat', 'saturday' => 'sat',
+        ];
+        if (!isset($weekdays[$value])) {
+            throw new RangeError(sprintf('Invalid firstDayOfWeek option: "%s".', $value));
+        }
+        $identifier->setKeyword('fw', $weekdays[$value]);
     }
 
-    private function applyAliases(): void
+    /** @param array<array-key, mixed>|object $options */
+    private static function applyNumericOption(LocaleIdentifier $identifier, array|object $options): void
     {
-        $replacement = LocaleAliases::LANGUAGE[$this->localeLanguage] ?? null;
-        if ($replacement !== null) {
-            $parts = explode('-', $replacement);
-            $this->localeLanguage = self::normalizeLanguage($parts[0]);
-
-            foreach (array_slice($parts, 1) as $part) {
-                if ($this->localeScript === null && strlen($part) === 4) {
-                    $this->localeScript = self::normalizeScript($part);
-                } elseif ($this->localeRegion === null) {
-                    $this->localeRegion = self::normalizeRegion($part);
-                }
-            }
+        $option = self::readOption($options, 'numeric');
+        if (!$option->present) {
+            return;
         }
 
-        if ($this->localeScript !== null) {
-            $this->localeScript = LocaleAliases::SCRIPT[$this->localeScript] ?? $this->localeScript;
-        }
-        if ($this->localeRegion !== null) {
-            $this->localeRegion = LocaleAliases::REGION[$this->localeRegion] ?? $this->localeRegion;
-        }
+        $identifier->setKeyword('kn', self::toBooleanValue($option->value) ? 'true' : 'false');
     }
 
+    private static function toBooleanValue(mixed $value): bool
+    {
+        return match (true) {
+            $value === null, $value === false, $value === 0, $value === 0.0, $value === '' => false,
+            default => true,
+        };
+    }
 }

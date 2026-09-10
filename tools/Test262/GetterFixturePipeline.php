@@ -56,7 +56,6 @@ final class GetterFixturePipeline implements FixturePipeline
             );
 
             $expected = [];
-            $caseAssertionIndexes = [];
             foreach ($matches as $assertion) {
                 $identity = $identities[$assertionIndex] ?? throw new TranslationGap(
                     'A getter assertion has no source identity.',
@@ -64,21 +63,11 @@ final class GetterFixturePipeline implements FixturePipeline
                 if ($identity['call'] !== 'assert.sameValue') {
                     throw new TranslationGap('The fixture contains an unsupported assertion construct.');
                 }
-                $caseAssertionIndexes[] = $assertionIndex;
                 ++$assertionIndex;
                 $property = $assertion['property'];
                 $value = $assertion['expected'] === 'undefined'
                     ? null
                     : substr($assertion['expected'], 1, -1);
-
-                if ($property === 'variants') {
-                    $assertions[] = [
-                        ...$identity,
-                        'status' => 'translation_gap',
-                        'reason' => 'The variants property is outside the initial language/script/region slice.',
-                    ];
-                    continue;
-                }
 
                 $expected[$property] = $value;
                 $assertions[] = [
@@ -88,18 +77,7 @@ final class GetterFixturePipeline implements FixturePipeline
                 ];
             }
 
-            if (!str_contains($case['tag'], '-1901')) {
-                $rows[$case['tag']] = $expected;
-                continue;
-            }
-
-            foreach ($caseAssertionIndexes as $index) {
-                $assertions[$index] = [
-                    ...$identities[$index],
-                    'status' => 'translation_gap',
-                    'reason' => 'Variants in the input identifier are outside the initial slice.',
-                ];
-            }
+            $rows[$case['tag']] = $expected;
         }
 
         if ($assertionIndex !== count($identities)) {
@@ -109,16 +87,12 @@ final class GetterFixturePipeline implements FixturePipeline
         return new FixtureResult(
             $fixturePath,
             hash('sha256', $source),
-            'partially_translated',
+            'passing',
             ['direct'],
-            array_values($assertions),
-            count(array_filter(
-                $assertions,
-                static fn (array $assertion): bool => $assertion['status'] === 'passing',
-            )),
+            $assertions,
+            count($assertions),
             0,
             ['tests/Test262/Generated/GettersMissingTest.php' => $this->render($rows, $fixturePath)],
-            'Assertions that require variant support remain translation gaps.',
         );
     }
 

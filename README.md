@@ -1,8 +1,8 @@
 # Intl.Locale for PHP
 
-A pure-PHP implementation of ECMAScript `Intl.Locale`, beginning with an intentionally incomplete language/script/region slice. It requires PHP 8.2 or newer and does not require `ext-intl`.
+A pure-PHP implementation of ECMAScript `Intl.Locale`. It requires PHP 8.2 or newer and does not require `ext-intl`.
 
-The package is not yet ECMA-402 conformant. The current slice accepts a language with an optional script and region, applies those three constructor options, exposes the canonical base components, and supports explicit conversion between the porcelain and spec layers. Variants, extensions, locale-information methods, and likely-subtag methods remain unfinished.
+The package is not yet ECMA-402 conformant. Locale identifier construction is complete: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, and expose the canonical identifier properties. Locale-information and likely-subtag methods remain unfinished.
 
 ## Install
 
@@ -17,13 +17,13 @@ composer require midnight/intl-locale
 ```php
 use Midnight\Intl\Locale;
 
-$locale = new Locale('EN-latn-us', region: 'GB');
+$locale = new Locale('EN-latn-us-u-ca-gregory', region: 'GB', numeric: true);
 
-echo $locale;             // en-Latn-GB
-echo $locale->language;   // en
-echo $locale->script;     // Latn
-echo $locale->region;     // GB
-echo json_encode($locale); // "en-Latn-GB"
+echo $locale;              // en-Latn-GB-u-ca-gregory-kn
+echo $locale->language;    // en
+echo $locale->calendar;    // gregory
+echo $locale->numeric;     // 1
+echo json_encode($locale); // "en-Latn-GB-u-ca-gregory-kn"
 ```
 
 The porcelain layer is the normal application API. See [Getting started](docs/getting-started.md), [the spec layer](docs/spec-layer.md), [conformance and release data](docs/conformance.md), and [migration guidance](docs/migration.md).
@@ -35,6 +35,7 @@ docker compose build php
 docker compose run --rm php composer install
 docker compose run --rm php composer test
 docker compose run --rm php composer analyse
+docker compose run --rm php composer data:check
 docker compose run --rm php composer test262:check
 docker compose run --rm php composer test:package
 ```

@@ -27,6 +27,7 @@ final class GettersMissingTest extends TestCase
     'language' => 'sv',
     'script' => null,
     'region' => null,
+    'variants' => null,
   ),
   'sv-Latn' =>
   array(
@@ -34,6 +35,7 @@ final class GettersMissingTest extends TestCase
     'language' => 'sv',
     'script' => 'Latn',
     'region' => null,
+    'variants' => null,
   ),
   'sv-SE' =>
   array(
@@ -41,6 +43,15 @@ final class GettersMissingTest extends TestCase
     'language' => 'sv',
     'script' => null,
     'region' => 'SE',
+    'variants' => null,
+  ),
+  'de-1901' =>
+  array(
+    'baseName' => 'de-1901',
+    'language' => 'de',
+    'script' => null,
+    'region' => null,
+    'variants' => '1901',
   ),
 ),
             array_keys(array(
@@ -50,6 +61,7 @@ final class GettersMissingTest extends TestCase
     'language' => 'sv',
     'script' => null,
     'region' => null,
+    'variants' => null,
   ),
   'sv-Latn' =>
   array(
@@ -57,6 +69,7 @@ final class GettersMissingTest extends TestCase
     'language' => 'sv',
     'script' => 'Latn',
     'region' => null,
+    'variants' => null,
   ),
   'sv-SE' =>
   array(
@@ -64,6 +77,15 @@ final class GettersMissingTest extends TestCase
     'language' => 'sv',
     'script' => null,
     'region' => 'SE',
+    'variants' => null,
+  ),
+  'de-1901' =>
+  array(
+    'baseName' => 'de-1901',
+    'language' => 'de',
+    'script' => null,
+    'region' => null,
+    'variants' => '1901',
   ),
 )),
         );
