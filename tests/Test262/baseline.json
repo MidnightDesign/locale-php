@@ -1,0 +1,63 @@
+{
+    "initial": {
+        "ecma402": {
+            "revision": "b1c961988b9a07894b1dc3dc2b5626ea48387d61",
+            "rootTree": "5846a61cd8d3e561542524ae760f8f935fd93772",
+            "localeSource": {
+                "path": "spec/locale.html",
+                "gitBlob": "4c67c75245421bab44b07d26ccbbc664fe6bfff7",
+                "sha256": "fcd5f152dab0a3cf52736eda474a844cf58a0c98161dd84840a5827ad7f8cf04"
+            },
+            "license": {
+                "path": "LICENSE.md",
+                "committedCopy": "tests/Test262/upstream/ECMA-402-LICENSE.md",
+                "gitBlob": "6e6b6a4742069c493c4b66e06dad9e5bd9f05f9a",
+                "sha256": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
+            }
+        },
+        "test262": {
+            "revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93",
+            "rootTree": "471b6cb8bf45996bd888e752bc2a6bc666f4eb92",
+            "localeTree": "e46f95ccfbe3d202e15e0f9dce594f04fe9c6205",
+            "fixtureCount": 168,
+            "aggregateSha256": "0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3",
+            "initialInventory": {
+                "path": "tests/Test262/initial-inventory.json",
+                "sha256": "f2aa2f8ba08e24cc61000e964d62942fda680e16e716514c12ec6a776376f72c"
+            },
+            "license": {
+                "path": "LICENSE",
+                "committedCopy": "tests/Test262/upstream/LICENSE",
+                "gitBlob": "a56b038f0e01b05b004d92097d4601ba629afdf3",
+                "upstreamSha256": "4dd9244dfe8197c75348c4b24ab53d29d3b1cfad143ac76b5a3d8942aa354ce0",
+                "committedSha256": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
+                "adaptation": "Trailing spaces were removed; the notice text and line structure are unchanged."
+            }
+        }
+    },
+    "active": {
+        "ecma402": {
+            "revision": "b1c961988b9a07894b1dc3dc2b5626ea48387d61",
+            "rootTree": "5846a61cd8d3e561542524ae760f8f935fd93772",
+            "localeSource": {
+                "path": "spec/locale.html",
+                "gitBlob": "4c67c75245421bab44b07d26ccbbc664fe6bfff7",
+                "sha256": "fcd5f152dab0a3cf52736eda474a844cf58a0c98161dd84840a5827ad7f8cf04"
+            }
+        },
+        "test262": {
+            "revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93",
+            "rootTree": "471b6cb8bf45996bd888e752bc2a6bc666f4eb92",
+            "localeTree": "e46f95ccfbe3d202e15e0f9dce594f04fe9c6205",
+            "fixtureCount": 168,
+            "aggregateSha256": "0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3",
+            "sourceCopies": {
+                "test/intl402/Locale/getters-missing.js": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
+                "test/intl402/Locale/constructor-options-script-valid.js": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
+                "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
+                "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
+            }
+        }
+    },
+    "trackingPolicy": "The initial revisions remain immutable evidence. Update active inputs and regenerate the structured corpus comparison to track later upstream changes."
+}
