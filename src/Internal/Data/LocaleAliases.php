@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Internal\Data;
 
-final class LocaleAliases
+enum LocaleAliases
 {
     public const FORMAT = 2;
 
+    /** @var string */
     public const CLDR_REVISION = '11299982335beb974c1c63c45265184e759c0f41';
 
+    /** @var string */
     public const CLDR_CORE_SHA512 = 'de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62';
 
+    /** @var string */
     public const SOURCE_SHA256 = '5ea7e202fb639c3b80b6db9142e04f0411423ed7e159a0defcdde9ca46aa26b8';
 
     private const PAYLOAD_SHA256 = '4ccf6a7fa17077b3c96969a2ca70abab4de29699978739595e2d69e871c0e55f';
 
-    public const LANGUAGE = array (
+    /** @var array<string, string> */
+    public const LANGUAGE = array(
   'aam' => 'aas',
   'aar' => 'aa',
   'abk' => 'ab',
@@ -454,11 +458,13 @@ final class LocaleAliases
   'zyb' => 'za',
 );
 
-    public const SCRIPT = array (
+    /** @var array<string, string> */
+    public const SCRIPT = array(
   'Qaai' => 'Zinh',
 );
 
-    public const REGION = array (
+    /** @var array<int|string, string> */
+    public const REGION = array(
   '004' => 'AF',
   '008' => 'AL',
   '010' => 'AQ',
@@ -796,14 +802,15 @@ final class LocaleAliases
   'ZR' => 'CD',
 );
 
-    public const REGION_ALTERNATIVES = array (
+    /** @var array<int|string, list<string>> */
+    public const REGION_ALTERNATIVES = array(
   '062' =>
-  array (
+  array(
     0 => '034',
     1 => '143',
   ),
   172 =>
-  array (
+  array(
     0 => 'RU',
     1 => 'AM',
     2 => 'AZ',
@@ -818,36 +825,36 @@ final class LocaleAliases
     11 => 'UZ',
   ),
   200 =>
-  array (
+  array(
     0 => 'CZ',
     1 => 'SK',
   ),
   530 =>
-  array (
+  array(
     0 => 'CW',
     1 => 'SX',
     2 => 'BQ',
   ),
   532 =>
-  array (
+  array(
     0 => 'CW',
     1 => 'SX',
     2 => 'BQ',
   ),
   536 =>
-  array (
+  array(
     0 => 'SA',
     1 => 'IQ',
   ),
   582 =>
-  array (
+  array(
     0 => 'FM',
     1 => 'MH',
     2 => 'MP',
     3 => 'PW',
   ),
   810 =>
-  array (
+  array(
     0 => 'RU',
     1 => 'AM',
     2 => 'AZ',
@@ -865,12 +872,12 @@ final class LocaleAliases
     14 => 'UZ',
   ),
   830 =>
-  array (
+  array(
     0 => 'JE',
     1 => 'GG',
   ),
   890 =>
-  array (
+  array(
     0 => 'RS',
     1 => 'ME',
     2 => 'SI',
@@ -879,40 +886,40 @@ final class LocaleAliases
     5 => 'BA',
   ),
   891 =>
-  array (
+  array(
     0 => 'RS',
     1 => 'ME',
   ),
   'AN' =>
-  array (
+  array(
     0 => 'CW',
     1 => 'SX',
     2 => 'BQ',
   ),
   'CS' =>
-  array (
+  array(
     0 => 'RS',
     1 => 'ME',
   ),
   'FQ' =>
-  array (
+  array(
     0 => 'AQ',
     1 => 'TF',
   ),
   'NT' =>
-  array (
+  array(
     0 => 'SA',
     1 => 'IQ',
   ),
   'PC' =>
-  array (
+  array(
     0 => 'FM',
     1 => 'MH',
     2 => 'MP',
     3 => 'PW',
   ),
   'SU' =>
-  array (
+  array(
     0 => 'RU',
     1 => 'AM',
     2 => 'AZ',
@@ -930,13 +937,14 @@ final class LocaleAliases
     14 => 'UZ',
   ),
   'YU' =>
-  array (
+  array(
     0 => 'RS',
     1 => 'ME',
   ),
 );
 
-    public const LIKELY_REGION = array (
+    /** @var array<string, string> */
+    public const LIKELY_REGION = array(
   'ab' => 'GE',
   'abh' => 'TJ',
   'abq' => 'RU',
@@ -1178,12 +1186,14 @@ final class LocaleAliases
   'zkz' => 'RU',
 );
 
-    public const VARIANT = array (
+    /** @var array<string, string> */
+    public const VARIANT = array(
   'heploc' => 'alalc97',
   'polytoni' => 'polyton',
 );
 
-    public const SUBDIVISION = array (
+    /** @var array<string, string> */
+    public const SUBDIVISION = array(
   'cn11' => 'cnbj',
   'cn12' => 'cntj',
   'cn13' => 'cnhe',
@@ -1333,47 +1343,49 @@ final class LocaleAliases
   'usvi' => 'vi',
 );
 
-    public const KEY = array (
+    /** @var array<string, string> */
+    public const KEY = array(
 );
 
-    public const TYPE = array (
+    /** @var array<string, array<string, string>> */
+    public const TYPE = array(
   'ca' =>
-  array (
+  array(
     'ethiopic-amete-alem' => 'ethioaa',
     'islamic-civil' => 'islamic-civil',
     'islamicc' => 'islamic-civil',
   ),
   'kb' =>
-  array (
+  array(
     'yes' => 'true',
   ),
   'kc' =>
-  array (
+  array(
     'yes' => 'true',
   ),
   'kh' =>
-  array (
+  array(
     'yes' => 'true',
   ),
   'kk' =>
-  array (
+  array(
     'yes' => 'true',
   ),
   'kn' =>
-  array (
+  array(
     'yes' => 'true',
   ),
   'ks' =>
-  array (
+  array(
     'primary' => 'level1',
     'tertiary' => 'level3',
   ),
   'ms' =>
-  array (
+  array(
     'imperial' => 'uksystem',
   ),
   'tz' =>
-  array (
+  array(
     'aqams' => 'aqmcm',
     'aukns' => 'auhba',
     'caffs' => 'cawnp',
@@ -1461,9 +1473,5 @@ final class LocaleAliases
     private static function supportsFormat(int $format): bool
     {
         return $format === 2;
-    }
-
-    private function __construct()
-    {
     }
 }

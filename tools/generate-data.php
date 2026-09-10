@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
+require $root.'/vendor/autoload.php';
+
 $sourcePath = $root.'/resources/data/locale-aliases.json';
 $source = file_get_contents($sourcePath);
 if ($source === false) {
@@ -33,21 +35,25 @@ if ($data['format'] !== 2) {
 
 $constants = '';
 foreach ([
-    'LANGUAGE' => 'language',
-    'SCRIPT' => 'script',
-    'REGION' => 'region',
-    'REGION_ALTERNATIVES' => 'regionAlternatives',
-    'LIKELY_REGION' => 'likelyRegion',
-    'VARIANT' => 'variant',
-    'SUBDIVISION' => 'subdivision',
-    'KEY' => 'key',
-    'TYPE' => 'type',
-] as $constant => $field) {
-    $export = preg_replace('/[ \t]+$/m', '', var_export($data[$field], true));
+    'LANGUAGE' => ['language', 'array<string, string>'],
+    'SCRIPT' => ['script', 'array<string, string>'],
+    'REGION' => ['region', 'array<int|string, string>'],
+    'REGION_ALTERNATIVES' => ['regionAlternatives', 'array<int|string, list<string>>'],
+    'LIKELY_REGION' => ['likelyRegion', 'array<string, string>'],
+    'VARIANT' => ['variant', 'array<string, string>'],
+    'SUBDIVISION' => ['subdivision', 'array<string, string>'],
+    'KEY' => ['key', 'array<string, string>'],
+    'TYPE' => ['type', 'array<string, array<string, string>>'],
+] as $constant => [$field, $type]) {
+    $export = preg_replace(
+        '/[ \t]+$/m',
+        '',
+        Midnight\Intl\Tools\PhpExporter::export($data[$field]),
+    );
     if ($export === null) {
         throw new RuntimeException(sprintf('Unable to export the %s projection.', $field));
     }
-    $constants .= sprintf("\n    public const %s = %s;\n", $constant, $export);
+    $constants .= sprintf("\n    /** @var %s */\n    public const %s = %s;\n", $type, $constant, $export);
 }
 
 $sourceSha256 = hash('sha256', $source);
@@ -70,14 +76,17 @@ declare(strict_types=1);
 
 namespace Midnight\\Intl\\Internal\\Data;
 
-final class LocaleAliases
+enum LocaleAliases
 {
     public const FORMAT = {$data['format']};
 
+    /** @var string */
     public const CLDR_REVISION = '{$data['cldrRevision']}';
 
+    /** @var string */
     public const CLDR_CORE_SHA512 = '{$data['upstreamSha512']}';
 
+    /** @var string */
     public const SOURCE_SHA256 = '{$sourceSha256}';
 
     private const PAYLOAD_SHA256 = '{$payloadSha256}';
@@ -115,12 +124,9 @@ final class LocaleAliases
     {
         return \$format === 2;
     }
-
-    private function __construct()
-    {
-    }
 }
 PHP;
+$generated .= "\n";
 
 $target = $root.'/src/Internal/Data/LocaleAliases.php';
 if (in_array('--check', $argv, true)) {

@@ -53,4 +53,38 @@ final class LocaleTest extends TestCase
         self::assertSame('1901', $locale->variants);
         self::assertSame($locale->toString(), Locale::fromSpec($locale->toSpec())->toString());
     }
+
+    public function testPorcelainRejectsReuseAndUninitializedAccess(): void
+    {
+        $locale = new Locale('en');
+
+        try {
+            $locale->__construct('fr');
+            self::fail('A porcelain locale must not be initialized twice.');
+        } catch (\TypeError) {
+            self::assertSame('en', $locale->toString());
+        }
+
+        $uninitialized = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+
+        try {
+            $uninitialized->toSpec();
+            self::fail('An uninitialized porcelain locale must fail.');
+        } catch (\TypeError $error) {
+            self::assertSame('Locale is not initialized.', $error->getMessage());
+        }
+    }
+
+    public function testPorcelainPropertiesAreReadOnlyAndReportPresence(): void
+    {
+        $locale = new Locale('en-US');
+
+        self::assertTrue(isset($locale->baseName));
+        self::assertTrue(isset($locale->region));
+        self::assertFalse(isset($locale->script));
+        self::assertFalse(isset($locale->calendar));
+
+        $this->expectException(\TypeError::class);
+        $locale->__set('language', 'fr');
+    }
 }

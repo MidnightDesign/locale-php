@@ -20,71 +20,71 @@ final class GettersMissingTest extends TestCase
     {
         return array_map(
             static fn (array $expected, string $tag): array => [$tag, $expected],
-            array (
+            array(
   'sv' =>
-  array (
+  array(
     'baseName' => 'sv',
     'language' => 'sv',
-    'script' => NULL,
-    'region' => NULL,
-    'variants' => NULL,
+    'script' => null,
+    'region' => null,
+    'variants' => null,
   ),
   'sv-Latn' =>
-  array (
+  array(
     'baseName' => 'sv-Latn',
     'language' => 'sv',
     'script' => 'Latn',
-    'region' => NULL,
-    'variants' => NULL,
+    'region' => null,
+    'variants' => null,
   ),
   'sv-SE' =>
-  array (
+  array(
     'baseName' => 'sv-SE',
     'language' => 'sv',
-    'script' => NULL,
+    'script' => null,
     'region' => 'SE',
-    'variants' => NULL,
+    'variants' => null,
   ),
   'de-1901' =>
-  array (
+  array(
     'baseName' => 'de-1901',
     'language' => 'de',
-    'script' => NULL,
-    'region' => NULL,
+    'script' => null,
+    'region' => null,
     'variants' => '1901',
   ),
 ),
-            array_keys(array (
+            array_keys(array(
   'sv' =>
-  array (
+  array(
     'baseName' => 'sv',
     'language' => 'sv',
-    'script' => NULL,
-    'region' => NULL,
-    'variants' => NULL,
+    'script' => null,
+    'region' => null,
+    'variants' => null,
   ),
   'sv-Latn' =>
-  array (
+  array(
     'baseName' => 'sv-Latn',
     'language' => 'sv',
     'script' => 'Latn',
-    'region' => NULL,
-    'variants' => NULL,
+    'region' => null,
+    'variants' => null,
   ),
   'sv-SE' =>
-  array (
+  array(
     'baseName' => 'sv-SE',
     'language' => 'sv',
-    'script' => NULL,
+    'script' => null,
     'region' => 'SE',
-    'variants' => NULL,
+    'variants' => null,
   ),
   'de-1901' =>
-  array (
+  array(
     'baseName' => 'de-1901',
     'language' => 'de',
-    'script' => NULL,
-    'region' => NULL,
+    'script' => null,
+    'region' => null,
     'variants' => '1901',
   ),
 )),

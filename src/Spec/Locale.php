@@ -23,28 +23,16 @@ use Midnight\Intl\Internal\Test262\OptionBag;
  * @property-read string|null $hourCycle
  * @property-read string|null $numberingSystem
  * @property-read bool $numeric
+ * @psalm-api
  */
-#[\AllowDynamicProperties]
 class Locale
 {
-    private const PUBLIC_PROPERTIES = [
-        'baseName',
-        'calendar',
-        'caseFirst',
-        'collation',
-        'firstDayOfWeek',
-        'hourCycle',
-        'language',
-        'numberingSystem',
-        'numeric',
-        'region',
-        'script',
-        'variants',
-    ];
-
     private LocaleIdentifier $identifier;
 
     private bool $initialized = false;
+
+    /** @var array<string, mixed> */
+    private array $consumerProperties = [];
 
     public function __construct(mixed $tag, mixed $options = null)
     {
@@ -107,36 +95,75 @@ class Locale
             throw new TypeError('Locale is not initialized.');
         }
 
-        return match ($name) {
-            'baseName' => $this->identifier->baseName(),
-            'language' => $this->identifier->language,
-            'script' => $this->identifier->script,
-            'region' => $this->identifier->region,
-            'variants' => $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
-            'calendar' => $this->identifier->keyword('ca'),
-            'caseFirst' => $this->identifier->keyword('kf'),
-            'collation' => $this->identifier->keyword('co'),
-            'firstDayOfWeek' => $this->identifier->keyword('fw'),
-            'hourCycle' => $this->identifier->keyword('hc'),
-            'numberingSystem' => $this->identifier->keyword('nu'),
-            'numeric' => in_array($this->identifier->keyword('kn'), ['', 'true'], true),
+        return match (true) {
+            array_key_exists($name, $this->consumerProperties) => $this->consumerProperties[$name],
+            $name === 'baseName' => $this->identifier->baseName(),
+            $name === 'language' => $this->identifier->language,
+            $name === 'script' => $this->identifier->script,
+            $name === 'region' => $this->identifier->region,
+            $name === 'variants' => $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+            $name === 'calendar' => $this->identifier->keyword('ca'),
+            $name === 'caseFirst' => $this->identifier->keyword('kf'),
+            $name === 'collation' => $this->identifier->keyword('co'),
+            $name === 'firstDayOfWeek' => $this->identifier->keyword('fw'),
+            $name === 'hourCycle' => $this->identifier->keyword('hc'),
+            $name === 'numberingSystem' => $this->identifier->keyword('nu'),
+            $name === 'numeric' => in_array($this->identifier->keyword('kn'), ['', 'true'], true),
             default => throw new \Error(sprintf('Undefined property %s::$%s.', self::class, $name)),
         };
     }
 
     public function __set(string $name, mixed $value): void
     {
-        if (in_array($name, self::PUBLIC_PROPERTIES, true)) {
+        if (self::isPublicProperty($name)) {
             throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
         }
 
-        $this->{$name} = $value;
+        $this->consumerProperties[$name] = $value;
     }
 
     public function __isset(string $name): bool
     {
-        return in_array($name, self::PUBLIC_PROPERTIES, true)
+        return (array_key_exists($name, $this->consumerProperties) || self::isDeliveredProperty($name))
             && $this->__get($name) !== null;
+    }
+
+    private static function isDeliveredProperty(string $name): bool
+    {
+        return match ($name) {
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants' => true,
+            default => false,
+        };
+    }
+
+    private static function isPublicProperty(string $name): bool
+    {
+        return match ($name) {
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants' => true,
+            default => false,
+        };
     }
 
     public function toString(): string
@@ -165,8 +192,10 @@ class Locale
                 : OptionValue::missing();
         }
 
-        return property_exists($options, $name)
-            ? OptionValue::present($options->{$name})
+        $properties = get_object_vars($options);
+
+        return array_key_exists($name, $properties)
+            ? OptionValue::present($properties[$name])
             : OptionValue::missing();
     }
 

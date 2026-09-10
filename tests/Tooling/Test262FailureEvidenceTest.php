@@ -66,7 +66,7 @@ final class Test262FailureEvidenceTest extends TestCase
 
     public function testAnUnexpectedTranslatorDefectIsNotReportedAsATranslationGap(): void
     {
-        $translator = new class implements ConstructorFixtureTranslator {
+        $translator = new class () implements ConstructorFixtureTranslator {
             public function translate(string $source, string $fixturePath): array
             {
                 throw new \LogicException('Injected implementation defect.');
@@ -93,8 +93,7 @@ final class Test262FailureEvidenceTest extends TestCase
     private static function pipeline(
         ?ConstructorFixtureTranslator $translator = null,
         array $representations = ['associative_array', 'plain_object'],
-    ): ConstructorFixturePipeline
-    {
+    ): ConstructorFixturePipeline {
         $assertionIdentities = new AssertionIdentityExtractor();
 
         return new ConstructorFixturePipeline(

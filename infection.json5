@@ -1,0 +1,17 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": ["src"],
+        "excludes": ["Internal/Data/LocaleAliases.php"]
+    },
+    "timeout": 10,
+    "logs": {
+        "json": "build/infection/infection.json",
+        "text": "build/infection/infection.log"
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100,
+    "mutators": {
+        "@default": true
+    }
+}

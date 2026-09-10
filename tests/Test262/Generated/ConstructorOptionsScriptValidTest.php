@@ -26,79 +26,79 @@ final class ConstructorOptionsScriptValidTest extends TestCase
      */
     public static function cases(): array
     {
-        return array (
+        return array(
   'option-1-assertion-1-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'null',
     ),
     3 => 'associative_array',
     4 => 'en-Null',
   ),
   'option-1-assertion-1-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'null',
     ),
     3 => 'plain_object',
     4 => 'en-Null',
   ),
   'option-1-assertion-2-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'null',
     ),
     3 => 'associative_array',
     4 => 'en-Null-DK',
   ),
   'option-1-assertion-2-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'null',
     ),
     3 => 'plain_object',
     4 => 'en-Null-DK',
   ),
   'option-1-assertion-3-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'null',
     ),
     3 => 'associative_array',
     4 => 'en-Null',
   ),
   'option-1-assertion-3-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'null',
     ),
     3 => 'plain_object',
     4 => 'en-Null',
   ),
   'option-2-assertion-1-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bali',
     ),
@@ -106,11 +106,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-2-assertion-1-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bali',
     ),
@@ -118,11 +118,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-2-assertion-2-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bali',
     ),
@@ -130,11 +130,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali-DK',
   ),
   'option-2-assertion-2-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bali',
     ),
@@ -142,11 +142,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali-DK',
   ),
   'option-2-assertion-3-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bali',
     ),
@@ -154,11 +154,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-2-assertion-3-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bali',
     ),
@@ -166,11 +166,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-3-assertion-1-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'Bali',
     ),
@@ -178,11 +178,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-3-assertion-1-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'Bali',
     ),
@@ -190,11 +190,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-3-assertion-2-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'Bali',
     ),
@@ -202,11 +202,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali-DK',
   ),
   'option-3-assertion-2-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'Bali',
     ),
@@ -214,11 +214,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali-DK',
   ),
   'option-3-assertion-3-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'Bali',
     ),
@@ -226,11 +226,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-3-assertion-3-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'Bali',
     ),
@@ -238,11 +238,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-4-assertion-1-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bALI',
     ),
@@ -250,11 +250,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-4-assertion-1-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bALI',
     ),
@@ -262,11 +262,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-4-assertion-2-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bALI',
     ),
@@ -274,11 +274,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali-DK',
   ),
   'option-4-assertion-2-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bALI',
     ),
@@ -286,11 +286,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali-DK',
   ),
   'option-4-assertion-3-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bALI',
     ),
@@ -298,11 +298,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-4-assertion-3-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'string',
       'value' => 'bALI',
     ),
@@ -310,11 +310,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Bali',
   ),
   'option-5-assertion-1-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'stringable',
       'value' => 'Brai',
     ),
@@ -322,11 +322,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Brai',
   ),
   'option-5-assertion-1-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
     1 => 'en',
     2 =>
-    array (
+    array(
       'type' => 'stringable',
       'value' => 'Brai',
     ),
@@ -334,11 +334,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Brai',
   ),
   'option-5-assertion-2-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'stringable',
       'value' => 'Brai',
     ),
@@ -346,11 +346,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Brai-DK',
   ),
   'option-5-assertion-2-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L50:C3:assert.sameValue',
     1 => 'en-DK',
     2 =>
-    array (
+    array(
       'type' => 'stringable',
       'value' => 'Brai',
     ),
@@ -358,11 +358,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Brai-DK',
   ),
   'option-5-assertion-3-associative_array' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'stringable',
       'value' => 'Brai',
     ),
@@ -370,11 +370,11 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     4 => 'en-Brai',
   ),
   'option-5-assertion-3-plain_object' =>
-  array (
+  array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L57:C3:assert.sameValue',
     1 => 'en-Cyrl',
     2 =>
-    array (
+    array(
       'type' => 'stringable',
       'value' => 'Brai',
     ),
