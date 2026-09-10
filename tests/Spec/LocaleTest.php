@@ -96,6 +96,12 @@ final class LocaleTest extends TestCase
         new Locale($tag);
     }
 
+    public function testItAcceptsOneCharacterPrivateUseSubtags(): void
+    {
+        self::assertSame('en-x-a', (new Locale('en-x-a'))->toString());
+        self::assertSame('en-x-private-a', (new Locale('en-x-private-a'))->toString());
+    }
+
     /** @return iterable<string, array{array<string, string>|object}> */
     public static function optionBags(): iterable
     {

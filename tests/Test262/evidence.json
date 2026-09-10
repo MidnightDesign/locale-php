@@ -57,8 +57,11 @@
             "fixtureCount": 168,
             "aggregateSha256": "0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3",
             "sourceCopies": {
+                "test/intl402/Locale/constructor-unicode-ext-invalid.js": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
                 "test/intl402/Locale/constructor-unicode-ext-valid.js": "92d26f3d6f7c908a1205624faecd5f342b7dc6df8520b220dbaf1863036c8643",
                 "test/intl402/Locale/getters-missing.js": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
+                "test/intl402/Locale/reject-duplicate-variants-in-tlang.js": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
+                "test/intl402/Locale/reject-duplicate-variants.js": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
                 "test/intl402/Locale/constructor-options-script-valid.js": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
@@ -84,8 +87,8 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 3,
-        "passingFixtures": 3,
+        "translatedFixtures": 6,
+        "passingFixtures": 6,
         "partiallyTranslatedFixtures": 0,
         "translationGaps": 628,
         "executionFailures": 0
@@ -95,6 +98,31 @@
         "reason": "The initial slice has an incomplete inventory, translation gaps, incomplete applicable translations, or execution failures."
     },
     "fixtures": [
+        {
+            "path": "test/intl402/Locale/constructor-unicode-ext-invalid.js",
+            "sha256": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 6,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/constructor-unicode-ext-invalid.js:L27:C3:assert.throws",
+                    "line": 27,
+                    "column": 3,
+                    "call": "assert.throws",
+                    "sha256": "1d1802f6ca19354e9381a59b334419d04e3d0cf15fa83c0a412c66a6a4b7e52d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript helper calls are expanded into named PHPUnit data sets."
+                    ]
+                }
+            ]
+        },
         {
             "path": "test/intl402/Locale/constructor-unicode-ext-valid.js",
             "sha256": "92d26f3d6f7c908a1205624faecd5f342b7dc6df8520b220dbaf1863036c8643",
@@ -350,6 +378,78 @@
                     "status": "passing",
                     "phpRepresentations": [
                         "direct"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/reject-duplicate-variants.js",
+            "sha256": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 13,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/reject-duplicate-variants.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "8324ee502414811568a672d374893bccb49d07084a213cfc487e8ac2b8d83b22",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript constructor availability is represented by direct PHP class availability."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/reject-duplicate-variants.js:L18:C3:assert.throws",
+                    "line": 18,
+                    "column": 3,
+                    "call": "assert.throws",
+                    "sha256": "419c12317700789a960491656bef531c60e2e0cf2f92e1981df789b7882a1b1c",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript helper calls are expanded into named PHPUnit data sets."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js",
+            "sha256": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 13,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js:L19:C1:assert.sameValue",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "8324ee502414811568a672d374893bccb49d07084a213cfc487e8ac2b8d83b22",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript constructor availability is represented by direct PHP class availability."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js:L22:C3:assert.throws",
+                    "line": 22,
+                    "column": 3,
+                    "call": "assert.throws",
+                    "sha256": "419c12317700789a960491656bef531c60e2e0cf2f92e1981df789b7882a1b1c",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript helper calls are expanded into named PHPUnit data sets."
                     ]
                 }
             ]

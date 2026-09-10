@@ -33,6 +33,7 @@
         "analyse": "phpstan analyse --no-progress",
         "data:generate": "php tools/generate-data.php",
         "data:check": "php tools/generate-data.php --check",
+        "data:verify-sources": "php tools/verify-data-sources.php",
         "test262:generate": "php tools/transpile-test262.php",
         "test262:check": "php tools/transpile-test262.php --check"
     }

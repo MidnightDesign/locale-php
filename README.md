@@ -35,6 +35,7 @@ docker compose build php
 docker compose run --rm php composer install
 docker compose run --rm php composer test
 docker compose run --rm php composer analyse
+docker compose run --rm php composer data:check
 docker compose run --rm php composer test262:check
 docker compose run --rm php composer test:package
 ```

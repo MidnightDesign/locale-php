@@ -34,12 +34,13 @@
             "source": "resources/data/locale-aliases.json",
             "sourceSha256": "5ea7e202fb639c3b80b6db9142e04f0411423ed7e159a0defcdde9ca46aa26b8",
             "generated": "src/Internal/Data/LocaleAliases.php",
-            "generatedSha256": "d1f2841cf556e886089787fa0f9f4f05962dcd49006d2e3fb0d75329416f4f53"
+            "generatedSha256": "c3ed6893f2865a8fd39c932491b8c6a272f860696acba220f0ec777d13ba093c"
         }
     },
     "generators": {
         "tools/import-cldr-aliases.php": "e69f4527e1792952496e31848c3c018d36bacd59a33b03617a5387c5e22ea226",
-        "tools/generate-data.php": "d5ab0a4fc00ae39cf0be0f1de90cf814e7d656fdea08591ca332dec47084ceba"
+        "tools/generate-data.php": "df2976818699e39a50daac44c8d39843f271bc47000fb46ddfbadbef92696967",
+        "tools/verify-data-sources.php": "8b79879da1ae9742390fbd9bf02f722ba7a2ea91f8aab92ece81c285cc980f64"
     },
     "conformanceBaseline": {
         "ecma402": "b1c961988b9a07894b1dc3dc2b5626ea48387d61",

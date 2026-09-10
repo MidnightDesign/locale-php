@@ -52,8 +52,11 @@
             "fixtureCount": 168,
             "aggregateSha256": "0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3",
             "sourceCopies": {
+                "test/intl402/Locale/constructor-unicode-ext-invalid.js": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
                 "test/intl402/Locale/constructor-unicode-ext-valid.js": "92d26f3d6f7c908a1205624faecd5f342b7dc6df8520b220dbaf1863036c8643",
                 "test/intl402/Locale/getters-missing.js": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
+                "test/intl402/Locale/reject-duplicate-variants-in-tlang.js": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
+                "test/intl402/Locale/reject-duplicate-variants.js": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
                 "test/intl402/Locale/constructor-options-script-valid.js": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"

@@ -10,6 +10,7 @@ use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\FixtureResult;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
 use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
+use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
 use Midnight\Intl\Tools\Test262\InventoryAudit;
 
 $root = dirname(__DIR__);
@@ -72,6 +73,13 @@ $assertionIdentities = new AssertionIdentityExtractor();
 $representations = ['associative_array', 'plain_object'];
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
+    'test/intl402/Locale/constructor-unicode-ext-invalid.js' => new IdentifierRejectionPipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+        'tests/Test262/Generated/ConstructorUnicodeExtensionInvalidTest.php',
+        'ConstructorUnicodeExtensionInvalidTest',
+    ),
     'test/intl402/Locale/constructor-unicode-ext-valid.js' => new IdentifierCanonicalizationPipeline(
         $assertionIdentities,
         $test262Revision,
@@ -81,6 +89,20 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
+    ),
+    'test/intl402/Locale/reject-duplicate-variants.js' => new IdentifierRejectionPipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+        'tests/Test262/Generated/RejectDuplicateVariantsTest.php',
+        'RejectDuplicateVariantsTest',
+    ),
+    'test/intl402/Locale/reject-duplicate-variants-in-tlang.js' => new IdentifierRejectionPipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+        'tests/Test262/Generated/RejectDuplicateVariantsInTlangTest.php',
+        'RejectDuplicateVariantsInTlangTest',
     ),
     'test/intl402/Locale/constructor-options-script-valid.js' => new ConstructorFixturePipeline(
         new ConstructorOptionsScriptTranslator($assertionIdentities),

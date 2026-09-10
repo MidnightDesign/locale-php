@@ -14,6 +14,8 @@ final class LocaleAliases
 
     public const SOURCE_SHA256 = '5ea7e202fb639c3b80b6db9142e04f0411423ed7e159a0defcdde9ca46aa26b8';
 
+    private const PAYLOAD_SHA256 = '4ccf6a7fa17077b3c96969a2ca70abab4de29699978739595e2d69e871c0e55f';
+
     public const LANGUAGE = array (
   'aam' => 'aas',
   'aar' => 'aa',
@@ -1426,6 +1428,40 @@ final class LocaleAliases
     'zulu' => 'utc',
   ),
 );
+
+    public static function assertIntegrity(): void
+    {
+        static $verified = false;
+        if ($verified) {
+            return;
+        }
+
+        if (!self::supportsFormat(self::FORMAT)) {
+            throw new \UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        }
+
+        $actual = hash('sha256', json_encode([
+            'format' => self::FORMAT,
+            'language' => self::LANGUAGE,
+            'script' => self::SCRIPT,
+            'region' => self::REGION,
+            'regionAlternatives' => self::REGION_ALTERNATIVES,
+            'likelyRegion' => self::LIKELY_REGION,
+            'variant' => self::VARIANT,
+            'subdivision' => self::SUBDIVISION,
+            'key' => self::KEY,
+            'type' => self::TYPE,
+        ], JSON_THROW_ON_ERROR));
+        if ($actual !== self::PAYLOAD_SHA256) {
+            throw new \UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        }
+        $verified = true;
+    }
+
+    private static function supportsFormat(int $format): bool
+    {
+        return $format === 2;
+    }
 
     private function __construct()
     {

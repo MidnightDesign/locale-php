@@ -24,6 +24,8 @@ final class LocaleIdentifier
 
     public static function parse(string $tag): self
     {
+        LocaleAliases::assertIntegrity();
+
         if ($tag === '' || preg_match('/^[A-Za-z0-9-]+$/D', $tag) !== 1) {
             throw self::invalid($tag);
         }
@@ -45,9 +47,9 @@ final class LocaleIdentifier
             }
 
             if ($singleton === 'x') {
-                $private = self::takeUntilSingleton($subtags, $offset);
-                if ($private === [] || $offset !== count($subtags)
-                    || !self::allMatch($private, '/^[a-z0-9]{1,8}$/D')) {
+                $private = array_slice($subtags, $offset);
+                $offset = count($subtags);
+                if ($private === [] || !self::allMatch($private, '/^[a-z0-9]{1,8}$/D')) {
                     throw self::invalid($tag);
                 }
                 $extensions[$singleton] = $private;
@@ -120,12 +122,7 @@ final class LocaleIdentifier
         $keywords[$key] = $canonicalValue === '' ? [] : explode('-', $canonicalValue);
         ksort($keywords, SORT_STRING);
 
-        $extension = $attributes;
-        foreach ($keywords as $keyword => $type) {
-            $extension[] = $keyword;
-            array_push($extension, ...$type);
-        }
-        $this->extensions['u'] = $extension;
+        $this->extensions['u'] = self::flattenUnicodeExtension($attributes, $keywords);
         ksort($this->extensions, SORT_STRING);
     }
 
@@ -237,13 +234,7 @@ final class LocaleIdentifier
 
         ksort($attributes, SORT_STRING);
         ksort($keywords, SORT_STRING);
-        $result = array_values($attributes);
-        foreach ($keywords as $key => $type) {
-            $result[] = $key;
-            array_push($result, ...$type);
-        }
-
-        return $result;
+        return self::flattenUnicodeExtension(array_values($attributes), $keywords);
     }
 
     /**
@@ -386,6 +377,22 @@ final class LocaleIdentifier
         $canonical = $typeAliases[$key][$type] ?? $type;
 
         return $canonical === 'true' ? '' : $canonical;
+    }
+
+    /**
+     * @param list<string> $attributes
+     * @param array<string, list<string>> $keywords
+     * @return list<string>
+     */
+    private static function flattenUnicodeExtension(array $attributes, array $keywords): array
+    {
+        $extension = $attributes;
+        foreach ($keywords as $key => $type) {
+            $extension[] = $key;
+            array_push($extension, ...$type);
+        }
+
+        return $extension;
     }
 
     /** @param list<string> $values */

@@ -51,6 +51,18 @@ foreach ([
 }
 
 $sourceSha256 = hash('sha256', $source);
+$payloadSha256 = hash('sha256', json_encode([
+    'format' => $data['format'],
+    'language' => $data['language'],
+    'script' => $data['script'],
+    'region' => $data['region'],
+    'regionAlternatives' => $data['regionAlternatives'],
+    'likelyRegion' => $data['likelyRegion'],
+    'variant' => $data['variant'],
+    'subdivision' => $data['subdivision'],
+    'key' => $data['key'],
+    'type' => $data['type'],
+], JSON_THROW_ON_ERROR));
 $generated = <<<PHP
 <?php
 
@@ -67,7 +79,43 @@ final class LocaleAliases
     public const CLDR_CORE_SHA512 = '{$data['upstreamSha512']}';
 
     public const SOURCE_SHA256 = '{$sourceSha256}';
+
+    private const PAYLOAD_SHA256 = '{$payloadSha256}';
 {$constants}
+    public static function assertIntegrity(): void
+    {
+        static \$verified = false;
+        if (\$verified) {
+            return;
+        }
+
+        if (!self::supportsFormat(self::FORMAT)) {
+            throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        }
+
+        \$actual = hash('sha256', json_encode([
+            'format' => self::FORMAT,
+            'language' => self::LANGUAGE,
+            'script' => self::SCRIPT,
+            'region' => self::REGION,
+            'regionAlternatives' => self::REGION_ALTERNATIVES,
+            'likelyRegion' => self::LIKELY_REGION,
+            'variant' => self::VARIANT,
+            'subdivision' => self::SUBDIVISION,
+            'key' => self::KEY,
+            'type' => self::TYPE,
+        ], JSON_THROW_ON_ERROR));
+        if (\$actual !== self::PAYLOAD_SHA256) {
+            throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        }
+        \$verified = true;
+    }
+
+    private static function supportsFormat(int \$format): bool
+    {
+        return \$format === 2;
+    }
+
     private function __construct()
     {
     }

@@ -30,14 +30,14 @@ final class Locale implements \Stringable, \JsonSerializable
         ?string $language = null,
         ?string $script = null,
         ?string $region = null,
+        ?string $variants = null,
         ?string $calendar = null,
-        ?string $caseFirst = null,
         ?string $collation = null,
         ?string $firstDayOfWeek = null,
         ?string $hourCycle = null,
-        ?string $numberingSystem = null,
+        ?string $caseFirst = null,
         ?bool $numeric = null,
-        ?string $variants = null,
+        ?string $numberingSystem = null,
     ) {
         if (isset($this->spec)) {
             throw new TypeError('Locale is already initialized.');
