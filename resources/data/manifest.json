@@ -5,9 +5,9 @@
         "revision": "11299982335beb974c1c63c45265184e759c0f41",
         "upstreamSha256": "36e807ce72b15304dd993f132216f408351be1c4376edaa2fe9e9547e2efcac1",
         "source": "resources/data/locale-aliases.json",
-        "sourceSha256": "dbd70364965cb5d6c0f0dc53896478de5b2f7120e008bfc133114a89a48b7243",
+        "sourceSha256": "17800f5a3d654a5702c295f1d12885bedecf96373e6729579832ac9697071af1",
         "projection": "src/Internal/Data/LocaleAliases.php",
-        "projectionSha256": "4c55cf2e024d8954dd35edbea436e15cb50f253a69d48e3d0e48c0993596dc4a"
+        "projectionSha256": "a1f77c34ce40e9f42cb97c381b9f35b747071918aa948e6fe4bd940b64aba4e7"
     },
     "test262": {
         "revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93"

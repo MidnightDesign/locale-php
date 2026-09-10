@@ -125,6 +125,25 @@ $outputs = [
 ];
 
 $check = in_array('--check', $argv, true);
+if ($check) {
+    $corpusSource = file_get_contents($root.'/tests/Test262/corpus.json');
+    if ($corpusSource === false) {
+        fwrite(STDERR, "The pinned Test262 corpus inventory is missing.\n");
+        exit(1);
+    }
+
+    /** @var array{test262Revision: string, localeTree: string, fixtureCount: int, aggregateSha256: string} $corpus */
+    $corpus = json_decode($corpusSource, true, flags: JSON_THROW_ON_ERROR);
+    if ($corpus['test262Revision'] !== $revision
+        || $corpus['localeTree'] !== 'e46f95ccfbe3d202e15e0f9dce594f04fe9c6205'
+        || $corpus['fixtureCount'] !== 168
+        || $corpus['aggregateSha256'] !== '0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3'
+        || hash('sha256', $corpusSource) !== '7c3390617b688a3a1d28d86817262428b2a83dd33a41d980caa915d68f288a63') {
+        fwrite(STDERR, "The pinned Test262 corpus inventory does not match the conformance baseline.\n");
+        exit(1);
+    }
+}
+
 foreach ($outputs as $path => $contents) {
     if ($check) {
         if (!is_file($path) || file_get_contents($path) !== $contents) {

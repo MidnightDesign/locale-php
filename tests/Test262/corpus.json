@@ -1,0 +1,3641 @@
+{
+    "test262Revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93",
+    "localeTree": "e46f95ccfbe3d202e15e0f9dce594f04fe9c6205",
+    "fixtureCount": 168,
+    "aggregateSha256": "0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3",
+    "assertionDetection": "Direct Test262 assert.* calls and standard verifyProperty/verifyEqualTo helpers. Fixture-level translation_gap covers any assertion expressed through other helpers.",
+    "fixtures": [
+        {
+            "path": "test/intl402/Locale/canonicalize-locale-list-take-locale.js",
+            "sha256": "6bf5889a5a5525d6fdf7684569e86b1ca32fa18bb071765de1b8916c4e1ef4cb",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 39,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 40,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 44,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 45,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 50,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 51,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 52,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 53,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-apply-options-canonicalizes-twice.js",
+            "sha256": "aa542114d28bfdc89fe10ac51cde78837a8392ef1d52ecf47cbfcd9a5dec2fbb",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 48,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-getter-order.js",
+            "sha256": "ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 83,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-locale-object.js",
+            "sha256": "c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 30,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 36,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 37,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-newtarget-undefined.js",
+            "sha256": "55ebbb9f67683fa72c58ad4c9b908dbedc882d9335efbe83da72f29b7a242cc9",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 17,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-non-iana-canon.js",
+            "sha256": "79320d4f4c33a71c38ccbf79ddec0b00c7cb0e0a714391a9f313352990d887a5",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 95,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 100,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 105,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-calendar-invalid.js",
+            "sha256": "2bc75ead4cdd03ab2eb742930d73395832134dd5c69ab4b0c00418c351e26b1a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 33,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-calendar-valid.js",
+            "sha256": "e30190ad76b38bdd07d9ce24529ac7b34d6da320e0df07272dd57195e2084517",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 31,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 36,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-canonicalized.js",
+            "sha256": "5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 36,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 45,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 54,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 63,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-casefirst-invalid.js",
+            "sha256": "9148cb991c017d5dad7eaf1736cca3322d137ab1f960ae3bfaa4a9ab65e88a06",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 34,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-casefirst-valid.js",
+            "sha256": "abb926d4d19763f5a4bf6169b2d156714c8300aac95b73b185026a259eac4449",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 48,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 55,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 61,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-collation-invalid.js",
+            "sha256": "bfa787a24721a492dbfc3a4cf18987a6ceb90b31ffe25a203d38978ac1954c80",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 31,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-collation-valid.js",
+            "sha256": "e1b6b330d62172e723ac79708bdd013c9559d80f1504e8057a86a74e78b08e4a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 51,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 57,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-firstDayOfWeek-invalid.js",
+            "sha256": "43fb84564abe6ad4696abb989ba45da508622a19589b20bc166a076a54e88bd2",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 28,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js",
+            "sha256": "f08f24636a0f4c6446925f82f71c176128c208618ea899312bc37fc6862f1d3f",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 70,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 75,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-hourcycle-invalid.js",
+            "sha256": "5c72693abd40501d9911c66c0793e13f4dcc7fb32cd430e9f459feec8eaceade",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 40,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-hourcycle-valid.js",
+            "sha256": "ab8ee2541c2e2cba74b8c38be7eea57f90cdbd58be1e3ac8c50a6f04851f19b0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 49,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 55,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 61,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 67,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-language-grandfathered.js",
+            "sha256": "c025cd8b7afbf52d8ee2b9c8be64dd25e45a3dc97b55d82bd95bde7f3ecc9f9a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-language-invalid.js",
+            "sha256": "3b12a5a117b10381878f3a851ef231904e662da92cc3b5d0aa981119daba4720",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 71,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-language-valid-undefined.js",
+            "sha256": "5b477146b9f9e57bce4d2fd67c4db4c05b1c17dfc58b3c06b8a52a96806dc8d0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 31,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 37,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 43,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-language-valid.js",
+            "sha256": "b770d910f1c14445d8ef0d2c8981baffce6f20920181edd8dda506c4c4f25959",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 39,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 46,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 52,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 63,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 64,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 65,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-numberingsystem-invalid.js",
+            "sha256": "43c781dde99d7843e82ff4daf0a48825d41301749bfcc3a6ebd4ee3abe3ceb6d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 38,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-numberingsystem-valid.js",
+            "sha256": "d95df8c7fa8189de5f3e51d109130f02845fb7ba7c3c4aa7a132acb716d38862",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 51,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 56,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-numeric-undefined.js",
+            "sha256": "df2e3eeab1d34aae0cdd35e65e7495c9616b5d11aeb01d8ab0827fddd3a190d0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 38,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 44,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 50,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-numeric-valid.js",
+            "sha256": "1b2f6279e7c2187178a129266f020cece44c1a4e0099c27ddeec46ed8cfb90e0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 51,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 57,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 63,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-region-invalid.js",
+            "sha256": "eb88f909f874da2e065480c8cc2e86b8d6b4555dc8d80812d5691dac9b855569",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 53,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-region-valid.js",
+            "sha256": "1d138f46632f20db49f2e6b96a2ca66cfc814d35ea94d5e93e6d6c50e8059f2d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 41,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 48,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 55,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 62,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-script-invalid.js",
+            "sha256": "eaffbb2741f360729d4f732331525876c4eaa9736be43efe724b2953455e0412",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 49,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-script-valid-undefined.js",
+            "sha256": "b30b5327784549c4da668e2b85b58f73f94c52af0af43a3e071c65f26d0985c7",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 31,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 37,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 43,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-script-valid.js",
+            "sha256": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 43,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 50,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 57,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-throwing-getters.js",
+            "sha256": "c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 28,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-variants-invalid.js",
+            "sha256": "b2c1b4589959a1c94ab97ab3049489289a649ef9324e021541250063654a991f",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 51,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-variants-valid.js",
+            "sha256": "3f636ca71f4f6a75e8f818b341707ac17ead7ba0e432c3a12877e3dd1cbdaf07",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 43,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 48,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 53,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 58,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-parse-twice.js",
+            "sha256": "b58a52d79f122804bfe7d3e12411b24ebc560612648624e0d59d9bcd9b0638d2",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 43,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 50,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 52,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 54,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 56,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-tag-tostring.js",
+            "sha256": "9d70d4bd62e4c508c4344b2e68f823f7c1ffc1042db75c3d9f88e84b08059401",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 24,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 34,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-tag.js",
+            "sha256": "678fd44514e01fe0ba93164eabfb77e7ac668a034ecaec215b62f2db4da079f8",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 33,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 38,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 56,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-unicode-ext-invalid.js",
+            "sha256": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-unicode-ext-valid.js",
+            "sha256": "92d26f3d6f7c908a1205624faecd5f342b7dc6df8520b220dbaf1863036c8643",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 33,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/extensions-grandfathered.js",
+            "sha256": "572ff551d3716e80ed586513534db0ab07035b0a71bdb9675ac8de5d024e6a5b",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 52,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 55,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 59,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 64,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/extensions-private.js",
+            "sha256": "7c540380d8c1fc46aa5dcc9e0b36e1e26cdb6bf6ab263076496699b6bf2f095c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/function-prototype.js",
+            "sha256": "f010cb17bac27d11216712a5293da35a4869ff08b48d052b41e198dc1c060ae6",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 12,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/getters-grandfathered.js",
+            "sha256": "ceeed7dae8982cff3e72b1e7dd4a1418f9d2bcea232db883eaf6364a73b7845a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 79,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 80,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 81,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 82,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 83,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 86,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 87,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 88,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 89,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 90,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 93,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 95,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/getters-missing.js",
+            "sha256": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
+            "status": "partially_translated",
+            "reason": "Applicable assertions and out-of-slice gaps are detailed in tests/Test262/evidence.json.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 30,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 31,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 32,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 33,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 37,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 38,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 39,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 40,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 41,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 45,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 46,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 47,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 48,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 49,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 53,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 54,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 55,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 56,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                },
+                {
+                    "line": 57,
+                    "call": "assert.sameValue",
+                    "status": "see-translated-evidence"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/getters.js",
+            "sha256": "8e0b947b19c9ba9b376341462d97391acd7d570dd7143c4c9fcb9b2a2646a615",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 105,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 106,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 107,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 108,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 109,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 110,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 111,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 112,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 113,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 115,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 118,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 120,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 137,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 138,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 139,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 140,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 141,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 142,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 143,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 144,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 145,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 147,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 150,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 152,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 163,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 164,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 165,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 166,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 167,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 168,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 169,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 170,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 171,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 173,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 176,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 178,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 183,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 184,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 185,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 186,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 187,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 188,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 192,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 193,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 194,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 195,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 196,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 197,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 199,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/instance-extensibility.js",
+            "sha256": "e0f8a720a9583e6b2491fbee5aaa7e391da4daa29f65bb18915b6390a755f5e5",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 16,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/instance.js",
+            "sha256": "7927854a2abdbde528f269e4d43dcadcce3a538d4773832975d0da2dbd8c8143",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/invalid-tag-throws-boolean.js",
+            "sha256": "4d681fbbc3663493e32f8f69951c277bcd4099453e49e4906d1217466dd08dbe",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 17,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/invalid-tag-throws-null.js",
+            "sha256": "c113beb37d55b6bb04cf76a2a17a76f61d6245bbf10df55fd373f9b55e8f36c1",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 17,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/invalid-tag-throws-number.js",
+            "sha256": "5a021aa80eb272c1c6cefb972e320ad956a8959e8958b7cfb14b1f72aeeac7b9",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 17,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/invalid-tag-throws-symbol.js",
+            "sha256": "7a9b1b5fd1c31c540cdde1ae38af2c8f8a7afa94819793959a2ee25fa4b3578e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 17,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/invalid-tag-throws-undefined.js",
+            "sha256": "bdf1f960b9a44e384c4446a1c733d7ded37ef93ef38cb0e936276f89cdb4a2dc",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 17,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/invalid-tag-throws.js",
+            "sha256": "fc61949fa06c6ea81470d3c6d0f75ae1cfab3370ca2d5bff5a26badcd039c877",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 27,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 30,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 34,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/length.js",
+            "sha256": "db26997a813663dc15a27764845782bd81f6b4bc57060c3b4aaa27c5c3987d1c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/likely-subtags-grandfathered.js",
+            "sha256": "21fbdf44641fd89f6f883677851048e75ae361847a5c896de2bd8c9211c43b7e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 60,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 92,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 94,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 95,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 97,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 98,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 100,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 101,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 112,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 187,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 189,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 190,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 192,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 193,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 195,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 196,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/likely-subtags.js",
+            "sha256": "bf0cc7e4c569f481f3d9cae54d6f261d7e61413d262ff03ea634cc66906fad68",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 87,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 93,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 99,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 105,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 113,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/name.js",
+            "sha256": "e01f59926af8ea4642c2a56900ef48fe07ddb495fb433675b6f6e8d0d49ae91c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 16,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prop-desc.js",
+            "sha256": "4ff5dd2f1090e22b6747439f1d0a409ecd70985bf9a57ec820b9e382ee44550e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 28,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/proto-from-ctor-realm.js",
+            "sha256": "8d8a6c8de681658f0b1d74b51cc539caf2105b0e3d712f49cc914d6955061145",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 38,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 42,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 46,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 50,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 54,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 58,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/baseName/branding.js",
+            "sha256": "e77d449e07710c79221e7daa3769eb0af42a212d18350b625d16aa6a0a9dea0c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/baseName/name.js",
+            "sha256": "f6253c2a4d636ebfdb1e6ad09e077d93ed5e34624d6c194ebe53caf66d9ce92e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/baseName/prop-desc.js",
+            "sha256": "fb68d1c8ceed5dd056b4dd140d4864cb82a2ae6e5cd0ab88ad97de55e6012ea7",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/calendar/branding.js",
+            "sha256": "fe4fcde843ab870405a626a591fd2e641f19d4b87109401b93c19c748724078a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/calendar/canonicalize.js",
+            "sha256": "f822a4c333493c03b953eabab70fd3cb65fdd35c2052175041f382c1d630fce1",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/calendar/name.js",
+            "sha256": "a9f7abeffcf8ffb396fc6894a89b7f2add1cc694b645b02f4105f94c6a254fac",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/calendar/prop-desc.js",
+            "sha256": "fee53aecbabf8555a12a3b8ad8c70e37cb63d55f1eb615ef115647cda6198c1a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/caseFirst/branding.js",
+            "sha256": "e7b17d1bcfd0ccbb8a5f8cce2e6ae06871ee50524fdf0302959ccff61326e169",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 30,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/caseFirst/name.js",
+            "sha256": "c292f79f43d0fd1526a3f52134a3f0fa133d952798218eb7f0b2681dcbb0d2d0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/caseFirst/prop-desc.js",
+            "sha256": "7d42d657490df81f9c418cbccaca753ba0673714abdc460298cd328fb79dfd18",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/collation/branding.js",
+            "sha256": "a922140186f8dd2c2083b535be457314af44b0adff6db510672ad132430b34f7",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/collation/name.js",
+            "sha256": "ae9ac2d863b4df3838da97050033d5976292febe19f2074c1f7fbf96a28a0999",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/collation/prop-desc.js",
+            "sha256": "2047a2be4076de2b77c71c591fc059df3aa4000574f7d24299ae376680896f71",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/constructor/prop-desc.js",
+            "sha256": "8662696f29ae35b850a58884aa0cf1430563122e4778ffcc7e78e2b1a1afc4f0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 20,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js",
+            "sha256": "df407d245b499cb9e41a26efc3cf5affe300e25f30ff665b3574f3282dc86a01",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/firstDayOfWeek/name.js",
+            "sha256": "9d9b1bc0723b597b3bb7435fd4079c7eff12c4d1556b87dee575df45c0df98be",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/firstDayOfWeek/prop-desc.js",
+            "sha256": "eacd60752bda61d0a86ded2f70cbf076b8e2cfbfcb4892fdef9065128e1a365d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js",
+            "sha256": "07f9babd1527066e864efb8b6b2d102a753a87c0b3324ffc1e9c17782d763c51",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 25,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js",
+            "sha256": "7cc86612c8c41133e3e17649c65b96f923604de8d02ff578398a1433b0dcc878",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 41,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 46,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/branding.js",
+            "sha256": "8a3af42b69b62a5cb6e891e3a97dab167a68aa3440fd83f0d68879ed2499aed4",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/likely-subtags-region.js",
+            "sha256": "2a1e27d4df1d5e26f71483130d14e818fe963b009c94719d3858c8233d0623e5",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 62,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/name.js",
+            "sha256": "c81f04344e5b4c2d8bb7512f3d96ff625152d0c77abe6a188f770c8ea94202f9",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/output-array.js",
+            "sha256": "cb00645af3bc647f136e4f45e9c5c66069c028d48eb18e0048b1347b431dde97",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/prop-desc.js",
+            "sha256": "855e1c07c3d795c4220ddd2482bbf3aec6a21f5546586e6216ae62f3868c6186",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/region-override.js",
+            "sha256": "f8fb896aac15ccfaac09c66e224859d84d4a80f5ab8e7c00b9e86e8341784cb5",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 64,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/region-priority.js",
+            "sha256": "4c68c9a62d5ea22c829eaa76348e82a9fe5934edd1ff792797c8555ed1dcc832",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 81,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/subdivision-region.js",
+            "sha256": "2015c7ea6e1b1468a3d0897b1187a3da5ac7519ec79bb8a1618becfb9a88eb53",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 59,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/branding.js",
+            "sha256": "fafbdfbfe51877fd46cd1b3b5adda382dbcfb9f129c547b7486b8f9a474f8813",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/collation-keyword.js",
+            "sha256": "bbd0fd6ca30dabbef8fb1190199a49aeacf485f3c3cc0b2a70296bc088ad334c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 30,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 35,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/name.js",
+            "sha256": "e03e578281f9842482da2821d8f4c92a4bfc0731ea4ac27919ad89d2447611bf",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/output-array-sorted.js",
+            "sha256": "b58dd2a9608611c8b7ff66adcdb42f325636023bfada67457490242903c8e2c4",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 23,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/output-array-values.js",
+            "sha256": "b8b2927b0c519222f3d6150318884567f0aa0f60dd37f902613147857fa9980a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 21,
+                    "call": "assert.notSameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.notSameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.notSameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/output-array.js",
+            "sha256": "12cc114bae185be464d6879fbf213af07718784a6365ae4770763214a5552529",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/prop-desc.js",
+            "sha256": "e8192ddb54381113c2863db3ebfc5511e3cc009620a98e167fb9f0567c633b3b",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCollations/und-language.js",
+            "sha256": "f757f210ee7da9b01199c28f6d659108e397cce48df4b70f4a40bcd156442384",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 32,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 37,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 60,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/branding.js",
+            "sha256": "4bf91687756566975243776d123bf6281cf193e2089ee58d97be3566b262429f",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/language-priority.js",
+            "sha256": "491ac894ab3dd2f442b63a4d36bc74906768f8fe0292a2b97fda10fa2a787bd8",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.js",
+            "sha256": "4abad5f1e6a23c03b7687ca8fb6466be6514a6f9a03231da6fc6c6c068b71cb8",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 71,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/name.js",
+            "sha256": "e523247da516d1c315690f71657fa18f1690cde6b5453afc4c66a9b7b6dc6870",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/output-array-values.js",
+            "sha256": "74eafc3bce26dbd6681cf8d4aa7e39efaccb4ca2c59d9f94cd864cca0feced29",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/output-array.js",
+            "sha256": "af4ab21cfd891ddcd902818750f0a9505d18261b9758dd0b527b4973c3fefaba",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/prop-desc.js",
+            "sha256": "9ecb4f92b687569b2477839976a75841f4e89682d71a3461228eae4bdf2b0699",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/region-override.js",
+            "sha256": "f8ba94a5472a3ed134915be3893c2cf4538cde813795f6750c78da029368bb1f",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 63,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/region-priority.js",
+            "sha256": "9d49da1acfee4a7fc86ad72a562e583ac9f9bf089bec7ae3e593d73e10afdb45",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 81,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/subdivision-region.js",
+            "sha256": "97664a5ba052bc6d39e1fa1a6189c06447e34c5235710ff91d01ba156e20112d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 58,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/branding.js",
+            "sha256": "530307c9dbee32509652923d38e224bfe1d4afb43858be32ddc7f6bcf54bb303",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/name.js",
+            "sha256": "f3591c1be5c56bbcbc1acafb179d67dbfac6ce93d7629839df198ae90bd0b02c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/output-array.js",
+            "sha256": "76789a13dba8b82b03e2a0aefc963111042aa5f8c8e4656899a707a73570b534",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js",
+            "sha256": "0cd175aae9f0a27c10544c4577ff32e750b1563f63144b9b0bf11d35d7b21120",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/branding.js",
+            "sha256": "5b76fa0e574ab358d146c89a0c0231612b656f42a01aaf9bbcb8a8f9c91bf844",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/name.js",
+            "sha256": "1da7a4034aeb695e8c6f636614b55abec2e58043e0443b1e4a7871517ff4798b",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js",
+            "sha256": "fee905ebab041ad9d97184b44011515c65debe9675255a74969658060572a916",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/output-object.js",
+            "sha256": "22a7d5fdccb3fa065ae0fb35fe49bb17cd51579ceea20a8ceee43c976aaadc1c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/prop-desc.js",
+            "sha256": "8676b32273790c8a6ad908c2ad651f6fa5bacebb64cf047b83d6a2a625b54842",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/branding.js",
+            "sha256": "0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/name.js",
+            "sha256": "661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js",
+            "sha256": "9da185ea867c9b003be4a2186151186e07d1a60a68d200a5640a3eeca3176616",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 22,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js",
+            "sha256": "051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/output-array.js",
+            "sha256": "86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": []
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js",
+            "sha256": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/branding.js",
+            "sha256": "5bec916cc844b0ead0cb2b9035ff5d2af11509acee4305e8ace393da6945f4a0",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 19,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 23,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-id.js",
+            "sha256": "85d774a8f38c91516ba37cefd71cae6e01cfe7ebafaf1af6cb88781fc4f4445c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 26,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.js",
+            "sha256": "7d645ee4ee6403998995240bf68780f5fac67863e3d1d87f70426fb15c0cf92e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 42,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 47,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js",
+            "sha256": "d0303e17310c4527d01dc7857cc365f3d41ec6ab4f7e190f8d8aa61deabbc904",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 66,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 71,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/name.js",
+            "sha256": "8eed9bc0a8587fae825f09da850247e939bb2102949b597eed1e716fab911a69",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js",
+            "sha256": "d926a9441429d4dfac94b5ed1752079728f2bc9f041cc2566c880fa00a622089",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 31,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 41,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 53,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/output-object.js",
+            "sha256": "c18271e099360fe08290b6c9621813e4c970cad30945439a396557ecaf8164fb",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js",
+            "sha256": "1f3391f8a4f76254b7bdf7996f85e03ce3653078281a7fd570fc150656e6693e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 21,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/region-override.js",
+            "sha256": "d21ce0426c6d0a975b41d3dab0617d25f3a339e148591426fb8e799b9ccbc4c8",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 70,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 75,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/region-priority.js",
+            "sha256": "f5012b67f0839c3c02b2aca2c8246cc14e275fa0b6aecf51317fe6b5d434f3fc",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 87,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 92,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js",
+            "sha256": "2aff1e816d23f82c2bf7147c565137fc8aa759d6d9e5de8e0684f8c136f527a4",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 63,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 68,
+                    "call": "assert.compareArray",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/hourCycle/branding.js",
+            "sha256": "558ee53f12491e11955a871e69d4cb2a2aebb1fa49a307bec79478a2829ac7bf",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/hourCycle/name.js",
+            "sha256": "5b561088861de4981c1f938fc5e194bba4728991b983f33c6bb7d1e3f853d7a4",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/hourCycle/prop-desc.js",
+            "sha256": "790adccdf75515a30eeac53f0264ecbef60b43c60e13c711fa09a17d2a2f78c1",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/language/branding.js",
+            "sha256": "dc7174a08ec37437fd7a25f22655f46d5d91d01ccaa29a7a24242ee8971c3f43",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/language/name.js",
+            "sha256": "eab13fdfcba849f97d2777b0eb2285677d6cd4e704fdf68ce0390061edaf04a6",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/language/prop-desc.js",
+            "sha256": "f8aee0cba08fb24b829b9606fd21e2c79a730f7c7c06dea49b6461856aacea37",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/branding.js",
+            "sha256": "e9516a0e068476037eab9c56807559605b3d7a675f942f427c403fa604190fdf",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 32,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/length.js",
+            "sha256": "18c22292ecbc328f7e8b2d551188a09a7e7e4a51f2c33c1214987b3fafa8e00e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/name.js",
+            "sha256": "5792cfffcf984da09bca8eeeea0965204c4ada86c5a0334e19b59420f1e47079",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 16,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/prop-desc.js",
+            "sha256": "a6d88fb9ab7acbe411dc3486a118a6de956a20605707f4e4e91aa67b058006fd",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/branding.js",
+            "sha256": "197a765ae83ab747f9a72aaeea4b7eb57d8b8084963409e123dfd3aa5180dd0e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 32,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/length.js",
+            "sha256": "d355601f663c197d9cb735b20bbca6cab78fa47f30b197ac81bd7e51f4ba7a0b",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/name.js",
+            "sha256": "bd4f10e2fc84bcde9e8d3a5808d45c2e0b516c210bd977d286b5d8a79aa8d338",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 16,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/prop-desc.js",
+            "sha256": "d5d737027c892f3b161bbf3779440b0ab1c7e5b91e9a9817607521ae12e565e8",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js",
+            "sha256": "f975ba847107f6564e1bc376c1622671998174afe07c160aec7ec04ce3d11e06",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 43,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 47,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/numberingSystem/branding.js",
+            "sha256": "28a8285ee0f7a43a48c8afc28d404af0102327891ba7a9bc5b5ba5177e0c3c36",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/numberingSystem/name.js",
+            "sha256": "49d2015d429bcf181c16dce7ca99d60448a52598315f499b3ea7b77ae0c37708",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/numberingSystem/prop-desc.js",
+            "sha256": "001010f41d39cab880e71904d9767677b7ca7d99804e4d157624838f7e101f8d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/numeric/branding.js",
+            "sha256": "1b565a5c7e01e243ce9c73f8f93aefe45b1cb8638f8d30d2191877d9a2c080a8",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 30,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/numeric/name.js",
+            "sha256": "72ed97df56a5bab0bab4e80540c1f263ca89f6d44b8e80c1630d140db1523e12",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/numeric/prop-desc.js",
+            "sha256": "6ca492c90d1606725a496f82e216dc4352110db3ce98511e5911199e7816aae7",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/prop-desc.js",
+            "sha256": "a31a2abdc814ad969d0977a573889d18e194483647fb75c6b03c35753713ae0e",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/region/branding.js",
+            "sha256": "89b0784d414af4f7f09b61011b5ef1c19e40bf6fbb27b7d4db9387dc460f9133",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/region/name.js",
+            "sha256": "2d3f8f58434d71a68c7cccee846b2f3fbdf8683b44416a79c382ed26bd6b63ef",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/region/prop-desc.js",
+            "sha256": "d0ff446cfa1c19e9f06d5583f9f9e85ee88f162e1fc2e18007b95ee5c2a80405",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/script/branding.js",
+            "sha256": "eb81e453c7075ea07187759eb5955d2f4b84f66cf1019446836ef5862658117c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 29,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/script/name.js",
+            "sha256": "035591f65bad9c72220ac90511d1b01d49e81179255565a55c185fa45ca3d213",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/script/prop-desc.js",
+            "sha256": "95475fea9da95ece12ce538f744487c9e3a928c933b87e78f846cdd23d1420fa",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/toString/branding.js",
+            "sha256": "228d4eefecb2f1bb83db0c16271abd7428fd56331f2763e6a8768edf4d09a6bd",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 32,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/toString/prop-desc.js",
+            "sha256": "282905b83ad57bad05b0088251066d3469f749105d3a108818209150224a44e1",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/toStringTag/toString-removed-tag.js",
+            "sha256": "33681bfc96c32b0dd65e0c97da9327ab2e7b8a0bb9ab6df70b8eae89b8259c1a",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/toStringTag/toString.js",
+            "sha256": "5d9ff5b61cf8b4de0bcd462d733ac1041888c7befe4bc47b1a842fc3f6d7ae72",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 16,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/toStringTag/toStringTag.js",
+            "sha256": "49a4b23e4fe52ccc3f5365248f4b5818475aa449d08da9149bf3e2101881ad7d",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 18,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/variants/branding.js",
+            "sha256": "3f347bb8f318041fff4d390ed4cf2e7b04e8cc68c346305bd8da0096984636c7",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 27,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/variants/name.js",
+            "sha256": "e1e515565bbaf7efd9ec2eb62c26042ad7cad3125d382f83e885ff783c52e7f2",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/variants/prop-desc.js",
+            "sha256": "5f02fed53386fd6588585b3c51dc5551a919953a1427a1e24489be11c0bd3c27",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 17,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 18,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 20,
+                    "call": "verifyProperty",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js",
+            "sha256": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 19,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 22,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/reject-duplicate-variants.js",
+            "sha256": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 15,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 18,
+                    "call": "assert.throws",
+                    "status": "translation_gap"
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/subclassing.js",
+            "sha256": "8fcd38fa11710ee9f989e20073c352c2c2b916c0b50cea078a6b56c1addb146c",
+            "status": "translation_gap",
+            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "detectedAssertions": [
+                {
+                    "line": 23,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 24,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 25,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                },
+                {
+                    "line": 26,
+                    "call": "assert.sameValue",
+                    "status": "translation_gap"
+                }
+            ]
+        }
+    ]
+}

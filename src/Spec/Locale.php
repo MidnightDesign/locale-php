@@ -6,6 +6,7 @@ namespace Midnight\Intl\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
+use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Data\LocaleAliases;
 use Midnight\Intl\Internal\Test262\OptionBag;
 
@@ -18,6 +19,28 @@ use Midnight\Intl\Internal\Test262\OptionBag;
 #[\AllowDynamicProperties]
 class Locale
 {
+    private const DELIVERED_PROPERTIES = [
+        'baseName',
+        'language',
+        'script',
+        'region',
+    ];
+
+    private const PUBLIC_PROPERTIES = [
+        'baseName',
+        'calendar',
+        'caseFirst',
+        'collation',
+        'firstDayOfWeek',
+        'hourCycle',
+        'language',
+        'numberingSystem',
+        'numeric',
+        'region',
+        'script',
+        'variants',
+    ];
+
     private string $localeBaseName;
 
     private string $localeLanguage;
@@ -56,21 +79,22 @@ class Locale
         $this->localeRegion = ($matches['region'] ?? '') !== ''
             ? self::normalizeRegion($matches['region'])
             : null;
+        $this->applyAliases();
 
         if (is_array($options) || is_object($options)) {
-            $language = self::readOption($options, 'language');
-            if ($language[0]) {
-                $this->localeLanguage = self::normalizeLanguage(self::toStringValue($language[1]));
+            $languageOption = self::readOption($options, 'language');
+            if ($languageOption->present) {
+                $this->localeLanguage = self::normalizeLanguage(self::toStringValue($languageOption->value));
             }
 
-            $script = self::readOption($options, 'script');
-            if ($script[0]) {
-                $this->localeScript = self::normalizeScript(self::toStringValue($script[1]));
+            $scriptOption = self::readOption($options, 'script');
+            if ($scriptOption->present) {
+                $this->localeScript = self::normalizeScript(self::toStringValue($scriptOption->value));
             }
 
-            $region = self::readOption($options, 'region');
-            if ($region[0]) {
-                $this->localeRegion = self::normalizeRegion(self::toStringValue($region[1]));
+            $regionOption = self::readOption($options, 'region');
+            if ($regionOption->present) {
+                $this->localeRegion = self::normalizeRegion(self::toStringValue($regionOption->value));
             }
         }
 
@@ -101,20 +125,7 @@ class Locale
 
     public function __set(string $name, mixed $value): void
     {
-        if (in_array($name, [
-            'baseName',
-            'calendar',
-            'caseFirst',
-            'collation',
-            'firstDayOfWeek',
-            'hourCycle',
-            'language',
-            'numberingSystem',
-            'numeric',
-            'region',
-            'script',
-            'variants',
-        ], true)) {
+        if (in_array($name, self::PUBLIC_PROPERTIES, true)) {
             throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
         }
 
@@ -123,7 +134,7 @@ class Locale
 
     public function __isset(string $name): bool
     {
-        return in_array($name, ['baseName', 'language', 'script', 'region'], true)
+        return in_array($name, self::DELIVERED_PROPERTIES, true)
             && $this->__get($name) !== null;
     }
 
@@ -138,25 +149,24 @@ class Locale
 
     /**
      * @param array<array-key, mixed>|object $options
-     * @return array{bool, mixed}
      */
-    private static function readOption(array|object $options, string $name): array
+    private static function readOption(array|object $options, string $name): OptionValue
     {
         if ($options instanceof OptionBag) {
             return $options->has($name)
-                ? [true, $options->get($name)]
-                : [false, null];
+                ? OptionValue::present($options->get($name))
+                : OptionValue::missing();
         }
 
         if (is_array($options)) {
             return array_key_exists($name, $options)
-                ? [true, $options[$name]]
-                : [false, null];
+                ? OptionValue::present($options[$name])
+                : OptionValue::missing();
         }
 
         return property_exists($options, $name)
-            ? [true, $options->{$name}]
-            : [false, null];
+            ? OptionValue::present($options->{$name})
+            : OptionValue::missing();
     }
 
     private static function toStringValue(mixed $value): string

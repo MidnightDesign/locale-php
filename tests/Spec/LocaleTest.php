@@ -111,6 +111,14 @@ final class LocaleTest extends TestCase
         self::assertSame('sr-ME', (new Locale('cnr'))->toString());
     }
 
+    public function testItCanonicalizesTheInputBeforeApplyingOptions(): void
+    {
+        self::assertSame(
+            'en-Latn',
+            (new Locale('sh', ['language' => 'en']))->toString(),
+        );
+    }
+
     public function testItReadsAndConvertsBehavioralOptionsInOrder(): void
     {
         $log = new OptionAccessLog();

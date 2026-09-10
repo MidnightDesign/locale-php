@@ -12,6 +12,10 @@ if ($xml === false) {
     fwrite(STDERR, "Unable to read supplementalMetadata.xml.\n");
     exit(1);
 }
+$records = preg_replace('/<!--.*?-->/s', '', $xml);
+if ($records === null) {
+    throw new RuntimeException('Unable to remove CLDR XML comments.');
+}
 
 /** @var array<string, string> $language */
 $language = [];
@@ -20,21 +24,21 @@ $script = [];
 /** @var array<string, string> $region */
 $region = [];
 
-preg_match_all('/<languageAlias type="([^"]+)" replacement="([^"]+)"/', $xml, $matches, PREG_SET_ORDER);
+preg_match_all('/<languageAlias type="([^"]+)" replacement="([^"]+)"/', $records, $matches, PREG_SET_ORDER);
 foreach ($matches as $match) {
     if (preg_match('/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})$/D', $match[1])) {
         $language[strtolower($match[1])] = str_replace('_', '-', $match[2]);
     }
 }
 
-preg_match_all('/<scriptAlias type="([^"]+)" replacement="([^"]+)"/', $xml, $matches, PREG_SET_ORDER);
+preg_match_all('/<scriptAlias type="([^"]+)" replacement="([^"]+)"/', $records, $matches, PREG_SET_ORDER);
 foreach ($matches as $match) {
     if (preg_match('/^[A-Za-z]{4}$/D', $match[1])) {
         $script[ucfirst(strtolower($match[1]))] = ucfirst(strtolower($match[2]));
     }
 }
 
-preg_match_all('/<territoryAlias type="([^"]+)" replacement="([^"]+)"/', $xml, $matches, PREG_SET_ORDER);
+preg_match_all('/<territoryAlias type="([^"]+)" replacement="([^"]+)"/', $records, $matches, PREG_SET_ORDER);
 foreach ($matches as $match) {
     if (preg_match('/^(?:[A-Za-z]{2}|[0-9]{3})$/D', $match[1])) {
         $region[strtoupper($match[1])] = strtoupper(explode(' ', $match[2])[0]);
