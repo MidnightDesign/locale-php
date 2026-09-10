@@ -36,6 +36,8 @@ final class WorkflowContract
             "matrix.extensionMode == 'absent' && ':intl' || 'intl'",
             'php tools/record-ci-provenance.php',
             'php tools/assert-ci-runtime.php',
+            'phpts: nts',
+            'update: true',
         ], 'runtime workflow', $failures);
         self::requireText($contents['quality'], [
             'vendor/bin/phpstan',
@@ -47,6 +49,9 @@ final class WorkflowContract
             'composer mutation',
             'tools/merge-mutation-reports.php',
             'php tools/test-package-install.php',
+            'xdebug-3.5.3',
+            'php tools/assert-extension-version.php xdebug 3.5.3',
+            'php tools/record-ci-provenance.php',
         ], 'quality workflow', $failures);
         self::requireText($contents['scheduled'], [
             'arm-runtime',
@@ -55,7 +60,20 @@ final class WorkflowContract
             'icu-runtime',
             'advisory-runtime',
             'php tools/assert-ci-runtime.php',
+            'phpts: nts',
+            'phpts: ts',
+            'update: true',
+            'matrix.runtimeUrl',
+            'https://getcomposer.org/download/2.10.3/composer.phar',
+            'Get-FileHash -Algorithm SHA256',
+            'php tools/assert-ci-runtime.php 4 false Windows x86',
         ], 'scheduled workflow', $failures);
+        if (str_contains($contents['scheduled'], 'architecture:')) {
+            $failures[] = 'Scheduled lanes must not use the unsupported setup-php architecture input.';
+        }
+        if (preg_match('/^\s+ts:/m', $contents['scheduled']) === 1) {
+            $failures[] = 'setup-php thread safety must use the phpts environment variable.';
+        }
         self::requireText($contents['release'], [
             './.github/workflows/ci-runtime.yml',
             './.github/workflows/ci-quality.yml',

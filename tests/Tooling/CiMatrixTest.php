@@ -51,8 +51,24 @@ final class CiMatrixTest extends TestCase
             ['runner' => 'ubuntu-24.04-arm', 'php' => '8.5', 'architecture' => 'arm64'],
         ], $matrix->armLanes());
         self::assertSame([
-            ['runner' => 'windows-2022', 'php' => '8.2', 'architecture' => 'x86', 'threadSafe' => false],
-            ['runner' => 'windows-2022', 'php' => '8.5', 'architecture' => 'x86', 'threadSafe' => false],
+            [
+                'runner' => 'windows-2022',
+                'php' => '8.2',
+                'architecture' => 'x86',
+                'threadSafe' => false,
+                'runtimeVersion' => '8.2.33',
+                'runtimeUrl' => 'https://downloads.php.net/~windows/releases/php-8.2.33-nts-Win32-vs16-x86.zip',
+                'runtimeSha256' => '8732dac6084bcad5e8fc363efcd9bdc50afbfc469bc858eeee92da05bd21d8cc',
+            ],
+            [
+                'runner' => 'windows-2022',
+                'php' => '8.5',
+                'architecture' => 'x86',
+                'threadSafe' => false,
+                'runtimeVersion' => '8.5.10',
+                'runtimeUrl' => 'https://downloads.php.net/~windows/releases/php-8.5.10-nts-Win32-vs17-x86.zip',
+                'runtimeSha256' => 'de135a1dec0cca14d47865c957cf6dc40286a7859704488e153042b500387776',
+            ],
         ], $matrix->windowsX86Lanes());
         self::assertSame([
             ['runner' => 'windows-2022', 'php' => '8.2', 'architecture' => 'x64', 'threadSafe' => true],

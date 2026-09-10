@@ -8,7 +8,7 @@ namespace Midnight\Intl\Tools\Ci;
  * @phpstan-type RuntimeLane array{runner: string, php: string, extensionMode: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type InstallLane array{runner: string, php: string}
  * @phpstan-type ArmLane array{runner: string, php: string, architecture: string}
- * @phpstan-type WindowsLane array{runner: string, php: string, architecture: string, threadSafe: bool}
+ * @phpstan-type WindowsLane array{runner: string, php: string, architecture: string, threadSafe: bool, runtimeVersion?: string, runtimeUrl?: string, runtimeSha256?: string}
  * @phpstan-type IcuLane array{boundary: string, php: string, icu: string, extension: string}
  * @phpstan-type ArmRuntimeLane array{runner: string, php: string, architecture: string, extensionMode: string}
  * @phpstan-type WindowsRuntimeLane array{runner: string, php: string, architecture: string, threadSafe: bool, extensionMode: string}
@@ -329,12 +329,29 @@ final class Matrix
                 || !is_bool($record['threadSafe'] ?? null)) {
                 throw new \RuntimeException(sprintf('CI matrix lane %s is invalid.', $key));
             }
-            $result[] = [
+            $lane = [
                 'runner' => $record['runner'],
                 'php' => $record['php'],
                 'architecture' => $record['architecture'],
                 'threadSafe' => $record['threadSafe'],
             ];
+            if ($key === 'windowsX86') {
+                $runtimeVersion = $record['runtimeVersion'] ?? null;
+                $runtimeUrl = $record['runtimeUrl'] ?? null;
+                $runtimeSha256 = $record['runtimeSha256'] ?? null;
+                if (!is_string($runtimeVersion) || !is_string($runtimeUrl) || !is_string($runtimeSha256)) {
+                    throw new \RuntimeException('CI matrix Windows x86 runtime pin is incomplete.');
+                }
+                if (!str_starts_with($runtimeVersion, $record['php'].'.')
+                    || !str_starts_with($runtimeUrl, 'https://downloads.php.net/~windows/releases/php-')
+                    || preg_match('/^[a-f0-9]{64}$/D', $runtimeSha256) !== 1) {
+                    throw new \RuntimeException('CI matrix Windows x86 runtime pin is invalid.');
+                }
+                $lane['runtimeVersion'] = $runtimeVersion;
+                $lane['runtimeUrl'] = $runtimeUrl;
+                $lane['runtimeSha256'] = $runtimeSha256;
+            }
+            $result[] = $lane;
         }
 
         return $result;

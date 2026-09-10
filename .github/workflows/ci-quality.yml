@@ -203,6 +203,8 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          phpts: nts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: php tools/test-package-install.php
 
@@ -226,15 +228,17 @@ jobs:
           tools: composer:2.10.3
           extensions: ${{ matrix.extensionMode == 'absent' && ':intl, xdebug-3.5.3' || 'intl, xdebug-3.5.3' }}
           ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
-          coverage: none
         env:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: php tools/assert-extension-version.php xdebug 3.5.3
       - name: Preserve raw test coverage and JUnit evidence
         run: |
           mkdir -p build/infection
           vendor/bin/phpunit --coverage-xml=build/infection/coverage-xml --log-junit=build/infection/junit.xml
       - run: composer mutation -- --coverage=build/infection --skip-initial-tests
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json '8.5' ubuntu-24.04 "${{ matrix.extensionMode }}"
       - if: always()
         shell: bash
         run: mkdir -p build/matrix && cp build/infection/infection.json "build/matrix/${{ matrix.extensionMode }}.json"
@@ -243,6 +247,7 @@ jobs:
         with:
           name: mutation-${{ matrix.extensionMode }}
           path: |
+            build/ci
             build/infection
             build/matrix
           if-no-files-found: error

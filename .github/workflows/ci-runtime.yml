@@ -30,6 +30,7 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - id: matrix
         shell: bash
@@ -57,6 +58,8 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          phpts: nts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: php tools/assert-ci-runtime.php "${{ matrix.integerSize }}" false "${{ matrix.osFamily }}" "${{ matrix.architecture }}" "${{ matrix.php }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml

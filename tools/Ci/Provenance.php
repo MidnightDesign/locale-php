@@ -120,7 +120,7 @@ final class Provenance
     {
         $pipes = [];
         $process = proc_open(
-            ['composer', '--version', '--no-ansi'],
+            'composer --version --no-ansi',
             [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
         );

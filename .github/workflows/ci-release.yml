@@ -40,6 +40,8 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          phpts: nts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: composer archive --format=zip --dir=build/package --file=intl-locale
       - run: php tools/test-packed-artifact.php build/package/intl-locale.zip

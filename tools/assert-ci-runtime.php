@@ -34,8 +34,10 @@ if ($actualArchitecture !== $argv[4]) {
     throw new RuntimeException(sprintf('Expected architecture %s; got %s.', $argv[4], php_uname('m')));
 }
 
-$actualPhpMinor = PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;
-if ($actualPhpMinor !== $argv[5]) {
+$actualPhp = substr_count($argv[5], '.') === 2
+    ? PHP_VERSION
+    : PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;
+if ($actualPhp !== $argv[5]) {
     throw new RuntimeException(sprintf('Expected PHP %s; got %s.', $argv[5], PHP_VERSION));
 }
 

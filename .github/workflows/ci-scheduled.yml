@@ -37,6 +37,7 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - id: matrix
         shell: bash
@@ -65,13 +66,13 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: composer:2.10.3
-          architecture: arm64
-          ts: false
           extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
           ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
           coverage: none
         env:
           fail-fast: true
+          phpts: nts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: php tools/assert-ci-runtime.php 8 false Linux arm64 "${{ matrix.php }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
@@ -99,19 +100,39 @@ jobs:
       INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
-        with:
-          php-version: ${{ matrix.php }}
-          tools: composer:2.10.3
-          architecture: x86
-          ts: false
-          extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
-          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
-          coverage: none
-        env:
-          fail-fast: true
+      - name: Install checksum-pinned PHP x86 and Composer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $runtimeRoot = Join-Path $env:RUNNER_TEMP 'php-x86'
+          $runtimeArchive = Join-Path $env:RUNNER_TEMP 'php-x86.zip'
+          $composerPhar = Join-Path $runtimeRoot 'composer.phar'
+          Invoke-WebRequest -Uri '${{ matrix.runtimeUrl }}' -OutFile $runtimeArchive
+          if ((Get-FileHash -Algorithm SHA256 $runtimeArchive).Hash.ToLowerInvariant() -ne '${{ matrix.runtimeSha256 }}') {
+              throw 'The PHP x86 archive checksum does not match the matrix pin.'
+          }
+          Expand-Archive -Path $runtimeArchive -DestinationPath $runtimeRoot
+          Copy-Item (Join-Path $runtimeRoot 'php.ini-development') (Join-Path $runtimeRoot 'php.ini')
+          Add-Content (Join-Path $runtimeRoot 'php.ini') @(
+              'date.timezone=UTC',
+              'intl.default_locale=en_US_POSIX',
+              'extension_dir="ext"',
+              'extension=curl',
+              'extension=mbstring',
+              'extension=openssl',
+              'extension=zip'
+          )
+          if ('${{ matrix.extensionMode }}' -ne 'absent') {
+              Add-Content (Join-Path $runtimeRoot 'php.ini') 'extension=intl'
+          }
+          Invoke-WebRequest -Uri 'https://getcomposer.org/download/2.10.3/composer.phar' -OutFile $composerPhar
+          if ((Get-FileHash -Algorithm SHA256 $composerPhar).Hash.ToLowerInvariant() -ne '7a2d379d5b8ffdaa028580ef26494c36d2feef4b178d3dd1473a4dbc5e17c8d6') {
+              throw 'The Composer PHAR checksum does not match the tool pin.'
+          }
+          Set-Content (Join-Path $runtimeRoot 'composer.bat') '@php "%~dp0composer.phar" %*'
+          $runtimeRoot | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: php tools/assert-ci-runtime.php 4 false Windows x86 "${{ matrix.php }}"
+      - run: php tools/assert-ci-runtime.php 4 false Windows x86 "${{ matrix.runtimeVersion }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
@@ -141,13 +162,13 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: composer:2.10.3
-          architecture: x64
-          ts: true
           extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
           ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
           coverage: none
         env:
           fail-fast: true
+          phpts: ts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: php tools/assert-ci-runtime.php 8 true Windows x64 "${{ matrix.php }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
@@ -184,6 +205,8 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          phpts: nts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: php tools/assert-ci-runtime.php 8 false Linux x64 "${{ matrix.php }}" "${{ matrix.icu }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
@@ -221,6 +244,8 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+          phpts: nts
+          update: true
       - run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
       - run: php tools/assert-ci-runtime.php 8 false Linux x64 "${{ matrix.php }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
