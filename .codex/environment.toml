@@ -1,0 +1,28 @@
+version = 1
+name = "locale-php"
+
+[setup]
+script = """
+docker compose -f compose.yaml -f .codex/compose.yaml build php
+docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer install --no-interaction --no-progress --prefer-dist
+"""
+
+[[actions]]
+name = "Test"
+icon = "test"
+command = "docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer test"
+
+[[actions]]
+name = "Analyse"
+icon = "debug"
+command = "docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer analyse"
+
+[[actions]]
+name = "Style"
+icon = "tool"
+command = "docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer style"
+
+[[actions]]
+name = "Verify CI"
+icon = "tool"
+command = "docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer ci:verify"
