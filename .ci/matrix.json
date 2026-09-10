@@ -1,0 +1,25 @@
+{
+    "stablePhp": ["8.2", "8.3", "8.4", "8.5"],
+    "advisoryPhp": ["8.6"],
+    "runners": ["ubuntu-24.04", "windows-2022", "macos-15"],
+    "extensionModes": ["absent", "disabled", "native"],
+    "specialized": {
+        "arm": [
+            {"runner": "ubuntu-24.04-arm", "php": "8.5", "architecture": "arm64"}
+        ],
+        "windowsX86": [
+            {"runner": "windows-2022", "php": "8.2", "architecture": "x86", "threadSafe": false},
+            {"runner": "windows-2022", "php": "8.5", "architecture": "x86", "threadSafe": false}
+        ],
+        "windowsThreadSafe": [
+            {"runner": "windows-2022", "php": "8.2", "architecture": "x64", "threadSafe": true},
+            {"runner": "windows-2022", "php": "8.5", "architecture": "x64", "threadSafe": true}
+        ]
+    },
+    "icu": [
+        {"boundary": "oldest", "php": "8.2", "icu": "50.2", "extension": "intl-50.2"},
+        {"boundary": "below-74", "php": "8.4", "icu": "73.2", "extension": "intl-73.2"},
+        {"boundary": "at-least-74", "php": "8.4", "icu": "74.2", "extension": "intl-74.2"},
+        {"boundary": "newest", "php": "8.5", "icu": "latest-provisioned", "extension": "intl"}
+    ]
+}

@@ -1,0 +1,43 @@
+name: Reusable release evidence
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    uses: ./.github/workflows/ci-runtime.yml
+
+  quality:
+    uses: ./.github/workflows/ci-quality.yml
+
+  scheduled:
+    uses: ./.github/workflows/ci-scheduled.yml
+
+  packed-artifact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      COMPOSER_ROOT_VERSION: 1.0.0-ci
+      LC_ALL: C
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          extensions: zip
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: composer archive --format=zip --dir=build/package --file=intl-locale
+      - run: php tools/test-packed-artifact.php build/package/intl-locale.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: exact-packed-artifact
+          path: build/package/intl-locale.zip
+          if-no-files-found: error
+          retention-days: 90

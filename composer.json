@@ -12,8 +12,12 @@
         "php": ">=8.2"
     },
     "require-dev": {
-        "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11.5"
+        "carthage-software/mago": "1.48.0",
+        "friendsofphp/php-cs-fixer": "3.95.25",
+        "infection/infection": "0.31.9",
+        "phpstan/phpstan": "2.1.32",
+        "phpunit/phpunit": "11.5.56",
+        "vimeo/psalm": "6.17.0"
     },
     "autoload": {
         "psr-4": {
@@ -26,11 +30,52 @@
             "Midnight\\Intl\\Tools\\": "tools/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
+    },
+    "archive": {
+        "exclude": [
+            "/.ci",
+            "/.codex",
+            "/.github",
+            "/.dockerignore",
+            "/.git",
+            "/.gitignore",
+            "/.php-cs-fixer.cache",
+            "/.php-cs-fixer.dist.php",
+            "/.phpunit.cache",
+            "/AGENTS.md",
+            "/WAYFINDER.md",
+            "/Dockerfile",
+            "/build",
+            "/compose.yaml",
+            "/composer.lock",
+            "/docs/agents",
+            "/infection.json5",
+            "/phpstan.neon.dist",
+            "/phpunit.xml.dist",
+            "/psalm.xml",
+            "/tests",
+            "/tools",
+            "/vendor"
+        ]
+    },
     "scripts": {
         "test": "phpunit",
-        "test:package": "sh tools/test-package-install.sh",
+        "test:package": "php tools/test-package-install.php",
         "test:unit": "phpunit --testsuite unit",
-        "analyse": "phpstan analyse --no-progress",
+        "test:state": "phpunit tests/Tooling/AmbientStateTest.php",
+        "analyse": "phpstan analyse --no-progress --memory-limit=512M",
+        "analyse:psalm:min": "psalm --php-version=8.2 --memory-limit=512M --no-cache --no-diff --no-progress",
+        "analyse:psalm:current": "psalm --php-version=8.5 --memory-limit=512M --no-cache --no-diff --no-progress",
+        "analyse:mago:min": "mago --php-version=8.2 --colors=never analyze src",
+        "analyse:mago:current": "mago --php-version=8.5 --colors=never analyze src",
+        "style": "php-cs-fixer check --diff --verbose",
+        "mutation": "infection --configuration=infection.json5 --with-uncovered --min-msi=100 --min-covered-msi=100 --no-progress --no-interaction",
+        "ci:matrix": "php tools/ci-matrix.php",
+        "ci:verify": "php tools/verify-ci.php",
         "data:generate": "php tools/generate-data.php",
         "data:check": "php tools/generate-data.php --check",
         "test262:generate": "php tools/transpile-test262.php",

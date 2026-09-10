@@ -1,0 +1,14 @@
+name: Pull request evidence
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    uses: ./.github/workflows/ci-runtime.yml
+
+  quality:
+    uses: ./.github/workflows/ci-quality.yml

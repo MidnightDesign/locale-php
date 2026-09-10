@@ -24,19 +24,19 @@ declare(strict_types=1);
 
 namespace Midnight\\Intl\\Internal\\Data;
 
-final class LocaleAliases
+enum LocaleAliases
 {
+    /** @var string */
     public const CLDR_REVISION = '{$data['cldrRevision']}';
 
+    /** @var array<string, string> */
     public const LANGUAGE = {$language};
 
+    /** @var array<string, string> */
     public const SCRIPT = {$script};
 
+    /** @var array<int|string, string> */
     public const REGION = {$region};
-
-    private function __construct()
-    {
-    }
 }
 PHP;
 

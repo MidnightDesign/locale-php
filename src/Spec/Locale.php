@@ -6,8 +6,8 @@ namespace Midnight\Intl\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
-use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Data\LocaleAliases;
+use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
 
 /**
@@ -15,32 +15,11 @@ use Midnight\Intl\Internal\Test262\OptionBag;
  * @property-read string $language
  * @property-read string|null $script
  * @property-read string|null $region
+ * @psalm-api
  */
 #[\AllowDynamicProperties]
 class Locale
 {
-    private const DELIVERED_PROPERTIES = [
-        'baseName',
-        'language',
-        'script',
-        'region',
-    ];
-
-    private const PUBLIC_PROPERTIES = [
-        'baseName',
-        'calendar',
-        'caseFirst',
-        'collation',
-        'firstDayOfWeek',
-        'hourCycle',
-        'language',
-        'numberingSystem',
-        'numeric',
-        'region',
-        'script',
-        'variants',
-    ];
-
     private string $localeBaseName;
 
     private string $localeLanguage;
@@ -125,7 +104,7 @@ class Locale
 
     public function __set(string $name, mixed $value): void
     {
-        if (in_array($name, self::PUBLIC_PROPERTIES, true)) {
+        if (in_array($name, self::publicProperties(), true)) {
             throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
         }
 
@@ -134,7 +113,7 @@ class Locale
 
     public function __isset(string $name): bool
     {
-        return in_array($name, self::DELIVERED_PROPERTIES, true)
+        return in_array($name, self::deliveredProperties(), true)
             && $this->__get($name) !== null;
     }
 
@@ -225,7 +204,7 @@ class Locale
             $this->localeLanguage = self::normalizeLanguage($parts[0]);
 
             foreach (array_slice($parts, 1) as $part) {
-                if ($this->localeScript === null && preg_match('/^[A-Za-z]{4}$/D', $part)) {
+                if ($this->localeScript === null && strlen($part) === 4) {
                     $this->localeScript = self::normalizeScript($part);
                 } elseif ($this->localeRegion === null) {
                     $this->localeRegion = self::normalizeRegion($part);
@@ -239,5 +218,30 @@ class Locale
         if ($this->localeRegion !== null) {
             $this->localeRegion = LocaleAliases::REGION[$this->localeRegion] ?? $this->localeRegion;
         }
+    }
+
+    /** @return list<string> */
+    private static function deliveredProperties(): array
+    {
+        return ['baseName', 'language', 'script', 'region'];
+    }
+
+    /** @return list<string> */
+    private static function publicProperties(): array
+    {
+        return [
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants',
+        ];
     }
 }

@@ -72,7 +72,7 @@ final class LocaleTest extends TestCase
     {
         $source = new Locale('en-US');
         $fromLocale = new Locale($source, ['region' => 'GB']);
-        $fromObject = new Locale(new class implements \Stringable {
+        $fromObject = new Locale(new class () implements \Stringable {
             public function __toString(): string
             {
                 return 'de-latn-de';
@@ -117,6 +117,11 @@ final class LocaleTest extends TestCase
             'en-Latn',
             (new Locale('sh', ['language' => 'en']))->toString(),
         );
+    }
+
+    public function testItCanonicalizesAliasesIntroducedByOptions(): void
+    {
+        self::assertSame('sr-Latn', (new Locale('en', ['language' => 'sh']))->toString());
     }
 
     public function testItReadsAndConvertsBehavioralOptionsInOrder(): void
@@ -169,7 +174,7 @@ final class LocaleTest extends TestCase
 
     public function testItRejectsInvalidValuesWithinTheDeliveredSlice(): void
     {
-        foreach (['', 'root', 'abcd', 'en_US', 'en--US', 'en-1901', 'en-u-ca-gregory'] as $tag) {
+        foreach (['', "en\n", 'root', 'abcd', 'en_US', 'en--US', 'en-1901', 'en-u-ca-gregory'] as $tag) {
             try {
                 new Locale($tag);
                 self::fail(sprintf('Expected "%s" to be rejected.', $tag));
@@ -180,8 +185,11 @@ final class LocaleTest extends TestCase
 
         foreach ([
             ['language' => 'fr-FR'],
+            ['language' => "english\n"],
             ['script' => 'abc'],
+            ['script' => "Latn\n"],
             ['region' => 'USA'],
+            ['region' => "US\n"],
         ] as $options) {
             try {
                 new Locale('en', $options);
@@ -192,9 +200,23 @@ final class LocaleTest extends TestCase
         }
     }
 
+    public function testItConvertsBooleanOptionsUsingJavaScriptStrings(): void
+    {
+        self::assertSame('en-True', (new Locale('en', ['script' => true]))->toString());
+
+        $this->expectException(RangeError::class);
+        new Locale('en', ['script' => false]);
+    }
+
+    public function testItRejectsOptionsThatCannotBeConvertedToStrings(): void
+    {
+        $this->expectException(TypeError::class);
+        new Locale('en', ['language' => []]);
+    }
+
     public function testUninitializedSubclassesFailTheBrandCheck(): void
     {
-        $locale = new class extends Locale {
+        $locale = new class () extends Locale {
             public function __construct()
             {
             }
@@ -228,8 +250,66 @@ final class LocaleTest extends TestCase
 
     public function testItDoesNotPresentUndeliveredPropertiesAsImplemented(): void
     {
-        $this->expectException(\Error::class);
-        (new Locale('en'))->__get('calendar');
+        try {
+            (new Locale('en'))->__get('calendar');
+            self::fail('An undelivered property must not be readable.');
+        } catch (\Error $error) {
+            self::assertSame(
+                'Undefined property Midnight\\Intl\\Spec\\Locale::$calendar.',
+                $error->getMessage(),
+            );
+        }
+    }
+
+    public function testItReportsOnlyPresentDeliveredProperties(): void
+    {
+        $locale = new Locale('en-US');
+
+        self::assertTrue(isset($locale->baseName));
+        self::assertTrue(isset($locale->language));
+        self::assertTrue(isset($locale->region));
+        self::assertFalse(isset($locale->script));
+        self::assertFalse(isset($locale->calendar));
+        self::assertFalse(isset($locale->unknown));
+    }
+
+    public function testEveryPublicPropertyIsReadOnly(): void
+    {
+        $locale = new Locale('en');
+
+        foreach ([
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants',
+        ] as $property) {
+            try {
+                $locale->__set($property, 'value');
+                self::fail(sprintf('Expected %s to be read-only.', $property));
+            } catch (TypeError) {
+                self::addToAssertionCount(1);
+            }
+        }
+    }
+
+    public function testUninitializedSubclassesRejectPropertyAccess(): void
+    {
+        $locale = new class () extends Locale {
+            public function __construct()
+            {
+            }
+        };
+
+        $this->expectException(TypeError::class);
+        $locale->__get('language');
     }
 }
 

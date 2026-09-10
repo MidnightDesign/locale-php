@@ -1,0 +1,16 @@
+name: Scheduled compatibility evidence
+
+on:
+  schedule:
+    - cron: '23 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scheduled:
+    uses: ./.github/workflows/ci-scheduled.yml
+
+  mutation:
+    uses: ./.github/workflows/ci-quality.yml

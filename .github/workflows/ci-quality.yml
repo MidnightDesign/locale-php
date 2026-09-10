@@ -1,0 +1,251 @@
+name: Reusable quality evidence
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  COMPOSER_ROOT_VERSION: dev-main
+  LC_ALL: C
+  TZ: UTC
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          extensions: intl
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: mkdir -p build/analysis && vendor/bin/phpstan analyse --no-progress --memory-limit=512M --error-format=json > build/analysis/phpstan.json
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phpstan-report
+          path: build/analysis/phpstan.json
+          if-no-files-found: error
+
+  psalm:
+    name: Psalm PHP ${{ matrix.php }} / intl ${{ matrix.intlModel }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.5']
+        intlModel: [absent, present]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          extensions: intl
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - shell: bash
+        run: |
+          mkdir -p build/analysis
+          intl_option=""
+          if [[ "${{ matrix.intlModel }}" == "absent" ]]; then intl_option="--disable-extension=intl"; fi
+          vendor/bin/psalm --php-version="${{ matrix.php }}" $intl_option --memory-limit=512M --no-cache --no-diff --no-progress --report=build/analysis/psalm.json
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: psalm-php-${{ matrix.php }}-intl-${{ matrix.intlModel }}
+          path: build/analysis/psalm.json
+          if-no-files-found: error
+
+  mago:
+    name: Mago PHP ${{ matrix.php }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.5']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: mkdir -p build/analysis && vendor/bin/mago --php-version="${{ matrix.php }}" --colors=never analyze --reporting-format=json src > build/analysis/mago.json
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mago-php-${{ matrix.php }}
+          path: build/analysis/mago.json
+          if-no-files-found: error
+
+  style:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: mkdir -p build/style && vendor/bin/php-cs-fixer check --format=json > build/style/php-cs-fixer.json
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: style-report
+          path: build/style/php-cs-fixer.json
+          if-no-files-found: error
+
+  regeneration:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: composer data:check
+      - run: composer test262:check
+      - run: mkdir -p build/integrity && cp resources/data/manifest.json tests/Test262/baseline.json tests/Test262/evidence.json build/integrity/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: regeneration-and-source-integrity
+          path: build/integrity
+          if-no-files-found: error
+
+  dependencies:
+    name: Composer ${{ matrix.boundary }} dependencies
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        boundary: [lowest, highest]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - shell: bash
+        run: |
+          if [[ "${{ matrix.boundary }}" == "lowest" ]]; then
+            composer update --prefer-lowest --prefer-stable --no-interaction --no-progress
+          else
+            composer update --no-interaction --no-progress
+          fi
+      - run: composer test
+      - run: composer validate --strict
+
+  install-matrix:
+    runs-on: ubuntu-24.04
+    outputs:
+      install: ${{ steps.matrix.outputs.install }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - id: matrix
+        shell: bash
+        run: echo "install=$(php tools/ci-matrix.php install)" >> "$GITHUB_OUTPUT"
+
+  install:
+    name: Install / PHP ${{ matrix.php }} / ${{ matrix.runner }}
+    needs: install-matrix
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.install-matrix.outputs.install) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: php tools/test-package-install.php
+
+  mutation:
+    name: Mutation / intl ${{ matrix.extensionMode }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        extensionMode: [absent, disabled, native]
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: xdebug
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Preserve raw test coverage and JUnit evidence
+        run: |
+          mkdir -p build/infection
+          vendor/bin/phpunit --coverage-xml=build/infection/coverage-xml --log-junit=build/infection/junit.xml
+      - run: composer mutation -- --coverage=build/infection --skip-initial-tests
+      - if: always()
+        shell: bash
+        run: mkdir -p build/matrix && cp build/infection/infection.json "build/matrix/${{ matrix.extensionMode }}.json"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mutation-${{ matrix.extensionMode }}
+          path: |
+            build/infection
+            build/matrix
+          if-no-files-found: error
+
+  mutation-score:
+    needs: mutation
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: mutation-*
+          path: build/downloaded
+          merge-multiple: true
+      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix/absent.json build/downloaded/matrix/disabled.json build/downloaded/matrix/native.json
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: matrix-mutation-score
+          path: build/matrix-mutation-score.json
+          if-no-files-found: error

@@ -1,0 +1,139 @@
+name: Reusable scheduled evidence
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  COMPOSER_ROOT_VERSION: dev-main
+  LC_ALL: C
+  TZ: UTC
+
+jobs:
+  matrix:
+    runs-on: ubuntu-24.04
+    outputs:
+      advisory: ${{ steps.matrix.outputs.advisory }}
+      icu: ${{ steps.matrix.outputs.icu }}
+      specialized: ${{ steps.matrix.outputs.specialized }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: '8.5'
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - id: matrix
+        shell: bash
+        run: |
+          echo "advisory=$(php tools/ci-matrix.php advisory-runtime)" >> "$GITHUB_OUTPUT"
+          echo "icu=$(php tools/ci-matrix.php icu-runtime)" >> "$GITHUB_OUTPUT"
+          echo "specialized=$(php tools/ci-matrix.php specialized-runtime)" >> "$GITHUB_OUTPUT"
+
+  specialized:
+    name: Specialized / ${{ matrix.runner }} / PHP ${{ matrix.php }} / ${{ matrix.architecture }} / TS ${{ matrix.threadSafe }} / intl ${{ matrix.extensionMode }}
+    needs: matrix
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.specialized) }}
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          architecture: ${{ matrix.architecture }}
+          ts: ${{ matrix.threadSafe }}
+          extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: php tools/assert-ci-runtime.php "${{ matrix.integerSize }}" "${{ matrix.threadSafe }}"
+      - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: specialized-${{ matrix.runner }}-php-${{ matrix.php }}-${{ matrix.architecture }}-ts-${{ matrix.threadSafe }}-intl-${{ matrix.extensionMode }}
+          path: build/ci
+          if-no-files-found: error
+          retention-days: 30
+
+  icu:
+    name: ICU ${{ matrix.icu }} / PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
+    needs: matrix
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.icu) }}
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ matrix.extension }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: php tools/assert-ci-runtime.php 8 false "${{ matrix.icu }}"
+      - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: icu-${{ matrix.boundary }}-php-${{ matrix.php }}-intl-${{ matrix.extensionMode }}
+          path: build/ci
+          if-no-files-found: error
+          retention-days: 30
+
+  advisory-php:
+    name: Advisory PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
+    needs: matrix
+    runs-on: ${{ matrix.runner }}
+    continue-on-error: true
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.advisory) }}
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
+      - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: advisory-php-${{ matrix.php }}-intl-${{ matrix.extensionMode }}
+          path: build/ci
+          if-no-files-found: warn
+          retention-days: 30
