@@ -1,0 +1,14 @@
+services:
+  php:
+    volumes:
+      - codex-vendor:/app/vendor
+      - codex-composer-cache:/var/cache/composer
+    environment:
+      COMPOSER_CACHE_DIR: /var/cache/composer
+      COMPOSER_ROOT_VERSION: dev-main
+
+volumes:
+  codex-vendor:
+    name: locale-php-codex-vendor
+  codex-composer-cache:
+    name: locale-php-codex-composer-cache
