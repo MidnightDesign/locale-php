@@ -1,0 +1,135 @@
+{
+    "test262Revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93",
+    "fixtures": [
+        {
+            "path": "test/intl402/Locale/getters-missing.js",
+            "sha256": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#1",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#2",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#3",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#4",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#5",
+                    "status": "translation_gap",
+                    "reason": "The variants property is outside the initial language/script/region slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#6",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#7",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#8",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#9",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#10",
+                    "status": "translation_gap",
+                    "reason": "The variants property is outside the initial language/script/region slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#11",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#12",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#13",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#14",
+                    "status": "applicable",
+                    "phpRepresentations": [
+                        "direct"
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#15",
+                    "status": "translation_gap",
+                    "reason": "The variants property is outside the initial language/script/region slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#16",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#17",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#18",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#19",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                },
+                {
+                    "id": "test/intl402/Locale/getters-missing.js#20",
+                    "status": "translation_gap",
+                    "reason": "Variants in the input identifier are outside the initial slice."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    "name": "midnight/intl-locale",
+    "description": "ECMAScript Intl.Locale for PHP",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/MidnightDesign/locale-php",
+    "support": {
+        "issues": "https://github.com/MidnightDesign/locale-php/issues",
+        "source": "https://github.com/MidnightDesign/locale-php"
+    },
+    "require": {
+        "php": ">=8.2"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Midnight\\Intl\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Midnight\\Intl\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:package": "sh tools/test-package-install.sh",
+        "test:unit": "phpunit --testsuite unit",
+        "analyse": "phpstan analyse --no-progress",
+        "data:generate": "php tools/generate-data.php",
+        "data:check": "php tools/generate-data.php --check",
+        "test262:generate": "php tools/transpile-test262.php",
+        "test262:check": "php tools/transpile-test262.php --check"
+    }
+}
