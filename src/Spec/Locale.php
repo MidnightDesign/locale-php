@@ -108,7 +108,7 @@ class Locale
 
     public function __set(string $name, mixed $value): void
     {
-        if (in_array($name, self::publicProperties(), true)) {
+        if (self::isPublicProperty($name)) {
             throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
         }
 
@@ -117,9 +117,35 @@ class Locale
 
     public function __isset(string $name): bool
     {
-        return (array_key_exists($name, $this->consumerProperties)
-                || in_array($name, self::deliveredProperties(), true))
+        return (array_key_exists($name, $this->consumerProperties) || self::isDeliveredProperty($name))
             && $this->__get($name) !== null;
+    }
+
+    private static function isDeliveredProperty(string $name): bool
+    {
+        return match ($name) {
+            'baseName', 'language', 'script', 'region' => true,
+            default => false,
+        };
+    }
+
+    private static function isPublicProperty(string $name): bool
+    {
+        return match ($name) {
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants' => true,
+            default => false,
+        };
     }
 
     public function toString(): string
@@ -227,28 +253,4 @@ class Locale
         }
     }
 
-    /** @return list<string> */
-    private static function deliveredProperties(): array
-    {
-        return ['baseName', 'language', 'script', 'region'];
-    }
-
-    /** @return list<string> */
-    private static function publicProperties(): array
-    {
-        return [
-            'baseName',
-            'calendar',
-            'caseFirst',
-            'collation',
-            'firstDayOfWeek',
-            'hourCycle',
-            'language',
-            'numberingSystem',
-            'numeric',
-            'region',
-            'script',
-            'variants',
-        ];
-    }
 }

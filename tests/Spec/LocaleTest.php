@@ -24,6 +24,7 @@ final class LocaleTest extends TestCase
         self::assertSame('en', $locale->language);
         self::assertSame('Latn', $locale->script);
         self::assertSame('US', $locale->region);
+        self::assertTrue(isset($locale->script));
     }
 
     /** @return iterable<string, array{array<string, string>|object}> */

@@ -49,7 +49,7 @@ final class CiProvenanceTest extends TestCase
             self::assertNull($evidence['extension']['icuVersion']);
         }
         self::assertSame(hash_file('sha256', $root.'/composer.lock'), $evidence['dependencies']['lockSha256']);
-        self::assertMatchesRegularExpression('/^[a-f0-9]{40}$/', $evidence['actions']['checkout']);
+        self::assertSame('11d5960a326750d5838078e36cf38b85af677262', $evidence['actions']['checkout']);
         self::assertSame(
             'b1c961988b9a07894b1dc3dc2b5626ea48387d61',
             $evidence['conformanceBaseline']['ecma402'],

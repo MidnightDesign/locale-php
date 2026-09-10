@@ -6,31 +6,34 @@ namespace Midnight\Intl\Tools\Ci;
 
 /**
  * @phpstan-type RuntimeLane array{runner: string, php: string, extensionMode: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
+ * @phpstan-type RuntimeBaseLane array{runner: string, php: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type InstallLane array{runner: string, php: string}
+ * @phpstan-type StableRunner array{runner: string, osFamily: string, architecture: string, integerSize: int}
  * @phpstan-type ArmLane array{runner: string, php: string, architecture: string}
- * @phpstan-type WindowsLane array{runner: string, php: string, architecture: string, threadSafe: bool, runtimeVersion?: string, runtimeUrl?: string, runtimeSha256?: string}
+ * @phpstan-type WindowsX86Lane array{runner: string, php: string, architecture: string, threadSafe: bool, runtimeVersion: string, runtimeUrl: string, runtimeSha256: string}
+ * @phpstan-type WindowsThreadSafeLane array{runner: string, php: string, architecture: string, threadSafe: bool}
  * @phpstan-type IcuLane array{boundary: string, php: string, icu: string, extension: string}
  * @phpstan-type ArmRuntimeLane array{runner: string, php: string, architecture: string, extensionMode: string}
- * @phpstan-type WindowsRuntimeLane array{runner: string, php: string, architecture: string, threadSafe: bool, extensionMode: string}
+ * @phpstan-type WindowsX86RuntimeLane array{runner: string, php: string, architecture: string, threadSafe: bool, runtimeVersion: string, runtimeUrl: string, runtimeSha256: string, extensionMode: string}
+ * @phpstan-type WindowsThreadSafeRuntimeLane array{runner: string, php: string, architecture: string, threadSafe: bool, extensionMode: string}
  * @phpstan-type IcuRuntimeLane array{boundary: string, php: string, icu: string, extension: string, runner: string, extensionMode: string}
- * @phpstan-type SpecializedRuntimeLane array{runner: string, php: string, architecture: string, threadSafe: bool, integerSize: int, extensionMode: string}
  */
 final class Matrix
 {
     /**
      * @param list<string> $stablePhp
      * @param list<string> $advisoryPhp
-     * @param list<string> $runners
+     * @param list<StableRunner> $stableRunners
      * @param list<string> $extensionModes
      * @param list<ArmLane> $armLanes
-     * @param list<WindowsLane> $windowsX86Lanes
-     * @param list<WindowsLane> $windowsThreadSafeLanes
+     * @param list<WindowsX86Lane> $windowsX86Lanes
+     * @param list<WindowsThreadSafeLane> $windowsThreadSafeLanes
      * @param list<IcuLane> $icuLanes
      */
     private function __construct(
         private array $stablePhp,
         private array $advisoryPhp,
-        private array $runners,
+        private array $stableRunners,
         private array $extensionModes,
         private array $armLanes,
         private array $windowsX86Lanes,
@@ -54,55 +57,36 @@ final class Matrix
         return new self(
             self::stringList($data, 'stablePhp'),
             self::stringList($data, 'advisoryPhp'),
-            self::stringList($data, 'runners'),
+            self::stableRunnersFromData($data),
             self::stringList($data, 'extensionModes'),
             self::armLanesFromData($data),
-            self::windowsLanes($data, 'windowsX86'),
-            self::windowsLanes($data, 'windowsThreadSafe'),
+            self::windowsX86LanesFromData($data),
+            self::windowsThreadSafeLanesFromData($data),
             self::icuLanesFromData($data),
         );
-    }
-
-    /** @return list<string> */
-    public function stablePhp(): array
-    {
-        return $this->stablePhp;
-    }
-
-    /** @return list<string> */
-    public function advisoryPhp(): array
-    {
-        return $this->advisoryPhp;
-    }
-
-    /** @return list<string> */
-    public function extensionModes(): array
-    {
-        return $this->extensionModes;
     }
 
     /** @return list<RuntimeLane> */
     public function runtimeLanes(): array
     {
         $lanes = [];
-        foreach ($this->runners as $runner) {
+        foreach ($this->stableRunners as $runner) {
             foreach ($this->stablePhp as $php) {
-                foreach ($this->extensionModes as $extensionMode) {
-                    $runtime = self::runnerRuntime($runner);
-                    $lanes[] = [
-                        'runner' => $runner,
-                        'php' => $php,
-                        'extensionMode' => $extensionMode,
-                        'threadSafe' => false,
-                        'integerSize' => 8,
-                        'osFamily' => $runtime['osFamily'],
-                        'architecture' => $runtime['architecture'],
-                    ];
-                }
+                $lanes[] = [
+                    'runner' => $runner['runner'],
+                    'php' => $php,
+                    'threadSafe' => false,
+                    'integerSize' => $runner['integerSize'],
+                    'osFamily' => $runner['osFamily'],
+                    'architecture' => $runner['architecture'],
+                ];
             }
         }
 
-        return $lanes;
+        /** @phpstan-var list<RuntimeLane> $result */
+        $result = self::withExtensionModes($lanes, $this->extensionModes);
+
+        return $result;
     }
 
     /** @return list<InstallLane> */
@@ -112,72 +96,51 @@ final class Matrix
         $maximumPhp = end($this->stablePhp);
 
         $lanes = [];
-        foreach ($this->runners as $runner) {
-            $lanes[] = ['runner' => $runner, 'php' => $minimumPhp];
-            $lanes[] = ['runner' => $runner, 'php' => $maximumPhp];
+        foreach ($this->stableRunners as $runner) {
+            $lanes[] = ['runner' => $runner['runner'], 'php' => $minimumPhp];
+            $lanes[] = ['runner' => $runner['runner'], 'php' => $maximumPhp];
         }
 
         return $lanes;
     }
 
-    /** @return list<ArmLane> */
-    public function armLanes(): array
-    {
-        return $this->armLanes;
-    }
-
-    /** @return list<WindowsLane> */
-    public function windowsX86Lanes(): array
-    {
-        return $this->windowsX86Lanes;
-    }
-
-    /** @return list<WindowsLane> */
-    public function windowsThreadSafeLanes(): array
-    {
-        return $this->windowsThreadSafeLanes;
-    }
-
-    /** @return list<IcuLane> */
-    public function icuLanes(): array
-    {
-        return $this->icuLanes;
-    }
-
     /** @return list<ArmRuntimeLane> */
     public function armRuntimeLanes(): array
     {
-        $result = [];
-        foreach ($this->armLanes as $lane) {
-            foreach ($this->extensionModes as $mode) {
-                $result[] = [...$lane, 'extensionMode' => $mode];
-            }
-        }
+        /** @phpstan-var list<ArmRuntimeLane> $result */
+        $result = self::withExtensionModes($this->armLanes, $this->extensionModes);
 
         return $result;
     }
 
-    /** @return list<WindowsRuntimeLane> */
+    /** @return list<WindowsX86RuntimeLane> */
     public function windowsX86RuntimeLanes(): array
     {
-        return $this->windowsRuntimeLanes($this->windowsX86Lanes);
+        /** @phpstan-var list<WindowsX86RuntimeLane> $result */
+        $result = self::withExtensionModes($this->windowsX86Lanes, $this->extensionModes);
+
+        return $result;
     }
 
-    /** @return list<WindowsRuntimeLane> */
+    /** @return list<WindowsThreadSafeRuntimeLane> */
     public function windowsThreadSafeRuntimeLanes(): array
     {
-        return $this->windowsRuntimeLanes($this->windowsThreadSafeLanes);
+        /** @phpstan-var list<WindowsThreadSafeRuntimeLane> $result */
+        $result = self::withExtensionModes($this->windowsThreadSafeLanes, $this->extensionModes);
+
+        return $result;
     }
 
     /** @return list<IcuRuntimeLane> */
     public function icuRuntimeLanes(): array
     {
-        $result = [];
+        $lanes = [];
         foreach ($this->icuLanes as $lane) {
-            foreach (['disabled', 'native'] as $mode) {
-                $result[] = [...$lane, 'runner' => 'ubuntu-24.04', 'extensionMode' => $mode];
-            }
+            $lanes[] = [...$lane, 'runner' => 'ubuntu-24.04'];
         }
+
+        /** @phpstan-var list<IcuRuntimeLane> $result */
+        $result = self::withExtensionModes($lanes, ['disabled', 'native']);
 
         return $result;
     }
@@ -185,46 +148,21 @@ final class Matrix
     /** @return list<RuntimeLane> */
     public function advisoryRuntimeLanes(): array
     {
-        $result = [];
+        $runner = $this->stableRunner('ubuntu-24.04');
+        $lanes = [];
         foreach ($this->advisoryPhp as $php) {
-            foreach ($this->extensionModes as $mode) {
-                $result[] = [
-                    'runner' => 'ubuntu-24.04',
-                    'php' => $php,
-                    'extensionMode' => $mode,
-                    'threadSafe' => false,
-                    'integerSize' => 8,
-                    'osFamily' => 'Linux',
-                    'architecture' => 'x64',
-                ];
-            }
+            $lanes[] = [
+                'runner' => $runner['runner'],
+                'php' => $php,
+                'threadSafe' => false,
+                'integerSize' => $runner['integerSize'],
+                'osFamily' => $runner['osFamily'],
+                'architecture' => $runner['architecture'],
+            ];
         }
 
-        return $result;
-    }
-
-    /** @return list<SpecializedRuntimeLane> */
-    public function specializedRuntimeLanes(): array
-    {
-        $result = [];
-        foreach ($this->armLanes as $lane) {
-            foreach ($this->extensionModes as $mode) {
-                $result[] = [
-                    ...$lane,
-                    'threadSafe' => false,
-                    'integerSize' => 8,
-                    'extensionMode' => $mode,
-                ];
-            }
-        }
-        foreach ([$this->windowsX86Lanes, $this->windowsThreadSafeLanes] as $lanes) {
-            foreach ($this->windowsRuntimeLanes($lanes) as $lane) {
-                $result[] = [
-                    ...$lane,
-                    'integerSize' => $lane['architecture'] === 'x86' ? 4 : 8,
-                ];
-            }
-        }
+        /** @phpstan-var list<RuntimeLane> $result */
+        $result = self::withExtensionModes($lanes, $this->extensionModes);
 
         return $result;
     }
@@ -245,6 +183,37 @@ final class Matrix
                 throw new \RuntimeException(sprintf('CI matrix key %s must contain strings.', $key));
             }
             $result[] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array<mixed> $data
+     * @return list<StableRunner>
+     */
+    private static function stableRunnersFromData(array $data): array
+    {
+        $records = $data['stableRunners'] ?? null;
+        if (!is_array($records) || $records === []) {
+            throw new \RuntimeException('CI matrix key stableRunners must be a non-empty list.');
+        }
+
+        $result = [];
+        foreach ($records as $record) {
+            if (!is_array($record)
+                || !is_string($record['runner'] ?? null)
+                || !is_string($record['osFamily'] ?? null)
+                || !is_string($record['architecture'] ?? null)
+                || !is_int($record['integerSize'] ?? null)) {
+                throw new \RuntimeException('CI matrix stable runner is invalid.');
+            }
+            $result[] = [
+                'runner' => $record['runner'],
+                'osFamily' => $record['osFamily'],
+                'architecture' => $record['architecture'],
+                'integerSize' => $record['integerSize'],
+            ];
         }
 
         return $result;
@@ -309,15 +278,16 @@ final class Matrix
         return $result;
     }
 
-    /** @param array<mixed> $data
-     * @return list<WindowsLane>
+    /**
+     * @param array<mixed> $data
+     * @return list<WindowsX86Lane>
      */
-    private static function windowsLanes(array $data, string $key): array
+    private static function windowsX86LanesFromData(array $data): array
     {
         $specialized = $data['specialized'] ?? null;
-        $records = is_array($specialized) ? ($specialized[$key] ?? null) : null;
+        $records = is_array($specialized) ? ($specialized['windowsX86'] ?? null) : null;
         if (!is_array($records)) {
-            throw new \RuntimeException(sprintf('CI matrix key %s must be a list.', $key));
+            throw new \RuntimeException('CI matrix key windowsX86 must be a list.');
         }
 
         $result = [];
@@ -327,60 +297,91 @@ final class Matrix
                 || !is_string($record['php'] ?? null)
                 || !is_string($record['architecture'] ?? null)
                 || !is_bool($record['threadSafe'] ?? null)) {
-                throw new \RuntimeException(sprintf('CI matrix lane %s is invalid.', $key));
+                throw new \RuntimeException('CI matrix Windows x86 lane is invalid.');
             }
-            $lane = [
+            $runtimeVersion = $record['runtimeVersion'] ?? null;
+            $runtimeUrl = $record['runtimeUrl'] ?? null;
+            $runtimeSha256 = $record['runtimeSha256'] ?? null;
+            if (!is_string($runtimeVersion) || !is_string($runtimeUrl) || !is_string($runtimeSha256)) {
+                throw new \RuntimeException('CI matrix Windows x86 runtime pin is incomplete.');
+            }
+            if (!str_starts_with($runtimeVersion, $record['php'].'.')
+                || !str_starts_with($runtimeUrl, 'https://downloads.php.net/~windows/releases/php-')
+                || preg_match('/^[a-f0-9]{64}$/D', $runtimeSha256) !== 1) {
+                throw new \RuntimeException('CI matrix Windows x86 runtime pin is invalid.');
+            }
+            $result[] = [
                 'runner' => $record['runner'],
                 'php' => $record['php'],
                 'architecture' => $record['architecture'],
                 'threadSafe' => $record['threadSafe'],
+                'runtimeVersion' => $runtimeVersion,
+                'runtimeUrl' => $runtimeUrl,
+                'runtimeSha256' => $runtimeSha256,
             ];
-            if ($key === 'windowsX86') {
-                $runtimeVersion = $record['runtimeVersion'] ?? null;
-                $runtimeUrl = $record['runtimeUrl'] ?? null;
-                $runtimeSha256 = $record['runtimeSha256'] ?? null;
-                if (!is_string($runtimeVersion) || !is_string($runtimeUrl) || !is_string($runtimeSha256)) {
-                    throw new \RuntimeException('CI matrix Windows x86 runtime pin is incomplete.');
-                }
-                if (!str_starts_with($runtimeVersion, $record['php'].'.')
-                    || !str_starts_with($runtimeUrl, 'https://downloads.php.net/~windows/releases/php-')
-                    || preg_match('/^[a-f0-9]{64}$/D', $runtimeSha256) !== 1) {
-                    throw new \RuntimeException('CI matrix Windows x86 runtime pin is invalid.');
-                }
-                $lane['runtimeVersion'] = $runtimeVersion;
-                $lane['runtimeUrl'] = $runtimeUrl;
-                $lane['runtimeSha256'] = $runtimeSha256;
-            }
-            $result[] = $lane;
         }
 
         return $result;
     }
 
     /**
-     * @param list<WindowsLane> $lanes
-     * @return list<WindowsRuntimeLane>
+     * @param array<mixed> $data
+     * @return list<WindowsThreadSafeLane>
      */
-    private function windowsRuntimeLanes(array $lanes): array
+    private static function windowsThreadSafeLanesFromData(array $data): array
     {
+        $specialized = $data['specialized'] ?? null;
+        $records = is_array($specialized) ? ($specialized['windowsThreadSafe'] ?? null) : null;
+        if (!is_array($records)) {
+            throw new \RuntimeException('CI matrix key windowsThreadSafe must be a list.');
+        }
+
         $result = [];
-        foreach ($lanes as $lane) {
-            foreach ($this->extensionModes as $mode) {
-                $result[] = [...$lane, 'extensionMode' => $mode];
+        foreach ($records as $record) {
+            if (!is_array($record)
+                || !is_string($record['runner'] ?? null)
+                || !is_string($record['php'] ?? null)
+                || !is_string($record['architecture'] ?? null)
+                || !is_bool($record['threadSafe'] ?? null)) {
+                throw new \RuntimeException('CI matrix Windows thread-safe lane is invalid.');
             }
+            $result[] = [
+                'runner' => $record['runner'],
+                'php' => $record['php'],
+                'architecture' => $record['architecture'],
+                'threadSafe' => $record['threadSafe'],
+            ];
         }
 
         return $result;
     }
 
-    /** @return array{osFamily: string, architecture: string} */
-    private static function runnerRuntime(string $runner): array
+    /** @return StableRunner */
+    private function stableRunner(string $label): array
     {
-        return match ($runner) {
-            'ubuntu-24.04' => ['osFamily' => 'Linux', 'architecture' => 'x64'],
-            'windows-2022' => ['osFamily' => 'Windows', 'architecture' => 'x64'],
-            'macos-15' => ['osFamily' => 'Darwin', 'architecture' => 'arm64'],
-            default => throw new \RuntimeException(sprintf('Stable runner %s has no runtime identity.', $runner)),
-        };
+        foreach ($this->stableRunners as $runner) {
+            if ($runner['runner'] === $label) {
+                return $runner;
+            }
+        }
+
+        throw new \LogicException(sprintf('Stable runner %s is not configured.', $label));
+    }
+
+    /**
+     * @param list<array<string, mixed>> $lanes
+     * @param list<string> $modes
+     * @return list<array<string, mixed>>
+     */
+    private static function withExtensionModes(array $lanes, array $modes): array
+    {
+        $result = [];
+        foreach ($lanes as $lane) {
+            foreach ($modes as $mode) {
+                $result[] = [...$lane, 'extensionMode' => $mode];
+            }
+        }
+
+        return $result;
     }
 }

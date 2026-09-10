@@ -146,10 +146,10 @@ final class Provenance
     {
         $data = self::readJson($path);
         return [
-            'checkout' => self::actionPin($data, 'checkout'),
-            'setupPhp' => self::actionPin($data, 'setupPhp'),
-            'uploadArtifact' => self::actionPin($data, 'uploadArtifact'),
-            'downloadArtifact' => self::actionPin($data, 'downloadArtifact'),
+            'checkout' => self::actionPin($data, 'actions/checkout'),
+            'setupPhp' => self::actionPin($data, 'shivammathur/setup-php'),
+            'uploadArtifact' => self::actionPin($data, 'actions/upload-artifact'),
+            'downloadArtifact' => self::actionPin($data, 'actions/download-artifact'),
         ];
     }
 

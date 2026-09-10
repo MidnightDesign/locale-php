@@ -1,0 +1,92 @@
+name: Reusable runtime lane
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        type: string
+        required: true
+      php:
+        type: string
+        required: true
+      extension-mode:
+        type: string
+        required: true
+      setup-extension:
+        type: string
+        required: true
+      thread-safe:
+        type: boolean
+        required: true
+      integer-size:
+        type: number
+        required: true
+      os-family:
+        type: string
+        required: true
+      architecture:
+        type: string
+        required: true
+      expected-version:
+        type: string
+        required: true
+      expected-icu:
+        type: string
+        default: ''
+      artifact-name:
+        type: string
+        required: true
+      advisory:
+        type: boolean
+        default: false
+      timeout-minutes:
+        type: number
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  COMPOSER_ROOT_VERSION: dev-main
+  LC_ALL: C
+  TZ: UTC
+
+jobs:
+  evidence:
+    runs-on: ${{ inputs.runner }}
+    continue-on-error: ${{ inputs.advisory }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ inputs.extension-mode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ inputs.php }}
+          tools: composer:2.10.3
+          extensions: ${{ inputs.setup-extension }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: none
+        env:
+          fail-fast: true
+          phpts: ${{ inputs.thread-safe && 'ts' || 'nts' }}
+          update: true
+      - if: ${{ !inputs.advisory }}
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - if: ${{ inputs.advisory }}
+        run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
+      - if: ${{ inputs.expected-icu == '' }}
+        run: php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}"
+      - if: ${{ inputs.expected-icu != '' }}
+        run: php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}" "${{ inputs.expected-icu }}"
+      - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ inputs.php }}" "${{ inputs.runner }}" "${{ inputs.extension-mode }}"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: build/ci
+          if-no-files-found: ${{ inputs.advisory && 'warn' || 'error' }}
+          retention-days: 30
