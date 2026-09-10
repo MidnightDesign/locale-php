@@ -6,8 +6,8 @@ namespace Midnight\Intl\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
-use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Data\LocaleAliases;
+use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
 
 /**
@@ -15,32 +15,10 @@ use Midnight\Intl\Internal\Test262\OptionBag;
  * @property-read string $language
  * @property-read string|null $script
  * @property-read string|null $region
+ * @psalm-api
  */
-#[\AllowDynamicProperties]
 class Locale
 {
-    private const DELIVERED_PROPERTIES = [
-        'baseName',
-        'language',
-        'script',
-        'region',
-    ];
-
-    private const PUBLIC_PROPERTIES = [
-        'baseName',
-        'calendar',
-        'caseFirst',
-        'collation',
-        'firstDayOfWeek',
-        'hourCycle',
-        'language',
-        'numberingSystem',
-        'numeric',
-        'region',
-        'script',
-        'variants',
-    ];
-
     private string $localeBaseName;
 
     private string $localeLanguage;
@@ -50,6 +28,9 @@ class Locale
     private ?string $localeRegion;
 
     private bool $initialized = false;
+
+    /** @var array<string, mixed> */
+    private array $consumerProperties = [];
 
     public function __construct(mixed $tag, mixed $options = null)
     {
@@ -68,6 +49,7 @@ class Locale
             throw new TypeError('The locale options must not be null.');
         }
 
+        $matches = [];
         if (!preg_match('/^(?<language>[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:-(?<script>[A-Za-z]{4}))?(?:-(?<region>[A-Za-z]{2}|[0-9]{3}))?$/D', $tag, $matches)) {
             throw new RangeError(sprintf('Invalid locale identifier: "%s".', $tag));
         }
@@ -114,28 +96,56 @@ class Locale
             throw new TypeError('Locale is not initialized.');
         }
 
-        return match ($name) {
-            'baseName' => $this->localeBaseName,
-            'language' => $this->localeLanguage,
-            'script' => $this->localeScript,
-            'region' => $this->localeRegion,
+        return match (true) {
+            array_key_exists($name, $this->consumerProperties) => $this->consumerProperties[$name],
+            $name === 'baseName' => $this->localeBaseName,
+            $name === 'language' => $this->localeLanguage,
+            $name === 'script' => $this->localeScript,
+            $name === 'region' => $this->localeRegion,
             default => throw new \Error(sprintf('Undefined property %s::$%s.', self::class, $name)),
         };
     }
 
     public function __set(string $name, mixed $value): void
     {
-        if (in_array($name, self::PUBLIC_PROPERTIES, true)) {
+        if (self::isPublicProperty($name)) {
             throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
         }
 
-        $this->{$name} = $value;
+        $this->consumerProperties[$name] = $value;
     }
 
     public function __isset(string $name): bool
     {
-        return in_array($name, self::DELIVERED_PROPERTIES, true)
+        return (array_key_exists($name, $this->consumerProperties) || self::isDeliveredProperty($name))
             && $this->__get($name) !== null;
+    }
+
+    private static function isDeliveredProperty(string $name): bool
+    {
+        return match ($name) {
+            'baseName', 'language', 'script', 'region' => true,
+            default => false,
+        };
+    }
+
+    private static function isPublicProperty(string $name): bool
+    {
+        return match ($name) {
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'variants' => true,
+            default => false,
+        };
     }
 
     public function toString(): string
@@ -164,8 +174,10 @@ class Locale
                 : OptionValue::missing();
         }
 
-        return property_exists($options, $name)
-            ? OptionValue::present($options->{$name})
+        $properties = get_object_vars($options);
+
+        return array_key_exists($name, $properties)
+            ? OptionValue::present($properties[$name])
             : OptionValue::missing();
     }
 
@@ -225,7 +237,7 @@ class Locale
             $this->localeLanguage = self::normalizeLanguage($parts[0]);
 
             foreach (array_slice($parts, 1) as $part) {
-                if ($this->localeScript === null && preg_match('/^[A-Za-z]{4}$/D', $part)) {
+                if ($this->localeScript === null && strlen($part) === 4) {
                     $this->localeScript = self::normalizeScript($part);
                 } elseif ($this->localeRegion === null) {
                     $this->localeRegion = self::normalizeRegion($part);
@@ -240,4 +252,5 @@ class Locale
             $this->localeRegion = LocaleAliases::REGION[$this->localeRegion] ?? $this->localeRegion;
         }
     }
+
 }

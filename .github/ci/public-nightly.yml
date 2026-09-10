@@ -1,0 +1,21 @@
+name: Nightly compatibility evidence
+
+on:
+  schedule:
+    - cron: '23 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nightly:
+    uses: ./.github/workflows/ci-scheduled.yml
+    with:
+      profile: nightly
+      timeout-minutes: 60
+
+  quality:
+    uses: ./.github/workflows/ci-quality.yml
+    with:
+      timeout-minutes: 60

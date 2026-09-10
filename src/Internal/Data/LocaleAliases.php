@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Internal\Data;
 
-final class LocaleAliases
+enum LocaleAliases
 {
+    /** @var string */
     public const CLDR_REVISION = '11299982335beb974c1c63c45265184e759c0f41';
 
-    public const LANGUAGE = array (
+    /** @var array<string, string> */
+    public const LANGUAGE = array(
   'aam' => 'aas',
   'aar' => 'aa',
   'abk' => 'ab',
@@ -446,11 +448,13 @@ final class LocaleAliases
   'zyb' => 'za',
 );
 
-    public const SCRIPT = array (
+    /** @var array<string, string> */
+    public const SCRIPT = array(
   'Qaai' => 'Zinh',
 );
 
-    public const REGION = array (
+    /** @var array<int|string, string> */
+    public const REGION = array(
   '004' => 'AF',
   '008' => 'AL',
   '010' => 'AQ',
@@ -787,8 +791,4 @@ final class LocaleAliases
   'YU' => 'RS',
   'ZR' => 'CD',
 );
-
-    private function __construct()
-    {
-    }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tools\Test262;
 
 use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
+use Midnight\Intl\Tools\PhpExporter;
 
 final class ConstructorFixturePipeline implements FixturePipeline
 {
@@ -109,12 +110,12 @@ final class ConstructorFixturePipeline implements FixturePipeline
      */
     private function render(array $cases, string $fixturePath): string
     {
-        $caseExport = preg_replace('/[ \t]+$/m', '', var_export($cases, true));
+        $caseExport = preg_replace('/[ \t]+$/m', '', PhpExporter::export($cases));
         if ($caseExport === null) {
             throw new \RuntimeException('Unable to format the generated constructor cases.');
         }
 
-        return <<<PHP
+        $generated = <<<PHP
 <?php
 
 declare(strict_types=1);
@@ -171,5 +172,7 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     }
 }
 PHP;
+
+        return $generated."\n";
     }
 }

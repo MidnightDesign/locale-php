@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tools\Test262;
 
+use Midnight\Intl\Tools\PhpExporter;
+
 final class GetterFixturePipeline implements FixturePipeline
 {
     public function __construct(
@@ -123,12 +125,12 @@ final class GetterFixturePipeline implements FixturePipeline
     /** @param array<string, array<string, string|null>> $rows */
     private function render(array $rows, string $fixturePath): string
     {
-        $export = preg_replace('/[ \t]+$/m', '', var_export($rows, true));
+        $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($rows));
         if ($export === null) {
             throw new \RuntimeException('Unable to format the generated getter cases.');
         }
 
-        return <<<PHP
+        $generated = <<<PHP
 <?php
 
 declare(strict_types=1);
@@ -168,5 +170,7 @@ final class GettersMissingTest extends TestCase
     }
 }
 PHP;
+
+        return $generated."\n";
     }
 }

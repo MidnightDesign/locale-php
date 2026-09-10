@@ -12,10 +12,11 @@ use Midnight\Intl\Spec\Locale as SpecLocale;
  * @property-read string $language
  * @property-read string|null $script
  * @property-read string|null $region
+ * @psalm-api
  */
 final class Locale implements \Stringable, \JsonSerializable
 {
-    private SpecLocale $spec;
+    private ?SpecLocale $spec = null;
 
     public function __construct(
         string $tag,
@@ -23,7 +24,7 @@ final class Locale implements \Stringable, \JsonSerializable
         ?string $script = null,
         ?string $region = null,
     ) {
-        if (isset($this->spec)) {
+        if ($this->spec !== null) {
             throw new TypeError('Locale is already initialized.');
         }
 
@@ -45,34 +46,36 @@ final class Locale implements \Stringable, \JsonSerializable
 
     public function toSpec(): SpecLocale
     {
-        return $this->spec;
+        return $this->spec ?? throw new TypeError('Locale is not initialized.');
     }
 
     public function __get(string $name): mixed
     {
-        return $this->spec->{$name};
+        return $this->toSpec()->__get($name);
     }
 
-    public function __set(string $name, mixed $value): void
+    public function __set(string $name, mixed $_value): void
     {
         throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
     }
 
     public function __isset(string $name): bool
     {
-        return isset($this->spec->{$name});
+        return $this->toSpec()->__isset($name);
     }
 
     public function toString(): string
     {
-        return $this->spec->toString();
+        return $this->toSpec()->toString();
     }
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->toString();
     }
 
+    #[\Override]
     public function jsonSerialize(): string
     {
         return $this->toString();

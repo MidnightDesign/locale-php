@@ -7,7 +7,7 @@
         "source": "resources/data/locale-aliases.json",
         "sourceSha256": "17800f5a3d654a5702c295f1d12885bedecf96373e6729579832ac9697071af1",
         "projection": "src/Internal/Data/LocaleAliases.php",
-        "projectionSha256": "a1f77c34ce40e9f42cb97c381b9f35b747071918aa948e6fe4bd940b64aba4e7"
+        "projectionSha256": "90bd8c0c26770eb74ae59eca329bdb259520112541a534f75f8ad326df5b9127"
     },
     "test262": {
         "revision": "419d3e0a2273ba01a3bfcbec423f2801425b8e93"
