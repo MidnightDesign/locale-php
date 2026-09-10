@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
+require $root.'/vendor/autoload.php';
+
 $sourcePath = $root.'/resources/data/locale-aliases.json';
 $source = file_get_contents($sourcePath);
 
@@ -14,9 +16,9 @@ if ($source === false) {
 /** @var array{cldrRevision: string, upstreamSha256: string, language: array<string, string>, script: array<string, string>, region: array<string, string>} $data */
 $data = json_decode($source, true, flags: JSON_THROW_ON_ERROR);
 
-$language = var_export($data['language'], true);
-$script = var_export($data['script'], true);
-$region = var_export($data['region'], true);
+$language = Midnight\Intl\Tools\PhpExporter::export($data['language']);
+$script = Midnight\Intl\Tools\PhpExporter::export($data['script']);
+$region = Midnight\Intl\Tools\PhpExporter::export($data['region']);
 $generated = <<<PHP
 <?php
 
@@ -39,6 +41,7 @@ enum LocaleAliases
     public const REGION = {$region};
 }
 PHP;
+$generated .= "\n";
 
 $target = $root.'/src/Internal/Data/LocaleAliases.php';
 if (in_array('--check', $argv, true)) {

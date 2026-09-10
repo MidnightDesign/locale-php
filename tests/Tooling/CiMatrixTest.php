@@ -21,6 +21,11 @@ final class CiMatrixTest extends TestCase
         self::assertSame(['absent', 'disabled', 'native'], $matrix->extensionModes());
 
         foreach (['ubuntu-24.04', 'windows-2022', 'macos-15'] as $runner) {
+            [$osFamily, $architecture] = match ($runner) {
+                'ubuntu-24.04' => ['Linux', 'x64'],
+                'windows-2022' => ['Windows', 'x64'],
+                'macos-15' => ['Darwin', 'arm64'],
+            };
             foreach ($matrix->stablePhp() as $php) {
                 foreach ($matrix->extensionModes() as $mode) {
                     self::assertContains([
@@ -28,6 +33,9 @@ final class CiMatrixTest extends TestCase
                         'php' => $php,
                         'extensionMode' => $mode,
                         'threadSafe' => false,
+                        'integerSize' => 8,
+                        'osFamily' => $osFamily,
+                        'architecture' => $architecture,
                     ], $lanes);
                 }
             }

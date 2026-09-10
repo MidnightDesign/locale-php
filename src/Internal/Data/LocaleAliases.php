@@ -10,7 +10,7 @@ enum LocaleAliases
     public const CLDR_REVISION = '11299982335beb974c1c63c45265184e759c0f41';
 
     /** @var array<string, string> */
-    public const LANGUAGE = array (
+    public const LANGUAGE = array(
   'aam' => 'aas',
   'aar' => 'aa',
   'abk' => 'ab',
@@ -449,12 +449,12 @@ enum LocaleAliases
 );
 
     /** @var array<string, string> */
-    public const SCRIPT = array (
+    public const SCRIPT = array(
   'Qaai' => 'Zinh',
 );
 
     /** @var array<int|string, string> */
-    public const REGION = array (
+    public const REGION = array(
   '004' => 'AF',
   '008' => 'AL',
   '010' => 'AQ',

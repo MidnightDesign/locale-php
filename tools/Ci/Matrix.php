@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tools\Ci;
 
 /**
- * @phpstan-type RuntimeLane array{runner: string, php: string, extensionMode: string, threadSafe: bool}
+ * @phpstan-type RuntimeLane array{runner: string, php: string, extensionMode: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type InstallLane array{runner: string, php: string}
  * @phpstan-type ArmLane array{runner: string, php: string, architecture: string}
  * @phpstan-type WindowsLane array{runner: string, php: string, architecture: string, threadSafe: bool}
@@ -88,11 +88,15 @@ final class Matrix
         foreach ($this->runners as $runner) {
             foreach ($this->stablePhp as $php) {
                 foreach ($this->extensionModes as $extensionMode) {
+                    $runtime = self::runnerRuntime($runner);
                     $lanes[] = [
                         'runner' => $runner,
                         'php' => $php,
                         'extensionMode' => $extensionMode,
                         'threadSafe' => false,
+                        'integerSize' => 8,
+                        'osFamily' => $runtime['osFamily'],
+                        'architecture' => $runtime['architecture'],
                     ];
                 }
             }
@@ -189,6 +193,9 @@ final class Matrix
                     'php' => $php,
                     'extensionMode' => $mode,
                     'threadSafe' => false,
+                    'integerSize' => 8,
+                    'osFamily' => 'Linux',
+                    'architecture' => 'x64',
                 ];
             }
         }
@@ -347,5 +354,16 @@ final class Matrix
         }
 
         return $result;
+    }
+
+    /** @return array{osFamily: string, architecture: string} */
+    private static function runnerRuntime(string $runner): array
+    {
+        return match ($runner) {
+            'ubuntu-24.04' => ['osFamily' => 'Linux', 'architecture' => 'x64'],
+            'windows-2022' => ['osFamily' => 'Windows', 'architecture' => 'x64'],
+            'macos-15' => ['osFamily' => 'Darwin', 'architecture' => 'arm64'],
+            default => throw new \RuntimeException(sprintf('Stable runner %s has no runtime identity.', $runner)),
+        };
     }
 }

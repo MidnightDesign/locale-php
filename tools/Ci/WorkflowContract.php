@@ -35,6 +35,7 @@ final class WorkflowContract
             'php tools/ci-matrix.php runtime',
             "matrix.extensionMode == 'absent' && ':intl' || 'intl'",
             'php tools/record-ci-provenance.php',
+            'php tools/assert-ci-runtime.php',
         ], 'runtime workflow', $failures);
         self::requireText($contents['quality'], [
             'vendor/bin/phpstan',
@@ -48,7 +49,9 @@ final class WorkflowContract
             'php tools/test-package-install.php',
         ], 'quality workflow', $failures);
         self::requireText($contents['scheduled'], [
-            'specialized-runtime',
+            'arm-runtime',
+            'windows-x86-runtime',
+            'windows-ts-runtime',
             'icu-runtime',
             'advisory-runtime',
             'php tools/assert-ci-runtime.php',
@@ -68,6 +71,7 @@ final class WorkflowContract
         }
 
         self::validateToolPins($root, $failures);
+        self::validateTimeouts($contents, $failures);
         self::validateActivationTemplates($root, $failures);
 
         return $failures;
@@ -142,6 +146,36 @@ final class WorkflowContract
                 $failures[] = sprintf('CI tool %s must use an exact version.', $tool);
             }
         }
+
+        $workflowContents = implode("\n", [
+            self::read($root.'/.github/workflows/ci-runtime.yml', $failures),
+            self::read($root.'/.github/workflows/ci-quality.yml', $failures),
+            self::read($root.'/.github/workflows/ci-scheduled.yml', $failures),
+            self::read($root.'/.github/workflows/ci-release.yml', $failures),
+        ]);
+        if (substr_count($workflowContents, 'shivammathur/setup-php@') !== substr_count($workflowContents, 'tools: composer:2.10.3')) {
+            $failures[] = 'Every setup-php use must pin Composer 2.10.3.';
+        }
+        if (!str_contains($workflowContents, 'xdebug-3.5.3')) {
+            $failures[] = 'Mutation coverage must pin Xdebug 3.5.3.';
+        }
+
+        $dockerfile = self::read($root.'/Dockerfile', $failures);
+        self::requireText($dockerfile, ['composer:2.10.3', 'xdebug-3.5.3'], 'Dockerfile', $failures);
+    }
+
+    /**
+     * @param array<string, string> $contents
+     * @param list<string> $failures
+     */
+    private static function validateTimeouts(array $contents, array &$failures): void
+    {
+        foreach (['runtime', 'quality', 'scheduled'] as $workflow) {
+            if (!str_contains($contents[$workflow], 'timeout-minutes: ${{ inputs.timeout-minutes }}')) {
+                $failures[] = sprintf('%s workflow does not apply its timeout input.', $workflow);
+            }
+        }
+        self::requireText($contents['release'], ['timeout-minutes: 120', 'profile: release'], 'release workflow', $failures);
     }
 
     /** @param list<string> $failures */
@@ -149,14 +183,19 @@ final class WorkflowContract
     {
         $templates = [
             '.github/ci/public-pull-request.yml' => '  pull_request:',
-            '.github/ci/public-scheduled.yml' => '  schedule:',
+            '.github/ci/public-nightly.yml' => '      profile: nightly',
+            '.github/ci/public-weekly.yml' => '      profile: weekly',
             '.github/ci/public-release.yml' => '  workflow_dispatch:',
+            '.github/ci/public-dependabot.yaml.template' => 'package-ecosystem: composer',
         ];
         foreach ($templates as $path => $trigger) {
             $contents = self::read($root.'/'.$path, $failures);
             if (!str_contains($contents, $trigger)) {
                 $failures[] = sprintf('%s is missing its activation trigger.', $path);
             }
+        }
+        if (is_file($root.'/.github/dependabot.yml')) {
+            $failures[] = 'Dependabot must remain dormant until public activation.';
         }
     }
 }

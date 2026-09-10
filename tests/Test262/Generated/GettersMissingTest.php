@@ -20,49 +20,49 @@ final class GettersMissingTest extends TestCase
     {
         return array_map(
             static fn (array $expected, string $tag): array => [$tag, $expected],
-            array (
+            array(
   'sv' =>
-  array (
+  array(
     'baseName' => 'sv',
     'language' => 'sv',
-    'script' => NULL,
-    'region' => NULL,
+    'script' => null,
+    'region' => null,
   ),
   'sv-Latn' =>
-  array (
+  array(
     'baseName' => 'sv-Latn',
     'language' => 'sv',
     'script' => 'Latn',
-    'region' => NULL,
+    'region' => null,
   ),
   'sv-SE' =>
-  array (
+  array(
     'baseName' => 'sv-SE',
     'language' => 'sv',
-    'script' => NULL,
+    'script' => null,
     'region' => 'SE',
   ),
 ),
-            array_keys(array (
+            array_keys(array(
   'sv' =>
-  array (
+  array(
     'baseName' => 'sv',
     'language' => 'sv',
-    'script' => NULL,
-    'region' => NULL,
+    'script' => null,
+    'region' => null,
   ),
   'sv-Latn' =>
-  array (
+  array(
     'baseName' => 'sv-Latn',
     'language' => 'sv',
     'script' => 'Latn',
-    'region' => NULL,
+    'region' => null,
   ),
   'sv-SE' =>
-  array (
+  array(
     'baseName' => 'sv-SE',
     'language' => 'sv',
-    'script' => NULL,
+    'script' => null,
     'region' => 'SE',
   ),
 )),

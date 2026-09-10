@@ -17,7 +17,6 @@ use Midnight\Intl\Internal\Test262\OptionBag;
  * @property-read string|null $region
  * @psalm-api
  */
-#[\AllowDynamicProperties]
 class Locale
 {
     private string $localeBaseName;
@@ -29,6 +28,9 @@ class Locale
     private ?string $localeRegion;
 
     private bool $initialized = false;
+
+    /** @var array<string, mixed> */
+    private array $consumerProperties = [];
 
     public function __construct(mixed $tag, mixed $options = null)
     {
@@ -47,6 +49,7 @@ class Locale
             throw new TypeError('The locale options must not be null.');
         }
 
+        $matches = [];
         if (!preg_match('/^(?<language>[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:-(?<script>[A-Za-z]{4}))?(?:-(?<region>[A-Za-z]{2}|[0-9]{3}))?$/D', $tag, $matches)) {
             throw new RangeError(sprintf('Invalid locale identifier: "%s".', $tag));
         }
@@ -93,11 +96,12 @@ class Locale
             throw new TypeError('Locale is not initialized.');
         }
 
-        return match ($name) {
-            'baseName' => $this->localeBaseName,
-            'language' => $this->localeLanguage,
-            'script' => $this->localeScript,
-            'region' => $this->localeRegion,
+        return match (true) {
+            array_key_exists($name, $this->consumerProperties) => $this->consumerProperties[$name],
+            $name === 'baseName' => $this->localeBaseName,
+            $name === 'language' => $this->localeLanguage,
+            $name === 'script' => $this->localeScript,
+            $name === 'region' => $this->localeRegion,
             default => throw new \Error(sprintf('Undefined property %s::$%s.', self::class, $name)),
         };
     }
@@ -108,12 +112,13 @@ class Locale
             throw new TypeError(sprintf('Locale property "%s" is read-only.', $name));
         }
 
-        $this->{$name} = $value;
+        $this->consumerProperties[$name] = $value;
     }
 
     public function __isset(string $name): bool
     {
-        return in_array($name, self::deliveredProperties(), true)
+        return (array_key_exists($name, $this->consumerProperties)
+                || in_array($name, self::deliveredProperties(), true))
             && $this->__get($name) !== null;
     }
 
@@ -143,8 +148,10 @@ class Locale
                 : OptionValue::missing();
         }
 
-        return property_exists($options, $name)
-            ? OptionValue::present($options->{$name})
+        $properties = get_object_vars($options);
+
+        return array_key_exists($name, $properties)
+            ? OptionValue::present($properties[$name])
             : OptionValue::missing();
     }
 

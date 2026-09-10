@@ -51,7 +51,7 @@ final class Locale implements \Stringable, \JsonSerializable
 
     public function __get(string $name): mixed
     {
-        return $this->toSpec()->{$name};
+        return $this->toSpec()->__get($name);
     }
 
     public function __set(string $name, mixed $_value): void
@@ -61,7 +61,7 @@ final class Locale implements \Stringable, \JsonSerializable
 
     public function __isset(string $name): bool
     {
-        return isset($this->toSpec()->{$name});
+        return $this->toSpec()->__isset($name);
     }
 
     public function toString(): string

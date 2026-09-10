@@ -13,6 +13,7 @@ namespace Midnight\Intl\Tools\Ci;
  *     runtime: array{requestedPhp: string, actualPhp: string, versionId: int, integerSize: int, threadSafe: bool, debug: bool, extensions: list<string>},
  *     extension: array{mode: string, intlLoaded: bool, icuVersion: string|null, icuDataVersion: string|null, branchTrace: BranchTrace},
  *     processState: array{timezone: string, locale: string|false, intlDefaultLocale: string|null},
+ *     tools: array{composerVersion: string, xdebugVersion: string|null},
  *     dependencies: array{lockSha256: string, installed: array<string, string>},
  *     actions: ActionPins,
  *     conformanceBaseline: array{ecma402: string, test262: string},
@@ -67,6 +68,10 @@ final class Provenance
                 'locale' => setlocale(LC_ALL, '0'),
                 'intlDefaultLocale' => extension_loaded('intl') ? \Locale::getDefault() : null,
             ],
+            'tools' => [
+                'composerVersion' => self::composerVersion(),
+                'xdebugVersion' => extension_loaded('xdebug') ? phpversion('xdebug') ?: null : null,
+            ],
             'dependencies' => [
                 'lockSha256' => self::sha256($root.'/composer.lock'),
                 'installed' => self::installedDependencies($root),
@@ -109,6 +114,31 @@ final class Provenance
         }
 
         return $hash;
+    }
+
+    private static function composerVersion(): string
+    {
+        $pipes = [];
+        $process = proc_open(
+            ['composer', '--version', '--no-ansi'],
+            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+        );
+        if (!is_resource($process)) {
+            throw new \RuntimeException('Unable to start Composer for provenance.');
+        }
+
+        $output = stream_get_contents($pipes[1]);
+        $error = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $exitCode = proc_close($process);
+        $matches = [];
+        if ($exitCode !== 0 || $output === false || preg_match('/Composer version ([^\s]+)/D', trim($output), $matches) !== 1) {
+            throw new \RuntimeException(sprintf('Unable to identify Composer: %s', trim($error === false ? '' : $error)));
+        }
+
+        return $matches[1];
     }
 
     /** @return ActionPins */

@@ -38,6 +38,8 @@ final class CiProvenanceTest extends TestCase
         self::assertSame(php_uname('m'), $evidence['runner']['architecture']);
         self::assertSame(PHP_INT_SIZE, $evidence['runtime']['integerSize']);
         self::assertSame(PHP_ZTS === 1, $evidence['runtime']['threadSafe']);
+        self::assertSame('2.10.3', $evidence['tools']['composerVersion']);
+        self::assertSame(extension_loaded('xdebug') ? phpversion('xdebug') : null, $evidence['tools']['xdebugVersion']);
         self::assertContains('Core', $evidence['runtime']['extensions']);
         self::assertSame($extensionMode, $evidence['extension']['mode']);
         self::assertSame($intlLoaded, $evidence['extension']['intlLoaded']);

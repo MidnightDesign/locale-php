@@ -2,6 +2,13 @@ name: Reusable scheduled evidence
 
 on:
   workflow_call:
+    inputs:
+      profile:
+        type: string
+        required: true
+      timeout-minutes:
+        type: number
+        default: 60
 
 permissions:
   contents: read
@@ -14,15 +21,19 @@ env:
 jobs:
   matrix:
     runs-on: ubuntu-24.04
+    timeout-minutes: ${{ inputs.timeout-minutes }}
     outputs:
       advisory: ${{ steps.matrix.outputs.advisory }}
+      arm: ${{ steps.matrix.outputs.arm }}
       icu: ${{ steps.matrix.outputs.icu }}
-      specialized: ${{ steps.matrix.outputs.specialized }}
+      windows-x86: ${{ steps.matrix.outputs.windows-x86 }}
+      windows-ts: ${{ steps.matrix.outputs.windows-ts }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: '8.5'
+          tools: composer:2.10.3
           coverage: none
         env:
           fail-fast: true
@@ -31,17 +42,20 @@ jobs:
         shell: bash
         run: |
           echo "advisory=$(php tools/ci-matrix.php advisory-runtime)" >> "$GITHUB_OUTPUT"
+          echo "arm=$(php tools/ci-matrix.php arm-runtime)" >> "$GITHUB_OUTPUT"
           echo "icu=$(php tools/ci-matrix.php icu-runtime)" >> "$GITHUB_OUTPUT"
-          echo "specialized=$(php tools/ci-matrix.php specialized-runtime)" >> "$GITHUB_OUTPUT"
+          echo "windows-x86=$(php tools/ci-matrix.php windows-x86-runtime)" >> "$GITHUB_OUTPUT"
+          echo "windows-ts=$(php tools/ci-matrix.php windows-ts-runtime)" >> "$GITHUB_OUTPUT"
 
-  specialized:
-    name: Specialized / ${{ matrix.runner }} / PHP ${{ matrix.php }} / ${{ matrix.architecture }} / TS ${{ matrix.threadSafe }} / intl ${{ matrix.extensionMode }}
+  arm:
+    if: ${{ inputs.profile == 'nightly' || inputs.profile == 'release' }}
+    name: Arm / ${{ matrix.runner }} / PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
     needs: matrix
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 60
+    timeout-minutes: ${{ inputs.timeout-minutes }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.matrix.outputs.specialized) }}
+      matrix: ${{ fromJSON(needs.matrix.outputs.arm) }}
     env:
       INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
       INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
@@ -50,31 +64,109 @@ jobs:
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
-          architecture: ${{ matrix.architecture }}
-          ts: ${{ matrix.threadSafe }}
+          tools: composer:2.10.3
+          architecture: arm64
+          ts: false
           extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
           ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
           coverage: none
         env:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: php tools/assert-ci-runtime.php "${{ matrix.integerSize }}" "${{ matrix.threadSafe }}"
+      - run: php tools/assert-ci-runtime.php 8 false Linux arm64 "${{ matrix.php }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: specialized-${{ matrix.runner }}-php-${{ matrix.php }}-${{ matrix.architecture }}-ts-${{ matrix.threadSafe }}-intl-${{ matrix.extensionMode }}
+          name: arm-${{ matrix.runner }}-php-${{ matrix.php }}-intl-${{ matrix.extensionMode }}
+          path: build/ci
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-x86:
+    if: ${{ inputs.profile == 'release' }}
+    name: Windows x86 / PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
+    needs: matrix
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.windows-x86) }}
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:2.10.3
+          architecture: x86
+          ts: false
+          extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: php tools/assert-ci-runtime.php 4 false Windows x86 "${{ matrix.php }}"
+      - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-x86-php-${{ matrix.php }}-intl-${{ matrix.extensionMode }}
+          path: build/ci
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-ts:
+    if: ${{ inputs.profile == 'weekly' || inputs.profile == 'release' }}
+    name: Windows TS / PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
+    needs: matrix
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.windows-ts) }}
+    env:
+      INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
+      INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:2.10.3
+          architecture: x64
+          ts: true
+          extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
+          ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
+          coverage: none
+        env:
+          fail-fast: true
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: php tools/assert-ci-runtime.php 8 true Windows x64 "${{ matrix.php }}"
+      - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - if: always()
+        run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-ts-php-${{ matrix.php }}-intl-${{ matrix.extensionMode }}
           path: build/ci
           if-no-files-found: error
           retention-days: 30
 
   icu:
+    if: ${{ inputs.profile == 'weekly' || inputs.profile == 'release' }}
     name: ICU ${{ matrix.icu }} / PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
     needs: matrix
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 60
+    timeout-minutes: ${{ inputs.timeout-minutes }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.matrix.outputs.icu) }}
@@ -86,13 +178,14 @@ jobs:
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
+          tools: composer:2.10.3
           extensions: ${{ matrix.extension }}
           ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
           coverage: none
         env:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: php tools/assert-ci-runtime.php 8 false "${{ matrix.icu }}"
+      - run: php tools/assert-ci-runtime.php 8 false Linux x64 "${{ matrix.php }}" "${{ matrix.icu }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
@@ -105,11 +198,12 @@ jobs:
           retention-days: 30
 
   advisory-php:
+    if: ${{ inputs.profile == 'nightly' || inputs.profile == 'release' }}
     name: Advisory PHP ${{ matrix.php }} / intl ${{ matrix.extensionMode }}
     needs: matrix
     runs-on: ${{ matrix.runner }}
     continue-on-error: true
-    timeout-minutes: 60
+    timeout-minutes: ${{ inputs.timeout-minutes }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.matrix.outputs.advisory) }}
@@ -121,12 +215,14 @@ jobs:
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
+          tools: composer:2.10.3
           extensions: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
           ini-values: date.timezone=UTC, intl.default_locale=en_US_POSIX
           coverage: none
         env:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
+      - run: php tools/assert-ci-runtime.php 8 false Linux x64 "${{ matrix.php }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"

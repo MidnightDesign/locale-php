@@ -1,4 +1,4 @@
-name: Scheduled compatibility evidence
+name: Nightly compatibility evidence
 
 on:
   schedule:
@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  scheduled:
+  nightly:
     uses: ./.github/workflows/ci-scheduled.yml
-
-  mutation:
-    uses: ./.github/workflows/ci-quality.yml
+    with:
+      profile: nightly
+      timeout-minutes: 60

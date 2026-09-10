@@ -300,6 +300,18 @@ final class LocaleTest extends TestCase
         }
     }
 
+    public function testConsumerPropertiesRemainExtensible(): void
+    {
+        $locale = new Locale('en');
+        $locale->__set('custom', 'value');
+        $locale->__set('nullable', null);
+
+        self::assertSame('value', $locale->__get('custom'));
+        self::assertTrue($locale->__isset('custom'));
+        self::assertNull($locale->__get('nullable'));
+        self::assertFalse($locale->__isset('nullable'));
+    }
+
     public function testUninitializedSubclassesRejectPropertyAccess(): void
     {
         $locale = new class () extends Locale {
