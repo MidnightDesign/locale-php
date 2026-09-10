@@ -35,3 +35,15 @@ _Avoid_: Unsupported test, skipped test
 **Conformance evidence**:
 The reproducible results and provenance that support a release's conformance claim against its exact conformance baseline and release data snapshot.
 _Avoid_: Release report, coverage percentage
+
+**Release data snapshot**:
+The exact versioned Unicode, CLDR, and IANA inputs and derived data projections shipped by one package release. It is fingerprinted independently of the package version.
+_Avoid_: Host ICU data, data version
+
+**Package version**:
+The Semantic Versioning identifier for a published Composer release. It identifies the library release without encoding its conformance baseline or release data snapshot.
+_Avoid_: Conformance version, CLDR version
+
+**Public API**:
+The supported PHP contract of both the spec layer and porcelain layer. The `Internal` namespace is not part of this contract.
+_Avoid_: Porcelain API only
