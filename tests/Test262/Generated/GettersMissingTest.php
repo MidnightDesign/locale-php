@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 // Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
 // This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: test/intl402/Locale/getters-missing.js at Test262 419d3e0a2273ba01a3bfcbec423f2801425b8e93.
+// Source: test/intl402/Locale/getters-missing.js at Test262 419d3e0a2273ba01a3bfcbec423f2801425b8e93; notice: tests/Test262/upstream/LICENSE.
+// Spec baseline: ECMA-402 b1c961988b9a07894b1dc3dc2b5626ea48387d61; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
 namespace Midnight\Intl\Tests\Test262\Generated;
 
@@ -20,21 +21,21 @@ final class GettersMissingTest extends TestCase
         return array_map(
             static fn (array $expected, string $tag): array => [$tag, $expected],
             array (
-  'sv' => 
+  'sv' =>
   array (
     'baseName' => 'sv',
     'language' => 'sv',
     'script' => NULL,
     'region' => NULL,
   ),
-  'sv-Latn' => 
+  'sv-Latn' =>
   array (
     'baseName' => 'sv-Latn',
     'language' => 'sv',
     'script' => 'Latn',
     'region' => NULL,
   ),
-  'sv-SE' => 
+  'sv-SE' =>
   array (
     'baseName' => 'sv-SE',
     'language' => 'sv',
@@ -43,21 +44,21 @@ final class GettersMissingTest extends TestCase
   ),
 ),
             array_keys(array (
-  'sv' => 
+  'sv' =>
   array (
     'baseName' => 'sv',
     'language' => 'sv',
     'script' => NULL,
     'region' => NULL,
   ),
-  'sv-Latn' => 
+  'sv-Latn' =>
   array (
     'baseName' => 'sv-Latn',
     'language' => 'sv',
     'script' => 'Latn',
     'region' => NULL,
   ),
-  'sv-SE' => 
+  'sv-SE' =>
   array (
     'baseName' => 'sv-SE',
     'language' => 'sv',

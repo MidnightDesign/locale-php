@@ -22,7 +22,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Midnight\\Intl\\Tests\\": "tests/"
+            "Midnight\\Intl\\Tests\\": "tests/",
+            "Midnight\\Intl\\Tools\\": "tools/"
         }
     },
     "scripts": {

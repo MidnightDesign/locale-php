@@ -2,159 +2,194 @@
 
 declare(strict_types=1);
 
-$root = dirname(__DIR__);
-$revision = '419d3e0a2273ba01a3bfcbec423f2801425b8e93';
-$fixturePath = 'test/intl402/Locale/getters-missing.js';
-$fixture = file_get_contents($root.'/tests/Test262/upstream/'.$fixturePath);
+use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
+use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
+use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
+use Midnight\Intl\Tools\Test262\EvidenceBuilder;
+use Midnight\Intl\Tools\Test262\FixturePipeline;
+use Midnight\Intl\Tools\Test262\FixtureResult;
+use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
+use Midnight\Intl\Tools\Test262\InventoryAudit;
 
-if ($fixture === false) {
-    fwrite(STDERR, "Unable to read the pinned Test262 fixture.\n");
+$root = dirname(__DIR__);
+require $root.'/vendor/autoload.php';
+
+function readRequiredFile(string $path, string $root): string
+{
+    $contents = file_get_contents($path);
+    if ($contents === false) {
+        throw new RuntimeException('Unable to read '.str_replace($root.'/', '', $path).'.');
+    }
+
+    return $contents;
+}
+
+function writeRequiredFile(string $path, string $contents): void
+{
+    if (!is_dir(dirname($path)) && !mkdir(dirname($path), 0755, true)) {
+        throw new RuntimeException('Unable to create '.dirname($path).'.');
+    }
+    if (file_put_contents($path, $contents) === false) {
+        throw new RuntimeException('Unable to write '.$path.'.');
+    }
+}
+
+/** @var array{
+ *     initial: array{
+ *         ecma402: array{
+ *             revision: string,
+ *             localeSource: array{sha256: string}
+ *         },
+ *         test262: array{
+ *             initialInventory: array{path: string, sha256: string}
+ *         }&array<string, mixed>
+ *     },
+ *     active: array{
+ *         ecma402: array{
+ *             revision: string,
+ *             localeSource: array{sha256: string}
+ *         }&array<string, mixed>,
+ *         test262: array{
+ *             revision: string,
+ *             localeTree: string,
+ *             fixtureCount: int,
+ *             aggregateSha256: string,
+ *             sourceCopies: array<string, string>
+ *         }&array<string, mixed>
+ *     },
+ *     trackingPolicy: string
+ * } $baseline */
+$baseline = json_decode(
+    readRequiredFile($root.'/tests/Test262/baseline.json', $root),
+    true,
+    flags: JSON_THROW_ON_ERROR,
+);
+$ecma402Revision = $baseline['active']['ecma402']['revision'];
+$test262Revision = $baseline['active']['test262']['revision'];
+
+$assertionIdentities = new AssertionIdentityExtractor();
+$representations = ['associative_array', 'plain_object'];
+/** @var array<string, FixturePipeline> $fixturePipelines */
+$fixturePipelines = [
+    'test/intl402/Locale/getters-missing.js' => new GetterFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/constructor-options-script-valid.js' => new ConstructorFixturePipeline(
+        new ConstructorOptionsScriptTranslator($assertionIdentities),
+        $assertionIdentities,
+        $representations,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+];
+
+$fixtureSources = [];
+foreach (array_keys($fixturePipelines) as $fixturePath) {
+    $fixtureSources[$fixturePath] = readRequiredFile(
+        $root.'/tests/Test262/upstream/'.$fixturePath,
+        $root,
+    );
+}
+$test262License = readRequiredFile($root.'/tests/Test262/upstream/LICENSE', $root);
+$ecma402License = readRequiredFile($root.'/tests/Test262/upstream/ECMA-402-LICENSE.md', $root);
+$initialInventorySource = readRequiredFile(
+    $root.'/'.$baseline['initial']['test262']['initialInventory']['path'],
+    $root,
+);
+if (hash('sha256', $initialInventorySource)
+    !== $baseline['initial']['test262']['initialInventory']['sha256']) {
+    throw new RuntimeException('The immutable initial Test262 inventory failed its integrity check.');
+}
+
+/** @var array{
+ *     test262Revision: string,
+ *     localeTree: string,
+ *     fixtureCount: int,
+ *     aggregateSha256: string,
+ *     comparison: array<string, mixed>,
+ *     fixtures: list<array{status: string, detectedAssertions: list<array<string, mixed>>}>
+ * } $corpus */
+$corpus = json_decode(
+    readRequiredFile($root.'/tests/Test262/corpus.json', $root),
+    true,
+    flags: JSON_THROW_ON_ERROR,
+);
+if ($corpus['test262Revision'] !== $test262Revision
+    || $corpus['localeTree'] !== $baseline['active']['test262']['localeTree']
+    || $corpus['fixtureCount'] !== $baseline['active']['test262']['fixtureCount']
+    || $corpus['aggregateSha256'] !== $baseline['active']['test262']['aggregateSha256']) {
+    throw new RuntimeException('The pinned Test262 corpus inventory does not match the conformance baseline.');
+}
+
+$actualHashes = [
+    ...array_map(static fn (string $source): string => hash('sha256', $source), $fixtureSources),
+    'LICENSE' => hash('sha256', $test262License),
+    'ECMA-402-LICENSE.md' => hash('sha256', $ecma402License),
+];
+foreach ($baseline['active']['test262']['sourceCopies'] as $path => $expectedHash) {
+    if (!isset($actualHashes[$path]) || $actualHashes[$path] !== $expectedHash) {
+        throw new RuntimeException(sprintf('Pinned upstream source integrity failed for %s.', $path));
+    }
+}
+
+$fixtureResults = [];
+foreach ($fixturePipelines as $fixturePath => $pipeline) {
+    $fixtureResults[] = $pipeline->run($fixtureSources[$fixturePath], $fixturePath);
+}
+$translatedAssertionIds = array_merge(...array_map(
+    static fn (FixtureResult $result): array => $result->assertionIds(),
+    $fixtureResults,
+));
+$inventoryAudit = InventoryAudit::run($corpus, $translatedAssertionIds);
+$evidence = EvidenceBuilder::build($baseline, $corpus, $inventoryAudit, $fixtureResults);
+$evidenceJson = json_encode(
+    $evidence,
+    JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+)."\n";
+
+writeRequiredFile($root.'/build/test262-results.json', $evidenceJson);
+
+$blockingResults = array_filter(
+    $fixtureResults,
+    static fn (FixtureResult $result): bool => $result->blocksGeneration(),
+);
+if ($blockingResults !== []) {
+    foreach ($blockingResults as $result) {
+        $fixtureEvidence = $result->evidence();
+        fwrite(
+            STDERR,
+            sprintf(
+                "%s: %s\n",
+                $fixtureEvidence['path'],
+                $fixtureEvidence['reason'] ?? 'The translated fixture has execution failures.',
+            ),
+        );
+    }
     exit(1);
 }
 
-preg_match_all(
-    '/var loc = new Intl\\.Locale\\("(?<tag>[^"]+)"\\);(?<body>.*?)(?=\\nvar loc =|\\z)/s',
-    $fixture,
-    $cases,
-    PREG_SET_ORDER,
-);
-
-$rows = [];
-$inventory = [];
-$assertionNumber = 0;
-foreach ($cases as $case) {
-    preg_match_all(
-        '/assert\\.sameValue\\(loc\\.(?<property>baseName|language|script|region|variants),\\s*(?<expected>undefined|"[^"]*"|\'[^\']*\')\\);/',
-        $case['body'],
-        $assertions,
-        PREG_SET_ORDER,
-    );
-
-    $expected = [];
-    foreach ($assertions as $assertion) {
-        ++$assertionNumber;
-        $property = $assertion['property'];
-        $value = $assertion['expected'] === 'undefined'
-            ? null
-            : substr($assertion['expected'], 1, -1);
-
-        if ($property === 'variants') {
-            $inventory[] = [
-                'id' => $fixturePath.'#'.$assertionNumber,
-                'status' => 'translation_gap',
-                'reason' => 'The variants property is outside the initial language/script/region slice.',
-            ];
-            continue;
+$outputs = ['tests/Test262/evidence.json' => $evidenceJson];
+foreach ($fixtureResults as $result) {
+    foreach ($result->generatedFiles() as $path => $contents) {
+        if (isset($outputs[$path])) {
+            throw new RuntimeException('Multiple fixture pipelines generated '.$path.'.');
         }
-
-        $expected[$property] = $value;
-        $inventory[] = [
-            'id' => $fixturePath.'#'.$assertionNumber,
-            'status' => 'applicable',
-            'phpRepresentations' => ['direct'],
-        ];
-    }
-
-    if (!str_contains($case['tag'], '-1901')) {
-        $rows[$case['tag']] = $expected;
-    } else {
-        foreach ($inventory as &$item) {
-            if (str_starts_with($item['id'], $fixturePath.'#') && (int) substr($item['id'], strrpos($item['id'], '#') + 1) > $assertionNumber - 5) {
-                $item['status'] = 'translation_gap';
-                unset($item['phpRepresentations']);
-                $item['reason'] = 'Variants in the input identifier are outside the initial slice.';
-            }
-        }
-        unset($item);
+        $outputs[$path] = $contents;
     }
 }
-
-$export = var_export($rows, true);
-$generated = <<<PHP
-<?php
-
-declare(strict_types=1);
-
-// Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$revision}.
-
-namespace Midnight\\Intl\\Tests\\Test262\\Generated;
-
-use Midnight\\Intl\\Spec\\Locale;
-use PHPUnit\\Framework\\Attributes\\DataProvider;
-use PHPUnit\\Framework\\TestCase;
-
-final class GettersMissingTest extends TestCase
-{
-    /** @return list<array{string, array<string, string|null>}> */
-    public static function cases(): array
-    {
-        return array_map(
-            static fn (array \$expected, string \$tag): array => [\$tag, \$expected],
-            {$export},
-            array_keys({$export}),
-        );
-    }
-
-    /** @param array<string, string|null> \$expected */
-    #[DataProvider('cases')]
-    public function testTranslatedGetterAssertions(string \$tag, array \$expected): void
-    {
-        \$locale = new Locale(\$tag);
-
-        foreach (\$expected as \$property => \$value) {
-            self::assertSame(\$value, \$locale->{\$property});
-        }
-    }
-}
-PHP;
-
-$evidence = json_encode([
-    'test262Revision' => $revision,
-    'fixtures' => [[
-        'path' => $fixturePath,
-        'sha256' => hash('sha256', $fixture),
-        'assertions' => $inventory,
-    ]],
-], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n";
-
-$outputs = [
-    $root.'/tests/Test262/Generated/GettersMissingTest.php' => $generated,
-    $root.'/tests/Test262/evidence.json' => $evidence,
-];
 
 $check = in_array('--check', $argv, true);
-if ($check) {
-    $corpusSource = file_get_contents($root.'/tests/Test262/corpus.json');
-    if ($corpusSource === false) {
-        fwrite(STDERR, "The pinned Test262 corpus inventory is missing.\n");
-        exit(1);
-    }
-
-    /** @var array{test262Revision: string, localeTree: string, fixtureCount: int, aggregateSha256: string} $corpus */
-    $corpus = json_decode($corpusSource, true, flags: JSON_THROW_ON_ERROR);
-    if ($corpus['test262Revision'] !== $revision
-        || $corpus['localeTree'] !== 'e46f95ccfbe3d202e15e0f9dce594f04fe9c6205'
-        || $corpus['fixtureCount'] !== 168
-        || $corpus['aggregateSha256'] !== '0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3'
-        || hash('sha256', $corpusSource) !== '7c3390617b688a3a1d28d86817262428b2a83dd33a41d980caa915d68f288a63') {
-        fwrite(STDERR, "The pinned Test262 corpus inventory does not match the conformance baseline.\n");
-        exit(1);
-    }
-}
-
 foreach ($outputs as $path => $contents) {
+    $absolutePath = $root.'/'.$path;
     if ($check) {
-        if (!is_file($path) || file_get_contents($path) !== $contents) {
-            fwrite(STDERR, str_replace($root.'/', '', $path)." is not reproducible.\n");
+        if (!is_file($absolutePath) || file_get_contents($absolutePath) !== $contents) {
+            fwrite(STDERR, $path." is not reproducible.\n");
             exit(1);
         }
         continue;
     }
 
-    if (!is_dir(dirname($path))) {
-        mkdir(dirname($path), 0777, true);
-    }
-    file_put_contents($path, $contents);
+    writeRequiredFile($absolutePath, $contents);
 }
