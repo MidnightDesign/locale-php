@@ -277,12 +277,12 @@ class Locale
             return 'undefined';
         }
 
-        if (is_string($value) || is_int($value) || is_float($value)) {
-            if ($value === -0.0) {
-                return '0';
-            }
+        if (is_string($value)) {
+            return $value;
+        }
 
-            return (string) $value;
+        if (is_int($value) || is_float($value)) {
+            return self::numberToString($value);
         }
 
         if ($value === null) {
@@ -319,6 +319,55 @@ class Locale
         }
 
         throw new TypeError('Locale object cannot be converted to a primitive value.');
+    }
+
+    private static function numberToString(int|float $value): string
+    {
+        $number = (float) $value;
+        if (is_nan($number)) {
+            return 'NaN';
+        }
+        if ($number === INF) {
+            return 'Infinity';
+        }
+        if ($number === -INF) {
+            return '-Infinity';
+        }
+        if ($number == 0.0) {
+            return '0';
+        }
+
+        $encoded = json_encode($number, JSON_THROW_ON_ERROR);
+        $negative = str_starts_with($encoded, '-');
+        $unsigned = $negative ? substr($encoded, 1) : $encoded;
+        [$significand, $exponent] = array_pad(explode('e', strtolower($unsigned), 2), 2, '0');
+        [$integer, $fraction] = array_pad(explode('.', $significand, 2), 2, '');
+        $digits = $integer . $fraction;
+        $decimalPosition = strlen($integer) + (int) $exponent;
+
+        $leadingZeroes = strspn($digits, '0');
+        $digits = substr($digits, $leadingZeroes);
+        $decimalPosition -= $leadingZeroes;
+        $digits = rtrim($digits, '0');
+
+        if ($decimalPosition > 0 && $decimalPosition <= 21) {
+            $result = strlen($digits) <= $decimalPosition
+                ? $digits . str_repeat('0', max(0, $decimalPosition - strlen($digits)))
+                : substr($digits, 0, $decimalPosition) . '.' . substr($digits, $decimalPosition);
+        } elseif ($decimalPosition <= 0 && $decimalPosition > -6) {
+            $result = '0.' . str_repeat('0', -$decimalPosition) . $digits;
+        } else {
+            $rest = substr($digits, 1);
+            $scientificExponent = $decimalPosition - 1;
+            $result =
+                $digits[0]
+                . ($rest === '' ? '' : '.' . $rest)
+                . 'e'
+                . ($scientificExponent >= 0 ? '+' : '-')
+                . abs($scientificExponent);
+        }
+
+        return $negative ? '-' . $result : $result;
     }
 
     private static function callExoticToPrimitive(mixed $method): OptionValue
