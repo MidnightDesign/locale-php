@@ -8,24 +8,42 @@ final class MagoFormatter
 {
     public static function format(string $root, string $path, string $source): string
     {
+        return self::formatAll($root, [$path => $source])[$path];
+    }
+
+    /**
+     * @param array<string, string> $sources
+     *
+     * @return array<string, string>
+     */
+    public static function formatAll(string $root, array $sources): array
+    {
         if ($root === '') {
             throw new \InvalidArgumentException('The workspace root cannot be empty.');
         }
-
-        $temporaryPath = tempnam(sys_get_temp_dir(), 'mago-');
-        if ($temporaryPath === false) {
-            throw new \RuntimeException(sprintf('Unable to create a temporary file for %s.', $path));
+        if ($sources === []) {
+            return [];
         }
 
-        $phpPath = $temporaryPath . '.php';
-        if (!rename($temporaryPath, $phpPath)) {
-            unlink($temporaryPath);
-            throw new \RuntimeException(sprintf('Unable to stage %s for Mago.', $path));
-        }
+        $temporaryPaths = [];
 
         try {
-            if (file_put_contents($phpPath, $source) === false) {
-                throw new \RuntimeException(sprintf('Unable to stage %s for Mago.', $path));
+            foreach ($sources as $path => $source) {
+                $temporaryPath = tempnam(sys_get_temp_dir(), 'mago-');
+                if ($temporaryPath === false) {
+                    throw new \RuntimeException(sprintf('Unable to create a temporary file for %s.', $path));
+                }
+
+                $phpPath = $temporaryPath . '.php';
+                if (!rename($temporaryPath, $phpPath)) {
+                    unlink($temporaryPath);
+                    throw new \RuntimeException(sprintf('Unable to stage %s for Mago.', $path));
+                }
+                if (file_put_contents($phpPath, $source) === false) {
+                    unlink($phpPath);
+                    throw new \RuntimeException(sprintf('Unable to stage %s for Mago.', $path));
+                }
+                $temporaryPaths[$path] = $phpPath;
             }
 
             $command = [
@@ -35,7 +53,7 @@ final class MagoFormatter
                 $root,
                 '--colors=never',
                 'format',
-                $phpPath,
+                ...array_values($temporaryPaths),
             ];
             $pipes = [];
             $process = proc_open(
@@ -65,18 +83,24 @@ final class MagoFormatter
             $exitCode = proc_close($process);
             if ($exitCode !== 0) {
                 $message = $error === false ? 'Unable to read Mago error output.' : trim($error);
-                throw new \RuntimeException(sprintf('Mago failed to format %s: %s', $path, $message));
+                throw new \RuntimeException(sprintf('Mago failed to format generated PHP: %s', $message));
             }
 
-            $formatted = file_get_contents($phpPath);
-            if ($formatted === false) {
-                throw new \RuntimeException(sprintf('Unable to read Mago output for %s.', $path));
+            $formatted = [];
+            foreach ($temporaryPaths as $path => $phpPath) {
+                $contents = file_get_contents($phpPath);
+                if ($contents === false) {
+                    throw new \RuntimeException(sprintf('Unable to read Mago output for %s.', $path));
+                }
+                $formatted[$path] = $contents;
             }
 
             return $formatted;
         } finally {
-            if (is_file($phpPath)) {
-                unlink($phpPath);
+            foreach ($temporaryPaths as $phpPath) {
+                if (is_file($phpPath)) {
+                    unlink($phpPath);
+                }
             }
         }
     }
