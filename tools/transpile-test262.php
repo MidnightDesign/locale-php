@@ -491,12 +491,36 @@ $fixturePipelines = [
         $representations,
         'c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d',
     ),
-    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $timeZonesPipeline,
-    'test/intl402/Locale/prototype/getTimeZones/name.js' => $timeZonesPipeline,
-    'test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js' => $timeZonesPipeline,
-    'test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js' => $timeZonesPipeline,
-    'test/intl402/Locale/prototype/getTimeZones/output-array.js' => $timeZonesPipeline,
-    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => $timeZonesPipeline,
+    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $sourceBoundPipeline(
+        $timeZonesPipeline,
+        ['direct'],
+        '0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf',
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/name.js' => $sourceBoundPipeline(
+        $timeZonesPipeline,
+        ['direct'],
+        '661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260',
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js' => $sourceBoundPipeline(
+        $timeZonesPipeline,
+        ['direct'],
+        '9da185ea867c9b003be4a2186151186e07d1a60a68d200a5640a3eeca3176616',
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js' => $sourceBoundPipeline(
+        $timeZonesPipeline,
+        ['direct'],
+        '051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60',
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/output-array.js' => $sourceBoundPipeline(
+        $timeZonesPipeline,
+        ['direct'],
+        '86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f',
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => $sourceBoundPipeline(
+        $timeZonesPipeline,
+        ['direct'],
+        '94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86',
+    ),
 ];
 
 $fixtureSources = [];

@@ -151,25 +151,13 @@ if ($timeZoneData['format'] !== 1) {
     fwrite(STDERR, "The primary time-zone projection format is incompatible.\n");
     exit(1);
 }
-$timeZoneConstants = '';
-foreach ([
-    'ZONES' => ['zones', 'list<string>'],
-    'LINKS' => ['links', 'array<string, string>'],
-    'PRIMARY_IDENTIFIERS' => ['primaryIdentifiers', 'array<string, string>'],
-    'REGIONS' => ['regions', 'array<string, list<string>>'],
-] as $constant => [$field, $type]) {
-    $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($timeZoneData[$field]));
-    if ($export === null) {
-        throw new RuntimeException(sprintf('Unable to export the %s projection.', $field));
-    }
-    $timeZoneConstants .= sprintf("\n    /** @var %s */\n    public const %s = %s;\n", $type, $constant, $export);
+$timeZoneRegions = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($timeZoneData['regions']));
+if ($timeZoneRegions === null) {
+    throw new RuntimeException('Unable to export the primary time-zone region projection.');
 }
 $timeZoneSourceSha256 = hash('sha256', $timeZoneSource);
 $timeZonePayloadSha256 = hash('sha256', json_encode([
     'format' => $timeZoneData['format'],
-    'zones' => $timeZoneData['zones'],
-    'links' => $timeZoneData['links'],
-    'primaryIdentifiers' => $timeZoneData['primaryIdentifiers'],
     'regions' => $timeZoneData['regions'],
 ], JSON_THROW_ON_ERROR));
 $timeZoneGenerated = <<<PHP
@@ -199,7 +187,9 @@ $timeZoneGenerated = <<<PHP
         public const SOURCE_SHA256 = '{$timeZoneSourceSha256}';
 
         private const PAYLOAD_SHA256 = '{$timeZonePayloadSha256}';
-    {$timeZoneConstants}
+        /** @var array<string, list<string>> */
+        public const REGIONS = {$timeZoneRegions};
+
         /** @return list<string>|null */
         public static function forRegion(?string \$region): ?array
         {
@@ -218,9 +208,6 @@ $timeZoneGenerated = <<<PHP
 
             \$actual = hash('sha256', json_encode([
                 'format' => self::FORMAT,
-                'zones' => self::ZONES,
-                'links' => self::LINKS,
-                'primaryIdentifiers' => self::PRIMARY_IDENTIFIERS,
                 'regions' => self::REGIONS,
             ], JSON_THROW_ON_ERROR));
             if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
