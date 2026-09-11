@@ -26,6 +26,7 @@ jobs:
           php-version: '8.5'
           tools: composer:2.10.3
           extensions: intl
+          ini-values: register_argc_argv=On
           coverage: none
         env:
           fail-fast: true

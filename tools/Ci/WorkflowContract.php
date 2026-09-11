@@ -89,7 +89,12 @@ final class WorkflowContract
             'php tools/assert-extension-version.php xdebug 3.5.3',
             'php tools/record-ci-provenance.php',
         ], 'quality workflow', $failures);
-        self::requireScalars($workflow, ['xdebug-3.5.3'], 'quality workflow', $failures);
+        self::requireScalars(
+            $workflow,
+            ['xdebug-3.5.3', 'register_argc_argv=On'],
+            'quality workflow',
+            $failures,
+        );
     }
 
     /** @param list<string> $failures */

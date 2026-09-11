@@ -94,6 +94,25 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testPhpstanRunsWithCliArgumentsRegistered(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('register_argc_argv=On', 'register_argc_argv=Off', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'quality workflow is missing register_argc_argv=On.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testCommentsCannotStandInForActivationTriggers(): void
     {
         $root = $this->fixtureRoot();
