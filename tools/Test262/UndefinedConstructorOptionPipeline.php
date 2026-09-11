@@ -58,7 +58,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         }
 
         $adaptations = [
-            'JavaScript undefined is represented by the internal Test262 UndefinedValue sentinel.',
+            'JavaScript undefined is represented by the canonical internal undefined value.',
             'The JavaScript options object is exercised as both an associative array and a plain PHP object.',
         ];
         $evidenceAssertions = [];

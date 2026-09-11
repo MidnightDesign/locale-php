@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Midnight\Intl\Internal\Test262;
+namespace Midnight\Intl\Internal;
 
 enum UndefinedValue
 {

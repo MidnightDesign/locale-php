@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tests\Test262\Harness;
 
 use Midnight\Intl\Exception\RangeError;
-use Midnight\Intl\Internal\Test262\UndefinedValue;
+use Midnight\Intl\Internal\UndefinedValue;
 use Midnight\Intl\Spec\Locale;
 
 final class ConstructorOptionAssertion

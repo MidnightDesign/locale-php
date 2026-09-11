@@ -759,7 +759,7 @@
                     "sha256": "188730f156985582f9df9a3a81fad4b8ee8c3c2d1b4bb8164a49ac0a75631169",
                     "status": "passing",
                     "adaptations": [
-                        "JavaScript undefined is represented by the internal Test262 UndefinedValue sentinel.",
+                        "JavaScript undefined is represented by the canonical internal undefined value.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object."
                     ],
                     "executions": [
@@ -787,7 +787,7 @@
                     "sha256": "feca01a97cdb3eda66370a71d32c4914fbd5e7ae3543690f5c7722f99f92e38e",
                     "status": "passing",
                     "adaptations": [
-                        "JavaScript undefined is represented by the internal Test262 UndefinedValue sentinel.",
+                        "JavaScript undefined is represented by the canonical internal undefined value.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object."
                     ],
                     "executions": [
@@ -815,7 +815,7 @@
                     "sha256": "7e04794eb3274fce50b3cafe5ea2c10b1c3bbbfcab2dd048ef6e9d56a6c77ea9",
                     "status": "passing",
                     "adaptations": [
-                        "JavaScript undefined is represented by the internal Test262 UndefinedValue sentinel.",
+                        "JavaScript undefined is represented by the canonical internal undefined value.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object."
                     ],
                     "executions": [
@@ -860,7 +860,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -887,7 +887,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -929,7 +929,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1199,7 +1199,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1228,7 +1228,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1257,7 +1257,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1299,7 +1299,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1328,7 +1328,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1357,7 +1357,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1384,7 +1384,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1447,7 +1447,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1510,7 +1510,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1588,7 +1588,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1786,7 +1786,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1857,7 +1857,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1928,7 +1928,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -1999,7 +1999,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -2085,7 +2085,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -2295,7 +2295,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -2541,7 +2541,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -2668,7 +2668,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -2795,7 +2795,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -2922,7 +2922,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {
@@ -3064,7 +3064,7 @@
                     "adaptations": [
                         "The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.",
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
-                        "JavaScript undefined and object string conversion use dedicated internal Test262 representations."
+                        "JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable."
                     ],
                     "executions": [
                         {

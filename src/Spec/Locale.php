@@ -9,7 +9,7 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
-use Midnight\Intl\Internal\Test262\UndefinedValue;
+use Midnight\Intl\Internal\UndefinedValue;
 
 /**
  * @property-read string $baseName

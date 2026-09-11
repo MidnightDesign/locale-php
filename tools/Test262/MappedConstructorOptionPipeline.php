@@ -38,6 +38,16 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
                 return FixtureResult::translationGap($fixturePath, $source, $this->representations, $assertions, new TranslationGap('Mapped assertion index is absent.'));
             }
         }
+        $mappedAssertions = array_fill_keys(array_column($this->cases, 'assertion'), true);
+        if (count($mappedAssertions) !== count($assertions)) {
+            return FixtureResult::translationGap(
+                $fixturePath,
+                $source,
+                $this->representations,
+                $assertions,
+                new TranslationGap('Every source assertion must have at least one mapped execution.'),
+            );
+        }
 
         $generated = [];
         $executions = [];
@@ -57,7 +67,7 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
             $evidenceAssertions[] = [...$assertion, 'status' => $passing ? 'passing' : 'failing', 'adaptations' => [
                 'The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.',
                 'The JavaScript options object is exercised as both an associative array and a plain PHP object.',
-                'JavaScript undefined and object string conversion use dedicated internal Test262 representations.',
+                'JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable.',
             ], 'executions' => $results];
         }
         $failureCount = count(array_filter($executions, static fn (array $result): bool => $result['status'] === 'failing'));
