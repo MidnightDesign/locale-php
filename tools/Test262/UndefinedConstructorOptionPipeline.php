@@ -137,7 +137,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         );
     }
 
-    /** @return array{status: string, actual?: string, failure?: string} */
+    /** @return array{status: string, actual?: mixed, failure?: string} */
     private function evaluate(string $tag, string $representation, string $expected): array
     {
         return $expected === RangeError::class

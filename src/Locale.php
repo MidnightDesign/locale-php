@@ -14,10 +14,10 @@ use Midnight\Intl\Spec\Locale as SpecLocale;
  * @property-read string|null $region
  * @property-read string|null $variants
  * @property-read string|null $calendar
- * @property-read string|null $caseFirst
+ * @property-read CaseFirst|string|null $caseFirst
  * @property-read string|null $collation
  * @property-read string|null $firstDayOfWeek
- * @property-read string|null $hourCycle
+ * @property-read HourCycle|string|null $hourCycle
  * @property-read string|null $numberingSystem
  * @property-read bool $numeric
  * @psalm-api
@@ -35,8 +35,8 @@ final class Locale implements \Stringable, \JsonSerializable
         ?string $calendar = null,
         ?string $collation = null,
         ?string $firstDayOfWeek = null,
-        ?string $hourCycle = null,
-        ?string $caseFirst = null,
+        HourCycle|string|null $hourCycle = null,
+        CaseFirst|string|null $caseFirst = null,
         ?bool $numeric = null,
         ?string $numberingSystem = null,
     ) {
@@ -52,8 +52,8 @@ final class Locale implements \Stringable, \JsonSerializable
             'calendar' => $calendar,
             'collation' => $collation,
             'firstDayOfWeek' => $firstDayOfWeek,
-            'hourCycle' => $hourCycle,
-            'caseFirst' => $caseFirst,
+            'hourCycle' => $hourCycle instanceof HourCycle ? $hourCycle->value : $hourCycle,
+            'caseFirst' => $caseFirst instanceof CaseFirst ? $caseFirst->value : $caseFirst,
             'numeric' => $numeric,
             'numberingSystem' => $numberingSystem,
         ], static fn (string|bool|null $value): bool => $value !== null);
@@ -75,7 +75,14 @@ final class Locale implements \Stringable, \JsonSerializable
 
     public function __get(string $name): mixed
     {
-        return $this->toSpec()->__get($name);
+        /** @var string|bool|null $value */
+        $value = $this->toSpec()->__get($name);
+
+        return match ($name) {
+            'hourCycle' => is_string($value) ? HourCycle::tryFrom($value) ?? $value : null,
+            'caseFirst' => is_string($value) ? CaseFirst::tryFrom($value) ?? $value : null,
+            default => $value,
+        };
     }
 
     public function __set(string $name, mixed $_value): void

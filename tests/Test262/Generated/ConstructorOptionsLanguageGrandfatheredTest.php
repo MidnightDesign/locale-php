@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ConstructorOptionsLanguageGrandfatheredTest extends TestCase
 {
-    /** @return array<string, array{string, string, string, array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int}, string, string}> */
+    /** @return array<string, array{string, string, string, array<string, mixed>, string, string|bool, ?string}> */
     public static function cases(): array
     {
         return array(
@@ -31,6 +31,7 @@ final class ConstructorOptionsLanguageGrandfatheredTest extends TestCase
     ),
     4 => 'associative_array',
     5 => 'Midnight\\Intl\\Exception\\RangeError',
+    6 => null,
   ),
   'case-1-plain_object' =>
   array(
@@ -44,6 +45,7 @@ final class ConstructorOptionsLanguageGrandfatheredTest extends TestCase
     ),
     4 => 'plain_object',
     5 => 'Midnight\\Intl\\Exception\\RangeError',
+    6 => null,
   ),
   'case-2-associative_array' =>
   array(
@@ -57,6 +59,7 @@ final class ConstructorOptionsLanguageGrandfatheredTest extends TestCase
     ),
     4 => 'associative_array',
     5 => 'Midnight\\Intl\\Exception\\RangeError',
+    6 => null,
   ),
   'case-2-plain_object' =>
   array(
@@ -70,17 +73,18 @@ final class ConstructorOptionsLanguageGrandfatheredTest extends TestCase
     ),
     4 => 'plain_object',
     5 => 'Midnight\\Intl\\Exception\\RangeError',
+    6 => null,
   ),
 );
     }
 
-    /** @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} $value */
+    /** @param array<string, mixed> $value */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string $expected): void
+    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string|bool $expected, ?string $property): void
     {
         $result = $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
-            : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected);
+            : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
         self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
     }
 }

@@ -9,6 +9,7 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
+use Midnight\Intl\Internal\Test262\PrimitiveValue;
 use Midnight\Intl\Internal\UndefinedValue;
 
 /**
@@ -211,8 +212,22 @@ class Locale
 
     private static function toStringValue(mixed $value): string
     {
-        if (is_string($value) || is_int($value) || is_float($value)) {
+        if ($value instanceof PrimitiveValue) {
+            $value = $value->value;
+        }
+
+        if (is_string($value) || is_int($value)) {
             return (string) $value;
+        }
+
+        if (is_float($value)) {
+            return match (true) {
+                is_nan($value) => 'NaN',
+                $value === INF => 'Infinity',
+                $value === -INF => '-Infinity',
+                $value === 0.0 => '0',
+                default => (string) $value,
+            };
         }
 
         if ($value === null) {
@@ -281,19 +296,20 @@ class Locale
         }
 
         $value = self::toStringValue($option->value);
-        $weekdays = [
-            '0' => 'sun', '7' => 'sun', 'sun' => 'sun', 'sunday' => 'sun',
-            '1' => 'mon', 'mon' => 'mon', 'monday' => 'mon',
-            '2' => 'tue', 'tue' => 'tue', 'tuesday' => 'tue',
-            '3' => 'wed', 'wed' => 'wed', 'wednesday' => 'wed',
-            '4' => 'thu', 'thu' => 'thu', 'thursday' => 'thu',
-            '5' => 'fri', 'fri' => 'fri', 'friday' => 'fri',
-            '6' => 'sat', 'sat' => 'sat', 'saturday' => 'sat',
-        ];
-        if (!isset($weekdays[$value])) {
+        $value = match ($value) {
+            '0', '7' => 'sun',
+            '1' => 'mon',
+            '2' => 'tue',
+            '3' => 'wed',
+            '4' => 'thu',
+            '5' => 'fri',
+            '6' => 'sat',
+            default => $value,
+        };
+        if (preg_match('/^[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*$/D', $value) !== 1) {
             throw new RangeError(sprintf('Invalid firstDayOfWeek option: "%s".', $value));
         }
-        $identifier->setKeyword('fw', $weekdays[$value]);
+        $identifier->setKeyword('fw', $value);
     }
 
     /** @param array<array-key, mixed>|object $options */
@@ -310,7 +326,8 @@ class Locale
     private static function toBooleanValue(mixed $value): bool
     {
         return match (true) {
-            $value === null, $value === false, $value === 0, $value === 0.0, $value === '' => false,
+            $value === null, $value === false, $value === 0, $value === 0.0,
+            is_float($value) && is_nan($value), $value === '' => false,
             default => true,
         };
     }

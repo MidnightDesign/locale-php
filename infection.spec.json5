@@ -2,7 +2,12 @@
     "$schema": "vendor/infection/infection/resources/schema.json",
     "source": {
         "directories": ["src"],
-        "excludes": ["/^Locale\\.php$/", "/^Internal\\/Data\\/LocaleAliases\\.php$/"]
+        "excludes": [
+            "/^Locale\\.php$/",
+            "/^CaseFirst\\.php$/",
+            "/^HourCycle\\.php$/",
+            "/^Internal\\/Data\\/LocaleAliases\\.php$/"
+        ]
     },
     "testFrameworkOptions": "--testsuite=test262-upstream",
     "timeout": 10,

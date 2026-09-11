@@ -18,10 +18,14 @@ if ($baselineSource === false) {
 }
 /** @var array{
  *     initial: array{test262: array{revision: string, initialInventory: array{sha256: string}}},
- *     active: array{test262: array{revision: string, rootTree: string, localeTree: string, fixtureCount: int, aggregateSha256: string}}
+ *     active: array{test262: array{revision: string, rootTree: string, localeTree: string, fixtureCount: int, aggregateSha256: string, sourceCopies: array<string, string>}}
  * } $baseline */
 $baseline = json_decode($baselineSource, true, flags: JSON_THROW_ON_ERROR);
 $active = $baseline['active']['test262'];
+$translatedPaths = array_fill_keys(array_filter(
+    array_keys($active['sourceCopies']),
+    static fn (string $path): bool => str_ends_with($path, '.js'),
+), true);
 
 $revision = $active['revision'];
 $rootTree = $active['rootTree'];
@@ -36,7 +40,7 @@ foreach ($iterator as $file) {
     }
 
     if ($file->isFile() && $file->getExtension() === 'js') {
-        $paths[] = substr($file->getPathname(), strlen($checkout) + 1);
+        $paths[] = str_replace('\\', '/', substr($file->getPathname(), strlen($checkout) + 1));
     }
 }
 sort($paths);
@@ -58,32 +62,26 @@ foreach ($paths as $path) {
     foreach ($assertionIdentities->extract($source, $path) as $identity) {
         $assertions[] = [
             ...$identity,
-            'status' => in_array($path, [
-                'test/intl402/Locale/getters-missing.js',
-                'test/intl402/Locale/constructor-options-script-valid.js',
-            ], true) ? 'see-translated-evidence' : 'translation_gap',
+            'status' => isset($translatedPaths[$path]) ? 'see-translated-evidence' : 'translation_gap',
         ];
         ++$detectedAssertionCount;
     }
 
-    $partiallyTranslated = $path === 'test/intl402/Locale/getters-missing.js';
-    $translated = $path === 'test/intl402/Locale/constructor-options-script-valid.js';
+    $translated = isset($translatedPaths[$path]);
     $fixture = [
         'path' => $path,
         'sha256' => $sha256,
         'status' => match (true) {
             $translated => 'translated',
-            $partiallyTranslated => 'partially_translated',
             default => 'translation_gap',
         },
         'reason' => match (true) {
             $translated => 'All source assertions and representation executions are detailed in tests/Test262/evidence.json.',
-            $partiallyTranslated => 'Applicable assertions and out-of-slice gaps are detailed in tests/Test262/evidence.json.',
             default => 'The fixture remains visible as unfinished work for the incomplete initial slice.',
         },
         'detectedAssertions' => $assertions,
     ];
-    if (!$translated && !$partiallyTranslated) {
+    if (!$translated) {
         $fixture['unresolvedAssertionScope'] = [
             'id' => $path.':unresolved-assertion-scope',
             'status' => 'translation_gap',

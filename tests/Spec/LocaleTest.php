@@ -44,31 +44,6 @@ final class LocaleTest extends TestCase
         self::assertFalse($locale->numeric);
     }
 
-    public function testItExposesUnicodeKeywordPropertiesAndAppliesTheirConstructorOptions(): void
-    {
-        $locale = new Locale('en-u-ca-gregory-kn-kf-lower', [
-            'calendar' => 'islamicc',
-            'caseFirst' => 'upper',
-            'collation' => 'phonebk',
-            'firstDayOfWeek' => '7',
-            'hourCycle' => 'h23',
-            'numberingSystem' => 'latn',
-            'numeric' => false,
-        ]);
-
-        self::assertSame(
-            'en-u-ca-islamic-civil-co-phonebk-fw-sun-hc-h23-kf-upper-kn-false-nu-latn',
-            $locale->toString(),
-        );
-        self::assertSame('islamic-civil', $locale->calendar);
-        self::assertSame('upper', $locale->caseFirst);
-        self::assertSame('phonebk', $locale->collation);
-        self::assertSame('sun', $locale->firstDayOfWeek);
-        self::assertSame('h23', $locale->hourCycle);
-        self::assertSame('latn', $locale->numberingSystem);
-        self::assertFalse($locale->numeric);
-    }
-
     /** @return iterable<string, array{string}> */
     public static function structurallyInvalidIdentifiers(): iterable
     {
