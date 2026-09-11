@@ -14,7 +14,7 @@ final class NumberingSystemDataImporter
         array $localeSources,
         string $supplementalData,
         string $likelySubtags,
-        ?string $numberingSystems = null,
+        string $numberingSystems,
     ): array {
         $explicitDefaults = [];
         foreach ($localeSources as $locale => $source) {
@@ -22,17 +22,15 @@ final class NumberingSystemDataImporter
                 $explicitDefaults[$locale] = strtolower($match[1]);
             }
         }
-        if ($numberingSystems !== null) {
-            preg_match_all('/<numberingSystem\s+[^>]*\bid="([^"]+)"[^>]*\/>/', $numberingSystems, $matches);
-            $registered = array_fill_keys(array_map('strtolower', $matches[1]), true);
-            foreach ($explicitDefaults as $locale => $default) {
-                if (!isset($registered[$default])) {
-                    throw new \UnexpectedValueException(sprintf(
-                        'CLDR locale %s has an unregistered default numbering system %s.',
-                        $locale,
-                        $default,
-                    ));
-                }
+        preg_match_all('/<numberingSystem\s+[^>]*\bid="([^"]+)"[^>]*\/>/', $numberingSystems, $matches);
+        $registered = array_fill_keys(array_map('strtolower', $matches[1]), true);
+        foreach ($explicitDefaults as $locale => $default) {
+            if (!isset($registered[$default])) {
+                throw new \UnexpectedValueException(sprintf(
+                    'CLDR locale %s has an unregistered default numbering system %s.',
+                    $locale,
+                    $default,
+                ));
             }
         }
 
@@ -96,11 +94,59 @@ final class NumberingSystemDataImporter
             }
         }
 
-        ksort($defaults, SORT_STRING);
+        foreach ($aliases as $target) {
+            if (!isset($defaults[$target])) {
+                throw new \UnexpectedValueException(sprintf(
+                    'NumberFormat availability alias target %s is not a CLDR locale.',
+                    $target,
+                ));
+            }
+        }
+
+        $defaults = self::sparseDefaults($defaults);
         ksort($aliases, SORT_STRING);
         ksort($inheritance, SORT_STRING);
 
         return ['defaults' => $defaults, 'aliases' => $aliases, 'inheritance' => $inheritance];
+    }
+
+    /**
+     * @param array<string, string> $resolvedDefaults
+     * @return array<string, string>
+     */
+    private static function sparseDefaults(array $resolvedDefaults): array
+    {
+        $locales = array_keys($resolvedDefaults);
+        usort(
+            $locales,
+            static fn(string $left, string $right): int => (
+                substr_count($left, '-') <=> substr_count($right, '-') ?: strcmp($left, $right)
+            ),
+        );
+
+        $defaults = [];
+        foreach ($locales as $locale) {
+            $inherited = self::inheritedDefault($locale, $defaults);
+            if ($locale === 'root' || $resolvedDefaults[$locale] !== $inherited) {
+                $defaults[$locale] = $resolvedDefaults[$locale];
+            }
+        }
+        ksort($defaults, SORT_STRING);
+
+        return $defaults;
+    }
+
+    /** @param array<string, string> $defaults */
+    private static function inheritedDefault(string $locale, array $defaults): string
+    {
+        while (($position = strrpos($locale, '-')) !== false) {
+            $locale = substr($locale, 0, $position);
+            if (isset($defaults[$locale])) {
+                return $defaults[$locale];
+            }
+        }
+
+        return $defaults['root'] ?? 'latn';
     }
 
     /** @param array<string, string> $likelySubtags */

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Midnight\Intl\Tools\MagoFormatter;
+use Midnight\Intl\Tools\NumberingSystemsProjectionGenerator;
 
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
@@ -297,133 +298,32 @@ if ($numberingSystemSource === false) {
     fwrite(STDERR, "Unable to read the numbering-system projection source.\n");
     exit(1);
 }
-/** @var array{format: int, cldrRevision: string, upstreamSha512: string, defaults: array<string, string>, aliases: array<string, string>} $numberingSystemData */
-$numberingSystemData = json_decode($numberingSystemSource, true, flags: JSON_THROW_ON_ERROR);
-if ($numberingSystemData['format'] !== 1) {
-    fwrite(STDERR, "The numbering-system projection format is incompatible.\n");
-    exit(1);
-}
-$numberingSystemDefaults = preg_replace(
-    '/[ \t]+$/m',
-    '',
-    Midnight\Intl\Tools\PhpExporter::export($numberingSystemData['defaults']),
-);
-$numberingSystemAliases = preg_replace(
-    '/[ \t]+$/m',
-    '',
-    Midnight\Intl\Tools\PhpExporter::export($numberingSystemData['aliases']),
-);
-if ($numberingSystemDefaults === null || $numberingSystemAliases === null) {
-    throw new RuntimeException('Unable to export the numbering-system projection.');
-}
-$numberingSystemSourceSha256 = hash('sha256', $numberingSystemSource);
-$numberingSystemPayloadSha256 = hash('sha256', json_encode([
-    'format' => $numberingSystemData['format'],
-    'defaults' => $numberingSystemData['defaults'],
-    'aliases' => $numberingSystemData['aliases'],
-], JSON_THROW_ON_ERROR));
-$numberingSystemGenerated = <<<PHP
-    <?php
-
-    declare(strict_types=1);
-
-    namespace Midnight\Intl\Internal\Data;
-
-    enum NumberingSystems
-    {
-        public const FORMAT = {$numberingSystemData['format']};
-
-        /** @var string */
-        public const CLDR_REVISION = '{$numberingSystemData['cldrRevision']}';
-
-        /** @var string */
-        public const CLDR_CORE_SHA512 = '{$numberingSystemData['upstreamSha512']}';
-
-        /** @var string */
-        public const SOURCE_SHA256 = '{$numberingSystemSourceSha256}';
-
-        private const PAYLOAD_SHA256 = '{$numberingSystemPayloadSha256}';
-
-        /** @var array<string, string> */
-        public const DEFAULTS = {$numberingSystemDefaults};
-
-        /** @var array<string, string> */
-        public const ALIASES = {$numberingSystemAliases};
-
-        public static function defaultFor(string \$locale): string
-        {
-            self::assertIntegrity();
-
-            while (\$locale !== '') {
-                if (isset(self::DEFAULTS[\$locale])) {
-                    return self::DEFAULTS[\$locale];
-                }
-                if (isset(self::ALIASES[\$locale])) {
-                    return self::DEFAULTS[self::ALIASES[\$locale]];
-                }
-                \$position = strrpos(\$locale, '-');
-                \$locale = \$position === false ? '' : substr(\$locale, 0, \$position);
-            }
-
-            return 'latn';
-        }
-
-        public static function assertIntegrity(): void
-        {
-            /** @var bool|null \$verified */
-            static \$verified = null;
-            if (\$verified === true) {
-                return;
-            }
-
-            \$actual = hash('sha256', json_encode([
-                'format' => self::FORMAT,
-                'defaults' => self::DEFAULTS,
-                'aliases' => self::ALIASES,
-            ], JSON_THROW_ON_ERROR));
-            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
-                throw new \UnexpectedValueException('The bundled numbering-system data is corrupt or incompatible.');
-            }
-            foreach (self::ALIASES as \$target) {
-                if (!isset(self::DEFAULTS[\$target])) {
-                    throw new \UnexpectedValueException('The bundled numbering-system aliases are corrupt.');
-                }
-            }
-            \$verified = true;
-        }
-
-        private static function supportsFormat(int \$format): bool
-        {
-            return \$format === 1;
-        }
-    }
-    PHP;
-$numberingSystemGenerated .= "\n";
-$numberingSystemGenerated = MagoFormatter::format(
-    $root,
-    'src/Internal/Data/NumberingSystems.php',
-    $numberingSystemGenerated,
-);
-$numberingSystemTarget = $root . '/src/Internal/Data/NumberingSystems.php';
+$numberingSystemArtifact = NumberingSystemsProjectionGenerator::generate($root, $numberingSystemSource);
+$numberingSystemSourceSha256 = $numberingSystemArtifact['sourceSha256'];
+$numberingSystemGenerated = $numberingSystemArtifact['generated'];
+$generatedArtifacts = [
+    [
+        'sourceSha256' => $sourceSha256,
+        'generated' => $generated,
+        'label' => 'locale alias',
+        'target' => 'src/Internal/Data/LocaleAliases.php',
+    ],
+    ...array_values($mapArtifacts),
+    [
+        'sourceSha256' => $timeZoneSourceSha256,
+        'generated' => $timeZoneGenerated,
+        'label' => 'primary time-zone',
+        'target' => 'src/Internal/Data/PrimaryTimeZones.php',
+    ],
+    $numberingSystemArtifact,
+];
 if (in_array('--check', $argv, true)) {
-    $generatedFilesMatch = is_file($target) && file_get_contents($target) === $generated;
-    foreach ($mapArtifacts as $artifact) {
-        $generatedFilesMatch =
-            $generatedFilesMatch
-            && is_file($root . '/' . $artifact['target'])
-            && file_get_contents($root . '/' . $artifact['target']) === $artifact['generated'];
-    }
-    if (!$generatedFilesMatch) {
-        fwrite(STDERR, "The generated locale data is not reproducible.\n");
-        exit(1);
-    }
-    if (!is_file($timeZoneTarget) || file_get_contents($timeZoneTarget) !== $timeZoneGenerated) {
-        fwrite(STDERR, "src/Internal/Data/PrimaryTimeZones.php is not reproducible.\n");
-        exit(1);
-    }
-    if (!is_file($numberingSystemTarget) || file_get_contents($numberingSystemTarget) !== $numberingSystemGenerated) {
-        fwrite(STDERR, "src/Internal/Data/NumberingSystems.php is not reproducible.\n");
-        exit(1);
+    foreach ($generatedArtifacts as $artifact) {
+        $target = $root . '/' . $artifact['target'];
+        if (!is_file($target) || file_get_contents($target) !== $artifact['generated']) {
+            fwrite(STDERR, sprintf("The generated %s data is not reproducible.\n", $artifact['label']));
+            exit(1);
+        }
     }
 
     $manifestSource = file_get_contents($root . '/resources/data/manifest.json');
@@ -448,7 +348,7 @@ if (in_array('--check', $argv, true)) {
     if (
         $manifest['format'] !== 5
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
-        || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemData['upstreamSha512']
+        || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemArtifact['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
@@ -481,11 +381,7 @@ if (in_array('--check', $argv, true)) {
     exit(0);
 }
 
-if (file_put_contents($target, $generated) === false) {
-    fwrite(STDERR, "Unable to write the locale alias projection.\n");
-    exit(1);
-}
-foreach ($mapArtifacts as $artifact) {
+foreach ($generatedArtifacts as $artifact) {
     if (file_put_contents($root . '/' . $artifact['target'], $artifact['generated']) === false) {
         fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact['label']));
         exit(1);
@@ -585,13 +481,4 @@ function generateMapProjection(string $root, array $definition): array
         'label' => $label,
         'target' => $definition['target'],
     ];
-}
-
-if (file_put_contents($timeZoneTarget, $timeZoneGenerated) === false) {
-    fwrite(STDERR, "Unable to write the primary time-zone projection.\n");
-    exit(1);
-}
-if (file_put_contents($numberingSystemTarget, $numberingSystemGenerated) === false) {
-    fwrite(STDERR, "Unable to write the numbering-system projection.\n");
-    exit(1);
 }

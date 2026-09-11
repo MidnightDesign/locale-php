@@ -34,14 +34,25 @@ final class NumberingSystemDataImporterTest extends TestCase
                     <likelySubtag from="zh" to="zh_Hans_CN"/>
                 </likelySubtags>
                 XML,
+            <<<'XML'
+                <numberingSystems>
+                    <numberingSystem id="arabext"/>
+                    <numberingSystem id="latn"/>
+                </numberingSystems>
+                XML,
         );
 
-        self::assertSame('arabext', $projection['defaults']['fa-Arab-IR']);
-        self::assertSame('latn', $projection['defaults']['es-AR']);
+        self::assertSame(['fa' => 'arabext', 'root' => 'latn'], $projection['defaults']);
         self::assertSame('fa-Arab-IR', $projection['aliases']['fa-IR']);
         self::assertSame('sr-Cyrl-RS', $projection['aliases']['sr-RS']);
         self::assertSame('zh-Hans-CN', $projection['aliases']['zh-CN']);
-        self::assertSame('arabext', $projection['defaults'][$projection['aliases']['fa-IR']]);
         self::assertSame('fa', $projection['inheritance']['fa-Arab']);
+    }
+
+    public function testTheNumberingSystemRegistryIsRequired(): void
+    {
+        $this->expectException(\ArgumentCountError::class);
+
+        (new \ReflectionMethod(NumberingSystemDataImporter::class, 'project'))->invoke(null, [], '', '');
     }
 }

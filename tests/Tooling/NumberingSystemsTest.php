@@ -23,7 +23,7 @@ final class NumberingSystemsTest extends TestCase
         $projection = json_decode($source, true, flags: JSON_THROW_ON_ERROR);
 
         self::assertSame(1125, count($projection['sourceEntries']));
-        self::assertSame(1122, count($projection['defaults']));
+        self::assertSame(53, count($projection['defaults']));
         self::assertSame(57, count($projection['aliases']));
         self::assertNotEmpty($projection['inheritance']);
         self::assertSame($projection['defaults'], NumberingSystems::DEFAULTS);
@@ -39,7 +39,8 @@ final class NumberingSystemsTest extends TestCase
         self::assertNotContains('finance', $projection['defaults']);
 
         foreach ($projection['aliases'] as $target) {
-            self::assertArrayHasKey($target, $projection['defaults']);
+            $sourcePath = sprintf('common/main/%s.xml', str_replace('-', '_', $target));
+            self::assertArrayHasKey($sourcePath, $projection['sourceEntries']);
         }
     }
 
