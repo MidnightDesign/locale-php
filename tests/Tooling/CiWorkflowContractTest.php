@@ -71,6 +71,90 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRejectsASpecMutationCampaignThatUsesTheBroadCustomUnitSuite(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/infection.spec.json5';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('--testsuite=test262-upstream', '--testsuite=unit', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The spec mutation campaign must use the test262-upstream suite.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsAMissingMutationCampaignLane(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('campaign: [spec, porcelain]', 'campaign: [spec]', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job must run the spec and porcelain campaigns.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsAMissingMutationExtensionModeLane(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace(
+                'extensionMode: [absent, disabled, native]',
+                'extensionMode: [absent, native]',
+                $contents,
+            );
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job must run absent, disabled, and native extension modes.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsMutationSourceAreaOmissions(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/infection.spec.json5';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace(
+                '["/^Locale\\\\.php$/", "/^Internal\\\\/Data\\\\/LocaleAliases\\\\.php$/"]',
+                '["/^Locale\\\\.php$/", "Internal", "/^Internal\\\\/Data\\\\/LocaleAliases\\\\.php$/"]',
+                $contents,
+            );
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The spec mutation campaign has an invalid production-source boundary.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testCommentsCannotStandInForRequiredCommands(): void
     {
         $root = $this->fixtureRoot();
@@ -135,6 +219,9 @@ final class CiWorkflowContractTest extends TestCase
             '.github/ci/public-dependabot.yaml.template',
             'composer.json',
             'Dockerfile',
+            'infection.spec.json5',
+            'infection.porcelain.json5',
+            'phpunit.xml.dist',
         ] as $path) {
             $target = $root.'/'.$path;
             if (!is_dir(dirname($target))) {
