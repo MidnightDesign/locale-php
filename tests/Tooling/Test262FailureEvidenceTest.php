@@ -15,16 +15,9 @@ final class Test262FailureEvidenceTest extends TestCase
     public function testAnInjectedAssertionFailureIsRecorded(): void
     {
         $source = self::fixtureSource();
-        $source = str_replace(
-            "expected ? 'en-' + expected : 'en'",
-            "expected ? 'zz-' + expected : 'zz'",
-            $source,
-        );
+        $source = str_replace("expected ? 'en-' + expected : 'en'", "expected ? 'zz-' + expected : 'zz'", $source);
 
-        $result = self::pipeline()->run(
-            $source,
-            'injected-fixture.js',
-        );
+        $result = self::pipeline()->run($source, 'injected-fixture.js');
 
         self::assertSame('failing', $result->evidence()['status']);
         self::assertSame(10, $result->executionFailures());
@@ -46,10 +39,7 @@ final class Test262FailureEvidenceTest extends TestCase
         $source = self::fixtureSource();
         $source = str_replace('assert.sameValue(', 'assert.notSame(', $source);
 
-        $result = self::pipeline()->run(
-            $source,
-            'injected-fixture.js',
-        );
+        $result = self::pipeline()->run($source, 'injected-fixture.js');
 
         $evidence = $result->evidence();
 
@@ -66,7 +56,7 @@ final class Test262FailureEvidenceTest extends TestCase
 
     public function testAnUnexpectedTranslatorDefectIsNotReportedAsATranslationGap(): void
     {
-        $translator = new class () implements ConstructorFixtureTranslator {
+        $translator = new class() implements ConstructorFixtureTranslator {
             public function translate(string $source, string $fixturePath): array
             {
                 throw new \LogicException('Injected implementation defect.');
@@ -82,7 +72,7 @@ final class Test262FailureEvidenceTest extends TestCase
     private static function fixtureSource(): string
     {
         $source = file_get_contents(
-            dirname(__DIR__).'/Test262/upstream/test/intl402/Locale/constructor-options-script-valid.js',
+            dirname(__DIR__) . '/Test262/upstream/test/intl402/Locale/constructor-options-script-valid.js',
         );
         self::assertNotFalse($source);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 date_default_timezone_set('UTC');
 if (setlocale(LC_ALL, 'C') === false) {
@@ -14,12 +14,7 @@ if (extension_loaded('intl')) {
 
 $extensionMode = getenv('INTL_LOCALE_EXTENSION_MODE');
 if ($extensionMode !== false && $extensionMode !== '') {
-    $trace = Midnight\Intl\Tools\Ci\ExtensionMode::trace(
-        $extensionMode,
-        extension_loaded('intl'),
-        [],
-        [],
-    );
+    $trace = Midnight\Intl\Tools\Ci\ExtensionMode::trace($extensionMode, extension_loaded('intl'), [], []);
     $tracePath = getenv('INTL_LOCALE_BRANCH_TRACE');
     if ($tracePath === false || $tracePath === '') {
         throw new RuntimeException('INTL_LOCALE_BRANCH_TRACE is required when an extension mode is declared.');
@@ -29,5 +24,5 @@ if ($extensionMode !== false && $extensionMode !== '') {
     if (!is_dir($traceDirectory) && !mkdir($traceDirectory, 0777, true) && !is_dir($traceDirectory)) {
         throw new RuntimeException(sprintf('Unable to create trace directory %s.', $traceDirectory));
     }
-    file_put_contents($tracePath, json_encode($trace, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)."\n");
+    file_put_contents($tracePath, json_encode($trace, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR) . "\n");
 }

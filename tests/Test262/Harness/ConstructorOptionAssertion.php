@@ -24,10 +24,10 @@ final class ConstructorOptionAssertion
             $value = match ($optionValue['type']) {
                 'null' => null,
                 'string' => $optionValue['value'],
-                'stringable' => new class ($optionValue['value']) implements \Stringable {
-                    public function __construct(private readonly string $value)
-                    {
-                    }
+                'stringable' => new class($optionValue['value']) implements \Stringable {
+                    public function __construct(
+                        private readonly string $value,
+                    ) {}
 
                     public function __toString(): string
                     {

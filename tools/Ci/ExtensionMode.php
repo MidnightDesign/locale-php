@@ -32,10 +32,10 @@ final class ExtensionMode
 
         $missingPaths = array_values(array_diff($eligibleNativePaths, $exercisedNativePaths));
         if ($mode === 'native' && $missingPaths !== []) {
-            throw new \RuntimeException(sprintf(
-                'Eligible native paths were not exercised: %s.',
-                implode(', ', $missingPaths),
-            ));
+            throw new \RuntimeException(sprintf('Eligible native paths were not exercised: %s.', implode(
+                ', ',
+                $missingPaths,
+            )));
         }
 
         $fallbackReason = match ($mode) {

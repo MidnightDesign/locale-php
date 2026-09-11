@@ -16,8 +16,7 @@ final class ConstructorFixturePipeline implements FixturePipeline
         private readonly array $representations,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -37,7 +36,7 @@ final class ConstructorFixturePipeline implements FixturePipeline
         $executionResults = [];
         foreach ($translation['cases'] as $case) {
             foreach ($this->representations as $representation) {
-                $executionId = $case['id'].'-'.$representation;
+                $executionId = $case['id'] . '-' . $representation;
                 $generatedCases[$executionId] = [
                     $case['assertionId'],
                     $case['tag'],
@@ -69,11 +68,11 @@ final class ConstructorFixturePipeline implements FixturePipeline
         foreach ($translation['assertions'] as $assertion) {
             $results = array_values(array_filter(
                 $executionResults,
-                static fn (array $result): bool => $result['assertionId'] === $assertion['id'],
+                static fn(array $result): bool => $result['assertionId'] === $assertion['id'],
             ));
             $passing = count(array_filter(
                 $results,
-                static fn (array $result): bool => $result['status'] === 'passing',
+                static fn(array $result): bool => $result['status'] === 'passing',
             )) === count($results);
             $assertions[] = [
                 ...$assertion,
@@ -84,7 +83,7 @@ final class ConstructorFixturePipeline implements FixturePipeline
         }
         $failureCount = count(array_filter(
             $executionResults,
-            static fn (array $result): bool => $result['status'] === 'failing',
+            static fn(array $result): bool => $result['status'] === 'failing',
         ));
 
         return new FixtureResult(
@@ -95,7 +94,10 @@ final class ConstructorFixturePipeline implements FixturePipeline
             $assertions,
             count($executionResults),
             $failureCount,
-            ['tests/Test262/Generated/ConstructorOptionsScriptValidTest.php' => $this->render($generatedCases, $fixturePath)],
+            ['tests/Test262/Generated/ConstructorOptionsScriptValidTest.php' => $this->render(
+                $generatedCases,
+                $fixturePath,
+            )],
         );
     }
 
@@ -116,63 +118,63 @@ final class ConstructorFixturePipeline implements FixturePipeline
         }
 
         $generated = <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class ConstructorOptionsScriptValidTest extends TestCase
-{
-    /**
-     * @return array<string, array{
-     *     string,
-     *     string,
-     *     array{type: 'null'}|array{type: 'string'|'stringable', value: string},
-     *     string,
-     *     string
-     * }>
-     */
-    public static function cases(): array
-    {
-        return {$caseExport};
-    }
+            final class ConstructorOptionsScriptValidTest extends TestCase
+            {
+                /**
+                 * @return array<string, array{
+                 *     string,
+                 *     string,
+                 *     array{type: 'null'}|array{type: 'string'|'stringable', value: string},
+                 *     string,
+                 *     string
+                 * }>
+                 */
+                public static function cases(): array
+                {
+                    return {$caseExport};
+                }
 
-    /** @param array{type: 'null'}|array{type: 'string'|'stringable', value: string} \$optionValue */
-    #[DataProvider('cases')]
-    public function testTranslatedAssertions(
-        string \$assertionId,
-        string \$tag,
-        array \$optionValue,
-        string \$representation,
-        string \$expected,
-    ): void {
-        \$result = ConstructorOptionAssertion::evaluate(
-            \$tag,
-            'script',
-            \$optionValue,
-            \$representation,
-            \$expected,
-        );
+                /** @param array{type: 'null'}|array{type: 'string'|'stringable', value: string} \$optionValue */
+                #[DataProvider('cases')]
+                public function testTranslatedAssertions(
+                    string \$assertionId,
+                    string \$tag,
+                    array \$optionValue,
+                    string \$representation,
+                    string \$expected,
+                ): void {
+                    \$result = ConstructorOptionAssertion::evaluate(
+                        \$tag,
+                        'script',
+                        \$optionValue,
+                        \$representation,
+                        \$expected,
+                    );
 
-        self::assertSame(
-            'passing',
-            \$result['status'],
-            \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'),
-        );
-    }
-}
-PHP;
+                    self::assertSame(
+                        'passing',
+                        \$result['status'],
+                        \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'),
+                    );
+                }
+            }
+            PHP;
 
-        return $generated."\n";
+        return $generated . "\n";
     }
 }

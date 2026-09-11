@@ -29,12 +29,8 @@ final class EvidenceBuilder
      *
      * @return array<string, mixed>
      */
-    public static function build(
-        array $baseline,
-        array $corpus,
-        array $inventoryAudit,
-        array $fixtureResults,
-    ): array {
+    public static function build(array $baseline, array $corpus, array $inventoryAudit, array $fixtureResults): array
+    {
         $translationGaps = 0;
         foreach ($corpus['fixtures'] as $fixture) {
             if ($fixture['status'] === 'translation_gap') {
@@ -45,27 +41,16 @@ final class EvidenceBuilder
             $translationGaps += $result->translationGapCount();
         }
 
-        $translatedFixtures = count(array_filter(
-            $fixtureResults,
-            static fn (FixtureResult $result): bool => $result->isTranslated(),
-        ));
-        $passingFixtures = count(array_filter(
-            $fixtureResults,
-            static fn (FixtureResult $result): bool => $result->isPassing(),
-        ));
-        $partiallyTranslatedFixtures = count(array_filter(
-            $fixtureResults,
-            static fn (FixtureResult $result): bool => $result->isPartiallyTranslated(),
-        ));
+        $translatedFixtures = count(array_filter($fixtureResults, static fn(FixtureResult $result): bool => $result->isTranslated()));
+        $passingFixtures = count(array_filter($fixtureResults, static fn(FixtureResult $result): bool => $result->isPassing()));
+        $partiallyTranslatedFixtures = count(array_filter($fixtureResults, static fn(FixtureResult $result): bool => $result->isPartiallyTranslated()));
         $executionFailures = array_sum(array_map(
-            static fn (FixtureResult $result): int => $result->executionFailures(),
+            static fn(FixtureResult $result): int => $result->executionFailures(),
             $fixtureResults,
         ));
         $allFixturesPass = count($fixtureResults) === $passingFixtures;
-        $conformanceEligible = $inventoryAudit['complete']
-            && $translationGaps === 0
-            && $executionFailures === 0
-            && $allFixturesPass;
+        $conformanceEligible =
+            $inventoryAudit['complete'] && $translationGaps === 0 && $executionFailures === 0 && $allFixturesPass;
 
         return [
             'baseline' => $baseline['initial'],
@@ -75,8 +60,9 @@ final class EvidenceBuilder
                     'comparisonAgainstInitial' => [
                         'fromRevision' => $baseline['initial']['ecma402']['revision'],
                         'toRevision' => $baseline['active']['ecma402']['revision'],
-                        'localeSourceChanged' => $baseline['initial']['ecma402']['localeSource']['sha256']
-                            !== $baseline['active']['ecma402']['localeSource']['sha256'],
+                        'localeSourceChanged' =>
+                            $baseline['initial']['ecma402']['localeSource']['sha256']
+                                !== $baseline['active']['ecma402']['localeSource']['sha256'],
                     ],
                 ],
                 'test262' => [
@@ -105,10 +91,7 @@ final class EvidenceBuilder
                     ? 'Every inventoried applicable assertion and required representation passes.'
                     : 'The initial slice has an incomplete inventory, translation gaps, incomplete applicable translations, or execution failures.',
             ],
-            'fixtures' => array_map(
-                static fn (FixtureResult $result): array => $result->evidence(),
-                $fixtureResults,
-            ),
+            'fixtures' => array_map(static fn(FixtureResult $result): array => $result->evidence(), $fixtureResults),
         ];
     }
 }

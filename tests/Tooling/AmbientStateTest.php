@@ -27,11 +27,14 @@ final class AmbientStateTest extends TestCase
             }
 
             self::assertSame('he-Zinh-NZ', (new Locale('iw-Qaai-554'))->toString());
-            self::assertSame('fr-Cyrl-CA', (new SpecLocale('en-US', [
-                'language' => 'fr',
-                'script' => 'cyrl',
-                'region' => 'ca',
-            ]))->toString());
+            self::assertSame(
+                'fr-Cyrl-CA',
+                (new SpecLocale('en-US', [
+                    'language' => 'fr',
+                    'script' => 'cyrl',
+                    'region' => 'ca',
+                ]))->toString(),
+            );
         } finally {
             date_default_timezone_set($timezone);
             if ($processLocale !== false) {

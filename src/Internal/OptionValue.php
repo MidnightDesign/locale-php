@@ -9,8 +9,7 @@ final readonly class OptionValue
     private function __construct(
         public bool $present,
         public mixed $value,
-    ) {
-    }
+    ) {}
 
     public static function missing(): self
     {

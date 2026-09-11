@@ -14,13 +14,13 @@ use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
 use Midnight\Intl\Tools\Test262\InventoryAudit;
 
 $root = dirname(__DIR__);
-require $root.'/vendor/autoload.php';
+require $root . '/vendor/autoload.php';
 
 function readRequiredFile(string $path, string $root): string
 {
     $contents = file_get_contents($path);
     if ($contents === false) {
-        throw new RuntimeException('Unable to read '.str_replace($root.'/', '', $path).'.');
+        throw new RuntimeException('Unable to read ' . str_replace($root . '/', '', $path) . '.');
     }
 
     return $contents;
@@ -29,10 +29,10 @@ function readRequiredFile(string $path, string $root): string
 function writeRequiredFile(string $path, string $contents): void
 {
     if (!is_dir(dirname($path)) && !mkdir(dirname($path), 0755, true)) {
-        throw new RuntimeException('Unable to create '.dirname($path).'.');
+        throw new RuntimeException('Unable to create ' . dirname($path) . '.');
     }
     if (file_put_contents($path, $contents) === false) {
-        throw new RuntimeException('Unable to write '.$path.'.');
+        throw new RuntimeException('Unable to write ' . $path . '.');
     }
 }
 
@@ -62,7 +62,7 @@ function writeRequiredFile(string $path, string $contents): void
  *     trackingPolicy: string
  * } $baseline */
 $baseline = json_decode(
-    readRequiredFile($root.'/tests/Test262/baseline.json', $root),
+    readRequiredFile($root . '/tests/Test262/baseline.json', $root),
     true,
     flags: JSON_THROW_ON_ERROR,
 );
@@ -115,19 +115,15 @@ $fixturePipelines = [
 
 $fixtureSources = [];
 foreach (array_keys($fixturePipelines) as $fixturePath) {
-    $fixtureSources[$fixturePath] = readRequiredFile(
-        $root.'/tests/Test262/upstream/'.$fixturePath,
-        $root,
-    );
+    $fixtureSources[$fixturePath] = readRequiredFile($root . '/tests/Test262/upstream/' . $fixturePath, $root);
 }
-$test262License = readRequiredFile($root.'/tests/Test262/upstream/LICENSE', $root);
-$ecma402License = readRequiredFile($root.'/tests/Test262/upstream/ECMA-402-LICENSE.md', $root);
+$test262License = readRequiredFile($root . '/tests/Test262/upstream/LICENSE', $root);
+$ecma402License = readRequiredFile($root . '/tests/Test262/upstream/ECMA-402-LICENSE.md', $root);
 $initialInventorySource = readRequiredFile(
-    $root.'/'.$baseline['initial']['test262']['initialInventory']['path'],
+    $root . '/' . $baseline['initial']['test262']['initialInventory']['path'],
     $root,
 );
-if (hash('sha256', $initialInventorySource)
-    !== $baseline['initial']['test262']['initialInventory']['sha256']) {
+if (hash('sha256', $initialInventorySource) !== $baseline['initial']['test262']['initialInventory']['sha256']) {
     throw new RuntimeException('The immutable initial Test262 inventory failed its integrity check.');
 }
 
@@ -139,20 +135,18 @@ if (hash('sha256', $initialInventorySource)
  *     comparison: array<string, mixed>,
  *     fixtures: list<array{status: string, detectedAssertions: list<array<string, mixed>>}>
  * } $corpus */
-$corpus = json_decode(
-    readRequiredFile($root.'/tests/Test262/corpus.json', $root),
-    true,
-    flags: JSON_THROW_ON_ERROR,
-);
-if ($corpus['test262Revision'] !== $test262Revision
+$corpus = json_decode(readRequiredFile($root . '/tests/Test262/corpus.json', $root), true, flags: JSON_THROW_ON_ERROR);
+if (
+    $corpus['test262Revision'] !== $test262Revision
     || $corpus['localeTree'] !== $baseline['active']['test262']['localeTree']
     || $corpus['fixtureCount'] !== $baseline['active']['test262']['fixtureCount']
-    || $corpus['aggregateSha256'] !== $baseline['active']['test262']['aggregateSha256']) {
+    || $corpus['aggregateSha256'] !== $baseline['active']['test262']['aggregateSha256']
+) {
     throw new RuntimeException('The pinned Test262 corpus inventory does not match the conformance baseline.');
 }
 
 $actualHashes = [
-    ...array_map(static fn (string $source): string => hash('sha256', $source), $fixtureSources),
+    ...array_map(static fn(string $source): string => hash('sha256', $source), $fixtureSources),
     'LICENSE' => hash('sha256', $test262License),
     'ECMA-402-LICENSE.md' => hash('sha256', $ecma402License),
 ];
@@ -167,33 +161,24 @@ foreach ($fixturePipelines as $fixturePath => $pipeline) {
     $fixtureResults[] = $pipeline->run($fixtureSources[$fixturePath], $fixturePath);
 }
 $translatedAssertionIds = array_merge(...array_map(
-    static fn (FixtureResult $result): array => $result->assertionIds(),
+    static fn(FixtureResult $result): array => $result->assertionIds(),
     $fixtureResults,
 ));
 $inventoryAudit = InventoryAudit::run($corpus, $translatedAssertionIds);
 $evidence = EvidenceBuilder::build($baseline, $corpus, $inventoryAudit, $fixtureResults);
-$evidenceJson = json_encode(
-    $evidence,
-    JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
-)."\n";
+$evidenceJson = json_encode($evidence, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
 
-writeRequiredFile($root.'/build/test262-results.json', $evidenceJson);
+writeRequiredFile($root . '/build/test262-results.json', $evidenceJson);
 
-$blockingResults = array_filter(
-    $fixtureResults,
-    static fn (FixtureResult $result): bool => $result->blocksGeneration(),
-);
+$blockingResults = array_filter($fixtureResults, static fn(FixtureResult $result): bool => $result->blocksGeneration());
 if ($blockingResults !== []) {
     foreach ($blockingResults as $result) {
         $fixtureEvidence = $result->evidence();
-        fwrite(
-            STDERR,
-            sprintf(
-                "%s: %s\n",
-                $fixtureEvidence['path'],
-                $fixtureEvidence['reason'] ?? 'The translated fixture has execution failures.',
-            ),
-        );
+        fwrite(STDERR, sprintf(
+            "%s: %s\n",
+            $fixtureEvidence['path'],
+            $fixtureEvidence['reason'] ?? 'The translated fixture has execution failures.',
+        ));
     }
     exit(1);
 }
@@ -202,7 +187,7 @@ $outputs = ['tests/Test262/evidence.json' => $evidenceJson];
 foreach ($fixtureResults as $result) {
     foreach ($result->generatedFiles() as $path => $contents) {
         if (isset($outputs[$path])) {
-            throw new RuntimeException('Multiple fixture pipelines generated '.$path.'.');
+            throw new RuntimeException('Multiple fixture pipelines generated ' . $path . '.');
         }
         $outputs[$path] = $contents;
     }
@@ -210,10 +195,10 @@ foreach ($fixtureResults as $result) {
 
 $check = in_array('--check', $argv, true);
 foreach ($outputs as $path => $contents) {
-    $absolutePath = $root.'/'.$path;
+    $absolutePath = $root . '/' . $path;
     if ($check) {
         if (!is_file($absolutePath) || file_get_contents($absolutePath) !== $contents) {
-            fwrite(STDERR, $path." is not reproducible.\n");
+            fwrite(STDERR, $path . " is not reproducible.\n");
             exit(1);
         }
         continue;

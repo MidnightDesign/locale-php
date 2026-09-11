@@ -149,7 +149,7 @@ final class LocaleTest extends TestCase
     {
         $source = new Locale('en-US');
         $fromLocale = new Locale($source, ['region' => 'GB']);
-        $fromObject = new Locale(new class () implements \Stringable {
+        $fromObject = new Locale(new class() implements \Stringable {
             public function __toString(): string
             {
                 return 'de-latn-de';
@@ -162,7 +162,7 @@ final class LocaleTest extends TestCase
 
     public function testItProtectsBrandedStateWhileRemainingExtensible(): void
     {
-        $locale = new class ('de') extends Locale {
+        $locale = new class('de') extends Locale {
             public bool $consumerState = false;
         };
         $locale->consumerState = true;
@@ -190,10 +190,7 @@ final class LocaleTest extends TestCase
 
     public function testItCanonicalizesTheInputBeforeApplyingOptions(): void
     {
-        self::assertSame(
-            'en-Latn',
-            (new Locale('sh', ['language' => 'en']))->toString(),
-        );
+        self::assertSame('en-Latn', (new Locale('sh', ['language' => 'en']))->toString());
     }
 
     public function testItCanonicalizesAliasesIntroducedByOptions(): void
@@ -204,10 +201,10 @@ final class LocaleTest extends TestCase
     public function testItReadsAndConvertsBehavioralOptionsInOrder(): void
     {
         $log = new OptionAccessLog();
-        $options = new class ($log) implements OptionBag {
-            public function __construct(private OptionAccessLog $log)
-            {
-            }
+        $options = new class($log) implements OptionBag {
+            public function __construct(
+                private OptionAccessLog $log,
+            ) {}
 
             public function has(string $name): bool
             {
@@ -216,16 +213,17 @@ final class LocaleTest extends TestCase
 
             public function get(string $name): mixed
             {
-                $this->log->entries[] = 'get:'.$name;
+                $this->log->entries[] = 'get:' . $name;
 
-                return new class ($name, $this->log) implements \Stringable {
-                    public function __construct(private string $name, private OptionAccessLog $log)
-                    {
-                    }
+                return new class($name, $this->log) implements \Stringable {
+                    public function __construct(
+                        private string $name,
+                        private OptionAccessLog $log,
+                    ) {}
 
                     public function __toString(): string
                     {
-                        $this->log->entries[] = 'convert:'.$this->name;
+                        $this->log->entries[] = 'convert:' . $this->name;
 
                         return match ($this->name) {
                             'language' => 'fr',
@@ -239,14 +237,17 @@ final class LocaleTest extends TestCase
         };
 
         self::assertSame('fr-Latn-CA', (new Locale('en', $options))->toString());
-        self::assertSame([
-            'get:language',
-            'convert:language',
-            'get:script',
-            'convert:script',
-            'get:region',
-            'convert:region',
-        ], $log->entries);
+        self::assertSame(
+            [
+                'get:language',
+                'convert:language',
+                'get:script',
+                'convert:script',
+                'get:region',
+                'convert:region',
+            ],
+            $log->entries,
+        );
     }
 
     public function testItRejectsInvalidValuesWithinTheDeliveredSlice(): void
@@ -293,10 +294,8 @@ final class LocaleTest extends TestCase
 
     public function testUninitializedSubclassesFailTheBrandCheck(): void
     {
-        $locale = new class () extends Locale {
-            public function __construct()
-            {
-            }
+        $locale = new class() extends Locale {
+            public function __construct() {}
         };
 
         $this->expectException(TypeError::class);
@@ -306,10 +305,10 @@ final class LocaleTest extends TestCase
     public function testUserStringConversionExceptionsPropagateUnchanged(): void
     {
         $failure = new \RuntimeException('consumer conversion failed');
-        $tag = new class ($failure) implements \Stringable {
-            public function __construct(private \RuntimeException $failure)
-            {
-            }
+        $tag = new class($failure) implements \Stringable {
+            public function __construct(
+                private \RuntimeException $failure,
+            ) {}
 
             public function __toString(): string
             {
@@ -387,10 +386,8 @@ final class LocaleTest extends TestCase
 
     public function testUninitializedSubclassesRejectPropertyAccess(): void
     {
-        $locale = new class () extends Locale {
-            public function __construct()
-            {
-            }
+        $locale = new class() extends Locale {
+            public function __construct() {}
         };
 
         $this->expectException(TypeError::class);
