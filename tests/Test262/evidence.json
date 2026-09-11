@@ -1062,7 +1062,7 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "47be240c880bbc8f72073a2c8a29e058a86e0e5b094ef8e2631441e913e4617c",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
                         "The JavaScript function length is represented by zero required PHP parameters; descriptor flags are inapplicable."
                     ]
@@ -1087,7 +1087,7 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "8f2606ab45c0430c123b212e113021e5891a76d1f95db474d3fdf65b7ce9a4f1",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
                         "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
                     ]
@@ -1114,7 +1114,7 @@
                     "sha256": "e437e917d50e35f533459a0ad88e6aa342f65492afd29046a5a57ee6af2d83a9",
                     "status": "passing",
                     "adaptations": [
-                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                        "Public PHP method visibility represents the applicable method-availability assertion."
                     ]
                 },
                 {
@@ -1123,9 +1123,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "a5d55726785f0532808aff125058dcbd60fc4efa23273eab3d16398c8fce67c0",
-                    "status": "passing",
+                    "status": "inapplicable",
                     "adaptations": [
-                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                        "JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable."
                     ]
                 }
             ]
@@ -1184,7 +1184,7 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "cb545c3f65fba6c8cdd7945cd71c9c118dc0a8c4ba95eb3dceabd1b84a985b6f",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
                         "The JavaScript function length is represented by zero required PHP parameters; descriptor flags are inapplicable."
                     ]
@@ -1209,7 +1209,7 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "0c6b2346ff1dd0da47351416ed4cad16577b5a07694381dd1822cf1dac473987",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
                         "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
                     ]
@@ -1236,7 +1236,7 @@
                     "sha256": "ed3768071a85e58b3cafc67b1fd2255154696c7bbf8a80855fd0a5d81d8b4e64",
                     "status": "passing",
                     "adaptations": [
-                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                        "Public PHP method visibility represents the applicable method-availability assertion."
                     ]
                 },
                 {
@@ -1245,9 +1245,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "d7701e6a0af4f153c3d25a71370ec2888028bc5be88d7bda2c1bb06ff86a9054",
-                    "status": "passing",
+                    "status": "inapplicable",
                     "adaptations": [
-                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                        "JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable."
                     ]
                 }
             ]

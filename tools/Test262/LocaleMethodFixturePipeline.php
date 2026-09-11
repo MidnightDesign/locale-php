@@ -15,7 +15,14 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
         private readonly string $kind,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {}
+    ) {
+        if (!in_array($method, ['maximize', 'minimize'], true)) {
+            throw new \InvalidArgumentException(sprintf('Unsupported Locale method "%s".', $method));
+        }
+        if (!in_array($kind, ['branding', 'length', 'name', 'property'], true)) {
+            throw new \InvalidArgumentException(sprintf('Unsupported Locale method fixture kind "%s".', $kind));
+        }
+    }
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -38,8 +45,8 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
         $status = $failure ? 'failing' : ($partiallyTranslated ? 'partially_translated' : 'passing');
         $assertions = array_map(fn(array $identity): array => [
             ...$identity,
-            'status' => $failure ? 'failing' : 'passing',
-            'adaptations' => [$this->adaptation()],
+            'status' => $this->assertionStatus($identity, $failure),
+            'adaptations' => [$this->adaptation($identity)],
         ], $identities);
 
         return new FixtureResult(
@@ -57,7 +64,23 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
         );
     }
 
-    private function adaptation(): string
+    /** @param array<string, mixed> $identity */
+    private function assertionStatus(array $identity, bool $failure): string
+    {
+        if ($failure) {
+            return 'failing';
+        }
+
+        return match ($this->kind) {
+            'branding' => 'passing',
+            'length', 'name' => 'partially_translated',
+            'property' => ($identity['call'] ?? null) === 'verifyProperty' ? 'inapplicable' : 'passing',
+            default => throw new \LogicException('Unsupported Locale method fixture kind.'),
+        };
+    }
+
+    /** @param array<string, mixed> $identity */
+    private function adaptation(array $identity): string
     {
         return match ($this->kind) {
             'branding'
@@ -66,7 +89,10 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
                 => 'The JavaScript function length is represented by zero required PHP parameters; descriptor flags are inapplicable.',
             'name'
                 => 'The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable.',
-            default => 'Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable.',
+            'property' => ($identity['call'] ?? null) === 'verifyProperty'
+                ? 'JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable.'
+                : 'Public PHP method visibility represents the applicable method-availability assertion.',
+            default => throw new \LogicException('Unsupported Locale method fixture kind.'),
         };
     }
 

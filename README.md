@@ -2,7 +2,7 @@
 
 A pure-PHP implementation of ECMAScript `Intl.Locale`. It requires PHP 8.2 or newer and does not require `ext-intl`.
 
-The package is not yet ECMA-402 conformant. Locale identifier construction and likely-subtag operations are complete: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, expose the canonical identifier properties, and provide deterministic `maximize()` and `minimize()` results. Locale-information methods remain unfinished.
+The package is not yet ECMA-402 conformant. Locale identifier construction and likely-subtag operations are implemented: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, expose the canonical identifier properties, and provide deterministic `maximize()` and `minimize()` results. Locale-information methods remain unfinished.
 
 ## Install
 

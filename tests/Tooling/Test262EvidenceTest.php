@@ -170,9 +170,24 @@ final class Test262EvidenceTest extends TestCase
             self::assertGreaterThan(0, $fixtures[$path]['executionCount']);
             self::assertSame(0, $fixtures[$path]['executionFailures']);
             foreach ($fixtures[$path]['assertions'] as $assertion) {
-                self::assertSame('passing', $assertion['status']);
+                self::assertContains($assertion['status'], ['passing', 'partially_translated', 'inapplicable']);
                 self::assertNotEmpty($assertion['adaptations'] ?? []);
             }
+        }
+
+        foreach (['maximize', 'minimize'] as $method) {
+            self::assertSame(
+                ['partially_translated'],
+                array_column($fixtures["test/intl402/Locale/prototype/{$method}/length.js"]['assertions'], 'status'),
+            );
+            self::assertSame(
+                ['partially_translated'],
+                array_column($fixtures["test/intl402/Locale/prototype/{$method}/name.js"]['assertions'], 'status'),
+            );
+            self::assertSame(
+                ['passing', 'inapplicable'],
+                array_column($fixtures["test/intl402/Locale/prototype/{$method}/prop-desc.js"]['assertions'], 'status'),
+            );
         }
     }
 }
