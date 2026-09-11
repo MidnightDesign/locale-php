@@ -18,10 +18,10 @@ final class LocaleObjectModelPipeline implements FixturePipeline
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $assertions = $this->assertionIdentities->extract($source, $fixturePath);
-        $checks = match ($this->mode) {
-            'subclassing' => LocaleObjectModel::subclassing(),
-            'extensibility' => [LocaleObjectModel::isExtensible()],
-            'instance' => [LocaleObjectModel::hasBasePrototype()],
+        [$checks, $method] = match ($this->mode) {
+            'subclassing' => [LocaleObjectModel::subclassing(), 'subclassing'],
+            'extensibility' => [[LocaleObjectModel::isExtensible()], 'isExtensible'],
+            'instance' => [[LocaleObjectModel::hasBasePrototype()], 'hasBasePrototype'],
             default => throw new \LogicException('Unknown object-model fixture mode.'),
         };
         if (count($assertions) !== count($checks)) {
@@ -59,18 +59,12 @@ final class LocaleObjectModelPipeline implements FixturePipeline
             $evidence,
             count($checks),
             $failures,
-            [GeneratedScript::primary($fixturePath, $this->render($fixturePath))],
+            [GeneratedScript::primary($fixturePath, $this->render($fixturePath, $method))],
         );
     }
 
-    private function render(string $fixturePath): string
+    private function render(string $fixturePath, string $method): string
     {
-        $method = match ($this->mode) {
-            'subclassing' => 'subclassing',
-            'extensibility' => 'isExtensible',
-            'instance' => 'hasBasePrototype',
-            default => throw new \LogicException('Unknown object-model fixture mode.'),
-        };
         $assertion = $this->mode === 'subclassing'
             ? "Assert::assertNotContains(false, LocaleObjectModel::{$method}());"
             : "Assert::assertTrue(LocaleObjectModel::{$method}());";

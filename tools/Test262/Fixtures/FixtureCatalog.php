@@ -188,13 +188,13 @@ final readonly class FixtureCatalog
         );
     }
 
-    public function branding(string $member, bool $property, string $sourceSha256): FixturePipeline
+    public function branding(string $member, bool $propertyAccessor, string $sourceSha256): FixturePipeline
     {
         return $this->sourceBound(
             new BrandingFixturePipeline(
                 $this->assertionIdentities,
                 $member,
-                $property,
+                $propertyAccessor,
                 $this->test262Revision,
                 $this->ecma402Revision,
             ),

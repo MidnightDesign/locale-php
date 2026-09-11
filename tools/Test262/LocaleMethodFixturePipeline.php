@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tools\Test262;
 
-use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Spec\Locale;
+use Midnight\Intl\Tests\Test262\Harness\ReceiverBranding;
 
 final class LocaleMethodFixturePipeline implements FixturePipeline
 {
@@ -32,30 +32,47 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
             !$reflection->isPublic()
             || $reflection->getName() !== $this->method
             || $reflection->getNumberOfRequiredParameters() !== 0;
+        $brandingChecks = [];
         if ($this->kind === 'branding') {
-            $uninitialized = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
-            try {
-                $uninitialized->{$this->method}();
-                $failure = true;
-            } catch (TypeError) {
-            }
+            $brandingChecks = ReceiverBranding::method($this->method);
+            $failure = $failure || in_array(false, $brandingChecks, true);
         }
 
         $partiallyTranslated = in_array($this->kind, ['length', 'name', 'property'], true);
         $status = $failure ? 'failing' : ($partiallyTranslated ? 'partially_translated' : 'passing');
-        $assertions = array_map(fn(array $identity): array => [
-            ...$identity,
-            'status' => $this->assertionStatus($identity, $failure),
-            'adaptations' => [$this->adaptation($identity)],
-        ], $identities);
+        $assertions = array_map(function (array $identity) use ($failure, $brandingChecks): array {
+            $evidence = [
+                ...$identity,
+                'status' => $this->assertionStatus($identity, $failure),
+                'adaptations' => [$this->adaptation($identity)],
+            ];
+            if ($this->kind === 'branding' && $identity['call'] === 'assert.throws') {
+                $evidence['executions'] = array_map(
+                    static fn(bool $passing, int $index): array => [
+                        'id' => 'invalid-receiver-' . ($index + 1),
+                        'assertionId' => $identity['id'],
+                        'representation' => $index === 7 ? 'uninitialized_locale' : 'native_receiver_binding',
+                        'status' => $passing ? 'passing' : 'failing',
+                    ],
+                    $brandingChecks,
+                    array_keys($brandingChecks),
+                );
+            }
+
+            return $evidence;
+        }, $identities);
+        $representations = $this->kind === 'branding'
+            ? ['php_reflection', 'native_receiver_binding', 'uninitialized_locale']
+            : ['php_reflection'];
+        $executionCount = $this->kind === 'branding' ? count($brandingChecks) + 1 : count($identities);
 
         return new FixtureResult(
             $fixturePath,
             hash('sha256', $source),
             $status,
-            ['php_reflection'],
+            $representations,
             $assertions,
-            count($identities),
+            $executionCount,
             $failure ? 1 : 0,
             [GeneratedScript::primary($fixturePath, $this->render($fixturePath))],
             $partiallyTranslated
@@ -84,7 +101,7 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
     {
         return match ($this->kind) {
             'branding'
-                => 'PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure.',
+                => 'PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check.',
             'length'
                 => 'The JavaScript function length is represented by zero required PHP parameters; descriptor flags are inapplicable.',
             'name'
@@ -101,15 +118,12 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
         $method = $this->method;
         $branding = $this->kind === 'branding' ? <<<'PHP'
 
-                    $locale = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
-                    try {
-                        $locale->METHOD();
-                        Assert::fail('Expected an uninitialized Locale to fail its brand check.');
-                    } catch (TypeError) {
-                        Assert::assertTrue(true);
-                    }
+                    Assert::assertNotContains(false, ReceiverBranding::method('METHOD'));
                 PHP : '';
         $branding = str_replace('METHOD', $method, $branding);
+        $fixtureImport = $this->kind === 'branding'
+            ? 'use Midnight\Intl\Tests\Test262\Harness\ReceiverBranding;'
+            : 'use Midnight\Intl\Exception\TypeError;';
 
         return <<<PHP
             <?php
@@ -120,8 +134,8 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            use Midnight\Intl\Exception\TypeError;
             use Midnight\Intl\Spec\Locale;
+            {$fixtureImport}
             use PHPUnit\Framework\Assert;
 
             \$method = new \ReflectionMethod(Locale::class, '{$method}');

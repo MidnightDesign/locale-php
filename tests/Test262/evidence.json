@@ -9296,10 +9296,12 @@
             "status": "passing",
             "reason": null,
             "sourceAssertionCount": 2,
-            "executionCount": 2,
+            "executionCount": 9,
             "executionFailures": 0,
             "phpRepresentations": [
-                "php_reflection"
+                "php_reflection",
+                "native_receiver_binding",
+                "uninitialized_locale"
             ],
             "assertions": [
                 {
@@ -9310,7 +9312,7 @@
                     "sha256": "f3fcb295decdb62c288b77715feb1879447abf884b44444ba905fab405565a95",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
                     ]
                 },
                 {
@@ -9321,7 +9323,57 @@
                     "sha256": "cad15e0b94cadcf4713763fdaac40f526797b32d3e6aea330e5f82d3a1e2d069",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
                     ]
                 }
             ],
@@ -9446,10 +9498,12 @@
             "status": "passing",
             "reason": null,
             "sourceAssertionCount": 2,
-            "executionCount": 2,
+            "executionCount": 9,
             "executionFailures": 0,
             "phpRepresentations": [
-                "php_reflection"
+                "php_reflection",
+                "native_receiver_binding",
+                "uninitialized_locale"
             ],
             "assertions": [
                 {
@@ -9460,7 +9514,7 @@
                     "sha256": "0d5d9b791e61e89799d0f0bc526eba1e47af56883f43980b4820e8677b356c28",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
                     ]
                 },
                 {
@@ -9471,7 +9525,57 @@
                     "sha256": "36a4c75efd5b5a79644566052376f1404558ddae4962ec9dc5b847dbab89bd97",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
                     ]
                 }
             ],

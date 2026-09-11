@@ -11,7 +11,7 @@ final class BrandingFixturePipeline implements FixturePipeline
     public function __construct(
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $member,
-        private readonly bool $property,
+        private readonly bool $propertyAccessor,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
     ) {}
@@ -19,7 +19,7 @@ final class BrandingFixturePipeline implements FixturePipeline
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $assertions = $this->assertionIdentities->extract($source, $fixturePath);
-        $expectedCount = $this->property ? 1 : 2;
+        $expectedCount = $this->propertyAccessor ? 1 : 2;
         if (count($assertions) !== $expectedCount) {
             return FixtureResult::translationGap(
                 $fixturePath,
@@ -29,11 +29,13 @@ final class BrandingFixturePipeline implements FixturePipeline
                 new TranslationGap(sprintf('Expected %d branding assertion(s).', $expectedCount)),
             );
         }
-        $checks = $this->property ? ReceiverBranding::property($this->member) : ReceiverBranding::method($this->member);
+        $checks = $this->propertyAccessor
+            ? ReceiverBranding::property($this->member)
+            : ReceiverBranding::method($this->member);
         $passing = !in_array(false, $checks, true);
         $brandingAssertion = $assertions[$expectedCount - 1];
         $evidence = [];
-        if (!$this->property) {
+        if (!$this->propertyAccessor) {
             $evidence[] = [
                 ...$assertions[0],
                 'status' => 'passing',
@@ -71,7 +73,7 @@ final class BrandingFixturePipeline implements FixturePipeline
             $passing ? 'passing' : 'failing',
             ['native_receiver_binding', 'uninitialized_locale'],
             $evidence,
-            count($checks) + ($this->property ? 0 : 1),
+            count($checks) + ($this->propertyAccessor ? 0 : 1),
             count(array_filter($checks, static fn(bool $result): bool => !$result)),
             [GeneratedScript::primary($fixturePath, $this->render($fixturePath))],
         );
@@ -79,7 +81,7 @@ final class BrandingFixturePipeline implements FixturePipeline
 
     private function render(string $fixturePath): string
     {
-        $call = $this->property
+        $call = $this->propertyAccessor
             ? sprintf('ReceiverBranding::property(%s)', var_export($this->member, true))
             : sprintf('ReceiverBranding::method(%s)', var_export($this->member, true));
         return <<<PHP

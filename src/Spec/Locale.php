@@ -46,7 +46,7 @@ class Locale
 
         $tag = match (true) {
             is_string($tag) => $tag,
-            $tag instanceof self => $tag->toString(),
+            $tag instanceof self => self::initializedTag($tag),
             $tag instanceof ObjectValue => self::toStringValue(self::toPrimitive($tag)),
             $tag instanceof \Stringable => (string) $tag,
             default => throw new TypeError('The locale tag must be a string or an object.'),
@@ -60,19 +60,44 @@ class Locale
 
         if (is_array($options) || is_object($options)) {
             $languageOption = self::readOption($options, 'language');
-            $language = $languageOption->present
-                ? self::toStringValue($languageOption->value)
-                : $this->identifier->language;
-            $scriptOption = self::readOption($options, 'script');
-            $script = $scriptOption->present ? self::toStringValue($scriptOption->value) : $this->identifier->script;
-            $regionOption = self::readOption($options, 'region');
-            $region = $regionOption->present ? self::toStringValue($regionOption->value) : $this->identifier->region;
-            $variantsOption = self::readOption($options, 'variants');
-            $variants = $variantsOption->present
-                ? self::toStringValue($variantsOption->value)
-                : ($this->identifier->variants === [] ? null : implode('-', $this->identifier->variants));
+            if ($languageOption->present) {
+                $this->identifier->replaceLanguageId(
+                    self::toStringValue($languageOption->value),
+                    $this->identifier->script,
+                    $this->identifier->region,
+                    $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+                );
+            }
 
-            $this->identifier->replaceLanguageId($language, $script, $region, $variants);
+            $scriptOption = self::readOption($options, 'script');
+            if ($scriptOption->present) {
+                $this->identifier->replaceLanguageId(
+                    $this->identifier->language,
+                    self::toStringValue($scriptOption->value),
+                    $this->identifier->region,
+                    $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+                );
+            }
+
+            $regionOption = self::readOption($options, 'region');
+            if ($regionOption->present) {
+                $this->identifier->replaceLanguageId(
+                    $this->identifier->language,
+                    $this->identifier->script,
+                    self::toStringValue($regionOption->value),
+                    $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+                );
+            }
+
+            $variantsOption = self::readOption($options, 'variants');
+            if ($variantsOption->present) {
+                $this->identifier->replaceLanguageId(
+                    $this->identifier->language,
+                    $this->identifier->script,
+                    $this->identifier->region,
+                    self::toStringValue($variantsOption->value),
+                );
+            }
 
             self::applyStringKeywordOption($this->identifier, $options, 'calendar', 'ca');
             self::applyStringKeywordOption($this->identifier, $options, 'collation', 'co');
@@ -226,6 +251,15 @@ class Locale
         $properties = get_object_vars($options);
 
         return array_key_exists($name, $properties) ? self::optionValue($properties[$name]) : OptionValue::missing();
+    }
+
+    private static function initializedTag(self $locale): string
+    {
+        if (!$locale->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return $locale->identifier->toString();
     }
 
     private static function optionValue(mixed $value): OptionValue

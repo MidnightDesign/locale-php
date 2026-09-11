@@ -15,11 +15,12 @@ final class LocaleObjectModel
             public bool $isCustom = true;
         };
         $parent = (new \ReflectionClass($locale))->getParentClass();
+        $baseToString = new \ReflectionMethod(Locale::class, 'toString');
 
         return [
             $locale->isCustom,
             $locale->toString() === 'de',
-            $locale->toString() === 'de',
+            $baseToString->invoke($locale) === 'de',
             $parent !== false && $parent->getName() === Locale::class,
         ];
     }
