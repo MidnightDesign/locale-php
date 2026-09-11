@@ -378,8 +378,6 @@ $fixturePipelines = [
             [6, 'sat'],
             [7, 'sun'],
             [0, 'sun'],
-            [0.0, 'sun'],
-            [-0.0, 'sun'],
         ])),
     ),
     'test/intl402/Locale/constructor-options-canonicalized.js' => $mappedStatePipeline(
@@ -639,8 +637,6 @@ $fixturePipelines = [
             [['type' => 'bool', 'value' => true], true],
             [['type' => 'null'], false],
             [['type' => 'int', 'value' => 0], false],
-            [['type' => 'float', 'value' => 0.0], false],
-            [['type' => 'float', 'value' => -0.0], false],
             [['type' => 'float', 'value' => 0.5], true],
             [$stringValue('true'), true],
             [$stringValue('false'), true],

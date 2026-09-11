@@ -319,6 +319,10 @@ class Locale
             return false;
         }
 
-        return (bool) $value;
+        if (is_scalar($value) || $value === null) {
+            return (bool) $value;
+        }
+
+        return true;
     }
 }

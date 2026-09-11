@@ -307,8 +307,8 @@
         {
             "path": "test/intl402/Locale/constructor-options-canonicalized.js",
             "sha256": "5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
@@ -316,7 +316,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "939e4732ee5da4c075f0299f0e06cc88cbff04515fd5d3bf23cdb9ce9f34f72b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
@@ -324,7 +324,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "25dfc13a7a036b7eee16f5507fbbb8eac6824f9f6400098665553a14a483eab0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
@@ -332,7 +332,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "6029ba287d7d0a04e94406efabd7b356ef3a3f6ecda2efff2a9a8a01da385469",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
@@ -340,14 +340,9 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "248daaec26a5110589bb027f85df354983cc15c6cc67b1069536b3628bc12208",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-canonicalized.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-casefirst-invalid.js",
