@@ -125,6 +125,12 @@ final class Locale implements \Stringable, \JsonSerializable
         ), $this->toSpec()->getHourCycles());
     }
 
+    /** @return list<string> */
+    public function getNumberingSystems(): array
+    {
+        return $this->toSpec()->getNumberingSystems();
+    }
+
     public function maximize(): self
     {
         return self::fromSpec($this->toSpec()->maximize());

@@ -131,6 +131,10 @@
                 "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js": "051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60",
                 "test/intl402/Locale/prototype/getTimeZones/output-array.js": "86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f",
                 "test/intl402/Locale/prototype/getTimeZones/prop-desc.js": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
+                "test/intl402/Locale/prototype/getNumberingSystems/branding.js": "530307c9dbee32509652923d38e224bfe1d4afb43858be32ddc7f6bcf54bb303",
+                "test/intl402/Locale/prototype/getNumberingSystems/name.js": "f3591c1be5c56bbcbc1acafb179d67dbfac6ce93d7629839df198ae90bd0b02c",
+                "test/intl402/Locale/prototype/getNumberingSystems/output-array.js": "76789a13dba8b82b03e2a0aefc963111042aa5f8c8e4656899a707a73570b534",
+                "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js": "0cd175aae9f0a27c10544c4577ff32e750b1563f63144b9b0bf11d35d7b21120",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
             }

@@ -2,7 +2,7 @@
 
 A pure-PHP implementation of ECMAScript `Intl.Locale`. It requires PHP 8.2 or newer and does not require `ext-intl`.
 
-The package is not yet ECMA-402 conformant. Locale identifier construction, likely-subtag operations, text direction, calendar and hour-cycle preferences, and primary time-zone lookup are implemented: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, expose the canonical identifier properties, provide deterministic `maximize()`, `minimize()`, and `getTextInfo()` results, return ordered calendar and hour-cycle preferences, and return pinned primary time-zone identifiers for explicit regions through `getTimeZones()`. Other locale-information methods remain unfinished.
+The package is not yet ECMA-402 conformant. Locale identifier construction, likely-subtag operations, numbering-system defaults, text direction, calendar and hour-cycle preferences, and primary time-zone lookup are implemented: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, expose the canonical identifier properties, provide deterministic `maximize()`, `minimize()`, and `getTextInfo()` results, return the pinned default or explicit numbering system through `getNumberingSystems()`, return ordered calendar and hour-cycle preferences, and return pinned primary time-zone identifiers for explicit regions through `getTimeZones()`. Other locale-information methods remain unfinished.
 
 ## Install
 
@@ -30,6 +30,7 @@ echo json_encode($locale); // "en-Latn-GB-u-ca-gregory-kn"
 $locale->getTimeZones();   // ['Europe/London']
 $locale->getCalendars();   // ['gregory']
 $locale->getHourCycles();  // [HourCycle::H23, HourCycle::H12]
+$locale->getNumberingSystems(); // ['latn']
 ```
 
 The porcelain layer is the normal application API. See [Getting started](docs/getting-started.md), [the spec layer](docs/spec-layer.md), [conformance and release data](docs/conformance.md), and [migration guidance](docs/migration.md).

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Midnight\Intl\Tools\MagoFormatter;
+use Midnight\Intl\Tools\NumberingSystemsProjectionGenerator;
 
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
@@ -198,8 +199,6 @@ $calendarGenerated = generatePreferenceClass(
         ],
     ],
 );
-$calendarTarget = $root . '/src/Internal/Data/CalendarPreferences.php';
-
 $hourCycleSource = file_get_contents($root . '/resources/data/hour-cycle-preferences.json');
 if ($hourCycleSource === false) {
     throw new RuntimeException('Unable to read the hour-cycle-preferences projection source.');
@@ -224,8 +223,6 @@ $hourCycleGenerated = generatePreferenceClass(
         'value' => $hourCycleData['preferences'],
     ]],
 );
-$hourCycleTarget = $root . '/src/Internal/Data/HourCyclePreferences.php';
-
 $constants = '';
 foreach ([
     'LANGUAGE' => ['language', 'array<string, string>'],
@@ -443,38 +440,58 @@ $timeZoneGenerated = <<<PHP
 $timeZoneGenerated .= "\n";
 $timeZoneGenerated = MagoFormatter::format($root, 'src/Internal/Data/PrimaryTimeZones.php', $timeZoneGenerated);
 $timeZoneTarget = $root . '/src/Internal/Data/PrimaryTimeZones.php';
+$numberingSystemSourcePath = $root . '/resources/data/numbering-systems.json';
+$numberingSystemSource = file_get_contents($numberingSystemSourcePath);
+if ($numberingSystemSource === false) {
+    fwrite(STDERR, "Unable to read the numbering-system projection source.\n");
+    exit(1);
+}
+$numberingSystemArtifact = NumberingSystemsProjectionGenerator::generate($root, $numberingSystemSource);
+$numberingSystemSourceSha256 = $numberingSystemArtifact['sourceSha256'];
+$numberingSystemGenerated = $numberingSystemArtifact['generated'];
+$generatedArtifacts = [
+    [
+        'sourceSha256' => $sourceSha256,
+        'generated' => $generated,
+        'label' => 'locale alias',
+        'target' => 'src/Internal/Data/LocaleAliases.php',
+    ],
+    ...array_values($mapArtifacts),
+    [
+        'sourceSha256' => $timeZoneSourceSha256,
+        'generated' => $timeZoneGenerated,
+        'label' => 'primary time-zone',
+        'target' => 'src/Internal/Data/PrimaryTimeZones.php',
+    ],
+    [
+        'sourceSha256' => hash('sha256', $calendarSource),
+        'generated' => $calendarGenerated,
+        'label' => 'calendar preference',
+        'target' => 'src/Internal/Data/CalendarPreferences.php',
+    ],
+    [
+        'sourceSha256' => hash('sha256', $hourCycleSource),
+        'generated' => $hourCycleGenerated,
+        'label' => 'hour-cycle preference',
+        'target' => 'src/Internal/Data/HourCyclePreferences.php',
+    ],
+    $numberingSystemArtifact,
+];
 if (in_array('--check', $argv, true)) {
-    $generatedFilesMatch = is_file($target) && file_get_contents($target) === $generated;
-    foreach ($mapArtifacts as $artifact) {
-        $generatedFilesMatch =
-            $generatedFilesMatch
-            && is_file($root . '/' . $artifact['target'])
-            && file_get_contents($root . '/' . $artifact['target']) === $artifact['generated'];
+    foreach ($generatedArtifacts as $artifact) {
+        $target = $root . '/' . $artifact['target'];
+        if (!is_file($target) || file_get_contents($target) !== $artifact['generated']) {
+            fwrite(STDERR, sprintf("The generated %s data is not reproducible.\n", $artifact['label']));
+            exit(1);
+        }
     }
-    if (!$generatedFilesMatch) {
-        fwrite(STDERR, "The generated locale data is not reproducible.\n");
-        exit(1);
-    }
-    if (!is_file($timeZoneTarget) || file_get_contents($timeZoneTarget) !== $timeZoneGenerated) {
-        fwrite(STDERR, "src/Internal/Data/PrimaryTimeZones.php is not reproducible.\n");
-        exit(1);
-    }
-    if (!is_file($calendarTarget) || file_get_contents($calendarTarget) !== $calendarGenerated) {
-        fwrite(STDERR, "src/Internal/Data/CalendarPreferences.php is not reproducible.\n");
-        exit(1);
-    }
-    if (!is_file($hourCycleTarget) || file_get_contents($hourCycleTarget) !== $hourCycleGenerated) {
-        fwrite(STDERR, "src/Internal/Data/HourCyclePreferences.php is not reproducible.\n");
-        exit(1);
-    }
-
     $manifestSource = file_get_contents($root . '/resources/data/manifest.json');
     if ($manifestSource === false) {
         fwrite(STDERR, "Unable to read the release data manifest.\n");
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -487,10 +504,12 @@ if (in_array('--check', $argv, true)) {
         'calendarPreferencesProjection' => hash('sha256', $calendarSource),
         'hourCyclePreferencesProjection' => hash('sha256', $hourCycleSource),
         'primaryTimeZonesProjection' => $timeZoneSourceSha256,
+        'numberingSystemsProjection' => $numberingSystemSourceSha256,
     ], JSON_THROW_ON_ERROR));
     if (
-        $manifest['format'] !== 5
+        $manifest['format'] !== 6
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
+        || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemArtifact['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
@@ -511,6 +530,8 @@ if (in_array('--check', $argv, true)) {
         || $manifest['projections']['hourCyclePreferences']['generatedSha256'] !== hash('sha256', $hourCycleGenerated)
         || $manifest['projections']['primaryTimeZones']['sourceSha256'] !== $timeZoneSourceSha256
         || $manifest['projections']['primaryTimeZones']['generatedSha256'] !== hash('sha256', $timeZoneGenerated)
+        || $manifest['projections']['numberingSystems']['sourceSha256'] !== $numberingSystemSourceSha256
+        || $manifest['projections']['numberingSystems']['generatedSha256'] !== hash('sha256', $numberingSystemGenerated)
     ) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
@@ -525,11 +546,7 @@ if (in_array('--check', $argv, true)) {
     exit(0);
 }
 
-if (file_put_contents($target, $generated) === false) {
-    fwrite(STDERR, "Unable to write the locale alias projection.\n");
-    exit(1);
-}
-foreach ($mapArtifacts as $artifact) {
+foreach ($generatedArtifacts as $artifact) {
     if (file_put_contents($root . '/' . $artifact['target'], $artifact['generated']) === false) {
         fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact['label']));
         exit(1);
@@ -629,17 +646,4 @@ function generateMapProjection(string $root, array $definition): array
         'label' => $label,
         'target' => $definition['target'],
     ];
-}
-
-if (file_put_contents($timeZoneTarget, $timeZoneGenerated) === false) {
-    fwrite(STDERR, "Unable to write the primary time-zone projection.\n");
-    exit(1);
-}
-if (file_put_contents($calendarTarget, $calendarGenerated) === false) {
-    fwrite(STDERR, "Unable to write the calendar preference projection.\n");
-    exit(1);
-}
-if (file_put_contents($hourCycleTarget, $hourCycleGenerated) === false) {
-    fwrite(STDERR, "Unable to write the hour-cycle preference projection.\n");
-    exit(1);
 }

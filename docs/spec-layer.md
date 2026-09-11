@@ -12,6 +12,8 @@ The constructor implements the complete Unicode locale-identifier grammar and al
 
 `getCalendars()` and `getHourCycles()` return non-empty, preference-ordered string lists. Explicit `ca` and `hc` keywords return singleton lists. Otherwise, both methods apply the shared ECMA-402 region preference order, language-region lookup, canonicalization, deduplication, and deterministic `gregory` or `h23` fallback against the pinned CLDR projection.
 
+`getNumberingSystems()` returns the explicit `nu` Unicode keyword when present. Otherwise it uses prefix matching against the pinned NumberFormat locale availability projection and returns that locale's inherited CLDR default, with the specified `latn` fallback. The result is always a fresh one-element list.
+
 Other locale-information methods remain unfinished, so this package does not claim ECMA-402 conformance.
 
 `getTimeZones()` returns a list of canonical primary IANA identifiers for the locale's explicit region, or `null` when the language identifier has no region. The result uses the pinned release data snapshot and does not consult host ICU or infer a region from likely subtags, `rg`, or `sd`.

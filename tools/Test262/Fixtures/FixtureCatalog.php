@@ -18,6 +18,7 @@ use Midnight\Intl\Tools\Test262\LocaleObjectPipeline;
 use Midnight\Intl\Tools\Test262\LocalePreferenceFixturePipeline;
 use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
 use Midnight\Intl\Tools\Test262\MappedLocaleStatePipeline;
+use Midnight\Intl\Tools\Test262\NumberingSystemsFixturePipeline;
 use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
 use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
@@ -180,6 +181,19 @@ final readonly class FixtureCatalog
     {
         return $this->sourceBound(
             new TimeZonesFixturePipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
+            ['direct'],
+            $sourceSha256,
+        );
+    }
+
+    public function numberingSystems(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new NumberingSystemsFixturePipeline(
+                $this->assertionIdentities,
+                $this->test262Revision,
+                $this->ecma402Revision,
+            ),
             ['direct'],
             $sourceSha256,
         );
