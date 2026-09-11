@@ -251,7 +251,6 @@ jobs:
             build/ci
             build/infection
             build/matrix
-            .ci/mutation-applicability.json
             infection.${{ matrix.campaign }}.json5
           if-no-files-found: error
 
@@ -283,5 +282,4 @@ jobs:
           name: matrix-mutation-score
           path: |
             build/matrix-mutation-score.json
-            .ci/mutation-applicability.json
           if-no-files-found: error

@@ -108,39 +108,26 @@ final class MatrixMutationScoreTest extends TestCase
         ]);
     }
 
-    public function testItRejectsAStaleApplicabilityEntry(): void
+    public function testItRejectsGeneratedSourceFromTheMutationTarget(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Mutation applicability contains unknown mutant spec:stale.');
+        $this->expectExceptionMessage('src/Internal/Data/LocaleAliases.php is not a hand-written mutation target.');
 
         MatrixMutationScore::aggregate([
-            'spec' => $this->campaign('src/Spec/Locale.php'),
+            'spec' => $this->campaign('src/Internal/Data/LocaleAliases.php'),
             'porcelain' => $this->campaign('src/Locale.php'),
-        ], ['spec:stale' => ['native']]);
+        ]);
     }
 
-    public function testItCountsOnlyExplicitlyApplicableModes(): void
+    public function testItRejectsAProductionSourceWithoutCampaignOwnership(): void
     {
-        $spec = $this->campaign('src/Spec/Locale.php');
-        $spec['disabled'] = $this->report('src/Spec/Locale.php', 'uncovered');
-        $reports = [
-            'spec' => $spec,
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Mutation source src/NewEntryPoint.php has no campaign ownership.');
+
+        MatrixMutationScore::aggregate([
+            'spec' => $this->campaign('src/NewEntryPoint.php'),
             'porcelain' => $this->campaign('src/Locale.php'),
-        ];
-        $unscoped = MatrixMutationScore::aggregate($reports);
-        $specMutation = array_values(array_filter(
-            $unscoped['mutations'],
-            static fn (array $mutation): bool => $mutation['campaign'] === 'spec',
-        ))[0];
-
-        $evidence = MatrixMutationScore::aggregate($reports, [
-            'spec:'.$specMutation['id'] => ['absent', 'native'],
         ]);
-
-        self::assertSame(5, $evidence['obligations']);
-        self::assertSame(5, $evidence['killed']);
-        self::assertTrue($evidence['passing']);
-        self::assertSame(['absent', 'native'], $evidence['mutations'][1]['applicableModes']);
     }
 
     /** @return array<string, array<string, mixed>> */

@@ -6,8 +6,6 @@ namespace Midnight\Intl\Tools\Ci;
 
 final class MatrixMutationScore
 {
-    private const MODES = ['absent', 'disabled', 'native'];
-
     private const RESULT_FIELDS = [
         'escaped' => ['stat' => 'escapedCount', 'failure' => 'escaped'],
         'uncovered' => ['stat' => 'notCoveredCount', 'failure' => 'uncovered'],
@@ -21,7 +19,6 @@ final class MatrixMutationScore
 
     /**
      * @param array<string, array<string, array<string, mixed>>> $reports
-     * @param array<string, list<string>> $applicability Mutation keys mapped to their applicable extension modes.
      * @return array{
      *     format: int,
      *     mutants: int,
@@ -34,11 +31,13 @@ final class MatrixMutationScore
      *     mutations: list<array{id: string, campaign: string, source: string, line: int, mutator: string, original: string, mutated: string, diff: string, applicableModes: list<string>, modes: array<string, string>}>
      * }
      */
-    public static function aggregate(array $reports, array $applicability = []): array
+    public static function aggregate(array $reports): array
     {
         $campaignNames = array_keys($reports);
         sort($campaignNames);
-        if ($campaignNames !== ['porcelain', 'spec']) {
+        $expectedCampaignNames = MutationCampaigns::names();
+        sort($expectedCampaignNames);
+        if ($campaignNames !== $expectedCampaignNames) {
             throw new \RuntimeException('Mutation evidence must contain porcelain and spec campaigns.');
         }
 
@@ -57,7 +56,7 @@ final class MatrixMutationScore
         foreach ($campaignNames as $campaign) {
             $modeNames = array_keys($reports[$campaign]);
             sort($modeNames);
-            if ($modeNames !== self::MODES) {
+            if ($modeNames !== MutationCampaigns::extensionModes()) {
                 throw new \RuntimeException(sprintf(
                     '%s mutation evidence must contain absent, disabled, and native extension modes.',
                     $campaign,
@@ -67,7 +66,7 @@ final class MatrixMutationScore
             $absentModeIdentities = null;
             /** @var array<string, array{source: string, line: int, mutator: string, original: string, mutated: string, diff: string, modes: array<string, string>}> $campaignMutations */
             $campaignMutations = [];
-            foreach (self::MODES as $mode) {
+            foreach (MutationCampaigns::extensionModes() as $mode) {
                 $parsed = self::parseReport($campaign, $mode, $reports[$campaign][$mode]);
                 $identities = array_keys($parsed['mutations']);
                 sort($identities);
@@ -97,7 +96,7 @@ final class MatrixMutationScore
         /** @var array<string, array{modes: array<string, array{obligations: int, killed: int, failures: int}>}> $campaignEvidence */
         $campaignEvidence = [];
         foreach ($campaignNames as $campaign) {
-            foreach (self::MODES as $mode) {
+            foreach (MutationCampaigns::extensionModes() as $mode) {
                 $campaignEvidence[$campaign]['modes'][$mode] = [
                     'obligations' => 0,
                     'killed' => 0,
@@ -109,11 +108,8 @@ final class MatrixMutationScore
         $obligations = 0;
         $killed = 0;
         foreach ($mutations as &$mutation) {
-            $applicabilityKey = $mutation['campaign'].':'.$mutation['id'];
-            $applicableModes = $applicability[$applicabilityKey] ?? self::MODES;
-            self::validateApplicableModes($applicabilityKey, $applicableModes);
+            $applicableModes = MutationCampaigns::extensionModes();
             $mutation['applicableModes'] = $applicableModes;
-            unset($applicability[$applicabilityKey]);
 
             foreach ($applicableModes as $mode) {
                 ++$obligations;
@@ -130,7 +126,11 @@ final class MatrixMutationScore
 
                 $failure = self::RESULT_FIELDS[$result]['failure'];
                 if (!is_string($failure)) {
-                    throw new \RuntimeException(sprintf('Mutation %s has an invalid successful result.', $applicabilityKey));
+                    throw new \RuntimeException(sprintf(
+                        'Mutation %s:%s has an invalid successful result.',
+                        $mutation['campaign'],
+                        $mutation['id'],
+                    ));
                 }
                 ++$failures[$failure];
                 ++$modeEvidence['failures'];
@@ -138,13 +138,6 @@ final class MatrixMutationScore
             }
         }
         unset($mutation);
-        if ($applicability !== []) {
-            throw new \RuntimeException(sprintf(
-                'Mutation applicability contains unknown mutant %s.',
-                array_key_first($applicability),
-            ));
-        }
-
         /** @var list<array{id: string, campaign: string, source: string, line: int, mutator: string, original: string, mutated: string, diff: string, applicableModes: list<string>, modes: array<string, string>}> $mutations */
         $score = $obligations === 0 ? 0.0 : round($killed / $obligations * 100, 4);
 
@@ -159,16 +152,6 @@ final class MatrixMutationScore
             'campaigns' => $campaignEvidence,
             'mutations' => $mutations,
         ];
-    }
-
-    /** @param list<string> $modes */
-    private static function validateApplicableModes(string $mutation, array $modes): void
-    {
-        $normalized = array_values(array_unique($modes));
-        sort($normalized);
-        if ($normalized === [] || $normalized !== $modes || array_diff($normalized, self::MODES) !== []) {
-            throw new \RuntimeException(sprintf('Mutation %s has invalid applicable extension modes.', $mutation));
-        }
     }
 
     /**
@@ -272,11 +255,12 @@ final class MatrixMutationScore
         }
 
         $file = self::sourcePath($originalFilePath);
-        if ($campaign === 'spec' && $file === 'src/Locale.php') {
-            throw new \RuntimeException(sprintf('spec campaign contains non-spec source %s.', $file));
+        $expectedCampaign = MutationCampaigns::forSource($file);
+        if ($expectedCampaign === null) {
+            throw new \RuntimeException(sprintf('%s is not a hand-written mutation target.', $file));
         }
-        if ($campaign === 'porcelain' && $file !== 'src/Locale.php') {
-            throw new \RuntimeException(sprintf('porcelain campaign contains non-porcelain source %s.', $file));
+        if ($campaign !== $expectedCampaign) {
+            throw new \RuntimeException(sprintf('%s campaign contains non-%s source %s.', $campaign, $campaign, $file));
         }
 
         return [

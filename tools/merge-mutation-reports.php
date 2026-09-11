@@ -35,19 +35,7 @@ try {
         }
     }
 
-    $applicabilityContents = file_get_contents(dirname(__DIR__).'/.ci/mutation-applicability.json');
-    if ($applicabilityContents === false) {
-        throw new RuntimeException('Unable to read .ci/mutation-applicability.json.');
-    }
-    $applicabilityDocument = json_decode($applicabilityContents, true, flags: JSON_THROW_ON_ERROR);
-    if (!is_array($applicabilityDocument)
-        || ($applicabilityDocument['format'] ?? null) !== 1
-        || !is_array($applicabilityDocument['mutants'] ?? null)) {
-        throw new RuntimeException('.ci/mutation-applicability.json has an invalid shape.');
-    }
-    /** @var array<string, list<string>> $applicability */
-    $applicability = $applicabilityDocument['mutants'];
-    $evidence = MatrixMutationScore::aggregate($reports, $applicability);
+    $evidence = MatrixMutationScore::aggregate($reports);
 } catch (Throwable $error) {
     $evidence = [
         'format' => 2,

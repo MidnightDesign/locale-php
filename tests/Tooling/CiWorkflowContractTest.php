@@ -90,6 +90,48 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRejectsAMissingMutationCampaignLane(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('campaign: [spec, porcelain]', 'campaign: [spec]', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job must run the spec and porcelain campaigns.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsAMissingMutationExtensionModeLane(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace(
+                'extensionMode: [absent, disabled, native]',
+                'extensionMode: [absent, native]',
+                $contents,
+            );
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job must run absent, disabled, and native extension modes.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testItRejectsMutationSourceAreaOmissions(): void
     {
         $root = $this->fixtureRoot();
@@ -165,7 +207,6 @@ final class CiWorkflowContractTest extends TestCase
         $root = PackageSmoke::temporaryDirectory('intl-locale-workflow-contract');
         foreach ([
             '.ci/action-pins.json',
-            '.ci/mutation-applicability.json',
             '.github/workflows/ci-runtime.yml',
             '.github/workflows/ci-runtime-lane.yml',
             '.github/workflows/ci-quality.yml',
