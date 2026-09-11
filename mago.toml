@@ -1,0 +1,8 @@
+version = "1.48.0"
+php-version = "8.2"
+
+[source]
+paths = ["src", "tests", "tools", "examples"]
+
+[formatter]
+excludes = ["src/Internal/Data/LocaleAliases.php", "tests/Test262/Generated/**"]

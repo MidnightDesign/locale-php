@@ -174,6 +174,25 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRequiresMagoForFormatting(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/composer.json';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('"style": "mago format --check"', '"style": "php-cs-fixer check"', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The Composer style script must check formatting with Mago.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testCommentsCannotStandInForActivationTriggers(): void
     {
         $root = $this->fixtureRoot();

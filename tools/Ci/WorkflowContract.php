@@ -93,7 +93,7 @@ final class WorkflowContract
                 'vendor/bin/phpstan',
                 'vendor/bin/psalm',
                 'vendor/bin/mago',
-                'vendor/bin/php-cs-fixer',
+                'composer style',
                 'composer data:check',
                 'composer test262:check',
                 'php tools/test-package-install.php',
@@ -369,12 +369,19 @@ final class WorkflowContract
             'vimeo/psalm',
             'carthage-software/mago',
             'infection/infection',
-            'friendsofphp/php-cs-fixer',
         ] as $tool) {
             $version = is_array($requirements) ? $requirements[$tool] ?? null : null;
             if (!is_string($version) || preg_match('/^\d+\.\d+\.\d+$/D', $version) !== 1) {
                 $failures[] = sprintf('CI tool %s must use an exact version.', $tool);
             }
+        }
+
+        $scripts = is_array($composer) ? $composer['scripts'] ?? null : null;
+        if (!is_array($scripts) || ($scripts['style'] ?? null) !== 'mago format --check') {
+            $failures[] = 'The Composer style script must check formatting with Mago.';
+        }
+        if (!is_array($scripts) || ($scripts['format'] ?? null) !== 'mago format') {
+            $failures[] = 'The Composer format script must format code with Mago.';
         }
 
         $setupPhpCount = 0;
