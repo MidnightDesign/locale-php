@@ -10,6 +10,14 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests</directory>
+            <exclude>tests/Test262/Generated</exclude>
+            <exclude>tests/LocaleTest.php</exclude>
+        </testsuite>
+        <testsuite name="test262-upstream">
+            <directory>tests/Test262/Generated</directory>
+        </testsuite>
+        <testsuite name="porcelain">
+            <file>tests/LocaleTest.php</file>
         </testsuite>
     </testsuites>
     <source>

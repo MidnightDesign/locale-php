@@ -210,12 +210,13 @@ jobs:
       - run: php tools/test-package-install.php
 
   mutation:
-    name: Mutation / intl ${{ matrix.extensionMode }}
+    name: Mutation / ${{ matrix.campaign }} / intl ${{ matrix.extensionMode }}
     runs-on: ubuntu-24.04
     timeout-minutes: ${{ inputs.timeout-minutes }}
     strategy:
       fail-fast: false
       matrix:
+        campaign: [spec, porcelain]
         extensionMode: [absent, disabled, native]
     env:
       INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
@@ -233,24 +234,25 @@ jobs:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: php tools/assert-extension-version.php xdebug 3.5.3
-      - name: Preserve raw test coverage and JUnit evidence
+      - name: Preserve attributable raw test coverage and JUnit evidence
         run: |
-          mkdir -p build/infection
-          vendor/bin/phpunit --coverage-xml=build/infection/coverage-xml --log-junit=build/infection/junit.xml
-      - run: composer mutation -- --coverage=build/infection --skip-initial-tests
+          mkdir -p "build/infection/${{ matrix.campaign }}"
+          vendor/bin/phpunit --testsuite="${{ matrix.campaign == 'spec' && 'test262-upstream' || 'porcelain' }}" --coverage-xml="build/infection/${{ matrix.campaign }}/coverage-xml" --log-junit="build/infection/${{ matrix.campaign }}/junit.xml"
+      - run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json '8.5' ubuntu-24.04 "${{ matrix.extensionMode }}"
       - if: always()
         shell: bash
-        run: mkdir -p build/matrix && cp build/infection/infection.json "build/matrix/${{ matrix.extensionMode }}.json"
+        run: mkdir -p "build/matrix/${{ matrix.campaign }}" && cp "build/infection/${{ matrix.campaign }}/infection.json" "build/matrix/${{ matrix.campaign }}/${{ matrix.extensionMode }}.json"
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mutation-${{ matrix.extensionMode }}
+          name: mutation-${{ matrix.campaign }}-${{ matrix.extensionMode }}
           path: |
             build/ci
             build/infection
             build/matrix
+            infection.${{ matrix.campaign }}.json5
           if-no-files-found: error
 
   mutation-score:
@@ -269,14 +271,16 @@ jobs:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        continue-on-error: true
         with:
           pattern: mutation-*
           path: build/downloaded
           merge-multiple: true
-      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix/absent.json build/downloaded/matrix/disabled.json build/downloaded/matrix/native.json
+      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: matrix-mutation-score
-          path: build/matrix-mutation-score.json
+          path: |
+            build/matrix-mutation-score.json
           if-no-files-found: error

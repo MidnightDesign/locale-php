@@ -41,6 +41,7 @@ final class WorkflowContract
         }
 
         self::validateActions($root, $workflows, $failures);
+        self::validateMutationCampaigns($root, $failures);
         self::validateRuntime($workflows['runtime'], $workflows['runtime-lane'], $failures);
         self::validateQuality($workflows['quality'], $failures);
         self::validateScheduled($workflows['scheduled'], $failures);
@@ -83,16 +84,91 @@ final class WorkflowContract
             'vendor/bin/php-cs-fixer',
             'composer data:check',
             'composer test262:check',
-            'composer mutation',
-            'tools/merge-mutation-reports.php',
             'php tools/test-package-install.php',
             'php tools/assert-extension-version.php xdebug 3.5.3',
             'php tools/record-ci-provenance.php',
         ], 'quality workflow', $failures);
-        self::requireScalars(
-            $workflow,
-            ['xdebug-3.5.3', 'register_argc_argv=On'],
-            'quality workflow',
+        self::requireScalars($workflow, [
+            'xdebug-3.5.3',
+            'infection.${{ matrix.campaign }}.json5',
+            'register_argc_argv=On',
+        ], 'quality workflow', $failures);
+
+        $jobs = $workflow->jobs();
+        $mutation = $jobs['mutation'] ?? null;
+        $strategy = is_array($mutation) && is_array($mutation['strategy'] ?? null) ? $mutation['strategy'] : [];
+        $matrix = is_array($strategy['matrix'] ?? null) ? $strategy['matrix'] : [];
+        if (($matrix['campaign'] ?? null) !== MutationCampaigns::names()) {
+            $failures[] = 'The mutation job must run the spec and porcelain campaigns.';
+        }
+        if (($matrix['extensionMode'] ?? null) !== MutationCampaigns::extensionModes()) {
+            $failures[] = 'The mutation job must run absent, disabled, and native extension modes.';
+        }
+        self::requireJobRuns($mutation, [
+            'composer "mutation:${{ matrix.campaign }}"',
+        ], 'mutation job', $failures);
+
+        $score = $jobs['mutation-score'] ?? null;
+        if (!is_array($score) || ($score['needs'] ?? null) !== 'mutation') {
+            $failures[] = 'The mutation-score job must depend on the complete mutation matrix.';
+        }
+        self::requireJobRuns($score, [
+            'tools/merge-mutation-reports.php',
+        ], 'mutation-score job', $failures);
+    }
+
+    /** @param list<string> $failures */
+    private static function validateMutationCampaigns(string $root, array &$failures): void
+    {
+        foreach (MutationCampaigns::names() as $campaign) {
+            $path = sprintf('%s/infection.%s.json5', $root, $campaign);
+            $config = json_decode(self::read($path, $failures), true);
+            if (!is_array($config)) {
+                $failures[] = sprintf('infection.%s.json5 must contain a JSON object.', $campaign);
+
+                continue;
+            }
+            $source = is_array($config['source'] ?? null) ? $config['source'] : [];
+            if (($source['directories'] ?? null) !== ['src']
+                || ($source['excludes'] ?? null) !== MutationCampaigns::excludes($campaign)) {
+                $failures[] = sprintf('The %s mutation campaign has an invalid production-source boundary.', $campaign);
+            }
+            $suite = MutationCampaigns::suite($campaign);
+            if (($config['testFrameworkOptions'] ?? null) !== '--testsuite='.$suite) {
+                $failures[] = sprintf('The %s mutation campaign must use the %s suite.', $campaign, $suite);
+            }
+            if (($config['minMsi'] ?? null) !== 100 || ($config['minCoveredMsi'] ?? null) !== 100) {
+                $failures[] = sprintf('The %s mutation campaign must require 100%% MSI.', $campaign);
+            }
+            $mutators = is_array($config['mutators'] ?? null) ? $config['mutators'] : [];
+            if (($mutators['@default'] ?? null) !== true || count($mutators) !== 1) {
+                $failures[] = sprintf('The %s mutation campaign may not suppress mutants.', $campaign);
+            }
+        }
+
+        $composer = json_decode(self::read($root.'/composer.json', $failures), true);
+        $scripts = is_array($composer) && is_array($composer['scripts'] ?? null) ? $composer['scripts'] : [];
+        foreach (MutationCampaigns::names() as $campaign) {
+            $script = $scripts['mutation:'.$campaign] ?? null;
+            if (!is_string($script)
+                || !str_contains($script, '--with-uncovered')
+                || str_contains($script, '--filter')
+                || str_contains($script, '--git-diff')) {
+                $failures[] = sprintf('Composer mutation:%s must mutate uncovered code without source filters.', $campaign);
+            }
+        }
+
+        self::requireText(
+            self::read($root.'/phpunit.xml.dist', $failures),
+            [
+                '<testsuite name="test262-upstream">',
+                '<directory>tests/Test262/Generated</directory>',
+                '<testsuite name="porcelain">',
+                '<file>tests/LocaleTest.php</file>',
+                '<exclude>tests/Test262/Generated</exclude>',
+                '<exclude>tests/LocaleTest.php</exclude>',
+            ],
+            'phpunit.xml.dist',
             $failures,
         );
     }
@@ -380,6 +456,35 @@ final class WorkflowContract
     private static function requireRuns(Workflow $workflow, array $required, string $subject, array &$failures): void
     {
         $commands = $workflow->runs();
+        foreach ($required as $text) {
+            $found = false;
+            foreach ($commands as $command) {
+                if (str_contains($command, $text)) {
+                    $found = true;
+
+                    break;
+                }
+            }
+            if (!$found) {
+                $failures[] = sprintf('%s is missing a run command containing %s.', $subject, $text);
+            }
+        }
+    }
+
+    /**
+     * @param mixed $job
+     * @param list<string> $required
+     * @param list<string> $failures
+     */
+    private static function requireJobRuns(mixed $job, array $required, string $subject, array &$failures): void
+    {
+        $commands = [];
+        $steps = is_array($job) && is_array($job['steps'] ?? null) ? $job['steps'] : [];
+        foreach ($steps as $step) {
+            if (is_array($step) && is_string($step['run'] ?? null)) {
+                $commands[] = $step['run'];
+            }
+        }
         foreach ($required as $text) {
             $found = false;
             foreach ($commands as $command) {
