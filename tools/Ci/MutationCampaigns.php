@@ -62,7 +62,9 @@ final class MutationCampaigns
     /** @return array{suite: string, excludes: list<string>} */
     private static function definition(string $campaign): array
     {
-        return self::CAMPAIGNS[$campaign]
-            ?? throw new \RuntimeException(sprintf('Unknown mutation campaign %s.', $campaign));
+        return self::CAMPAIGNS[$campaign] ?? throw new \RuntimeException(sprintf(
+            'Unknown mutation campaign %s.',
+            $campaign,
+        ));
     }
 }

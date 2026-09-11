@@ -5,10 +5,13 @@ declare(strict_types=1);
 use Midnight\Intl\Tools\Ci\MatrixMutationScore;
 use Midnight\Intl\Tools\Ci\MutationCampaigns;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 if ($argc < 3 || $argc > 4) {
-    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory> [--expect-failing=<baseline-file>]\n");
+    fwrite(
+        STDERR,
+        "Usage: php tools/merge-mutation-reports.php <output> <reports-directory> [--expect-failing=<baseline-file>]\n",
+    );
     exit(2);
 }
 
@@ -36,7 +39,12 @@ try {
             $path = sprintf('%s/%s/%s.json', $reportsDirectory, $campaign, $mode);
             $contents = @file_get_contents($path);
             if ($contents === false) {
-                throw new RuntimeException(sprintf('Unable to read %s/%s mutation report at %s.', $campaign, $mode, $path));
+                throw new RuntimeException(sprintf(
+                    'Unable to read %s/%s mutation report at %s.',
+                    $campaign,
+                    $mode,
+                    $path,
+                ));
             }
             $report = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
             if (!is_array($report) || !is_array($report['stats'] ?? null)) {
@@ -52,7 +60,10 @@ try {
     if ($expectedFailureBaselinePath !== null) {
         $baselineContents = @file_get_contents($expectedFailureBaselinePath);
         if ($baselineContents === false) {
-            throw new RuntimeException(sprintf('Unable to read expected mutation failure baseline at %s.', $expectedFailureBaselinePath));
+            throw new RuntimeException(sprintf(
+                'Unable to read expected mutation failure baseline at %s.',
+                $expectedFailureBaselinePath,
+            ));
         }
         $baseline = json_decode($baselineContents, true, flags: JSON_THROW_ON_ERROR);
         if (!is_array($baseline)) {
@@ -79,18 +90,21 @@ try {
     $accepted = false;
 }
 
-$encoded = json_encode($evidence, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)."\n";
+$encoded = json_encode($evidence, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR) . "\n";
 if (file_put_contents($output, $encoded) === false) {
     throw new RuntimeException(sprintf('Unable to write merged mutation evidence at %s.', $output));
 }
 
 if (isset($evidence['error'])) {
-    fwrite(STDERR, $evidence['error']."\n");
+    fwrite(STDERR, $evidence['error'] . "\n");
 } elseif (is_string($expectedCampaign) && !$accepted) {
     $message = $evidence['passing']
-        ? sprintf('The %s mutation campaign now passes; remove its temporary expected-failure handling.', $expectedCampaign)
+        ? sprintf(
+            'The %s mutation campaign now passes; remove its temporary expected-failure handling.',
+            $expectedCampaign,
+        )
         : sprintf('Mutation evidence regressed beyond the reviewed %s expected-failure baseline.', $expectedCampaign);
-    fwrite(STDERR, $message."\n");
+    fwrite(STDERR, $message . "\n");
 }
 
 exit($accepted ? 0 : 1);

@@ -9,7 +9,7 @@ final class PackageSmoke
     public static function installFromDirectory(string $packageDirectory): void
     {
         $workDirectory = self::temporaryDirectory('intl-locale-smoke');
-        $consumerDirectory = $workDirectory.DIRECTORY_SEPARATOR.'consumer';
+        $consumerDirectory = $workDirectory . DIRECTORY_SEPARATOR . 'consumer';
         if (!mkdir($consumerDirectory, 0700, true)) {
             throw new \RuntimeException(sprintf('Unable to create temporary consumer at %s.', $consumerDirectory));
         }
@@ -27,8 +27,8 @@ final class PackageSmoke
                 'prefer-stable' => true,
             ];
             file_put_contents(
-                $consumerDirectory.DIRECTORY_SEPARATOR.'composer.json',
-                json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+                $consumerDirectory . DIRECTORY_SEPARATOR . 'composer.json',
+                json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
             );
 
             self::run([
@@ -74,7 +74,7 @@ final class PackageSmoke
 
     public static function temporaryDirectory(string $prefix): string
     {
-        $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.$prefix.'-'.bin2hex(random_bytes(8));
+        $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $prefix . '-' . bin2hex(random_bytes(8));
         if (!mkdir($directory, 0700)) {
             throw new \RuntimeException(sprintf('Unable to create temporary directory %s.', $directory));
         }

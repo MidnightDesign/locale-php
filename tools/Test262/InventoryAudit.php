@@ -26,11 +26,13 @@ final class InventoryAudit
         $assertionIds = [];
         $detected = 0;
         foreach ($fixtures as $fixture) {
-            if (!is_array($fixture)
+            if (
+                !is_array($fixture)
                 || !is_string($fixture['path'] ?? null)
                 || !is_string($fixture['status'] ?? null)
                 || !is_string($fixture['reason'] ?? null)
-                || !is_array($fixture['detectedAssertions'] ?? null)) {
+                || !is_array($fixture['detectedAssertions'] ?? null)
+            ) {
                 $reasons[] = 'A fixture inventory entry is incomplete.';
                 continue;
             }
@@ -46,13 +48,15 @@ final class InventoryAudit
             }
             foreach ($fixture['detectedAssertions'] as $assertion) {
                 ++$detected;
-                if (!is_array($assertion)
+                if (
+                    !is_array($assertion)
                     || !is_string($assertion['id'] ?? null)
                     || !is_int($assertion['line'] ?? null)
                     || !is_int($assertion['column'] ?? null)
                     || !is_string($assertion['call'] ?? null)
                     || !is_string($assertion['sha256'] ?? null)
-                    || !is_string($assertion['status'] ?? null)) {
+                    || !is_string($assertion['status'] ?? null)
+                ) {
                     $reasons[] = sprintf('Fixture "%s" has an incomplete assertion identity.', $path);
                     continue;
                 }
@@ -66,10 +70,12 @@ final class InventoryAudit
 
             if ($fixture['status'] === 'translation_gap') {
                 $scope = $fixture['unresolvedAssertionScope'] ?? null;
-                if (!is_array($scope)
+                if (
+                    !is_array($scope)
                     || !is_string($scope['id'] ?? null)
                     || ($scope['status'] ?? null) !== 'translation_gap'
-                    || !is_string($scope['reason'] ?? null)) {
+                    || !is_string($scope['reason'] ?? null)
+                ) {
                     $reasons[] = sprintf('Fixture "%s" lacks its unresolved assertion scope.', $path);
                 }
             }
@@ -86,19 +92,20 @@ final class InventoryAudit
             }
         }
         foreach ($fixtures as $fixture) {
-            if (!is_array($fixture)
+            if (
+                !is_array($fixture)
                 || !in_array($fixture['status'] ?? null, ['translated', 'partially_translated'], true)
-                || !is_array($fixture['detectedAssertions'] ?? null)) {
+                || !is_array($fixture['detectedAssertions'] ?? null)
+            ) {
                 continue;
             }
             foreach ($fixture['detectedAssertions'] as $assertion) {
-                if (is_array($assertion)
+                if (
+                    is_array($assertion)
                     && is_string($assertion['id'] ?? null)
-                    && !isset($translatedIdSet[$assertion['id']])) {
-                    $reasons[] = sprintf(
-                        'Source assertion "%s" is absent from translated evidence.',
-                        $assertion['id'],
-                    );
+                    && !isset($translatedIdSet[$assertion['id']])
+                ) {
+                    $reasons[] = sprintf('Source assertion "%s" is absent from translated evidence.', $assertion['id']);
                 }
             }
         }

@@ -14,9 +14,9 @@ final class MergeMutationReportsCommandTest extends TestCase
     public function testExpectedFailureTurnsRedAsSoonAsTheSpecCampaignPasses(): void
     {
         $directory = PackageSmoke::temporaryDirectory('intl-locale-mutation-canary');
-        $reports = $directory.'/reports';
-        $output = $directory.'/merged.json';
-        $baseline = $directory.'/baseline.json';
+        $reports = $directory . '/reports';
+        $output = $directory . '/merged.json';
+        $baseline = $directory . '/baseline.json';
 
         try {
             $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'escaped');
@@ -26,11 +26,11 @@ final class MergeMutationReportsCommandTest extends TestCase
             $strictEvidence = json_decode((string) file_get_contents($output), true, flags: JSON_THROW_ON_ERROR);
             self::assertIsArray($strictEvidence);
             /** @var array{mutations: list<array{id: string, campaign: string, modes: array<string, string>}>} $strictEvidence */
-            file_put_contents(
-                $baseline,
-                json_encode(MatrixMutationScore::expectedFailureBaseline($strictEvidence, 'spec'), JSON_THROW_ON_ERROR),
-            );
-            $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
+            file_put_contents($baseline, json_encode(
+                MatrixMutationScore::expectedFailureBaseline($strictEvidence, 'spec'),
+                JSON_THROW_ON_ERROR,
+            ));
+            $process = $this->runMerge($output, $reports, '--expect-failing=' . $baseline);
 
             self::assertSame(0, $process->getExitCode());
             $evidence = json_decode((string) file_get_contents($output), true, flags: JSON_THROW_ON_ERROR);
@@ -41,7 +41,7 @@ final class MergeMutationReportsCommandTest extends TestCase
             self::assertTrue($expectedFailure['accepted']);
 
             $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'uncovered');
-            $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
+            $process = $this->runMerge($output, $reports, '--expect-failing=' . $baseline);
 
             self::assertSame(1, $process->getExitCode());
             self::assertStringContainsString(
@@ -50,7 +50,7 @@ final class MergeMutationReportsCommandTest extends TestCase
             );
 
             $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'killed');
-            $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
+            $process = $this->runMerge($output, $reports, '--expect-failing=' . $baseline);
 
             self::assertSame(1, $process->getExitCode());
             self::assertStringContainsString(
@@ -65,14 +65,14 @@ final class MergeMutationReportsCommandTest extends TestCase
     public function testItRetainsMachineReadableFailureEvidenceForAMissingCampaignReport(): void
     {
         $directory = PackageSmoke::temporaryDirectory('intl-locale-mutation-merge');
-        $output = $directory.'/merged.json';
+        $output = $directory . '/merged.json';
 
         try {
             $process = new Process([
                 PHP_BINARY,
-                dirname(__DIR__, 2).'/tools/merge-mutation-reports.php',
+                dirname(__DIR__, 2) . '/tools/merge-mutation-reports.php',
                 $output,
-                $directory.'/reports',
+                $directory . '/reports',
             ]);
             $process->run();
 
@@ -92,7 +92,7 @@ final class MergeMutationReportsCommandTest extends TestCase
     {
         $command = [
             PHP_BINARY,
-            dirname(__DIR__, 2).'/tools/merge-mutation-reports.php',
+            dirname(__DIR__, 2) . '/tools/merge-mutation-reports.php',
             $output,
             $reports,
         ];
@@ -107,7 +107,7 @@ final class MergeMutationReportsCommandTest extends TestCase
 
     private function writeCampaign(string $directory, string $campaign, string $file, string $result): void
     {
-        $target = $directory.'/'.$campaign;
+        $target = $directory . '/' . $campaign;
         if (!is_dir($target)) {
             mkdir($target, 0700, true);
         }
@@ -145,7 +145,7 @@ final class MergeMutationReportsCommandTest extends TestCase
                 'mutatorName' => 'FalseValue',
                 'originalSourceCode' => 'return true;',
                 'mutatedSourceCode' => 'return false;',
-                'originalFilePath' => 'C:\\project\\'.$file,
+                'originalFilePath' => 'C:\\project\\' . $file,
                 'originalStartLine' => 12,
             ],
             'diff' => "- return true;\n+ return false;",
@@ -153,8 +153,7 @@ final class MergeMutationReportsCommandTest extends TestCase
         ];
         $encoded = json_encode($report, JSON_THROW_ON_ERROR);
         foreach (['absent', 'disabled', 'native'] as $mode) {
-            file_put_contents($target.'/'.$mode.'.json', $encoded);
+            file_put_contents($target . '/' . $mode . '.json', $encoded);
         }
     }
-
 }

@@ -6,9 +6,9 @@ namespace Midnight\Intl\Tools\Test262;
 
 final class ConstructorOptionsScriptTranslator implements ConstructorFixtureTranslator
 {
-    public function __construct(private readonly AssertionIdentityExtractor $assertionIdentities)
-    {
-    }
+    public function __construct(
+        private readonly AssertionIdentityExtractor $assertionIdentities,
+    ) {}
 
     /**
      * @return array{
@@ -28,42 +28,29 @@ final class ConstructorOptionsScriptTranslator implements ConstructorFixtureTran
             throw new TranslationGap('validScriptOptions is not in the supported form.');
         }
 
-        preg_match_all(
-            <<<'REGEX'
-~\[\s*(?:(?<null>null)|'(?<string>[^']*)'|\{\s*toString\(\)\s*\{\s*return\s*'(?<stringable>[^']*)'\s*\}\s*\})\s*,\s*'(?<expected>[^']*)'\s*\],~
-REGEX,
-            $optionBlock['options'],
-            $optionRows,
-            PREG_SET_ORDER,
-        );
+        preg_match_all(<<<'REGEX'
+            ~\[\s*(?:(?<null>null)|'(?<string>[^']*)'|\{\s*toString\(\)\s*\{\s*return\s*'(?<stringable>[^']*)'\s*\}\s*\})\s*,\s*'(?<expected>[^']*)'\s*\],~
+            REGEX, $optionBlock['options'], $optionRows, PREG_SET_ORDER);
         if (count($optionRows) !== 5) {
-            throw new TranslationGap(sprintf(
-                'Expected 5 script option rows, found %d.',
-                count($optionRows),
-            ));
+            throw new TranslationGap(sprintf('Expected 5 script option rows, found %d.', count($optionRows)));
         }
 
         $assertions = $this->assertionIdentities->extract($source, $fixturePath);
-        if (count($assertions) !== 3
-            || array_filter(
-                $assertions,
-                static fn (array $assertion): bool => $assertion['call'] !== 'assert.sameValue',
-            ) !== []) {
+        if (
+            count($assertions) !== 3
+            || array_filter($assertions, static fn(array $assertion): bool => $assertion['call'] !== 'assert.sameValue')
+                !== []
+        ) {
             throw new TranslationGap('The fixture contains an unsupported assertion construct.');
         }
 
-        preg_match_all(
-            <<<'REGEX'
-~(?:let\s+)?expect\s*=\s*(?<expression>.*?);\s*
-(?<assertion>assert\.sameValue)\(\s*
-new\s+Intl\.Locale\(\s*'(?<tag>[^']+)'\s*,\s*\{\s*script\s*\}\s*\)\.toString\(\)\s*,\s*
-expect\s*,\s*`(?<message>(?:[^`\\]|\\.)*)`\s*
-\);~sx
-REGEX,
-            $source,
-            $assertionRows,
-            PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
-        );
+        preg_match_all(<<<'REGEX'
+            ~(?:let\s+)?expect\s*=\s*(?<expression>.*?);\s*
+            (?<assertion>assert\.sameValue)\(\s*
+            new\s+Intl\.Locale\(\s*'(?<tag>[^']+)'\s*,\s*\{\s*script\s*\}\s*\)\.toString\(\)\s*,\s*
+            expect\s*,\s*`(?<message>(?:[^`\\]|\\.)*)`\s*
+            \);~sx
+            REGEX, $source, $assertionRows, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
         if (count($assertionRows) !== 3) {
             throw new TranslationGap(sprintf(
                 'Expected 3 supported assert.sameValue bodies, found %d.',
@@ -90,7 +77,7 @@ REGEX,
 
             foreach ($caseDefinitions as $assertionIndex => $definition) {
                 $expected = $row['expected'] !== ''
-                    ? $definition['expression']['prefix'].$row['expected'].$definition['expression']['suffix']
+                    ? $definition['expression']['prefix'] . $row['expected'] . $definition['expression']['suffix']
                     : $definition['expression']['fallback'];
                 $cases[] = [
                     'id' => sprintf('option-%d-assertion-%d', $optionIndex + 1, $assertionIndex + 1),
@@ -113,31 +100,16 @@ REGEX,
             throw new TranslationGap('Unable to normalize the expected expression.');
         }
 
-        if (preg_match(
-            "/^expected \? '([^']*)' \+ expected : '([^']*)'$/",
-            $normalized,
-            $parts,
-        )) {
+        if (preg_match("/^expected \? '([^']*)' \+ expected : '([^']*)'$/", $normalized, $parts)) {
             return ['prefix' => $parts[1], 'suffix' => '', 'fallback' => $parts[2]];
         }
-        if (preg_match(
-            "/^\(expected \? \('([^']*)' \+ expected\) : '([^']*)'\) \+ '([^']*)'$/",
-            $normalized,
-            $parts,
-        )) {
-            return ['prefix' => $parts[1], 'suffix' => $parts[3], 'fallback' => $parts[2].$parts[3]];
+        if (preg_match("/^\(expected \? \('([^']*)' \+ expected\) : '([^']*)'\) \+ '([^']*)'$/", $normalized, $parts)) {
+            return ['prefix' => $parts[1], 'suffix' => $parts[3], 'fallback' => $parts[2] . $parts[3]];
         }
-        if (preg_match(
-            "/^expected \? \('([^']*)' \+ expected\) : '([^']*)'$/",
-            $normalized,
-            $parts,
-        )) {
+        if (preg_match("/^expected \? \('([^']*)' \+ expected\) : '([^']*)'$/", $normalized, $parts)) {
             return ['prefix' => $parts[1], 'suffix' => '', 'fallback' => $parts[2]];
         }
 
-        throw new TranslationGap(sprintf(
-            'Unsupported expected expression "%s".',
-            $normalized,
-        ));
+        throw new TranslationGap(sprintf('Unsupported expected expression "%s".', $normalized));
     }
 }

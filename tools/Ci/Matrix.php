@@ -39,8 +39,7 @@ final class Matrix
         private array $windowsX86Lanes,
         private array $windowsThreadSafeLanes,
         private array $icuLanes,
-    ) {
-    }
+    ) {}
 
     public static function fromFile(string $path): self
     {
@@ -210,11 +209,13 @@ final class Matrix
 
         $result = [];
         foreach ($records as $record) {
-            if (!is_array($record)
+            if (
+                !is_array($record)
                 || !is_string($record['runner'] ?? null)
                 || !is_string($record['osFamily'] ?? null)
                 || !is_string($record['architecture'] ?? null)
-                || !is_int($record['integerSize'] ?? null)) {
+                || !is_int($record['integerSize'] ?? null)
+            ) {
                 throw new \RuntimeException('CI matrix stable runner is invalid.');
             }
             $excludedExtensionModes = $record['excludedExtensionModes'] ?? [];
@@ -223,7 +224,9 @@ final class Matrix
             }
             foreach ($excludedExtensionModes as $mode) {
                 if (!is_string($mode) || !in_array($mode, $extensionModes, true)) {
-                    throw new \RuntimeException('CI matrix stable runner contains an unknown extension mode exclusion.');
+                    throw new \RuntimeException(
+                        'CI matrix stable runner contains an unknown extension mode exclusion.',
+                    );
                 }
             }
             /** @var list<string> $excludedExtensionModes */
@@ -251,17 +254,19 @@ final class Matrix
     private static function armLanesFromData(array $data): array
     {
         $specialized = $data['specialized'] ?? null;
-        $records = is_array($specialized) ? ($specialized['arm'] ?? null) : null;
+        $records = is_array($specialized) ? $specialized['arm'] ?? null : null;
         if (!is_array($records)) {
             throw new \RuntimeException('CI matrix key arm must be a list.');
         }
 
         $result = [];
         foreach ($records as $record) {
-            if (!is_array($record)
+            if (
+                !is_array($record)
                 || !is_string($record['runner'] ?? null)
                 || !is_string($record['php'] ?? null)
-                || !is_string($record['architecture'] ?? null)) {
+                || !is_string($record['architecture'] ?? null)
+            ) {
                 throw new \RuntimeException('CI matrix arm lane is invalid.');
             }
             $result[] = [
@@ -286,11 +291,13 @@ final class Matrix
 
         $result = [];
         foreach ($records as $record) {
-            if (!is_array($record)
+            if (
+                !is_array($record)
                 || !is_string($record['boundary'] ?? null)
                 || !is_string($record['php'] ?? null)
                 || !is_string($record['icu'] ?? null)
-                || !is_string($record['extension'] ?? null)) {
+                || !is_string($record['extension'] ?? null)
+            ) {
                 throw new \RuntimeException('CI matrix ICU lane is invalid.');
             }
             $result[] = [
@@ -311,18 +318,20 @@ final class Matrix
     private static function windowsX86LanesFromData(array $data): array
     {
         $specialized = $data['specialized'] ?? null;
-        $records = is_array($specialized) ? ($specialized['windowsX86'] ?? null) : null;
+        $records = is_array($specialized) ? $specialized['windowsX86'] ?? null : null;
         if (!is_array($records)) {
             throw new \RuntimeException('CI matrix key windowsX86 must be a list.');
         }
 
         $result = [];
         foreach ($records as $record) {
-            if (!is_array($record)
+            if (
+                !is_array($record)
                 || !is_string($record['runner'] ?? null)
                 || !is_string($record['php'] ?? null)
                 || !is_string($record['architecture'] ?? null)
-                || !is_bool($record['threadSafe'] ?? null)) {
+                || !is_bool($record['threadSafe'] ?? null)
+            ) {
                 throw new \RuntimeException('CI matrix Windows x86 lane is invalid.');
             }
             $runtimeVersion = $record['runtimeVersion'] ?? null;
@@ -331,9 +340,11 @@ final class Matrix
             if (!is_string($runtimeVersion) || !is_string($runtimeUrl) || !is_string($runtimeSha256)) {
                 throw new \RuntimeException('CI matrix Windows x86 runtime pin is incomplete.');
             }
-            if (!str_starts_with($runtimeVersion, $record['php'].'.')
+            if (
+                !str_starts_with($runtimeVersion, $record['php'] . '.')
                 || !str_starts_with($runtimeUrl, 'https://downloads.php.net/~windows/releases/php-')
-                || preg_match('/^[a-f0-9]{64}$/D', $runtimeSha256) !== 1) {
+                || preg_match('/^[a-f0-9]{64}$/D', $runtimeSha256) !== 1
+            ) {
                 throw new \RuntimeException('CI matrix Windows x86 runtime pin is invalid.');
             }
             $result[] = [
@@ -357,18 +368,20 @@ final class Matrix
     private static function windowsThreadSafeLanesFromData(array $data): array
     {
         $specialized = $data['specialized'] ?? null;
-        $records = is_array($specialized) ? ($specialized['windowsThreadSafe'] ?? null) : null;
+        $records = is_array($specialized) ? $specialized['windowsThreadSafe'] ?? null : null;
         if (!is_array($records)) {
             throw new \RuntimeException('CI matrix key windowsThreadSafe must be a list.');
         }
 
         $result = [];
         foreach ($records as $record) {
-            if (!is_array($record)
+            if (
+                !is_array($record)
                 || !is_string($record['runner'] ?? null)
                 || !is_string($record['php'] ?? null)
                 || !is_string($record['architecture'] ?? null)
-                || !is_bool($record['threadSafe'] ?? null)) {
+                || !is_bool($record['threadSafe'] ?? null)
+            ) {
                 throw new \RuntimeException('CI matrix Windows thread-safe lane is invalid.');
             }
             $result[] = [

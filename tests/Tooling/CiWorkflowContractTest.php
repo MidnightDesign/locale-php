@@ -19,7 +19,7 @@ final class CiWorkflowContractTest extends TestCase
 
     public function testRepositoryTextIsCheckedOutWithDeterministicLineEndings(): void
     {
-        $contents = (string) file_get_contents(dirname(__DIR__, 2).'/.gitattributes');
+        $contents = (string) file_get_contents(dirname(__DIR__, 2) . '/.gitattributes');
 
         self::assertStringContainsString('* text=auto eol=lf', $contents);
     }
@@ -29,7 +29,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-runtime-lane.yml';
+            $path = $root . '/.github/workflows/ci-runtime-lane.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace(
                 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262',
@@ -52,13 +52,13 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $nightly = $root.'/.github/ci/public-nightly.yml';
+            $nightly = $root . '/.github/ci/public-nightly.yml';
             $contents = (string) file_get_contents($nightly);
             $contents = preg_replace('/\n  quality:\n(?:    .*\n|      .*\n)*/', "\n", $contents);
             self::assertNotNull($contents);
             file_put_contents($nightly, $contents);
 
-            $scheduled = $root.'/.github/workflows/ci-scheduled.yml';
+            $scheduled = $root . '/.github/workflows/ci-scheduled.yml';
             $contents = (string) file_get_contents($scheduled);
             $contents = str_replace(
                 "  windows-x86:\n    if: \${{ inputs.profile == 'weekly' || inputs.profile == 'release' }}",
@@ -83,7 +83,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/infection.spec.json5';
+            $path = $root . '/infection.spec.json5';
             $contents = (string) file_get_contents($path);
             $contents = str_replace('--testsuite=test262-upstream', '--testsuite=unit', $contents);
             file_put_contents($path, $contents);
@@ -102,7 +102,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace('campaign: [spec, porcelain]', 'campaign: [spec]', $contents);
             file_put_contents($path, $contents);
@@ -121,7 +121,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace(
                 'extensionMode: [absent, disabled, native]',
@@ -144,7 +144,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace('path: build', 'path: build/ci', $contents);
             file_put_contents($path, $contents);
@@ -163,7 +163,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace('--expect-failing=.ci/spec-mutation-expected-failure.json', '', $contents);
             file_put_contents($path, $contents);
@@ -182,7 +182,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace(
                 "continue-on-error: \${{ matrix.campaign == 'spec' }}",
@@ -205,7 +205,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/infection.spec.json5';
+            $path = $root . '/infection.spec.json5';
             $contents = (string) file_get_contents($path);
             $contents = str_replace(
                 '["/^Locale\\\\.php$/", "/^Internal\\\\/Data\\\\/LocaleAliases\\\\.php$/"]',
@@ -228,13 +228,9 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
-            $contents = str_replace(
-                '- run: composer data:check',
-                '- run: true # composer data:check',
-                $contents,
-            );
+            $contents = str_replace('- run: composer data:check', '- run: true # composer data:check', $contents);
             file_put_contents($path, $contents);
 
             self::assertContains(
@@ -251,7 +247,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/ci-quality.yml';
+            $path = $root . '/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace('register_argc_argv=On', 'register_argc_argv=Off', $contents);
             file_put_contents($path, $contents);
@@ -265,18 +261,33 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRequiresMagoForFormatting(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/composer.json';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('"style": "mago format --check"', '"style": "php-cs-fixer check"', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The Composer style script must check formatting with Mago.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testCommentsCannotStandInForActivationTriggers(): void
     {
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/workflows/pull-request.yml';
+            $path = $root . '/.github/workflows/pull-request.yml';
             $contents = (string) file_get_contents($path);
-            $contents = str_replace(
-                "on:\n  pull_request:",
-                "on:\n  workflow_dispatch:\n\n#  pull_request:",
-                $contents,
-            );
+            $contents = str_replace("on:\n  pull_request:", "on:\n  workflow_dispatch:\n\n#  pull_request:", $contents);
             file_put_contents($path, $contents);
 
             self::assertContains(
@@ -311,11 +322,11 @@ final class CiWorkflowContractTest extends TestCase
             'infection.porcelain.json5',
             'phpunit.xml.dist',
         ] as $path) {
-            $target = $root.'/'.$path;
+            $target = $root . '/' . $path;
             if (!is_dir(dirname($target))) {
                 mkdir(dirname($target), 0700, true);
             }
-            copy($source.'/'.$path, $target);
+            copy($source . '/' . $path, $target);
         }
 
         return $root;

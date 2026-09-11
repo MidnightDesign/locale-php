@@ -33,18 +33,24 @@ final class LocaleTest extends TestCase
     {
         self::assertTrue((new \ReflectionClass(Locale::class))->isFinal());
 
+        $constructor = (new \ReflectionClass(Locale::class))->getConstructor();
+        self::assertNotNull($constructor);
+        $parameters = [];
+        foreach ($constructor->getParameters() as $parameter) {
+            $parameters[$parameter->getName()] = $parameter;
+        }
+        foreach (['language', 'script', 'region', 'variants'] as $name) {
+            self::assertSame('?string', (string) $parameters[$name]->getType());
+            self::assertNull($parameters[$name]->getDefaultValue());
+        }
+
         $this->expectException(\TypeError::class);
         (new \ReflectionClass(Locale::class))->newInstance(null);
     }
 
     public function testItExposesCompleteCanonicalIdentifiersThroughThePorcelainLayer(): void
     {
-        $locale = new Locale(
-            'EN-fonipa-u-ca-gregory-x-private',
-            calendar: 'islamicc',
-            numeric: true,
-            variants: '1901',
-        );
+        $locale = new Locale('EN-fonipa-u-ca-gregory-x-private', calendar: 'islamicc', numeric: true, variants: '1901');
 
         self::assertSame('en-1901-u-ca-islamic-civil-kn-x-private', $locale->toString());
         self::assertSame('en-1901', $locale->baseName);

@@ -206,7 +206,7 @@ final class MatrixMutationScoreTest extends TestCase
         $baseline = [
             'format' => 3,
             'campaign' => 'spec',
-            'mutations' => [str_repeat('a', 64).':1' => 'unexpected-result'],
+            'mutations' => [str_repeat('a', 64) . ':1' => 'unexpected-result'],
         ];
 
         $this->expectException(\RuntimeException::class);
@@ -219,7 +219,7 @@ final class MatrixMutationScoreTest extends TestCase
     {
         $evidence = $this->expectedFailureEvidence();
         $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
-        $baseline['mutations'][str_repeat('a', 64).':1'] = 'escaped';
+        $baseline['mutations'][str_repeat('a', 64) . ':1'] = 'escaped';
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('contains an unknown mutant identity');
@@ -309,11 +309,8 @@ final class MatrixMutationScoreTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function report(
-        string $file,
-        string $result = 'killed',
-        string $mutatedCode = 'return false;',
-    ): array {
+    private function report(string $file, string $result = 'killed', string $mutatedCode = 'return false;'): array
+    {
         $resultToStat = [
             'killed' => 'killedCount',
             'killedByStaticAnalysis' => 'killedByStaticAnalysisCount',
@@ -353,7 +350,7 @@ final class MatrixMutationScoreTest extends TestCase
                     'mutatorName' => 'FalseValue',
                     'originalSourceCode' => 'return true;',
                     'mutatedSourceCode' => $mutatedCode,
-                    'originalFilePath' => 'C:\\project\\'.$file,
+                    'originalFilePath' => 'C:\\project\\' . $file,
                     'originalStartLine' => 12,
                 ],
                 'diff' => "- return true;\n+ {$mutatedCode}",

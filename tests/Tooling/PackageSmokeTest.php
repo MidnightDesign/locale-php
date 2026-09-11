@@ -17,15 +17,12 @@ final class PackageSmokeTest extends TestCase
         putenv('COMPOSER_BINARY=C:\\tools\\composer.phar');
 
         try {
-            self::assertSame(
-                [PHP_BINARY, 'C:\\tools\\composer.phar'],
-                PackageSmoke::composerCommand(),
-            );
+            self::assertSame([PHP_BINARY, 'C:\\tools\\composer.phar'], PackageSmoke::composerCommand());
         } finally {
             if ($previous === false) {
                 putenv('COMPOSER_BINARY');
             } else {
-                putenv('COMPOSER_BINARY='.$previous);
+                putenv('COMPOSER_BINARY=' . $previous);
             }
         }
     }

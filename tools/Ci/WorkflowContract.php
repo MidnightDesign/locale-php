@@ -22,7 +22,7 @@ final class WorkflowContract
         $workflows = [];
         foreach ($paths as $name => $path) {
             try {
-                $workflow = Workflow::fromFile($root.'/'.$path);
+                $workflow = Workflow::fromFile($root . '/' . $path);
             } catch (\RuntimeException $error) {
                 $failures[] = $error->getMessage();
 
@@ -59,16 +59,26 @@ final class WorkflowContract
     {
         self::requireRuns($runtime, ['php tools/ci-matrix.php runtime'], 'runtime workflow', $failures);
         self::requireUses($runtime, ['./.github/workflows/ci-runtime-lane.yml'], 'runtime workflow', $failures);
-        self::requireScalars($runtime, [
-            "matrix.extensionMode == 'absent' && ':intl' || 'intl'",
-            'matrix.integerSize',
-            'matrix.osFamily',
-            'matrix.architecture',
-        ], 'runtime workflow', $failures);
-        self::requireRuns($lane, [
-            'php tools/record-ci-provenance.php',
-            'php tools/assert-ci-runtime.php',
-        ], 'runtime lane workflow', $failures);
+        self::requireScalars(
+            $runtime,
+            [
+                "matrix.extensionMode == 'absent' && ':intl' || 'intl'",
+                'matrix.integerSize',
+                'matrix.osFamily',
+                'matrix.architecture',
+            ],
+            'runtime workflow',
+            $failures,
+        );
+        self::requireRuns(
+            $lane,
+            [
+                'php tools/record-ci-provenance.php',
+                'php tools/assert-ci-runtime.php',
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
         self::requireScalars($lane, ["inputs.thread-safe && 'ts' || 'nts'"], 'runtime lane workflow', $failures);
         self::requireSettings($runtime, ['update' => true, 'thread-safe' => false], 'runtime workflow', $failures);
         self::requireSettings($lane, ['update' => true], 'runtime lane workflow', $failures);
@@ -77,22 +87,32 @@ final class WorkflowContract
     /** @param list<string> $failures */
     private static function validateQuality(Workflow $workflow, array &$failures): void
     {
-        self::requireRuns($workflow, [
-            'vendor/bin/phpstan',
-            'vendor/bin/psalm',
-            'vendor/bin/mago',
-            'vendor/bin/php-cs-fixer',
-            'composer data:check',
-            'composer test262:check',
-            'composer test:package',
-            'php tools/assert-extension-version.php xdebug 3.5.3',
-            'php tools/record-ci-provenance.php',
-        ], 'quality workflow', $failures);
-        self::requireScalars($workflow, [
-            'xdebug-3.5.3',
-            'infection.${{ matrix.campaign }}.json5',
-            'register_argc_argv=On',
-        ], 'quality workflow', $failures);
+        self::requireRuns(
+            $workflow,
+            [
+                'vendor/bin/phpstan',
+                'vendor/bin/psalm',
+                'vendor/bin/mago',
+                'composer style',
+                'composer data:check',
+                'composer test262:check',
+                'composer test:package',
+                'php tools/assert-extension-version.php xdebug 3.5.3',
+                'php tools/record-ci-provenance.php',
+            ],
+            'quality workflow',
+            $failures,
+        );
+        self::requireScalars(
+            $workflow,
+            [
+                'xdebug-3.5.3',
+                'infection.${{ matrix.campaign }}.json5',
+                'register_argc_argv=On',
+            ],
+            'quality workflow',
+            $failures,
+        );
 
         $jobs = $workflow->jobs();
         $mutation = $jobs['mutation'] ?? null;
@@ -104,10 +124,15 @@ final class WorkflowContract
         if (($matrix['extensionMode'] ?? null) !== MutationCampaigns::extensionModes()) {
             $failures[] = 'The mutation job must run absent, disabled, and native extension modes.';
         }
-        self::requireJobRuns($mutation, [
-            'composer "mutation:${{ matrix.campaign }}"',
-            'cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"',
-        ], 'mutation job', $failures);
+        self::requireJobRuns(
+            $mutation,
+            [
+                'composer "mutation:${{ matrix.campaign }}"',
+                'cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"',
+            ],
+            'mutation job',
+            $failures,
+        );
         $mutationSteps = is_array($mutation) && is_array($mutation['steps'] ?? null) ? $mutation['steps'] : [];
         $uploadsBuildRoot = false;
         $allowsOnlySpecFailure = false;
@@ -117,11 +142,11 @@ final class WorkflowContract
             }
             $run = $step['run'] ?? null;
             if (is_string($run) && str_contains($run, 'composer "mutation:${{ matrix.campaign }}"')) {
-                $allowsOnlySpecFailure = ($step['id'] ?? null) === 'mutation_campaign'
+                $allowsOnlySpecFailure =
+                    ($step['id'] ?? null) === 'mutation_campaign'
                     && ($step['continue-on-error'] ?? null) === "\${{ matrix.campaign == 'spec' }}";
             }
-            if (!is_string($step['uses'] ?? null)
-                || !str_starts_with($step['uses'], 'actions/upload-artifact@')) {
+            if (!is_string($step['uses'] ?? null) || !str_starts_with($step['uses'], 'actions/upload-artifact@')) {
                 continue;
             }
             $with = is_array($step['with'] ?? null) ? $step['with'] : [];
@@ -140,9 +165,14 @@ final class WorkflowContract
         if (!is_array($score) || ($score['needs'] ?? null) !== 'mutation') {
             $failures[] = 'The mutation-score job must depend on the complete mutation matrix.';
         }
-        self::requireJobRuns($score, [
-            'tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=.ci/spec-mutation-expected-failure.json',
-        ], 'mutation-score job', $failures);
+        self::requireJobRuns(
+            $score,
+            [
+                'tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=.ci/spec-mutation-expected-failure.json',
+            ],
+            'mutation-score job',
+            $failures,
+        );
         if (!$workflow->hasScalarContaining('--expect-failing=.ci/spec-mutation-expected-failure.json')) {
             $failures[] = 'The mutation score job must require the spec campaign to remain an expected failure.';
         }
@@ -160,12 +190,14 @@ final class WorkflowContract
                 continue;
             }
             $source = is_array($config['source'] ?? null) ? $config['source'] : [];
-            if (($source['directories'] ?? null) !== ['src']
-                || ($source['excludes'] ?? null) !== MutationCampaigns::excludes($campaign)) {
+            if (
+                ($source['directories'] ?? null) !== ['src']
+                || ($source['excludes'] ?? null) !== MutationCampaigns::excludes($campaign)
+            ) {
                 $failures[] = sprintf('The %s mutation campaign has an invalid production-source boundary.', $campaign);
             }
             $suite = MutationCampaigns::suite($campaign);
-            if (($config['testFrameworkOptions'] ?? null) !== '--testsuite='.$suite) {
+            if (($config['testFrameworkOptions'] ?? null) !== '--testsuite=' . $suite) {
                 $failures[] = sprintf('The %s mutation campaign must use the %s suite.', $campaign, $suite);
             }
             if (($config['minMsi'] ?? null) !== 100 || ($config['minCoveredMsi'] ?? null) !== 100) {
@@ -177,20 +209,25 @@ final class WorkflowContract
             }
         }
 
-        $composer = json_decode(self::read($root.'/composer.json', $failures), true);
+        $composer = json_decode(self::read($root . '/composer.json', $failures), true);
         $scripts = is_array($composer) && is_array($composer['scripts'] ?? null) ? $composer['scripts'] : [];
         foreach (MutationCampaigns::names() as $campaign) {
-            $script = $scripts['mutation:'.$campaign] ?? null;
-            if (!is_string($script)
+            $script = $scripts['mutation:' . $campaign] ?? null;
+            if (
+                !is_string($script)
                 || !str_contains($script, '--with-uncovered')
                 || str_contains($script, '--filter')
-                || str_contains($script, '--git-diff')) {
-                $failures[] = sprintf('Composer mutation:%s must mutate uncovered code without source filters.', $campaign);
+                || str_contains($script, '--git-diff')
+            ) {
+                $failures[] = sprintf(
+                    'Composer mutation:%s must mutate uncovered code without source filters.',
+                    $campaign,
+                );
             }
         }
 
         self::requireText(
-            self::read($root.'/phpunit.xml.dist', $failures),
+            self::read($root . '/phpunit.xml.dist', $failures),
             [
                 '<testsuite name="test262-upstream">',
                 '<directory>tests/Test262/Generated</directory>',
@@ -207,18 +244,23 @@ final class WorkflowContract
     /** @param list<string> $failures */
     private static function validateScheduled(Workflow $workflow, array &$failures): void
     {
-        self::requireRuns($workflow, [
-            'arm-runtime',
-            'windows-x86-runtime',
-            'windows-ts-runtime',
-            'icu-runtime',
-            'advisory-runtime',
-            'php tools/assert-ci-runtime.php',
-            'matrix.runtimeUrl',
-            'https://getcomposer.org/download/2.10.3/composer.phar',
-            'Get-FileHash -Algorithm SHA256',
-            'php tools/assert-ci-runtime.php 4 false Windows x86',
-        ], 'scheduled workflow', $failures);
+        self::requireRuns(
+            $workflow,
+            [
+                'arm-runtime',
+                'windows-x86-runtime',
+                'windows-ts-runtime',
+                'icu-runtime',
+                'advisory-runtime',
+                'php tools/assert-ci-runtime.php',
+                'matrix.runtimeUrl',
+                'https://getcomposer.org/download/2.10.3/composer.phar',
+                'Get-FileHash -Algorithm SHA256',
+                'php tools/assert-ci-runtime.php 4 false Windows x86',
+            ],
+            'scheduled workflow',
+            $failures,
+        );
         self::requireUses($workflow, ['./.github/workflows/ci-runtime-lane.yml'], 'scheduled workflow', $failures);
         self::requireSettings($workflow, ['update' => true], 'scheduled workflow', $failures);
 
@@ -240,16 +282,31 @@ final class WorkflowContract
     /** @param list<string> $failures */
     private static function validateRelease(Workflow $workflow, array &$failures): void
     {
-        self::requireUses($workflow, [
-            './.github/workflows/ci-runtime.yml',
-            './.github/workflows/ci-quality.yml',
-            './.github/workflows/ci-scheduled.yml',
-        ], 'release workflow', $failures);
-        self::requireRuns($workflow, [
-            'composer archive',
-            'tools/test-packed-artifact.php',
-        ], 'release workflow', $failures);
-        self::requireSettings($workflow, ['timeout-minutes' => 120, 'profile' => 'release'], 'release workflow', $failures);
+        self::requireUses(
+            $workflow,
+            [
+                './.github/workflows/ci-runtime.yml',
+                './.github/workflows/ci-quality.yml',
+                './.github/workflows/ci-scheduled.yml',
+            ],
+            'release workflow',
+            $failures,
+        );
+        self::requireRuns(
+            $workflow,
+            [
+                'composer archive',
+                'tools/test-packed-artifact.php',
+            ],
+            'release workflow',
+            $failures,
+        );
+        self::requireSettings(
+            $workflow,
+            ['timeout-minutes' => 120, 'profile' => 'release'],
+            'release workflow',
+            $failures,
+        );
     }
 
     /**
@@ -258,7 +315,7 @@ final class WorkflowContract
      */
     private static function validateActions(string $root, array $workflows, array &$failures): void
     {
-        $pins = json_decode(self::read($root.'/.ci/action-pins.json', $failures), true);
+        $pins = json_decode(self::read($root . '/.ci/action-pins.json', $failures), true);
         if (!is_array($pins)) {
             $failures[] = '.ci/action-pins.json must contain an object.';
 
@@ -312,9 +369,7 @@ final class WorkflowContract
         $lane = $workflows['runtime-lane']->jobs()['evidence'] ?? null;
         $scheduledJobs = $workflows['scheduled']->jobs();
         $advisoryJob = $scheduledJobs['advisory-php'] ?? null;
-        $advisoryWith = is_array($advisoryJob) && is_array($advisoryJob['with'] ?? null)
-            ? $advisoryJob['with']
-            : [];
+        $advisoryWith = is_array($advisoryJob) && is_array($advisoryJob['with'] ?? null) ? $advisoryJob['with'] : [];
         $advisory = $advisoryWith['advisory'] ?? null;
         $advisoryCount = 0;
         foreach ($scheduledJobs as $job) {
@@ -323,10 +378,12 @@ final class WorkflowContract
                 ++$advisoryCount;
             }
         }
-        if (!is_array($lane)
+        if (
+            !is_array($lane)
             || ($lane['continue-on-error'] ?? null) !== '${{ inputs.advisory }}'
             || $advisory !== true
-            || $advisoryCount !== 1) {
+            || $advisoryCount !== 1
+        ) {
             $failures[] = 'Only the unstable PHP lane may be advisory.';
         }
     }
@@ -337,13 +394,21 @@ final class WorkflowContract
      */
     private static function validateToolPins(string $root, array $workflows, array &$failures): void
     {
-        $composer = json_decode(self::read($root.'/composer.json', $failures), true);
-        $requirements = is_array($composer) ? ($composer['require-dev'] ?? null) : null;
-        foreach (['phpstan/phpstan', 'vimeo/psalm', 'carthage-software/mago', 'infection/infection', 'friendsofphp/php-cs-fixer'] as $tool) {
-            $version = is_array($requirements) ? ($requirements[$tool] ?? null) : null;
+        $composer = json_decode(self::read($root . '/composer.json', $failures), true);
+        $requirements = is_array($composer) ? $composer['require-dev'] ?? null : null;
+        foreach (['phpstan/phpstan', 'vimeo/psalm', 'carthage-software/mago', 'infection/infection'] as $tool) {
+            $version = is_array($requirements) ? $requirements[$tool] ?? null : null;
             if (!is_string($version) || preg_match('/^\d+\.\d+\.\d+$/D', $version) !== 1) {
                 $failures[] = sprintf('CI tool %s must use an exact version.', $tool);
             }
+        }
+
+        $scripts = is_array($composer) ? $composer['scripts'] ?? null : null;
+        if (!is_array($scripts) || ($scripts['style'] ?? null) !== 'mago format --check') {
+            $failures[] = 'The Composer style script must check formatting with Mago.';
+        }
+        if (!is_array($scripts) || ($scripts['format'] ?? null) !== 'mago format') {
+            $failures[] = 'The Composer format script must format code with Mago.';
         }
 
         $setupPhpCount = 0;
@@ -367,7 +432,7 @@ final class WorkflowContract
         }
 
         self::requireText(
-            self::read($root.'/Dockerfile', $failures),
+            self::read($root . '/Dockerfile', $failures),
             ['composer:2.10.3', 'xdebug-3.5.3'],
             'Dockerfile',
             $failures,
@@ -399,7 +464,7 @@ final class WorkflowContract
         $workflows = [];
         foreach ($templates as $path => $expectedTriggers) {
             try {
-                $workflow = Workflow::fromFile($root.'/'.$path);
+                $workflow = Workflow::fromFile($root . '/' . $path);
             } catch (\RuntimeException $error) {
                 $failures[] = $error->getMessage();
 
@@ -414,32 +479,30 @@ final class WorkflowContract
         $nightly = $workflows['.github/ci/public-nightly.yml'] ?? null;
         $nightlyJobs = $nightly?->jobs() ?? [];
         $nightlyJob = $nightlyJobs['nightly'] ?? null;
-        $nightlyWith = is_array($nightlyJob) && is_array($nightlyJob['with'] ?? null)
-            ? $nightlyJob['with']
-            : [];
+        $nightlyWith = is_array($nightlyJob) && is_array($nightlyJob['with'] ?? null) ? $nightlyJob['with'] : [];
         $qualityJob = $nightlyJobs['quality'] ?? null;
-        if (($nightlyWith['profile'] ?? null) !== 'nightly'
+        if (
+            ($nightlyWith['profile'] ?? null) !== 'nightly'
             || !is_array($qualityJob)
-            || ($qualityJob['uses'] ?? null) !== './.github/workflows/ci-quality.yml') {
+            || ($qualityJob['uses'] ?? null) !== './.github/workflows/ci-quality.yml'
+        ) {
             $failures[] = 'The nightly template must run nightly compatibility and quality evidence.';
         }
 
         $weekly = $workflows['.github/ci/public-weekly.yml'] ?? null;
         $weeklyJob = $weekly?->jobs()['compatibility'] ?? null;
-        $weeklyWith = is_array($weeklyJob) && is_array($weeklyJob['with'] ?? null)
-            ? $weeklyJob['with']
-            : [];
+        $weeklyWith = is_array($weeklyJob) && is_array($weeklyJob['with'] ?? null) ? $weeklyJob['with'] : [];
         if (($weeklyWith['profile'] ?? null) !== 'weekly') {
             $failures[] = 'The weekly template must run the weekly compatibility profile.';
         }
 
         try {
-            $dependabot = Yaml::parseFile($root.'/.github/ci/public-dependabot.yaml.template');
+            $dependabot = Yaml::parseFile($root . '/.github/ci/public-dependabot.yaml.template');
         } catch (\Throwable $error) {
             $failures[] = sprintf('Cannot parse .github/ci/public-dependabot.yaml.template: %s', $error->getMessage());
             $dependabot = null;
         }
-        $updates = is_array($dependabot) ? ($dependabot['updates'] ?? null) : null;
+        $updates = is_array($dependabot) ? $dependabot['updates'] ?? null : null;
         $ecosystems = [];
         if (is_array($updates)) {
             foreach ($updates as $update) {
@@ -453,7 +516,7 @@ final class WorkflowContract
                 $failures[] = sprintf('The Dependabot template must update %s.', $ecosystem);
             }
         }
-        if (is_file($root.'/.github/dependabot.yml')) {
+        if (is_file($root . '/.github/dependabot.yml')) {
             $failures[] = 'Dependabot must remain dormant until public activation.';
         }
     }
@@ -461,10 +524,12 @@ final class WorkflowContract
     /** @param array<string, mixed> $step */
     private static function setupPhpHasInput(array $step, string $input): bool
     {
-        return is_string($step['uses'] ?? null)
+        return (
+            is_string($step['uses'] ?? null)
             && str_starts_with($step['uses'], 'shivammathur/setup-php@')
             && is_array($step['with'] ?? null)
-            && array_key_exists($input, $step['with']);
+            && array_key_exists($input, $step['with'])
+        );
     }
 
     /**
@@ -549,8 +614,12 @@ final class WorkflowContract
      * @param array<string, mixed> $required
      * @param list<string> $failures
      */
-    private static function requireSettings(Workflow $workflow, array $required, string $subject, array &$failures): void
-    {
+    private static function requireSettings(
+        Workflow $workflow,
+        array $required,
+        string $subject,
+        array &$failures,
+    ): void {
         foreach ($required as $key => $value) {
             if (!$workflow->hasSetting($key, $value)) {
                 $failures[] = sprintf('%s is missing %s.', $subject, $key);

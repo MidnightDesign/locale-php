@@ -139,7 +139,7 @@ final class MatrixMutationScore
         }
         unset($mutation);
         /** @var list<array{id: string, campaign: string, source: string, line: int, mutator: string, original: string, mutated: string, diff: string, applicableModes: list<string>, modes: array<string, string>}> $mutations */
-        $score = $obligations === 0 ? 0.0 : round($killed / $obligations * 100, 4);
+        $score = $obligations === 0 ? 0.0 : round(($killed / $obligations) * 100, 4);
 
         return [
             'format' => 2,
@@ -179,9 +179,11 @@ final class MatrixMutationScore
         /** @var array<string, array<string, string>> $normalizedBaselineMutations */
         $normalizedBaselineMutations = [];
         foreach ($baselineMutations as $identity => $expectedResults) {
-            if (!is_string($identity)
+            if (
+                !is_string($identity)
                 || preg_match('/^[a-f0-9]{64}:[1-9][0-9]*$/D', $identity) !== 1
-                || (!is_string($expectedResults) && !is_array($expectedResults))) {
+                || !is_string($expectedResults) && !is_array($expectedResults)
+            ) {
                 throw new \RuntimeException('The expected mutation failure baseline contains an invalid mutant.');
             }
             $resultsByMode = is_string($expectedResults)
@@ -200,9 +202,11 @@ final class MatrixMutationScore
                         $identity,
                     ));
                 }
-                if (!is_string($result)
+                if (
+                    !is_string($result)
                     || !isset(self::RESULT_FIELDS[$result])
-                    || self::RESULT_FIELDS[$result]['failure'] === null) {
+                    || self::RESULT_FIELDS[$result]['failure'] === null
+                ) {
                     throw new \RuntimeException(sprintf(
                         'The expected mutation failure baseline contains an unknown result for %s.',
                         $identity,
@@ -274,16 +278,13 @@ final class MatrixMutationScore
             if ($mutation['campaign'] !== $campaign) {
                 continue;
             }
-            $failedModes = array_filter(
-                $mutation['modes'],
-                static fn (string $result): bool => $result !== 'killed',
-            );
+            $failedModes = array_filter($mutation['modes'], static fn(string $result): bool => $result !== 'killed');
             if ($failedModes !== []) {
                 $results = array_values(array_unique($failedModes));
-                $mutations[$mutation['id']] = count($failedModes) === count(MutationCampaigns::extensionModes())
-                    && count($results) === 1
-                    ? $results[0]
-                    : $failedModes;
+                $mutations[$mutation['id']] =
+                    count($failedModes) === count(MutationCampaigns::extensionModes()) && count($results) === 1
+                        ? $results[0]
+                        : $failedModes;
             }
         }
         ksort($mutations);
@@ -344,7 +345,7 @@ final class MatrixMutationScore
         }
 
         $total = self::stat($stats, 'totalMutantsCount');
-        if ($reported + $skipped !== $total) {
+        if (($reported + $skipped) !== $total) {
             throw new \RuntimeException(sprintf(
                 '%s/%s stats.totalMutantsCount is %d but %d mutants were reported.',
                 $campaign,
@@ -354,7 +355,11 @@ final class MatrixMutationScore
             ));
         }
         if ($skipped !== 0) {
-            throw new \RuntimeException(sprintf('%s/%s contains unattributable skipped obligations.', $campaign, $mode));
+            throw new \RuntimeException(sprintf(
+                '%s/%s contains unattributable skipped obligations.',
+                $campaign,
+                $mode,
+            ));
         }
 
         return ['mutations' => $mutations];
