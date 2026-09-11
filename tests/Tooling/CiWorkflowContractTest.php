@@ -21,6 +21,24 @@ final class CiWorkflowContractTest extends TestCase
         self::assertSame([], WorkflowContract::validate(dirname(__DIR__, 2)));
     }
 
+    public function testPullRequestCiExposesAStableAggregateGate(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/.github/workflows/pull-request.yml';
+            $contents = (string) file_get_contents($path);
+            file_put_contents($path, str_replace('name: CI gate', 'name: Optional summary', $contents));
+
+            self::assertContains(
+                'The pull-request workflow must expose the stable CI gate.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testRepositoryTextIsCheckedOutWithDeterministicLineEndings(): void
     {
         $contents = (string) file_get_contents(dirname(__DIR__, 2) . '/.gitattributes');
