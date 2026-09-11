@@ -12,9 +12,16 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(WorkflowContract::class)]
 final class CiWorkflowContractTest extends TestCase
 {
-    public function testPreparedWorkflowsPreserveTheCiPolicyWithoutActivatingIt(): void
+    public function testPullRequestCiIsActiveAndPreservesTheCiPolicy(): void
     {
         self::assertSame([], WorkflowContract::validate(dirname(__DIR__, 2)));
+    }
+
+    public function testRepositoryTextIsCheckedOutWithDeterministicLineEndings(): void
+    {
+        $contents = (string) file_get_contents(dirname(__DIR__, 2) . '/.gitattributes');
+
+        self::assertStringContainsString('* text=auto eol=lf', $contents);
     }
 
     public function testItBindsEachActionNameToItsOwnPin(): void
@@ -132,6 +139,67 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRejectsMutationArtifactsWithAnExtraDirectoryLevel(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('path: build', 'path: build/ci', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job must upload build as the artifact root.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRequiresTheTemporarySpecMutationFailureCanary(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('--expect-failing=.ci/spec-mutation-expected-failure.json', '', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation score job must require the spec campaign to remain an expected failure.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsBroadMutationFailureSuppression(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace(
+                "continue-on-error: \${{ matrix.campaign == 'spec' }}",
+                'continue-on-error: true',
+                $contents,
+            );
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job may continue on error only for the temporary spec failure.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testItRejectsMutationSourceAreaOmissions(): void
     {
         $root = $this->fixtureRoot();
@@ -175,6 +243,25 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testPhpstanRunsWithCliArgumentsRegistered(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('register_argc_argv=On', 'register_argc_argv=Off', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'quality workflow is missing register_argc_argv=On.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testItRequiresMagoForFormatting(): void
     {
         $root = $this->fixtureRoot();
@@ -199,13 +286,13 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root . '/.github/ci/public-pull-request.yml';
+            $path = $root . '/.github/workflows/pull-request.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace("on:\n  pull_request:", "on:\n  workflow_dispatch:\n\n#  pull_request:", $contents);
             file_put_contents($path, $contents);
 
             self::assertContains(
-                '.github/ci/public-pull-request.yml has invalid activation triggers.',
+                '.github/workflows/pull-request.yml has invalid activation triggers.',
                 WorkflowContract::validate($root),
             );
         } finally {
@@ -219,12 +306,13 @@ final class CiWorkflowContractTest extends TestCase
         $root = PackageSmoke::temporaryDirectory('intl-locale-workflow-contract');
         foreach ([
             '.ci/action-pins.json',
+            '.ci/spec-mutation-expected-failure.json',
             '.github/workflows/ci-runtime.yml',
             '.github/workflows/ci-runtime-lane.yml',
             '.github/workflows/ci-quality.yml',
             '.github/workflows/ci-scheduled.yml',
             '.github/workflows/ci-release.yml',
-            '.github/ci/public-pull-request.yml',
+            '.github/workflows/pull-request.yml',
             '.github/ci/public-nightly.yml',
             '.github/ci/public-weekly.yml',
             '.github/ci/public-release.yml',

@@ -155,6 +155,148 @@ final class MatrixMutationScore
     }
 
     /**
+     * @param array{passing: bool, campaigns: array<string, array{modes: array<string, array{obligations: int, killed: int, failures: int}>}>, mutations: list<array{id: string, campaign: string, modes: array<string, string>}>} $evidence
+     * @param array<string, mixed> $baseline
+     */
+    public static function acceptsExpectedFailure(array $evidence, array $baseline): bool
+    {
+        $fields = array_keys($baseline);
+        sort($fields);
+        if ($fields !== ['campaign', 'format', 'mutations']) {
+            throw new \RuntimeException('The expected mutation failure baseline contains unknown fields.');
+        }
+        if (($baseline['format'] ?? null) !== 3) {
+            throw new \RuntimeException('The expected mutation failure baseline format must be 3.');
+        }
+        $expectedCampaign = $baseline['campaign'] ?? null;
+        $baselineMutations = $baseline['mutations'] ?? null;
+        if (!is_string($expectedCampaign) || !is_array($baselineMutations)) {
+            throw new \RuntimeException('The expected mutation failure baseline has an invalid shape.');
+        }
+        if (!in_array($expectedCampaign, MutationCampaigns::names(), true)) {
+            throw new \RuntimeException('The expected mutation failure baseline names an unknown campaign.');
+        }
+        /** @var array<string, array<string, string>> $normalizedBaselineMutations */
+        $normalizedBaselineMutations = [];
+        foreach ($baselineMutations as $identity => $expectedResults) {
+            if (
+                !is_string($identity)
+                || preg_match('/^[a-f0-9]{64}:[1-9][0-9]*$/D', $identity) !== 1
+                || !is_string($expectedResults) && !is_array($expectedResults)
+            ) {
+                throw new \RuntimeException('The expected mutation failure baseline contains an invalid mutant.');
+            }
+            $resultsByMode = is_string($expectedResults)
+                ? array_fill_keys(MutationCampaigns::extensionModes(), $expectedResults)
+                : $expectedResults;
+            if ($resultsByMode === []) {
+                throw new \RuntimeException(sprintf(
+                    'The expected mutation failure baseline contains no expected results for %s.',
+                    $identity,
+                ));
+            }
+            foreach ($resultsByMode as $mode => $result) {
+                if (!is_string($mode) || !in_array($mode, MutationCampaigns::extensionModes(), true)) {
+                    throw new \RuntimeException(sprintf(
+                        'The expected mutation failure baseline contains an unknown extension mode for %s.',
+                        $identity,
+                    ));
+                }
+                if (
+                    !is_string($result)
+                    || !isset(self::RESULT_FIELDS[$result])
+                    || self::RESULT_FIELDS[$result]['failure'] === null
+                ) {
+                    throw new \RuntimeException(sprintf(
+                        'The expected mutation failure baseline contains an unknown result for %s.',
+                        $identity,
+                    ));
+                }
+            }
+            /** @var array<string, string> $resultsByMode */
+            $normalizedBaselineMutations[$identity] = $resultsByMode;
+        }
+
+        $currentExpectedMutations = [];
+        foreach ($evidence['mutations'] as $mutation) {
+            if ($mutation['campaign'] === $expectedCampaign) {
+                $currentExpectedMutations[$mutation['id']] = true;
+            }
+        }
+        foreach (array_keys($normalizedBaselineMutations) as $identity) {
+            if (!isset($currentExpectedMutations[$identity])) {
+                throw new \RuntimeException(sprintf(
+                    'The expected mutation failure baseline contains an unknown mutant identity: %s.',
+                    $identity,
+                ));
+            }
+        }
+        if ($evidence['passing']) {
+            return false;
+        }
+
+        foreach ($evidence['campaigns'] as $campaign => $campaignEvidence) {
+            if ($campaign === $expectedCampaign) {
+                continue;
+            }
+            foreach ($campaignEvidence['modes'] as $modeEvidence) {
+                if ($modeEvidence['failures'] !== 0) {
+                    return false;
+                }
+            }
+        }
+
+        $expectedFailures = 0;
+        foreach ($evidence['mutations'] as $mutation) {
+            if ($mutation['campaign'] !== $expectedCampaign) {
+                continue;
+            }
+            $identity = $mutation['id'];
+            $allowedModes = $normalizedBaselineMutations[$identity] ?? [];
+            foreach ($mutation['modes'] as $mode => $result) {
+                if ($result === 'killed') {
+                    continue;
+                }
+                ++$expectedFailures;
+                if (($allowedModes[$mode] ?? null) !== $result) {
+                    return false;
+                }
+            }
+        }
+
+        return $expectedFailures > 0;
+    }
+
+    /**
+     * @param array{mutations: list<array{id: string, campaign: string, modes: array<string, string>}>} $evidence
+     * @return array{format: int, campaign: string, mutations: array<string, string|array<string, string>>}
+     */
+    public static function expectedFailureBaseline(array $evidence, string $campaign): array
+    {
+        $mutations = [];
+        foreach ($evidence['mutations'] as $mutation) {
+            if ($mutation['campaign'] !== $campaign) {
+                continue;
+            }
+            $failedModes = array_filter($mutation['modes'], static fn(string $result): bool => $result !== 'killed');
+            if ($failedModes !== []) {
+                $results = array_values(array_unique($failedModes));
+                $mutations[$mutation['id']] =
+                    count($failedModes) === count(MutationCampaigns::extensionModes()) && count($results) === 1
+                        ? $results[0]
+                        : $failedModes;
+            }
+        }
+        ksort($mutations);
+
+        return [
+            'format' => 3,
+            'campaign' => $campaign,
+            'mutations' => $mutations,
+        ];
+    }
+
+    /**
      * @param array<string, mixed> $report
      * @return array{
      *     mutations: array<string, array{definition: array{source: string, line: int, mutator: string, original: string, mutated: string, diff: string}, result: string}>
