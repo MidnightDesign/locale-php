@@ -6,7 +6,6 @@ namespace Midnight\Intl\Tests\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
-use Midnight\Intl\Internal\Test262\OptionBag;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -72,30 +71,14 @@ final class LocaleTest extends TestCase
         self::assertSame('en-x-private-a', (new Locale('en-x-private-a'))->toString());
     }
 
-    public function testItUsesTheSpecExceptionTaxonomy(): void
+    public function testExplicitNullOptionsUseTheSpecTypeError(): void
     {
-        try {
-            new Locale(null);
-            self::fail('A null tag should fail.');
-        } catch (TypeError $error) {
-            self::assertInstanceOf(\TypeError::class, $error);
-        }
-
-        try {
-            new Locale('en', null);
-            self::fail('Explicit null options should fail.');
-        } catch (TypeError $error) {
-            self::assertInstanceOf(\TypeError::class, $error);
-        }
-
-        $this->expectException(RangeError::class);
-        new Locale('en-a');
+        $this->expectException(TypeError::class);
+        new Locale('en', null);
     }
 
-    public function testItAcceptsInitializedLocalesAndStringableObjects(): void
+    public function testItAcceptsStringableObjects(): void
     {
-        $source = new Locale('en-US');
-        $fromLocale = new Locale($source, ['region' => 'GB']);
         $fromObject = new Locale(new class() implements \Stringable {
             public function __toString(): string
             {
@@ -106,21 +89,9 @@ final class LocaleTest extends TestCase
         self::assertSame('de-Latn-DE', $fromObject->toString());
     }
 
-    public function testItProtectsBrandedStateWhileRemainingExtensible(): void
+    public function testConstructorCannotReinitializeSpecLocale(): void
     {
-        $locale = new class('de') extends Locale {
-            public bool $consumerState = false;
-        };
-        $locale->consumerState = true;
-
-        self::assertTrue($locale->consumerState);
-
-        try {
-            $locale->__set('language', 'fr');
-            self::fail('Locale state should be non-writable.');
-        } catch (TypeError) {
-            self::assertSame('de', $locale->language);
-        }
+        $locale = new Locale('de');
 
         $this->expectException(TypeError::class);
         $locale->__construct('fr');
@@ -144,58 +115,6 @@ final class LocaleTest extends TestCase
         self::assertSame('sr-Latn', (new Locale('en', ['language' => 'sh']))->toString());
     }
 
-    public function testItReadsAndConvertsBehavioralOptionsInOrder(): void
-    {
-        $log = new OptionAccessLog();
-        $options = new class($log) implements OptionBag {
-            public function __construct(
-                private OptionAccessLog $log,
-            ) {}
-
-            public function has(string $name): bool
-            {
-                return in_array($name, ['language', 'script', 'region'], true);
-            }
-
-            public function get(string $name): mixed
-            {
-                $this->log->entries[] = 'get:' . $name;
-
-                return new class($name, $this->log) implements \Stringable {
-                    public function __construct(
-                        private string $name,
-                        private OptionAccessLog $log,
-                    ) {}
-
-                    public function __toString(): string
-                    {
-                        $this->log->entries[] = 'convert:' . $this->name;
-
-                        return match ($this->name) {
-                            'language' => 'fr',
-                            'script' => 'Latn',
-                            'region' => 'CA',
-                            default => throw new \LogicException('Unexpected option name.'),
-                        };
-                    }
-                };
-            }
-        };
-
-        self::assertSame('fr-Latn-CA', (new Locale('en', $options))->toString());
-        self::assertSame(
-            [
-                'get:language',
-                'convert:language',
-                'get:script',
-                'convert:script',
-                'get:region',
-                'convert:region',
-            ],
-            $log->entries,
-        );
-    }
-
     public function testItRejectsInvalidValuesWithinTheDeliveredSlice(): void
     {
         foreach (['', "en\n", 'root', 'abcd', 'en_US', 'en--US', 'en-a', 'x-private'] as $tag) {
@@ -212,38 +131,6 @@ final class LocaleTest extends TestCase
     {
         $this->expectException(TypeError::class);
         new Locale('en', ['language' => []]);
-    }
-
-    public function testUninitializedSubclassesFailTheBrandCheck(): void
-    {
-        $locale = new class() extends Locale {
-            public function __construct() {}
-        };
-
-        $this->expectException(TypeError::class);
-        $locale->toString();
-    }
-
-    public function testUserStringConversionExceptionsPropagateUnchanged(): void
-    {
-        $failure = new \RuntimeException('consumer conversion failed');
-        $tag = new class($failure) implements \Stringable {
-            public function __construct(
-                private \RuntimeException $failure,
-            ) {}
-
-            public function __toString(): string
-            {
-                throw $this->failure;
-            }
-        };
-
-        try {
-            new Locale($tag);
-            self::fail('Expected the consumer exception to propagate.');
-        } catch (\RuntimeException $caught) {
-            self::assertSame($failure, $caught);
-        }
     }
 
     public function testItPresentsDeliveredProperties(): void
@@ -293,32 +180,4 @@ final class LocaleTest extends TestCase
             }
         }
     }
-
-    public function testConsumerPropertiesRemainExtensible(): void
-    {
-        $locale = new Locale('en');
-        $locale->__set('custom', 'value');
-        $locale->__set('nullable', null);
-
-        self::assertSame('value', $locale->__get('custom'));
-        self::assertTrue($locale->__isset('custom'));
-        self::assertNull($locale->__get('nullable'));
-        self::assertFalse($locale->__isset('nullable'));
-    }
-
-    public function testUninitializedSubclassesRejectPropertyAccess(): void
-    {
-        $locale = new class() extends Locale {
-            public function __construct() {}
-        };
-
-        $this->expectException(TypeError::class);
-        $locale->__get('language');
-    }
-}
-
-final class OptionAccessLog
-{
-    /** @var list<string> */
-    public array $entries = [];
 }

@@ -9,7 +9,9 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\Data\PrimaryTimeZones;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
+use Midnight\Intl\Internal\Test262\ObjectValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
+use Midnight\Intl\Internal\Test262\SymbolValue;
 use Midnight\Intl\Internal\UndefinedValue;
 
 /**
@@ -36,7 +38,7 @@ class Locale
     /** @var array<string, mixed> */
     private array $consumerProperties = [];
 
-    public function __construct(mixed $tag, mixed $options = null)
+    public function __construct(mixed $tag, mixed $options = UndefinedValue::Value)
     {
         if ($this->initialized) {
             throw new TypeError('Locale is already initialized.');
@@ -45,11 +47,12 @@ class Locale
         $tag = match (true) {
             is_string($tag) => $tag,
             $tag instanceof self => $tag->toString(),
+            $tag instanceof ObjectValue => self::toStringValue(self::toPrimitive($tag)),
             $tag instanceof \Stringable => (string) $tag,
             default => throw new TypeError('The locale tag must be a string or an object.'),
         };
 
-        if (func_num_args() > 1 && $options === null) {
+        if ($options === null) {
             throw new TypeError('The locale options must not be null.');
         }
 
@@ -213,10 +216,6 @@ class Locale
     private static function readOption(array|object $options, string $name): OptionValue
     {
         if ($options instanceof OptionBag) {
-            if (!$options->has($name)) {
-                return OptionValue::missing();
-            }
-
             return self::optionValue($options->get($name));
         }
 
@@ -236,6 +235,14 @@ class Locale
 
     private static function toStringValue(mixed $value): string
     {
+        if ($value instanceof SymbolValue) {
+            throw new TypeError('A Symbol value cannot be converted to a string.');
+        }
+
+        if ($value === UndefinedValue::Value) {
+            return 'undefined';
+        }
+
         if (is_string($value) || is_int($value) || is_float($value)) {
             if ($value === -0.0) {
                 return '0';
@@ -252,11 +259,80 @@ class Locale
             return $value ? 'true' : 'false';
         }
 
+        if ($value instanceof ObjectValue) {
+            return self::toStringValue(self::toPrimitive($value));
+        }
+
         if ($value instanceof \Stringable) {
             return (string) $value;
         }
 
         throw new TypeError('Locale option cannot be converted to a string.');
+    }
+
+    private static function toPrimitive(ObjectValue $value): mixed
+    {
+        $exoticResult = self::callExoticToPrimitive($value->get('@@toPrimitive'));
+        if ($exoticResult->present) {
+            return $exoticResult->value;
+        }
+
+        foreach (['toString', 'valueOf'] as $name) {
+            $ordinaryResult = self::callOrdinaryToPrimitiveMethod($value->get($name));
+            if ($ordinaryResult->present) {
+                return $ordinaryResult->value;
+            }
+        }
+
+        throw new TypeError('Locale object cannot be converted to a primitive value.');
+    }
+
+    private static function callExoticToPrimitive(mixed $method): OptionValue
+    {
+        if ($method === UndefinedValue::Value) {
+            return OptionValue::missing();
+        }
+        if (!is_callable($method)) {
+            throw new TypeError('Symbol.toPrimitive must be callable.');
+        }
+
+        return OptionValue::present(self::requirePrimitive(
+            $method('string'),
+            'Symbol.toPrimitive must return a primitive value.',
+        ));
+    }
+
+    private static function callOrdinaryToPrimitiveMethod(mixed $method): OptionValue
+    {
+        if (!is_callable($method)) {
+            return OptionValue::missing();
+        }
+
+        return self::primitiveOption($method());
+    }
+
+    private static function primitiveOption(mixed $value): OptionValue
+    {
+        return self::isPrimitive($value) ? OptionValue::present($value) : OptionValue::missing();
+    }
+
+    private static function requirePrimitive(mixed $value, string $message): mixed
+    {
+        if (!self::isPrimitive($value)) {
+            throw new TypeError($message);
+        }
+
+        return $value;
+    }
+
+    private static function isPrimitive(mixed $value): bool
+    {
+        return (
+            $value === null
+            || is_scalar($value)
+            || $value === UndefinedValue::Value
+            || $value instanceof SymbolValue
+        );
     }
 
     /** @param array<array-key, mixed>|object $options */
@@ -343,10 +419,12 @@ class Locale
             return false;
         }
 
-        if (is_scalar($value) || $value === null) {
-            return (bool) $value;
-        }
-
-        return true;
+        return match (true) {
+            $value === null, $value === UndefinedValue::Value => false,
+            is_bool($value) => $value,
+            is_int($value), is_float($value) => $value != 0,
+            is_string($value) => $value !== '',
+            default => true,
+        };
     }
 }

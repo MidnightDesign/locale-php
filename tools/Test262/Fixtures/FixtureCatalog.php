@@ -5,21 +5,26 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tools\Test262\Fixtures;
 
 use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
+use Midnight\Intl\Tools\Test262\BrandingFixturePipeline;
 use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
+use Midnight\Intl\Tools\Test262\ConstructorInvocationPipeline;
 use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
 use Midnight\Intl\Tools\Test262\GrandfatheredLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
+use Midnight\Intl\Tools\Test262\InvalidTagFixturePipeline;
 use Midnight\Intl\Tools\Test262\LikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\LocaleMethodFixturePipeline;
+use Midnight\Intl\Tools\Test262\LocaleObjectModelPipeline;
 use Midnight\Intl\Tools\Test262\LocaleObjectPipeline;
 use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
 use Midnight\Intl\Tools\Test262\MappedLocaleStatePipeline;
 use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
 use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
+use Midnight\Intl\Tools\Test262\TagStringConversionPipeline;
 use Midnight\Intl\Tools\Test262\TimeZonesFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
 
@@ -170,6 +175,71 @@ final readonly class FixtureCatalog
         return $this->sourceBound(
             new LocaleObjectPipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
             $this->representations,
+            $sourceSha256,
+        );
+    }
+
+    public function tagStringConversion(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new TagStringConversionPipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
+            ['behavioral_object'],
+            $sourceSha256,
+        );
+    }
+
+    public function branding(string $member, bool $property, string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new BrandingFixturePipeline(
+                $this->assertionIdentities,
+                $member,
+                $property,
+                $this->test262Revision,
+                $this->ecma402Revision,
+            ),
+            ['native_receiver_binding', 'uninitialized_locale'],
+            $sourceSha256,
+        );
+    }
+
+    public function objectModel(string $mode, string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new LocaleObjectModelPipeline(
+                $this->assertionIdentities,
+                $mode,
+                $this->test262Revision,
+                $this->ecma402Revision,
+            ),
+            ['php_object_model'],
+            $sourceSha256,
+        );
+    }
+
+    public function invalidTag(string $kind, string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new InvalidTagFixturePipeline(
+                $this->assertionIdentities,
+                $kind,
+                $this->test262Revision,
+                $this->ecma402Revision,
+            ),
+            ['native_value'],
+            $sourceSha256,
+        );
+    }
+
+    public function constructorInvocation(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new ConstructorInvocationPipeline(
+                $this->assertionIdentities,
+                $this->test262Revision,
+                $this->ecma402Revision,
+            ),
+            ['reflection'],
             $sourceSha256,
         );
     }

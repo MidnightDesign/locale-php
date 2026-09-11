@@ -223,4 +223,56 @@ final class Test262EvidenceTest extends TestCase
             );
         }
     }
+
+    public function testCoercionSubclassAndReceiverFixturesRetainSourceEvidence(): void
+    {
+        $fixtures = [];
+        foreach (self::evidence()['fixtures'] as $fixture) {
+            $fixtures[$fixture['path']] = $fixture;
+        }
+
+        $paths = [
+            'test/intl402/Locale/constructor-tag-tostring.js',
+            'test/intl402/Locale/instance-extensibility.js',
+            'test/intl402/Locale/instance.js',
+            'test/intl402/Locale/subclassing.js',
+            'test/intl402/Locale/invalid-tag-throws-boolean.js',
+            'test/intl402/Locale/invalid-tag-throws-null.js',
+            'test/intl402/Locale/invalid-tag-throws-number.js',
+            'test/intl402/Locale/invalid-tag-throws-symbol.js',
+            'test/intl402/Locale/invalid-tag-throws-undefined.js',
+        ];
+        foreach ([
+            'baseName',
+            'calendar',
+            'caseFirst',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'language',
+            'numberingSystem',
+            'numeric',
+            'region',
+            'script',
+            'toString',
+            'variants',
+        ] as $member) {
+            $paths[] = "test/intl402/Locale/prototype/{$member}/branding.js";
+        }
+
+        foreach ($paths as $path) {
+            self::assertArrayHasKey($path, $fixtures);
+            self::assertNotSame('translation_gap', $fixtures[$path]['status']);
+            self::assertGreaterThan(0, $fixtures[$path]['sourceAssertionCount']);
+            self::assertGreaterThan(0, $fixtures[$path]['executionCount']);
+            self::assertSame(0, $fixtures[$path]['executionFailures']);
+        }
+
+        $constructor = $fixtures['test/intl402/Locale/constructor-newtarget-undefined.js'];
+        self::assertSame('partially_translated', $constructor['status']);
+        self::assertSame(
+            ['passing', 'inapplicable', 'inapplicable'],
+            array_column($constructor['assertions'], 'status'),
+        );
+    }
 }

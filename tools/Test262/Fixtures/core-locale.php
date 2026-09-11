@@ -12,6 +12,109 @@ return static function (FixtureCatalog $catalog): array {
     $invalidCases = FixtureCases::invalid(...);
 
     return [
+        'test/intl402/Locale/constructor-newtarget-undefined.js' => $catalog->constructorInvocation(
+            '55ebbb9f67683fa72c58ad4c9b908dbedc882d9335efbe83da72f29b7a242cc9',
+        ),
+        'test/intl402/Locale/invalid-tag-throws-boolean.js' => $catalog->invalidTag(
+            'boolean',
+            '4d681fbbc3663493e32f8f69951c277bcd4099453e49e4906d1217466dd08dbe',
+        ),
+        'test/intl402/Locale/invalid-tag-throws-null.js' => $catalog->invalidTag(
+            'null',
+            'c113beb37d55b6bb04cf76a2a17a76f61d6245bbf10df55fd373f9b55e8f36c1',
+        ),
+        'test/intl402/Locale/invalid-tag-throws-number.js' => $catalog->invalidTag(
+            'number',
+            '5a021aa80eb272c1c6cefb972e320ad956a8959e8958b7cfb14b1f72aeeac7b9',
+        ),
+        'test/intl402/Locale/invalid-tag-throws-symbol.js' => $catalog->invalidTag(
+            'symbol',
+            '7a9b1b5fd1c31c540cdde1ae38af2c8f8a7afa94819793959a2ee25fa4b3578e',
+        ),
+        'test/intl402/Locale/invalid-tag-throws-undefined.js' => $catalog->invalidTag(
+            'undefined',
+            'bdf1f960b9a44e384c4446a1c733d7ded37ef93ef38cb0e936276f89cdb4a2dc',
+        ),
+        'test/intl402/Locale/constructor-tag-tostring.js' => $catalog->tagStringConversion(
+            '9d70d4bd62e4c508c4344b2e68f823f7c1ffc1042db75c3d9f88e84b08059401',
+        ),
+        'test/intl402/Locale/instance-extensibility.js' => $catalog->objectModel(
+            'extensibility',
+            'e0f8a720a9583e6b2491fbee5aaa7e391da4daa29f65bb18915b6390a755f5e5',
+        ),
+        'test/intl402/Locale/instance.js' => $catalog->objectModel(
+            'instance',
+            '7927854a2abdbde528f269e4d43dcadcce3a538d4773832975d0da2dbd8c8143',
+        ),
+        'test/intl402/Locale/subclassing.js' => $catalog->objectModel(
+            'subclassing',
+            '8fcd38fa11710ee9f989e20073c352c2c2b916c0b50cea078a6b56c1addb146c',
+        ),
+        'test/intl402/Locale/prototype/baseName/branding.js' => $catalog->branding(
+            'baseName',
+            true,
+            'e77d449e07710c79221e7daa3769eb0af42a212d18350b625d16aa6a0a9dea0c',
+        ),
+        'test/intl402/Locale/prototype/calendar/branding.js' => $catalog->branding(
+            'calendar',
+            true,
+            'fe4fcde843ab870405a626a591fd2e641f19d4b87109401b93c19c748724078a',
+        ),
+        'test/intl402/Locale/prototype/caseFirst/branding.js' => $catalog->branding(
+            'caseFirst',
+            true,
+            'e7b17d1bcfd0ccbb8a5f8cce2e6ae06871ee50524fdf0302959ccff61326e169',
+        ),
+        'test/intl402/Locale/prototype/collation/branding.js' => $catalog->branding(
+            'collation',
+            true,
+            'a922140186f8dd2c2083b535be457314af44b0adff6db510672ad132430b34f7',
+        ),
+        'test/intl402/Locale/prototype/firstDayOfWeek/branding.js' => $catalog->branding(
+            'firstDayOfWeek',
+            true,
+            'df407d245b499cb9e41a26efc3cf5affe300e25f30ff665b3574f3282dc86a01',
+        ),
+        'test/intl402/Locale/prototype/hourCycle/branding.js' => $catalog->branding(
+            'hourCycle',
+            true,
+            '558ee53f12491e11955a871e69d4cb2a2aebb1fa49a307bec79478a2829ac7bf',
+        ),
+        'test/intl402/Locale/prototype/language/branding.js' => $catalog->branding(
+            'language',
+            true,
+            'dc7174a08ec37437fd7a25f22655f46d5d91d01ccaa29a7a24242ee8971c3f43',
+        ),
+        'test/intl402/Locale/prototype/numberingSystem/branding.js' => $catalog->branding(
+            'numberingSystem',
+            true,
+            '28a8285ee0f7a43a48c8afc28d404af0102327891ba7a9bc5b5ba5177e0c3c36',
+        ),
+        'test/intl402/Locale/prototype/numeric/branding.js' => $catalog->branding(
+            'numeric',
+            true,
+            '1b565a5c7e01e243ce9c73f8f93aefe45b1cb8638f8d30d2191877d9a2c080a8',
+        ),
+        'test/intl402/Locale/prototype/region/branding.js' => $catalog->branding(
+            'region',
+            true,
+            '89b0784d414af4f7f09b61011b5ef1c19e40bf6fbb27b7d4db9387dc460f9133',
+        ),
+        'test/intl402/Locale/prototype/script/branding.js' => $catalog->branding(
+            'script',
+            true,
+            'eb81e453c7075ea07187759eb5955d2f4b84f66cf1019446836ef5862658117c',
+        ),
+        'test/intl402/Locale/prototype/variants/branding.js' => $catalog->branding(
+            'variants',
+            true,
+            '3f347bb8f318041fff4d390ed4cf2e7b04e8cc68c346305bd8da0096984636c7',
+        ),
+        'test/intl402/Locale/prototype/toString/branding.js' => $catalog->branding(
+            'toString',
+            false,
+            '228d4eefecb2f1bb83db0c16271abd7428fd56331f2763e6a8768edf4d09a6bd',
+        ),
         'test/intl402/Locale/likely-subtags-grandfathered.js' => $catalog->grandfatheredLikelySubtags(),
         'test/intl402/Locale/likely-subtags.js' => $catalog->likelySubtags(),
         'test/intl402/Locale/constructor-unicode-ext-invalid.js' => $catalog->identifierRejection(),
