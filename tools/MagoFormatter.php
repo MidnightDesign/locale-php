@@ -111,7 +111,12 @@ final class MagoFormatter
             throw new \RuntimeException('Unable to locate the installed Mago binary.');
         }
 
-        $binaries = array_values(array_filter($candidates, 'is_file'));
+        $binaries = array_values(array_filter(
+            $candidates,
+            static fn(string $candidate): bool => (
+                is_file($candidate) && in_array(basename($candidate), ['mago', 'mago.exe'], true)
+            ),
+        ));
         if (count($binaries) !== 1) {
             throw new \RuntimeException('Expected exactly one installed Mago binary.');
         }
