@@ -24,8 +24,6 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
         private readonly string $optionName,
-        private readonly string $generatedPath,
-        private readonly string $className,
         private readonly array $cases,
     ) {}
 
@@ -96,7 +94,7 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
                 ...$assertion,
                 'status' => $passing ? 'passing' : 'failing',
                 'adaptations' => [
-                    'The source loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.',
+                    'The source loop is expanded into fixture-local PHP checks without multiplying upstream assertion coverage.',
                     'The JavaScript options object is exercised as both an associative array and a plain PHP object.',
                     'JavaScript undefined uses the canonical internal undefined value; object string conversion uses PHP Stringable.',
                 ],
@@ -116,7 +114,7 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
             $evidenceAssertions,
             count($executions),
             $failureCount,
-            [$this->generatedPath => $this->render($generated, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($generated, $fixturePath))],
         );
     }
 
@@ -142,8 +140,6 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
         if ($export === null) {
             throw new \RuntimeException('Unable to export mapped constructor cases.');
         }
-        $className = $this->className;
-
         return <<<PHP
             <?php
 
@@ -153,30 +149,15 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Exception\RangeError;
             use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class {$className} extends TestCase
-            {
-                /** @return array<string, array{string, string, string, array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int}, string, string}> */
-                public static function cases(): array
-                {
-                    return {$export};
-                }
-
-                /** @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} \$value */
-                #[DataProvider('cases')]
-                public function testTranslatedAssertions(string \$assertionId, string \$tag, string \$optionName, array \$value, string \$representation, string \$expected): void
-                {
-                    \$result = \$expected === RangeError::class
-                        ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, \$value, \$representation)
-                        : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, \$value, \$representation, \$expected);
-                    self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
-                }
+            foreach ({$export} as [\$assertionId, \$tag, \$optionName, \$value, \$representation, \$expected]) {
+                \$result = \$expected === RangeError::class
+                    ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, \$value, \$representation)
+                    : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, \$value, \$representation, \$expected);
+                Assert::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
             }
             PHP . "\n";
     }

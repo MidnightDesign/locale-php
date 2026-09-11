@@ -61,8 +61,6 @@ final class MappedConstructorOptionPipelineTest extends TestCase
             'test262-revision',
             'ecma402-revision',
             'language',
-            'Generated.php',
-            'GeneratedTest',
             $cases,
         );
     }
