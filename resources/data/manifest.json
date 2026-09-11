@@ -51,7 +51,7 @@
     },
     "generators": {
         "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
-        "tools/generate-data.php": "58bd88b728bc94ca99a98c2258b0ebf213335940158541f9ad24977d40e442cd",
+        "tools/generate-data.php": "c6d3c75599bedbd707e7763ea7d0e199fe063f5e779f803b4e9ad18c97144aa0",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",
         "tools/verify-data-sources.php": "0c8d76e31fa3266e6980c919cb2353dbe6ac29574cc86fb8452ada8125fc379b"
     },

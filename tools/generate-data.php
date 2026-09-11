@@ -170,152 +170,40 @@ $generated = <<<PHP
 $generated .= "\n";
 $generated = MagoFormatter::format($root, 'src/Internal/Data/LocaleAliases.php', $generated);
 
-$likelySubtagsSourceSha256 = hash('sha256', $likelySubtagsSource);
-$likelySubtagsPayloadSha256 = hash('sha256', json_encode([
-    'format' => $likelySubtagsData['format'],
-    'likelySubtag' => $likelySubtagsData['likelySubtag'],
-], JSON_THROW_ON_ERROR));
-$likelySubtagsExport = preg_replace(
-    '/[ \t]+$/m',
-    '',
-    Midnight\Intl\Tools\PhpExporter::export($likelySubtagsData['likelySubtag']),
-);
-if ($likelySubtagsExport === null) {
-    throw new RuntimeException('Unable to export the likely-subtag projection.');
+$mapArtifacts = [];
+foreach ([
+    'likelySubtags' => [
+        'source' => $likelySubtagsSource,
+        'data' => $likelySubtagsData,
+        'field' => 'likelySubtag',
+        'class' => 'LikelySubtags',
+        'type' => 'string',
+        'label' => 'likely-subtag',
+        'target' => 'src/Internal/Data/LikelySubtags.php',
+    ],
+    'scriptDirections' => [
+        'source' => $scriptDirectionsSource,
+        'data' => $scriptDirectionsData,
+        'field' => 'scriptDirection',
+        'class' => 'ScriptDirections',
+        'type' => "'ltr'|'rtl'|null",
+        'label' => 'script-direction',
+        'target' => 'src/Internal/Data/ScriptDirections.php',
+    ],
+] as $name => $definition) {
+    $mapArtifacts[$name] = generateMapProjection($root, $definition);
 }
-$likelySubtagsGenerated = <<<PHP
-    <?php
-
-    declare(strict_types=1);
-
-    namespace Midnight\Intl\Internal\Data;
-
-    enum LikelySubtags
-    {
-        public const FORMAT = {$likelySubtagsData['format']};
-
-        /** @var string */
-        public const CLDR_REVISION = '{$likelySubtagsData['cldrRevision']}';
-
-        /** @var string */
-        public const CLDR_CORE_SHA512 = '{$likelySubtagsData['upstreamSha512']}';
-
-        /** @var string */
-        public const SOURCE_SHA256 = '{$likelySubtagsSourceSha256}';
-
-        private const PAYLOAD_SHA256 = '{$likelySubtagsPayloadSha256}';
-
-        /** @var array<string, string> */
-        public const MAP = {$likelySubtagsExport};
-
-        public static function assertIntegrity(): void
-        {
-            /** @var bool|null \$verified */
-            static \$verified = null;
-            if (\$verified === true) {
-                return;
-            }
-
-            \$actual = hash('sha256', json_encode([
-                'format' => self::FORMAT,
-                'likelySubtag' => self::MAP,
-            ], JSON_THROW_ON_ERROR));
-            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
-                throw new \UnexpectedValueException('The bundled likely-subtag data is corrupt or incompatible.');
-            }
-            \$verified = true;
-        }
-
-        private static function supportsFormat(int \$format): bool
-        {
-            return \$format === 1;
-        }
-    }
-    PHP;
-$likelySubtagsGenerated .= "\n";
-$likelySubtagsGenerated = MagoFormatter::format($root, 'src/Internal/Data/LikelySubtags.php', $likelySubtagsGenerated);
-
-$scriptDirectionsSourceSha256 = hash('sha256', $scriptDirectionsSource);
-$scriptDirectionsPayloadSha256 = hash('sha256', json_encode([
-    'format' => $scriptDirectionsData['format'],
-    'scriptDirection' => $scriptDirectionsData['scriptDirection'],
-], JSON_THROW_ON_ERROR));
-$scriptDirectionsExport = preg_replace(
-    '/[ \t]+$/m',
-    '',
-    Midnight\Intl\Tools\PhpExporter::export($scriptDirectionsData['scriptDirection']),
-);
-if ($scriptDirectionsExport === null) {
-    throw new RuntimeException('Unable to export the script-direction projection.');
-}
-$scriptDirectionsGenerated = <<<PHP
-    <?php
-
-    declare(strict_types=1);
-
-    namespace Midnight\Intl\Internal\Data;
-
-    enum ScriptDirections
-    {
-        public const FORMAT = {$scriptDirectionsData['format']};
-
-        /** @var string */
-        public const CLDR_REVISION = '{$scriptDirectionsData['cldrRevision']}';
-
-        /** @var string */
-        public const CLDR_CORE_SHA512 = '{$scriptDirectionsData['upstreamSha512']}';
-
-        /** @var string */
-        public const SOURCE_SHA256 = '{$scriptDirectionsSourceSha256}';
-
-        private const PAYLOAD_SHA256 = '{$scriptDirectionsPayloadSha256}';
-
-        /** @var array<string, 'ltr'|'rtl'|null> */
-        public const MAP = {$scriptDirectionsExport};
-
-        public static function assertIntegrity(): void
-        {
-            /** @var bool|null \$verified */
-            static \$verified = null;
-            if (\$verified === true) {
-                return;
-            }
-
-            \$actual = hash('sha256', json_encode([
-                'format' => self::FORMAT,
-                'scriptDirection' => self::MAP,
-            ], JSON_THROW_ON_ERROR));
-            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
-                throw new \UnexpectedValueException('The bundled script-direction data is corrupt or incompatible.');
-            }
-            \$verified = true;
-        }
-
-        private static function supportsFormat(int \$format): bool
-        {
-            return \$format === 1;
-        }
-    }
-    PHP;
-$scriptDirectionsGenerated .= "\n";
-$scriptDirectionsGenerated = MagoFormatter::format(
-    $root,
-    'src/Internal/Data/ScriptDirections.php',
-    $scriptDirectionsGenerated,
-);
 
 $target = $root . '/src/Internal/Data/LocaleAliases.php';
-$likelySubtagsTarget = $root . '/src/Internal/Data/LikelySubtags.php';
-$scriptDirectionsTarget = $root . '/src/Internal/Data/ScriptDirections.php';
 if (in_array('--check', $argv, true)) {
-    if (
-        !is_file($target)
-        || file_get_contents($target) !== $generated
-        || !is_file($likelySubtagsTarget)
-        || file_get_contents($likelySubtagsTarget) !== $likelySubtagsGenerated
-        || !is_file($scriptDirectionsTarget)
-        || file_get_contents($scriptDirectionsTarget) !== $scriptDirectionsGenerated
-    ) {
+    $generatedFilesMatch = is_file($target) && file_get_contents($target) === $generated;
+    foreach ($mapArtifacts as $artifact) {
+        $generatedFilesMatch =
+            $generatedFilesMatch
+            && is_file($root . '/' . $artifact['target'])
+            && file_get_contents($root . '/' . $artifact['target']) === $artifact['generated'];
+    }
+    if (!$generatedFilesMatch) {
         fwrite(STDERR, "The generated locale data is not reproducible.\n");
         exit(1);
     }
@@ -334,8 +222,8 @@ if (in_array('--check', $argv, true)) {
         'ianaLanguage' => $manifest['inputs']['languageRegistry']['sha256'],
         'tzdb' => $manifest['inputs']['tzdb']['sha512'],
         'localeAliasesProjection' => $sourceSha256,
-        'likelySubtagsProjection' => $likelySubtagsSourceSha256,
-        'scriptDirectionsProjection' => $scriptDirectionsSourceSha256,
+        'likelySubtagsProjection' => $mapArtifacts['likelySubtags']['sourceSha256'],
+        'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']['sourceSha256'],
     ], JSON_THROW_ON_ERROR));
     if (
         $manifest['format'] !== 4
@@ -343,12 +231,16 @@ if (in_array('--check', $argv, true)) {
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
-        || $manifest['projections']['likelySubtags']['sourceSha256'] !== $likelySubtagsSourceSha256
-        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)
-        || $manifest['projections']['scriptDirections']['sourceSha256'] !== $scriptDirectionsSourceSha256
+        || $manifest['projections']['likelySubtags']['sourceSha256'] !== $mapArtifacts['likelySubtags']['sourceSha256']
+        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash(
+            'sha256',
+            $mapArtifacts['likelySubtags']['generated'],
+        )
+        || $manifest['projections']['scriptDirections']['sourceSha256']
+            !== $mapArtifacts['scriptDirections']['sourceSha256']
         || $manifest['projections']['scriptDirections']['generatedSha256'] !== hash(
             'sha256',
-            $scriptDirectionsGenerated,
+            $mapArtifacts['scriptDirections']['generated'],
         )
     ) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
@@ -368,11 +260,104 @@ if (file_put_contents($target, $generated) === false) {
     fwrite(STDERR, "Unable to write the locale alias projection.\n");
     exit(1);
 }
-if (file_put_contents($likelySubtagsTarget, $likelySubtagsGenerated) === false) {
-    fwrite(STDERR, "Unable to write the likely-subtag projection.\n");
-    exit(1);
+foreach ($mapArtifacts as $artifact) {
+    if (file_put_contents($root . '/' . $artifact['target'], $artifact['generated']) === false) {
+        fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact['label']));
+        exit(1);
+    }
 }
-if (file_put_contents($scriptDirectionsTarget, $scriptDirectionsGenerated) === false) {
-    fwrite(STDERR, "Unable to write the script-direction projection.\n");
-    exit(1);
+
+/**
+ * @param array{
+ *     source: string,
+ *     data: array<string, mixed>,
+ *     field: string,
+ *     class: string,
+ *     type: string,
+ *     label: string,
+ *     target: string
+ * } $definition
+ * @return array{sourceSha256: string, generated: string, label: string, target: string}
+ */
+function generateMapProjection(string $root, array $definition): array
+{
+    $data = $definition['data'];
+    $field = $definition['field'];
+    $format = $data['format'] ?? null;
+    $cldrRevision = $data['cldrRevision'] ?? null;
+    $upstreamSha512 = $data['upstreamSha512'] ?? null;
+    $map = $data[$field] ?? null;
+    if (!is_int($format) || !is_string($cldrRevision) || !is_string($upstreamSha512) || !is_array($map)) {
+        throw new RuntimeException(sprintf('The %s projection has an invalid data shape.', $definition['label']));
+    }
+
+    $sourceSha256 = hash('sha256', $definition['source']);
+    $payloadSha256 = hash('sha256', json_encode([
+        'format' => $format,
+        $field => $map,
+    ], JSON_THROW_ON_ERROR));
+    $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($map));
+    if ($export === null) {
+        throw new RuntimeException(sprintf('Unable to export the %s projection.', $definition['label']));
+    }
+    $class = $definition['class'];
+    $type = $definition['type'];
+    $label = $definition['label'];
+    $generated = <<<PHP
+        <?php
+
+        declare(strict_types=1);
+
+        namespace Midnight\Intl\Internal\Data;
+
+        enum {$class}
+        {
+            public const FORMAT = {$format};
+
+            /** @var string */
+            public const CLDR_REVISION = '{$cldrRevision}';
+
+            /** @var string */
+            public const CLDR_CORE_SHA512 = '{$upstreamSha512}';
+
+            /** @var string */
+            public const SOURCE_SHA256 = '{$sourceSha256}';
+
+            private const PAYLOAD_SHA256 = '{$payloadSha256}';
+
+            /** @var array<string, {$type}> */
+            public const MAP = {$export};
+
+            public static function assertIntegrity(): void
+            {
+                /** @var bool|null \$verified */
+                static \$verified = null;
+                if (\$verified === true) {
+                    return;
+                }
+
+                \$actual = hash('sha256', json_encode([
+                    'format' => self::FORMAT,
+                    '{$field}' => self::MAP,
+                ], JSON_THROW_ON_ERROR));
+                if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+                    throw new \UnexpectedValueException('The bundled {$label} data is corrupt or incompatible.');
+                }
+                \$verified = true;
+            }
+
+            private static function supportsFormat(int \$format): bool
+            {
+                return \$format === 1;
+            }
+        }
+        PHP;
+    $generated = MagoFormatter::format($root, $definition['target'], $generated . "\n");
+
+    return [
+        'sourceSha256' => $sourceSha256,
+        'generated' => $generated,
+        'label' => $label,
+        'target' => $definition['target'],
+    ];
 }

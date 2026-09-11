@@ -21,31 +21,40 @@ final class TextInfoFixturePipeline implements FixturePipeline
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
-        $identities = $this->assertionIdentities->extract($source, $fixturePath);
-        $expectedAssertions = $this->kind === 'keys' ? 3 : 1;
-        if (count($identities) !== $expectedAssertions) {
+        $constructs = $this->assertionIdentities->extractConstructs($source, $fixturePath);
+        $classifications = array_map($this->classify(...), $constructs);
+        $expectedClassifications = $this->kind === 'keys' ? ['direction', 'keys', 'property-descriptor'] : ['record'];
+        $actualClassifications = $classifications;
+        sort($actualClassifications);
+        if ($actualClassifications !== $expectedClassifications) {
             return FixtureResult::translationGap(
                 $fixturePath,
                 $source,
                 ['associative_array'],
-                $identities,
-                new TranslationGap(sprintf('Expected %d text-information assertions.', $expectedAssertions)),
+                array_column($constructs, 'identity'),
+                new TranslationGap('The text-information fixture has an unexpected assertion shape.'),
             );
         }
 
         $result = (new \ReflectionMethod(Locale::class, 'getTextInfo'))->invoke(new Locale('en'));
-        $failures = is_array($result) ? 0 : $expectedAssertions;
-        if ($this->kind === 'keys' && is_array($result)) {
-            $failures += array_keys($result) === ['direction'] ? 0 : 1;
-            $failures += in_array($result['direction'] ?? null, ['ltr', 'rtl'], true) ? 0 : 1;
-        }
-
         $assertions = [];
-        foreach ($identities as $index => $identity) {
-            $inapplicableDescriptor = $this->kind === 'keys' && $index === 1;
+        $failures = 0;
+        foreach ($constructs as $index => $construct) {
+            $classification = $classifications[$index];
+            $inapplicableDescriptor = $classification === 'property-descriptor';
+            $passing = match ($classification) {
+                'record' => is_array($result),
+                'keys' => is_array($result) && array_keys($result) === ['direction'],
+                'direction' => is_array($result) && in_array($result['direction'] ?? null, ['ltr', 'rtl'], true),
+                'property-descriptor' => true,
+                default => false,
+            };
+            if (!$inapplicableDescriptor && !$passing) {
+                ++$failures;
+            }
             $assertions[] = [
-                ...$identity,
-                'status' => $failures > 0 ? 'failing' : ($inapplicableDescriptor ? 'inapplicable' : 'passing'),
+                ...$construct['identity'],
+                'status' => $inapplicableDescriptor ? 'inapplicable' : ($passing ? 'passing' : 'failing'),
                 'adaptations' => [
                     $inapplicableDescriptor
                         ? 'JavaScript property descriptor flags have no faithful ordinary PHP equivalent and are inapplicable.'
@@ -71,6 +80,29 @@ final class TextInfoFixturePipeline implements FixturePipeline
                 ? 'JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the exact key and direction assertions run.'
                 : null,
         );
+    }
+
+    /**
+     * @param array{
+     *     identity: array{id: string, line: int, column: int, call: string, sha256: string},
+     *     source: string
+     * } $construct
+     */
+    private function classify(array $construct): string
+    {
+        $patterns = [
+            'keys' => "~^assert\\s*\\.\\s*compareArray\\s*\\(\\s*Reflect\\s*\\.\\s*ownKeys\\s*\\(\\s*result\\s*\\)\\s*,\\s*\\[\\s*'direction'\\s*]\\s*\\)$~",
+            'property-descriptor' => "~^verifyProperty\\s*\\(\\s*result\\s*,\\s*'direction'\\s*,\\s*\\{\\s*writable\\s*:\\s*true\\s*,\\s*enumerable\\s*:\\s*true\\s*,\\s*configurable\\s*:\\s*true\\s*}\\s*\\)$~",
+            'direction' => "~^assert\\s*\\(\\s*direction\\s*===\\s*'rtl'\\s*\\|\\|\\s*direction\\s*===\\s*'ltr'\\s*,\\s*'value of the `direction` property'\\s*\\)$~",
+            'record' => "~^assert\\s*\\.\\s*sameValue\\s*\\(\\s*Object\\s*\\.\\s*getPrototypeOf\\s*\\(\\s*new\\s+Intl\\s*\\.\\s*Locale\\s*\\(\\s*'en'\\s*\\)\\s*\\.\\s*getTextInfo\\s*\\(\\s*\\)\\s*\\)\\s*,\\s*Object\\s*\\.\\s*prototype\\s*\\)$~",
+        ];
+        foreach ($patterns as $classification => $pattern) {
+            if (preg_match($pattern, $construct['source']) === 1) {
+                return $classification;
+            }
+        }
+
+        return 'unknown';
     }
 
     private function render(string $fixturePath): string
