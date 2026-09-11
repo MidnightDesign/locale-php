@@ -12,69 +12,72 @@ final class MagoFormatter
             throw new \InvalidArgumentException('The workspace root cannot be empty.');
         }
 
-        $command = [
-            PHP_BINARY,
-            $root . '/vendor/bin/mago',
-            '--workspace',
-            $root,
-            '--colors=never',
-            'format',
-            '--stdin-input',
-            '--stdin-filepath',
-            $path,
-        ];
-        $pipes = [];
-        $process = proc_open(
-            $command,
-            [
-                0 => ['pipe', 'r'],
-                1 => ['pipe', 'w'],
-                2 => ['pipe', 'w'],
-            ],
-            $pipes,
-            $root,
-        );
-        if (
-            !is_resource($process)
-            || !isset($pipes[0], $pipes[1], $pipes[2])
-            || !is_resource($pipes[0])
-            || !is_resource($pipes[1])
-            || !is_resource($pipes[2])
-        ) {
-            throw new \RuntimeException('Unable to start Mago.');
+        $temporaryPath = tempnam(sys_get_temp_dir(), 'mago-');
+        if ($temporaryPath === false) {
+            throw new \RuntimeException(sprintf('Unable to create a temporary file for %s.', $path));
         }
 
-        [$input, $output, $errors] = $pipes;
-        $remaining = $source;
-        while ($remaining !== '') {
-            $written = fwrite($input, $remaining);
-            if ($written === false || $written === 0) {
-                fclose($input);
-                fclose($output);
-                fclose($errors);
-                proc_terminate($process);
-                proc_close($process);
+        $phpPath = $temporaryPath . '.php';
+        if (!rename($temporaryPath, $phpPath)) {
+            unlink($temporaryPath);
+            throw new \RuntimeException(sprintf('Unable to stage %s for Mago.', $path));
+        }
 
-                throw new \RuntimeException(sprintf('Unable to send %s to Mago.', $path));
+        try {
+            if (file_put_contents($phpPath, $source) === false) {
+                throw new \RuntimeException(sprintf('Unable to stage %s for Mago.', $path));
             }
-            $remaining = substr($remaining, $written);
-        }
-        fclose($input);
 
-        $formatted = stream_get_contents($output);
-        fclose($output);
-        $error = stream_get_contents($errors);
-        fclose($errors);
+            $command = [
+                PHP_BINARY,
+                $root . '/vendor/bin/mago',
+                '--workspace',
+                $root,
+                '--colors=never',
+                'format',
+                $phpPath,
+            ];
+            $pipes = [];
+            $process = proc_open(
+                $command,
+                [
+                    0 => ['file', PHP_OS_FAMILY === 'Windows' ? 'NUL' : '/dev/null', 'r'],
+                    1 => ['pipe', 'w'],
+                    2 => ['pipe', 'w'],
+                ],
+                $pipes,
+                $root,
+            );
+            if (
+                !is_resource($process)
+                || !isset($pipes[1], $pipes[2])
+                || !is_resource($pipes[1])
+                || !is_resource($pipes[2])
+            ) {
+                throw new \RuntimeException('Unable to start Mago.');
+            }
 
-        $exitCode = proc_close($process);
-        if ($exitCode !== 0) {
-            $message = $error === false ? 'Unable to read Mago error output.' : trim($error);
-            throw new \RuntimeException(sprintf('Mago failed to format %s: %s', $path, $message));
-        }
-        if ($formatted === false) {
-            throw new \RuntimeException(sprintf('Unable to read Mago output for %s.', $path));
-        }
+            stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $error = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
 
-        return $formatted;
+            $exitCode = proc_close($process);
+            if ($exitCode !== 0) {
+                $message = $error === false ? 'Unable to read Mago error output.' : trim($error);
+                throw new \RuntimeException(sprintf('Mago failed to format %s: %s', $path, $message));
+            }
+
+            $formatted = file_get_contents($phpPath);
+            if ($formatted === false) {
+                throw new \RuntimeException(sprintf('Unable to read Mago output for %s.', $path));
+            }
+
+            return $formatted;
+        } finally {
+            if (is_file($phpPath)) {
+                unlink($phpPath);
+            }
+        }
     }
 }
