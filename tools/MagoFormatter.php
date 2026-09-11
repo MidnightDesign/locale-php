@@ -106,21 +106,22 @@ final class MagoFormatter
 
     private static function binary(string $root): string
     {
-        $candidates = glob($root . '/vendor/carthage-software/mago/composer/bin/*/mago-*/mago*', GLOB_NOSORT);
-        if ($candidates === false) {
-            throw new \RuntimeException('Unable to locate the installed Mago binary.');
-        }
+        $version = \Mago\Internal\get_version();
+        $architecture = \Mago\Internal\detect_architecture();
+        $platform = \Mago\Internal\detect_platform($architecture);
+        $triple = \Mago\Internal\build_target_triple(
+            $architecture,
+            $platform['vendor'],
+            $platform['os'],
+            $platform['suffix'],
+        );
 
-        $binaries = array_values(array_filter(
-            $candidates,
-            static fn(string $candidate): bool => (
-                is_file($candidate) && in_array(basename($candidate), ['mago', 'mago.exe'], true)
-            ),
-        ));
-        if (count($binaries) !== 1) {
-            throw new \RuntimeException('Expected exactly one installed Mago binary.');
-        }
-
-        return $binaries[0];
+        return \Mago\Internal\ensure_binary(
+            $version,
+            $triple,
+            $platform['extension'],
+            \Mago\Internal\get_archive_extension($platform['os'], $platform['suffix']),
+            $root . '/vendor/carthage-software/mago/composer/bin',
+        );
     }
 }
