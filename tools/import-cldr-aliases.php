@@ -192,6 +192,90 @@ for ($index = 0; $index < $archive->numFiles; ++$index) {
         }
     }
 }
+
+$supplementalData = readArchiveEntry($archive, 'common/supplemental/supplementalData.xml');
+$calendarBcp47 = readArchiveEntry($archive, 'common/bcp47/calendar.xml');
+$calendarBcp47WithoutComments = preg_replace('/<!--.*?-->/s', '', $calendarBcp47) ?? throw new RuntimeException(
+    'Unable to remove CLDR calendar XML comments.',
+);
+if (preg_match('#<key name="ca".*?</key>#s', $calendarBcp47WithoutComments, $calendarKeyMatch) !== 1) {
+    throw new RuntimeException('The CLDR archive is missing calendar BCP 47 data.');
+}
+$availableCalendars = [];
+$calendarAliases = [];
+preg_match_all('/<type\s+([^>]+?)\/>/', $calendarKeyMatch[0], $calendarTypeMatches, PREG_SET_ORDER);
+foreach ($calendarTypeMatches as $calendarTypeMatch) {
+    $attributes = xmlAttributes($calendarTypeMatch[1]);
+    $name = strtolower($attributes['name'] ?? '');
+    $calendar = strtolower($attributes['preferred'] ?? $name);
+    foreach (preg_split('/\s+/', $attributes['alias'] ?? '', flags: PREG_SPLIT_NO_EMPTY) ?: [] as $alias) {
+        $calendarAliases[strtolower($alias)] = $calendar;
+    }
+    if ($name !== $calendar) {
+        $calendarAliases[$name] = $calendar;
+    }
+    if (($attributes['deprecated'] ?? '') === 'true') {
+        continue;
+    }
+    if (isUnicodeType($calendar)) {
+        $availableCalendars[] = $calendar;
+    }
+}
+$availableCalendarSet = array_fill_keys($availableCalendars, true);
+
+$calendarPreferences = [];
+preg_match_all(
+    '/<calendarPreference\s+territories="([^"]+)"\s+ordering="([^"]+)"\s*\/>/',
+    $supplementalData,
+    $calendarPreferenceMatches,
+    PREG_SET_ORDER,
+);
+foreach ($calendarPreferenceMatches as $calendarPreferenceMatch) {
+    $calendars = [];
+    foreach (preg_split('/\s+/', $calendarPreferenceMatch[2], flags: PREG_SPLIT_NO_EMPTY) ?: [] as $calendar) {
+        $canonical = $calendarAliases[strtolower($calendar)] ?? strtolower($calendar);
+        if (isset($availableCalendarSet[$canonical]) && !in_array($canonical, $calendars, true)) {
+            $calendars[] = $canonical;
+        }
+    }
+    foreach (preg_split('/\s+/', $calendarPreferenceMatch[1], flags: PREG_SPLIT_NO_EMPTY) ?: [] as $territory) {
+        $calendarPreferences[strtoupper($territory)] = $calendars;
+    }
+}
+ksort($calendarPreferences, SORT_STRING);
+
+$hourCyclePreferences = [];
+preg_match_all('/<hours\s+([^>]+?)\/>/s', $supplementalData, $hoursMatches, PREG_SET_ORDER);
+foreach ($hoursMatches as $hoursMatch) {
+    $attributes = xmlAttributes($hoursMatch[1]);
+    if (!isset($attributes['allowed'], $attributes['regions'])) {
+        continue;
+    }
+    $hourCycles = [];
+    $patterns = array_merge(
+        preg_split('/\s+/', $attributes['preferred'] ?? '', flags: PREG_SPLIT_NO_EMPTY) ?: [],
+        preg_split('/\s+/', $attributes['allowed'], flags: PREG_SPLIT_NO_EMPTY) ?: [],
+    );
+    foreach ($patterns as $pattern) {
+        $hourCycle = match ($pattern[0]) {
+            'K' => 'h11',
+            'h' => 'h12',
+            'H' => 'h23',
+            'k' => 'h24',
+            default => throw new RuntimeException(sprintf('Unsupported CLDR hour pattern "%s".', $pattern)),
+        };
+        if (!in_array($hourCycle, $hourCycles, true)) {
+            $hourCycles[] = $hourCycle;
+        }
+    }
+    foreach (preg_split('/\s+/', $attributes['regions'], flags: PREG_SPLIT_NO_EMPTY) ?: [] as $locale) {
+        $parts = explode('_', $locale, 2);
+        $preferenceKey = isset($parts[1]) ? strtolower($parts[0]) . '-' . strtoupper($parts[1]) : strtoupper($parts[0]);
+        $hourCyclePreferences[$preferenceKey] = $hourCycles;
+    }
+}
+ksort($hourCyclePreferences, SORT_STRING);
+
 $archive->close();
 
 ksort($key, SORT_STRING);
@@ -238,6 +322,26 @@ $scriptDirectionsProjection = [
     ],
     'scriptDirection' => $scriptDirection,
 ];
+$calendarPreferencesProjection = [
+    'format' => 1,
+    'cldrRevision' => CLDR_REVISION,
+    'upstreamSha512' => CLDR_CORE_SHA512,
+    'sourceEntries' => [
+        'common/bcp47/calendar.xml' => hash('sha256', $calendarBcp47),
+        'common/supplemental/supplementalData.xml' => hash('sha256', $supplementalData),
+    ],
+    'available' => $availableCalendars,
+    'preferences' => $calendarPreferences,
+];
+$hourCyclePreferencesProjection = [
+    'format' => 1,
+    'cldrRevision' => CLDR_REVISION,
+    'upstreamSha512' => CLDR_CORE_SHA512,
+    'sourceEntries' => [
+        'common/supplemental/supplementalData.xml' => hash('sha256', $supplementalData),
+    ],
+    'preferences' => $hourCyclePreferences,
+];
 
 file_put_contents(
     dirname(__DIR__) . '/resources/data/locale-aliases.json',
@@ -250,6 +354,16 @@ file_put_contents(
 file_put_contents(
     dirname(__DIR__) . '/resources/data/script-directions.json',
     json_encode($scriptDirectionsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
+);
+file_put_contents(
+    dirname(__DIR__) . '/resources/data/calendar-preferences.json',
+    json_encode($calendarPreferencesProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
+        . "\n",
+);
+file_put_contents(
+    dirname(__DIR__) . '/resources/data/hour-cycle-preferences.json',
+    json_encode($hourCyclePreferencesProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
+        . "\n",
 );
 
 function readArchiveEntry(ZipArchive $archive, string $name): string

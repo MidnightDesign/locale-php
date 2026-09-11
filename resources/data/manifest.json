@@ -1,7 +1,7 @@
 {
-    "format": 4,
-    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-and-primary-time-zones",
-    "releaseDataFingerprint": "8ac1dead95a58b23982e3a7509762ed66e2b385cc2ab751aebb8a74fdd10c0ee",
+    "format": 5,
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-calendar-hour-cycle-and-primary-time-zone-data",
+    "releaseDataFingerprint": "2621d991abd02646558cf0150168fdafc2f024e55aef6925e15a10427177e3b2",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -48,6 +48,18 @@
             "generated": "src/Internal/Data/ScriptDirections.php",
             "generatedSha256": "714daa2337ae2d4dc68d2d831d11973e5d773cff7f90fea8df40c0004bac037e"
         },
+        "calendarPreferences": {
+            "source": "resources/data/calendar-preferences.json",
+            "sourceSha256": "4dbd69185741c9e6dae89e1fec0d5d922864f2c17033f3ffd3822fc3e8afcb7f",
+            "generated": "src/Internal/Data/CalendarPreferences.php",
+            "generatedSha256": "f88f4e3554da86d1419d3f967c3760dda18c76e3bba6ae3325701f8f02aaa3f0"
+        },
+        "hourCyclePreferences": {
+            "source": "resources/data/hour-cycle-preferences.json",
+            "sourceSha256": "61a93adca4c25d9f821f62208a38b3bf8b71fa097c7faf308128a7b40e009389",
+            "generated": "src/Internal/Data/HourCyclePreferences.php",
+            "generatedSha256": "95ee7f5d5656740bf3b1be0358c2746aceaa15f7ee586d0acee831eebf651cd2"
+        },
         "primaryTimeZones": {
             "source": "resources/data/primary-time-zones.json",
             "sourceSha256": "282aba05517c6a88023f18ff16770757a336b2697c1c5c9ce79756c70104b08e",
@@ -56,8 +68,8 @@
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
-        "tools/generate-data.php": "b7b3c6236782a61ab62aad57c680ee70a6b9464336abf465c1c9933b1fd8710b",
+        "tools/import-cldr-aliases.php": "9eb061277cf88b40d4ec8b8a12e196bf036ad10ccbc892c1f5be486a0e2a1afb",
+        "tools/generate-data.php": "27c49d4dffef3db27677f6ea276a2879d3791c399394a6b4877ee7202e21baba",
         "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",
         "tools/TimeZoneDataImporter.php": "e8a38fd4ba20461edb794a3a5976aac6864938a1822f9bd1e308a4de086fc26b",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",

@@ -166,6 +166,26 @@ final class LocaleTest extends TestCase
         self::assertNotContains('Injected/Mutation', $second);
     }
 
+    public function testItStrengthensLocalePreferenceListsAtThePorcelainBoundary(): void
+    {
+        $calendarLocale = new Locale('en-u-ca-islamic');
+        $hourCycleLocale = new Locale('en-u-hc-h11');
+
+        self::assertSame(['islamic'], $calendarLocale->getCalendars());
+        self::assertSame([HourCycle::H11], $hourCycleLocale->getHourCycles());
+
+        $calendars = (new Locale('th'))->getCalendars();
+        $hourCycles = (new Locale('en'))->getHourCycles();
+        self::assertContainsOnly('string', $calendars);
+        // @phpstan-ignore staticMethod.alreadyNarrowedType (runtime porcelain contract)
+        self::assertContainsOnlyInstancesOf(HourCycle::class, $hourCycles);
+
+        $calendars[] = 'injected';
+        $hourCycles[] = HourCycle::H24;
+        self::assertNotContains('injected', (new Locale('th'))->getCalendars());
+        self::assertNotSame($hourCycles, (new Locale('en'))->getHourCycles());
+    }
+
     public function testItReturnsFreshPorcelainLikelySubtagValues(): void
     {
         $locale = new Locale('zh-Hant');

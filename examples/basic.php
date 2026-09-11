@@ -26,6 +26,11 @@ echo $locale->calendar, PHP_EOL;
 echo $locale->firstDayOfWeek, PHP_EOL;
 echo $locale->hourCycle instanceof HourCycle ? $locale->hourCycle->value : $locale->hourCycle ?? '', PHP_EOL;
 echo $locale->caseFirst instanceof CaseFirst ? $locale->caseFirst->value : $locale->caseFirst ?? '', PHP_EOL;
+echo implode(', ', $locale->getCalendars()), PHP_EOL;
+echo
+    implode(', ', array_map(static fn(HourCycle $hourCycle): string => $hourCycle->value, $locale->getHourCycles())),
+    PHP_EOL
+;
 echo json_encode($locale, JSON_THROW_ON_ERROR), PHP_EOL;
 echo $locale->maximize(), PHP_EOL;
 echo $locale->maximize()->minimize(), PHP_EOL;

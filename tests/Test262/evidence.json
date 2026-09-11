@@ -112,6 +112,24 @@
                 "test/intl402/Locale/constructor-getter-order.js": "ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044",
                 "test/intl402/Locale/constructor-options-throwing-getters.js": "c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882",
                 "test/intl402/Locale/constructor-locale-object.js": "c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d",
+                "test/intl402/Locale/prototype/getCalendars/branding.js": "8a3af42b69b62a5cb6e891e3a97dab167a68aa3440fd83f0d68879ed2499aed4",
+                "test/intl402/Locale/prototype/getCalendars/likely-subtags-region.js": "2a1e27d4df1d5e26f71483130d14e818fe963b009c94719d3858c8233d0623e5",
+                "test/intl402/Locale/prototype/getCalendars/name.js": "c81f04344e5b4c2d8bb7512f3d96ff625152d0c77abe6a188f770c8ea94202f9",
+                "test/intl402/Locale/prototype/getCalendars/output-array.js": "cb00645af3bc647f136e4f45e9c5c66069c028d48eb18e0048b1347b431dde97",
+                "test/intl402/Locale/prototype/getCalendars/prop-desc.js": "855e1c07c3d795c4220ddd2482bbf3aec6a21f5546586e6216ae62f3868c6186",
+                "test/intl402/Locale/prototype/getCalendars/region-override.js": "f8fb896aac15ccfaac09c66e224859d84d4a80f5ab8e7c00b9e86e8341784cb5",
+                "test/intl402/Locale/prototype/getCalendars/region-priority.js": "4c68c9a62d5ea22c829eaa76348e82a9fe5934edd1ff792797c8555ed1dcc832",
+                "test/intl402/Locale/prototype/getCalendars/subdivision-region.js": "2015c7ea6e1b1468a3d0897b1187a3da5ac7519ec79bb8a1618becfb9a88eb53",
+                "test/intl402/Locale/prototype/getHourCycles/branding.js": "4bf91687756566975243776d123bf6281cf193e2089ee58d97be3566b262429f",
+                "test/intl402/Locale/prototype/getHourCycles/language-priority.js": "491ac894ab3dd2f442b63a4d36bc74906768f8fe0292a2b97fda10fa2a787bd8",
+                "test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.js": "4abad5f1e6a23c03b7687ca8fb6466be6514a6f9a03231da6fc6c6c068b71cb8",
+                "test/intl402/Locale/prototype/getHourCycles/name.js": "e523247da516d1c315690f71657fa18f1690cde6b5453afc4c66a9b7b6dc6870",
+                "test/intl402/Locale/prototype/getHourCycles/output-array-values.js": "74eafc3bce26dbd6681cf8d4aa7e39efaccb4ca2c59d9f94cd864cca0feced29",
+                "test/intl402/Locale/prototype/getHourCycles/output-array.js": "af4ab21cfd891ddcd902818750f0a9505d18261b9758dd0b527b4973c3fefaba",
+                "test/intl402/Locale/prototype/getHourCycles/prop-desc.js": "9ecb4f92b687569b2477839976a75841f4e89682d71a3461228eae4bdf2b0699",
+                "test/intl402/Locale/prototype/getHourCycles/region-override.js": "f8ba94a5472a3ed134915be3893c2cf4538cde813795f6750c78da029368bb1f",
+                "test/intl402/Locale/prototype/getHourCycles/region-priority.js": "9d49da1acfee4a7fc86ad72a562e583ac9f9bf089bec7ae3e593d73e10afdb45",
+                "test/intl402/Locale/prototype/getHourCycles/subdivision-region.js": "97664a5ba052bc6d39e1fa1a6189c06447e34c5235710ff91d01ba156e20112d",
                 "test/intl402/Locale/prototype/getTimeZones/branding.js": "0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf",
                 "test/intl402/Locale/prototype/getTimeZones/name.js": "661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260",
                 "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js": "9da185ea867c9b003be4a2186151186e07d1a60a68d200a5640a3eeca3176616",
@@ -142,9 +160,9 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 61,
-        "passingFixtures": 52,
-        "partiallyTranslatedFixtures": 9,
+        "translatedFixtures": 79,
+        "passingFixtures": 66,
+        "partiallyTranslatedFixtures": 13,
         "translationGaps": 465,
         "executionFailures": 0
     },
@@ -11092,6 +11110,901 @@
                 {
                     "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/prop-desc.php",
                     "identity": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/branding.js",
+            "sha256": "8a3af42b69b62a5cb6e891e3a97dab167a68aa3440fd83f0d68879ed2499aed4",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 10,
+            "executionCount": 10,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "e5910ee47be0522a28be24c716dc484c3a4188b17c8889c2369167cb10cea3fb",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript function branding is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L19:C1:assert.throws",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "f8f9e63e5dd5457018fdbd4806d459cd08f78266e7c16c0fa1df358fc16620e0",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L20:C1:assert.throws",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "3849f7b0226b57876362ede7dfba61ed598adcdd311b50b88e81f0283a9ea505",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L21:C1:assert.throws",
+                    "line": 21,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "b3d9f3cd066f164bdde74ff3e36e015e5dd25e41d68e86ece16f16d5e3a2eca8",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L22:C1:assert.throws",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "8677b02a65cf23318d0868783bec54e77b13bac833f42a7070b184e5f43f1ede",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L23:C1:assert.throws",
+                    "line": 23,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "20fd9c565567ac5f405f90ce0357d57555aac1e9aaaffbbcba3a0480694125bf",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L24:C1:assert.throws",
+                    "line": 24,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "65aa9923c5daf98fd9d10944a710464ce4c9bd7c90c90c9adf1b85dd999a907f",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L25:C1:assert.throws",
+                    "line": 25,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "60c5347675f25268e7450b3ccfe7e682f239aaa46fb703648278c303592463cf",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L26:C1:assert.throws",
+                    "line": 26,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "80d445253c67ecd7bf040b5450e6fee8b3c8daae917391422c0fdc60738d6dad",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/branding.js:L27:C1:assert.throws",
+                    "line": 27,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "3ed77bb1fa1a536ef7e6ee21f08d34725d639273f4b54ee1ee883477f7e1c0c4",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/branding.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/branding.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/likely-subtags-region.js",
+            "sha256": "2a1e27d4df1d5e26f71483130d14e818fe963b009c94719d3858c8233d0623e5",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/likely-subtags-region.js:L56:C3:assert",
+                    "line": 56,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/likely-subtags-region.js:L62:C1:assert.compareArray",
+                    "line": 62,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "c00720079542e8e5976cd2af8c9ff31fe80e2933a5c076ac80ef144dbb24ac8a",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/likely-subtags-region.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/likely-subtags-region.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/name.js",
+            "sha256": "c81f04344e5b4c2d8bb7512f3d96ff625152d0c77abe6a188f770c8ea94202f9",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/name.js:L15:C1:verifyProperty",
+                    "line": 15,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "d07957e55c20bd5c599e3ac73b4f35bfc21bbeed1c157b20d8d4eb80f23d4792",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript name value is represented by ReflectionMethod::getName(); descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/name.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/name.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/output-array.js",
+            "sha256": "cb00645af3bc647f136e4f45e9c5c66069c028d48eb18e0048b1347b431dde97",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/output-array.js:L15:C1:assert",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "4d734f36a2a59096e34906004a0df7711ba5becd7bcf7ebb8f6fcd55f41c84df",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/output-array.js:L16:C1:assert",
+                    "line": 16,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "4f9aadc1bf5cdb3a53e67c26c37435b0c35bbaa4bb7275a2885cc3d581bd59d0",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/output-array.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/output-array.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/prop-desc.js",
+            "sha256": "855e1c07c3d795c4220ddd2482bbf3aec6a21f5546586e6216ae62f3868c6186",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/prop-desc.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "1af1e5ed88ae4527f5854db952857dd7e9f3519cba875a295a8a08f770778555",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/prop-desc.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "3471786ea79689308b6b00fe12e5f11c94d3ccc94dfb4641ccaf26fca230920c",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "The public PHP method represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/prop-desc.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/prop-desc.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/region-override.js",
+            "sha256": "f8fb896aac15ccfaac09c66e224859d84d4a80f5ab8e7c00b9e86e8341784cb5",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/region-override.js:L58:C3:assert",
+                    "line": 58,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/region-override.js:L64:C1:assert.compareArray",
+                    "line": 64,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "48e589c1e99fa7caa0a7e97f8dac2954d58b1e6f7008882beff12ba85aacd41b",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/region-override.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/region-override.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/region-priority.js",
+            "sha256": "4c68c9a62d5ea22c829eaa76348e82a9fe5934edd1ff792797c8555ed1dcc832",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/region-priority.js:L73:C3:assert",
+                    "line": 73,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "beec8ce4cae69431e14aebd5197032792eeaa791db8bd923ef56f1bb023d6163",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/region-priority.js:L81:C3:assert.compareArray",
+                    "line": 81,
+                    "column": 3,
+                    "call": "assert.compareArray",
+                    "sha256": "53b4fb4b62888a2c98e090eca326e6b295d1d2ea00966156c535388989cd60b9",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/region-priority.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/region-priority.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getCalendars/subdivision-region.js",
+            "sha256": "2015c7ea6e1b1468a3d0897b1187a3da5ac7519ec79bb8a1618becfb9a88eb53",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/subdivision-region.js:L53:C3:assert",
+                    "line": 53,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getCalendars/subdivision-region.js:L59:C1:assert.compareArray",
+                    "line": 59,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "0663a1f959ea0a522ad729a8a834d08700de790eea9be151347868f75e5979f2",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCalendars/subdivision-region.php",
+                    "identity": "test/intl402/Locale/prototype/getCalendars/subdivision-region.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/branding.js",
+            "sha256": "4bf91687756566975243776d123bf6281cf193e2089ee58d97be3566b262429f",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 10,
+            "executionCount": 10,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "54a4915c649ce6f9ddc81a971c0719fe55f8af3f8825b3cecdb96999acc8a8e6",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript function branding is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L19:C1:assert.throws",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "7c5d16fd75eacba22665e8259848afc89b401d245119f060bff165a4be448109",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L20:C1:assert.throws",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "d8462d39205259f58431bff8d62430ad72a1743d59784f6022b15a7f2f1af45f",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L21:C1:assert.throws",
+                    "line": 21,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "cecb2df550ff5d50070056a28d07ca1518ba4d8d25b3712ccc30b3a963c01eb0",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L22:C1:assert.throws",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "5189c3dd19fc69ffab9143048baaef86c12d0dfb614c398b9d40be6519d764da",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L23:C1:assert.throws",
+                    "line": 23,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "0cefd99256b44f52108e80879b91b718b0e6b0e0db7df87ae5bdde43eae0eed2",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L24:C1:assert.throws",
+                    "line": 24,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "1084bb5d878b306d6cd75b992e57269bb5a93a2e881388e79df487970bd437f7",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L25:C1:assert.throws",
+                    "line": 25,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "f43c6b006bbd446ff7e430521fbedaf787afae619eaed5fbda6b644fec9f7880",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L26:C1:assert.throws",
+                    "line": 26,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "8566cfa5b76e75d009ad531f40de9cfda33e8c385ea22db57cc325ad2d0f491c",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/branding.js:L27:C1:assert.throws",
+                    "line": 27,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "b4961da2d2f03d5677e49bc371ce8a140a5070afe0ae41f1e7d465eb4dd9d06e",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/branding.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/branding.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/language-priority.js",
+            "sha256": "491ac894ab3dd2f442b63a4d36bc74906768f8fe0292a2b97fda10fa2a787bd8",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/language-priority.js:L68:C1:assert",
+                    "line": 68,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "a5194794dd9ae871dec58ed94a1a25c0d4a6dc020d074ec6c1db13e89df5387c",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/language-priority.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/language-priority.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.js",
+            "sha256": "4abad5f1e6a23c03b7687ca8fb6466be6514a6f9a03231da6fc6c6c068b71cb8",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.js:L65:C3:assert",
+                    "line": 65,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.js:L71:C1:assert.compareArray",
+                    "line": 71,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "d8bb649a3ebd84aed5b76c22b2ef416e6ed708aa95a9f79a668d1c2ba6ec840d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/likely-subtags-region.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/name.js",
+            "sha256": "e523247da516d1c315690f71657fa18f1690cde6b5453afc4c66a9b7b6dc6870",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/name.js:L15:C1:verifyProperty",
+                    "line": 15,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "bee1c4c80aa9923b774d7f93c9f8c8a3352eec14fd98d5cac3f882616721a612",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript name value is represented by ReflectionMethod::getName(); descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/name.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/name.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/output-array-values.js",
+            "sha256": "74eafc3bce26dbd6681cf8d4aa7e39efaccb4ca2c59d9f94cd864cca0feced29",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/output-array-values.js:L20:C1:assert",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "2b572a66b29bd4eb147086ea451314b01839160fcffad968f3a252443eacfafc",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/output-array-values.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/output-array-values.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/output-array.js",
+            "sha256": "af4ab21cfd891ddcd902818750f0a9505d18261b9758dd0b527b4973c3fefaba",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/output-array.js:L15:C1:assert",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "98b3da55ea43ef0f77be929f748f184b1c79a790698b3504a509ce5d5ec0c773",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/output-array.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/output-array.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/prop-desc.js",
+            "sha256": "9ecb4f92b687569b2477839976a75841f4e89682d71a3461228eae4bdf2b0699",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/prop-desc.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "479c5515c5ab1af48ea956878330fc2019def9f6580ecc3c9bc8175dfb216147",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/prop-desc.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "de69c4547045f5130608feb68e4b7cf122e62480c7132b36359fe3dc02ae4ceb",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "The public PHP method represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/prop-desc.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/prop-desc.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/region-override.js",
+            "sha256": "f8ba94a5472a3ed134915be3893c2cf4538cde813795f6750c78da029368bb1f",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/region-override.js:L57:C3:assert",
+                    "line": 57,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/region-override.js:L63:C1:assert.compareArray",
+                    "line": 63,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "aff0420a35ad6e058036b70fee3aa44bac1202cb1e7f5a322dc9722ec7bdfb54",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/region-override.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/region-override.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/region-priority.js",
+            "sha256": "9d49da1acfee4a7fc86ad72a562e583ac9f9bf089bec7ae3e593d73e10afdb45",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/region-priority.js:L73:C3:assert",
+                    "line": 73,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "18a84b718b18cb7e1e7dcad86b49a021bab84a93587249560ea471e6abe870f0",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/region-priority.js:L81:C3:assert.compareArray",
+                    "line": 81,
+                    "column": 3,
+                    "call": "assert.compareArray",
+                    "sha256": "45c346a2c12786b4e351172b91cec70fa2c4d0457c26558ae3706333f6b26fed",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/region-priority.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/region-priority.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getHourCycles/subdivision-region.js",
+            "sha256": "97664a5ba052bc6d39e1fa1a6189c06447e34c5235710ff91d01ba156e20112d",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/subdivision-region.js:L52:C3:assert",
+                    "line": 52,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getHourCycles/subdivision-region.js:L58:C1:assert.compareArray",
+                    "line": 58,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "d60a399f9bb03c27cea8d678d2fdb184dd38f2953e3650c1f7ab97573605fb32",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array and the upstream data search is preserved."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getHourCycles/subdivision-region.php",
+                    "identity": "test/intl402/Locale/prototype/getHourCycles/subdivision-region.js",
                     "variant": null
                 }
             ]

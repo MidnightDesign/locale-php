@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests\Tooling;
 
+use Midnight\Intl\HourCycle;
 use Midnight\Intl\Locale;
 use Midnight\Intl\Spec\Locale as SpecLocale;
 use Midnight\Intl\TextDirection;
@@ -39,6 +40,8 @@ final class AmbientStateTest extends TestCase
             self::assertSame('zh-Hant-TW', (new Locale('zh-Hant'))->maximize()->toString());
             self::assertSame('zh-TW', (new SpecLocale('zh-Hant'))->minimize()->toString());
             self::assertSame(TextDirection::RightToLeft, (new Locale('ar'))->getTextInfo()->direction);
+            self::assertSame(['buddhist', 'gregory'], (new Locale('th'))->getCalendars());
+            self::assertSame([HourCycle::H23, HourCycle::H12], (new Locale('fr-CA'))->getHourCycles());
         } finally {
             date_default_timezone_set($timezone);
             if ($processLocale !== false) {

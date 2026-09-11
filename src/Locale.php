@@ -111,6 +111,20 @@ final class Locale implements \Stringable, \JsonSerializable
         return $this->toSpec()->getTimeZones();
     }
 
+    /** @return non-empty-list<string> */
+    public function getCalendars(): array
+    {
+        return $this->toSpec()->getCalendars();
+    }
+
+    /** @return non-empty-list<HourCycle> */
+    public function getHourCycles(): array
+    {
+        return array_map(static fn(string $hourCycle): HourCycle => HourCycle::from(
+            $hourCycle,
+        ), $this->toSpec()->getHourCycles());
+    }
+
     public function maximize(): self
     {
         return self::fromSpec($this->toSpec()->maximize());

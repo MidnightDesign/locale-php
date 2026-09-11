@@ -8,6 +8,7 @@ use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\Data\PrimaryTimeZones;
 use Midnight\Intl\Internal\LocaleIdentifier;
+use Midnight\Intl\Internal\LocalePreferences;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
 use Midnight\Intl\Internal\UndefinedValue;
@@ -358,5 +359,25 @@ class Locale
         }
 
         return true;
+    }
+
+    /** @return non-empty-list<string> */
+    public function getCalendars(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return LocalePreferences::calendars($this->identifier);
+    }
+
+    /** @return non-empty-list<string> */
+    public function getHourCycles(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return LocalePreferences::hourCycles($this->identifier);
     }
 }
