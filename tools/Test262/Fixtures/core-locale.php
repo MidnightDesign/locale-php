@@ -131,6 +131,11 @@ return static function (FixtureCatalog $catalog): array {
         'test/intl402/Locale/prototype/minimize/length.js' => $catalog->localeMethod('minimize', 'length'),
         'test/intl402/Locale/prototype/minimize/name.js' => $catalog->localeMethod('minimize', 'name'),
         'test/intl402/Locale/prototype/minimize/prop-desc.js' => $catalog->localeMethod('minimize', 'property'),
+        'test/intl402/Locale/prototype/getTextInfo/branding.js' => $catalog->localeMethod('getTextInfo', 'branding'),
+        'test/intl402/Locale/prototype/getTextInfo/name.js' => $catalog->localeMethod('getTextInfo', 'name'),
+        'test/intl402/Locale/prototype/getTextInfo/output-object-keys.js' => $catalog->textInfo('keys'),
+        'test/intl402/Locale/prototype/getTextInfo/output-object.js' => $catalog->textInfo('record'),
+        'test/intl402/Locale/prototype/getTextInfo/prop-desc.js' => $catalog->localeMethod('getTextInfo', 'property'),
         'test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js' =>
             $catalog->removeLikelySubtags(),
         'test/intl402/Locale/constructor-options-script-valid-undefined.js' => $catalog->undefinedConstructorOption(

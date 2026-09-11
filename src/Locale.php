@@ -121,6 +121,13 @@ final class Locale implements \Stringable, \JsonSerializable
         return self::fromSpec($this->toSpec()->minimize());
     }
 
+    public function getTextInfo(): TextInfo
+    {
+        $direction = $this->toSpec()->getTextInfo()['direction'];
+
+        return new TextInfo($direction === null ? null : TextDirection::from($direction));
+    }
+
     #[\Override]
     public function __toString(): string
     {

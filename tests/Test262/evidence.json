@@ -107,6 +107,11 @@
                 "test/intl402/Locale/reject-duplicate-variants-in-tlang.js": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
                 "test/intl402/Locale/reject-duplicate-variants.js": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
                 "test/intl402/Locale/constructor-options-script-valid.js": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
+                "test/intl402/Locale/prototype/getTextInfo/branding.js": "5b76fa0e574ab358d146c89a0c0231612b656f42a01aaf9bbcb8a8f9c91bf844",
+                "test/intl402/Locale/prototype/getTextInfo/name.js": "1da7a4034aeb695e8c6f636614b55abec2e58043e0443b1e4a7871517ff4798b",
+                "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js": "fee905ebab041ad9d97184b44011515c65debe9675255a74969658060572a916",
+                "test/intl402/Locale/prototype/getTextInfo/output-object.js": "22a7d5fdccb3fa065ae0fb35fe49bb17cd51579ceea20a8ceee43c976aaadc1c",
+                "test/intl402/Locale/prototype/getTextInfo/prop-desc.js": "8676b32273790c8a6ad908c2ad651f6fa5bacebb64cf047b83d6a2a625b54842",
                 "test/intl402/Locale/prototype/maximize/branding.js": "e9516a0e068476037eab9c56807559605b3d7a675f942f427c403fa604190fdf",
                 "test/intl402/Locale/prototype/maximize/length.js": "18c22292ecbc328f7e8b2d551188a09a7e7e4a51f2c33c1214987b3fafa8e00e",
                 "test/intl402/Locale/prototype/maximize/name.js": "5792cfffcf984da09bca8eeeea0965204c4ada86c5a0334e19b59420f1e47079",
@@ -160,9 +165,9 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 79,
-        "passingFixtures": 72,
-        "partiallyTranslatedFixtures": 7,
+        "translatedFixtures": 84,
+        "passingFixtures": 74,
+        "partiallyTranslatedFixtures": 10,
         "translationGaps": 465,
         "executionFailures": 0
     },
@@ -9690,6 +9695,750 @@
                 {
                     "path": "tests/Test262/Generated/test/intl402/Locale/prototype/minimize/prop-desc.php",
                     "identity": "test/intl402/Locale/prototype/minimize/prop-desc.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/branding.js",
+            "sha256": "5b76fa0e574ab358d146c89a0c0231612b656f42a01aaf9bbcb8a8f9c91bf844",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 10,
+            "executionCount": 9,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection",
+                "native_receiver_binding",
+                "uninitialized_locale"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "bcddcc39ff45f9a0de4fd595ede28cf18504ce51fae97da824df4518177891e3",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "bedf05f14b9ac4ec93393a8eea1ba064f518b12c296be23096526465391c3054",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "f3b203a602171158fc9ac0dbc65c9a41fe5cdbe5ae6319f1b45c0a438ee5f3bd",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                    "line": 21,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "e880d5418b929d71a7ae677836c2272e6eff7755566aeef3c255fc3b541c3bc2",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "bf31ad2825b57b2b6c8cd830eddf94dac5ded26d25d5e7cbdfd099b818d6b018",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                    "line": 23,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "04feb98caad79a13ecdc9c0a8676be21914dd08cde25c62d59dccbe1541645fc",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                    "line": 24,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "7195803f679969f4e09b2613463ab24b0e41a1506ab7b5fcc88d88a46d9f36b9",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                    "line": 25,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "425495fb6bce642f4a19794a02273b4d41f30217353f36087c95ccbf67c293c6",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                    "line": 26,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "2f9d3fe8a1b296ae9497b8b48a1ca1558e68bab14fda599f33c1d53daee8adda",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                    "line": 27,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "42f80707e81a866642f8984dae885832401a1cc8cf55d1818a2827c697e46385",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "invalid-receiver-1",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-2",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-3",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-4",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-5",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-6",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-7",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        },
+                        {
+                            "id": "invalid-receiver-8",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTextInfo/branding.php",
+                    "identity": "test/intl402/Locale/prototype/getTextInfo/branding.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/name.js",
+            "sha256": "1da7a4034aeb695e8c6f636614b55abec2e58043e0443b1e4a7871517ff4798b",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/name.js:L15:C1:verifyProperty",
+                    "line": 15,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "1c7af2b9b6b14b221fd69d4397af177f21dda9b9d13a5c6a61d4db3609f550c4",
+                    "status": "partially_translated",
+                    "adaptations": [
+                        "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTextInfo/name.php",
+                    "identity": "test/intl402/Locale/prototype/getTextInfo/name.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js",
+            "sha256": "fee905ebab041ad9d97184b44011515c65debe9675255a74969658060572a916",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the exact key and direction assertions run.",
+            "sourceAssertionCount": 3,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "associative_array"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js:L19:C1:assert.compareArray",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "90c649543b7eaf787ca008c49d237e2dcdf794ef5dc3f08ab8172cac57097b1f",
+                    "status": "passing",
+                    "adaptations": [
+                        "The PHP associative record preserves the exact direction key and closed string result."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "d605cfa99701a4a4b69ce0470d9ba59406a553d3158aa24f22c141e89129d17a",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "JavaScript property descriptor flags have no faithful ordinary PHP equivalent and are inapplicable."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js:L28:C1:assert",
+                    "line": 28,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "0af62e7ccc7550364ae5022ed8e389588f960862a5214d238c25c159acc1d0c4",
+                    "status": "passing",
+                    "adaptations": [
+                        "The PHP associative record preserves the exact direction key and closed string result."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTextInfo/output-object-keys.php",
+                    "identity": "test/intl402/Locale/prototype/getTextInfo/output-object-keys.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/output-object.js",
+            "sha256": "22a7d5fdccb3fa065ae0fb35fe49bb17cd51579ceea20a8ceee43c976aaadc1c",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "associative_array"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/output-object.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "d15e2f14ca08e2f096b35b57e03ac64dc7d7b6a07bff027554f52e769c9ab7d2",
+                    "status": "passing",
+                    "adaptations": [
+                        "A PHP associative array represents the ordinary ECMAScript result record."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTextInfo/output-object.php",
+                    "identity": "test/intl402/Locale/prototype/getTextInfo/output-object.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTextInfo/prop-desc.js",
+            "sha256": "8676b32273790c8a6ad908c2ad651f6fa5bacebb64cf047b83d6a2a625b54842",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/prop-desc.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "99b7f4944f75518d9afec1aacb41117ac3eec8225d03e7231c8a4c240000d721",
+                    "status": "passing",
+                    "adaptations": [
+                        "Public PHP method visibility represents the applicable method-availability assertion."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTextInfo/prop-desc.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "de893fd7d2b25090d9932af53c371b9ec87e59bb6b41ca2ba434f4749a805d7d",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTextInfo/prop-desc.php",
+                    "identity": "test/intl402/Locale/prototype/getTextInfo/prop-desc.js",
                     "variant": null
                 }
             ]

@@ -275,4 +275,35 @@ final class Test262EvidenceTest extends TestCase
             array_column($constructor['assertions'], 'status'),
         );
     }
+
+    public function testTextInformationFixturesRetainCompleteSourceEvidence(): void
+    {
+        $evidence = self::evidence();
+        $fixtures = [];
+        foreach ($evidence['fixtures'] as $fixture) {
+            $fixtures[$fixture['path']] = $fixture;
+        }
+
+        foreach ([
+            'test/intl402/Locale/prototype/getTextInfo/branding.js',
+            'test/intl402/Locale/prototype/getTextInfo/name.js',
+            'test/intl402/Locale/prototype/getTextInfo/output-object-keys.js',
+            'test/intl402/Locale/prototype/getTextInfo/output-object.js',
+            'test/intl402/Locale/prototype/getTextInfo/prop-desc.js',
+        ] as $path) {
+            self::assertArrayHasKey($path, $fixtures);
+            self::assertNotSame('translation_gap', $fixtures[$path]['status']);
+            self::assertGreaterThan(0, $fixtures[$path]['sourceAssertionCount']);
+            self::assertGreaterThan(0, $fixtures[$path]['executionCount']);
+            self::assertSame(0, $fixtures[$path]['executionFailures']);
+        }
+
+        self::assertSame(
+            ['passing', 'inapplicable', 'passing'],
+            array_column(
+                $fixtures['test/intl402/Locale/prototype/getTextInfo/output-object-keys.js']['assertions'],
+                'status',
+            ),
+        );
+    }
 }

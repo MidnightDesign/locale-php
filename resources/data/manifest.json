@@ -1,7 +1,7 @@
 {
     "format": 4,
-    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-and-primary-time-zones",
-    "releaseDataFingerprint": "24664330529249c36491b1855fb3515e3c8c74a54018c3566dc23bc400485009",
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-and-primary-time-zones",
+    "releaseDataFingerprint": "8ac1dead95a58b23982e3a7509762ed66e2b385cc2ab751aebb8a74fdd10c0ee",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -42,6 +42,12 @@
             "generated": "src/Internal/Data/LikelySubtags.php",
             "generatedSha256": "d81b7276de01c64b033ab24f83c9e6c87b6b3c8e19b3e10c180482ff2d383c02"
         },
+        "scriptDirections": {
+            "source": "resources/data/script-directions.json",
+            "sourceSha256": "e71dc41671b2a3d15807e4dcda0bd38735000bc947fcf8bfbe6f7754d1e27215",
+            "generated": "src/Internal/Data/ScriptDirections.php",
+            "generatedSha256": "714daa2337ae2d4dc68d2d831d11973e5d773cff7f90fea8df40c0004bac037e"
+        },
         "primaryTimeZones": {
             "source": "resources/data/primary-time-zones.json",
             "sourceSha256": "282aba05517c6a88023f18ff16770757a336b2697c1c5c9ce79756c70104b08e",
@@ -50,8 +56,8 @@
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "6aca694b92cdae1615545b9a8c51c6c48988da5cf179c98e92d0702ef1474484",
-        "tools/generate-data.php": "d6e032f8ff933e1399a6523d8ecc51d20ab91b657729bbfbaffcfe8aa7d4aeee",
+        "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
+        "tools/generate-data.php": "b7b3c6236782a61ab62aad57c680ee70a6b9464336abf465c1c9933b1fd8710b",
         "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",
         "tools/TimeZoneDataImporter.php": "e8a38fd4ba20461edb794a3a5976aac6864938a1822f9bd1e308a4de086fc26b",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",

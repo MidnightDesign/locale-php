@@ -25,6 +25,7 @@ use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
 use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
 use Midnight\Intl\Tools\Test262\TagStringConversionPipeline;
+use Midnight\Intl\Tools\Test262\TextInfoFixturePipeline;
 use Midnight\Intl\Tools\Test262\TimeZonesFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
 
@@ -250,6 +251,17 @@ final readonly class FixtureCatalog
             new TimeZonesFixturePipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
             ['direct'],
             $sourceSha256,
+        );
+    }
+
+    /** @param 'keys'|'record' $kind */
+    public function textInfo(string $kind): FixturePipeline
+    {
+        return new TextInfoFixturePipeline(
+            $this->assertionIdentities,
+            $kind,
+            $this->test262Revision,
+            $this->ecma402Revision,
         );
     }
 
