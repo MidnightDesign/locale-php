@@ -337,7 +337,15 @@ class Locale
             return '0';
         }
 
-        $encoded = json_encode($number, JSON_THROW_ON_ERROR);
+        $previousPrecision = ini_set('serialize_precision', '-1');
+        if ($previousPrecision === false) {
+            throw new \RuntimeException('Unable to select deterministic number serialization.');
+        }
+        try {
+            $encoded = json_encode($number, JSON_THROW_ON_ERROR);
+        } finally {
+            ini_set('serialize_precision', $previousPrecision);
+        }
         $negative = str_starts_with($encoded, '-');
         $unsigned = $negative ? substr($encoded, 1) : $encoded;
         [$significand, $exponent] = array_pad(explode('e', strtolower($unsigned), 2), 2, '0');
