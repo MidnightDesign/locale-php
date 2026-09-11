@@ -33,29 +33,45 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
             || $reflection->getName() !== $this->method
             || $reflection->getNumberOfRequiredParameters() !== 0;
         $brandingChecks = [];
+        $brandingConfiguration = $this->brandingConfiguration();
         if ($this->kind === 'branding') {
-            $brandingChecks = ReceiverBranding::method($this->method);
+            $brandingChecks = $brandingConfiguration['includeConstructor']
+                ? ReceiverBranding::methodIncludingConstructor($this->method)
+                : ReceiverBranding::method($this->method);
             $failure = $failure || in_array(false, $brandingChecks, true);
         }
 
         $partiallyTranslated = in_array($this->kind, ['length', 'name', 'property'], true);
         $status = $failure ? 'failing' : ($partiallyTranslated ? 'partially_translated' : 'passing');
-        $assertions = array_map(function (array $identity) use ($failure, $brandingChecks): array {
+        $brandingAssertionIndex = 0;
+        $assertions = array_map(function (array $identity) use (
+            $failure,
+            $brandingChecks,
+            $brandingConfiguration,
+            &$brandingAssertionIndex,
+        ): array {
             $evidence = [
                 ...$identity,
                 'status' => $this->assertionStatus($identity, $failure),
                 'adaptations' => [$this->adaptation($identity)],
             ];
             if ($this->kind === 'branding' && $identity['call'] === 'assert.throws') {
+                $executionOffset = $brandingConfiguration['individualAssertions'] ? $brandingAssertionIndex++ : 0;
+                $checks = $brandingConfiguration['individualAssertions']
+                    ? [$brandingChecks[$executionOffset]]
+                    : $brandingChecks;
                 $evidence['executions'] = array_map(
                     static fn(bool $passing, int $index): array => [
-                        'id' => 'invalid-receiver-' . ($index + 1),
+                        'id' => 'invalid-receiver-' . ($executionOffset + $index + 1),
                         'assertionId' => $identity['id'],
-                        'representation' => $index === 7 ? 'uninitialized_locale' : 'native_receiver_binding',
+                        'representation' =>
+                            ($executionOffset + $index) === (count($brandingChecks) - 1)
+                                ? 'uninitialized_locale'
+                                : 'native_receiver_binding',
                         'status' => $passing ? 'passing' : 'failing',
                     ],
-                    $brandingChecks,
-                    array_keys($brandingChecks),
+                    $checks,
+                    array_keys($checks),
                 );
             }
 
@@ -116,11 +132,15 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
     private function render(string $fixturePath): string
     {
         $method = $this->method;
+        $brandingConfiguration = $this->brandingConfiguration();
         $branding = $this->kind === 'branding' ? <<<'PHP'
 
-                    Assert::assertNotContains(false, ReceiverBranding::method('METHOD'));
+                    Assert::assertNotContains(false, BRANDING_CALL);
                 PHP : '';
-        $branding = str_replace('METHOD', $method, $branding);
+        $brandingCall = $brandingConfiguration['includeConstructor']
+            ? "ReceiverBranding::methodIncludingConstructor('{$method}')"
+            : "ReceiverBranding::method('{$method}')";
+        $branding = str_replace('BRANDING_CALL', $brandingCall, $branding);
         $fixtureImport = $this->kind === 'branding'
             ? 'use Midnight\Intl\Tests\Test262\Harness\ReceiverBranding;'
             : 'use Midnight\Intl\Exception\TypeError;';
@@ -145,5 +165,15 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
             Assert::assertSame(0, \$method->getNumberOfRequiredParameters());
             {$branding}
             PHP . "\n";
+    }
+
+    /** @return array{includeConstructor: bool, individualAssertions: bool} */
+    private function brandingConfiguration(): array
+    {
+        return (
+            $this->method === 'getTextInfo'
+                ? ['includeConstructor' => true, 'individualAssertions' => true]
+                : ['includeConstructor' => false, 'individualAssertions' => false]
+        );
     }
 }

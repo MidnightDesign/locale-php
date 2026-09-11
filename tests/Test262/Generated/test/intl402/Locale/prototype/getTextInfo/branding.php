@@ -16,4 +16,4 @@ Assert::assertTrue($method->isPublic());
 Assert::assertSame('getTextInfo', $method->getName());
 Assert::assertSame(0, $method->getNumberOfRequiredParameters());
 
-Assert::assertNotContains(false, ReceiverBranding::method('getTextInfo'));
+Assert::assertNotContains(false, ReceiverBranding::methodIncludingConstructor('getTextInfo'));

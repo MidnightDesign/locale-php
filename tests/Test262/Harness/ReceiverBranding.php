@@ -23,10 +23,16 @@ final class ReceiverBranding
         return self::evaluate($method, []);
     }
 
+    /** @return list<bool> */
+    public static function methodIncludingConstructor(string $method): array
+    {
+        return self::evaluate($method, [], true);
+    }
+
     /** @param list<mixed> $arguments
      * @return list<bool>
      */
-    private static function evaluate(string $method, array $arguments): array
+    private static function evaluate(string $method, array $arguments, bool $includeConstructor = false): array
     {
         $reflection = new \ReflectionMethod(Locale::class, $method);
         $uninitialized = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
@@ -38,8 +44,11 @@ final class ReceiverBranding
             new SymbolValue(),
             1,
             new \stdClass(),
-            $uninitialized,
         ];
+        if ($includeConstructor) {
+            $receivers[] = Locale::class;
+        }
+        $receivers[] = $uninitialized;
 
         return array_map(static function (mixed $receiver) use ($reflection, $arguments, $uninitialized): bool {
             try {

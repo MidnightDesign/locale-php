@@ -9705,7 +9705,7 @@
             "status": "passing",
             "reason": null,
             "sourceAssertionCount": 10,
-            "executionCount": 9,
+            "executionCount": 10,
             "executionFailures": 0,
             "phpRepresentations": [
                 "php_reflection",
@@ -9740,48 +9740,6 @@
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
-                            "representation": "uninitialized_locale",
-                            "status": "passing"
                         }
                     ]
                 },
@@ -9797,51 +9755,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-2",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
                             "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
-                            "representation": "uninitialized_locale",
                             "status": "passing"
                         }
                     ]
@@ -9858,51 +9774,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-3",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
                             "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
-                            "representation": "uninitialized_locale",
                             "status": "passing"
                         }
                     ]
@@ -9919,51 +9793,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-4",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
                             "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
-                            "representation": "uninitialized_locale",
                             "status": "passing"
                         }
                     ]
@@ -9980,51 +9812,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-5",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
                             "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
-                            "representation": "uninitialized_locale",
                             "status": "passing"
                         }
                     ]
@@ -10041,51 +9831,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-6",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
                             "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
-                            "representation": "uninitialized_locale",
                             "status": "passing"
                         }
                     ]
@@ -10102,51 +9850,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-7",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
                             "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
-                            "representation": "uninitialized_locale",
                             "status": "passing"
                         }
                     ]
@@ -10163,51 +9869,9 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
                             "id": "invalid-receiver-8",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
-                            "representation": "uninitialized_locale",
+                            "representation": "native_receiver_binding",
                             "status": "passing"
                         }
                     ]
@@ -10224,49 +9888,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-2",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-3",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-4",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-5",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-6",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-7",
-                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
-                            "representation": "native_receiver_binding",
-                            "status": "passing"
-                        },
-                        {
-                            "id": "invalid-receiver-8",
+                            "id": "invalid-receiver-9",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
