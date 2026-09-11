@@ -165,7 +165,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         }
         $className = $this->className;
 
-        return <<<PHP
+        return ltrim(<<<PHP
             <?php
 
             declare(strict_types=1);
@@ -204,6 +204,6 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
                     self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
                 }
             }
-            PHP . "\n";
+            PHP . "\n");
     }
 }

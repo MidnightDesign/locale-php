@@ -19,94 +19,89 @@ final class ConstructorOptionsNumericUndefinedTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L38:C1:assert.sameValue',
-    1 => 'en',
-    2 => 'numeric',
-    3 =>
-    array(
-      'type' => 'undefined',
-    ),
-    4 => 'associative_array',
-    5 => 'en',
-    6 => null,
-  ),
-  'case-1-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L38:C1:assert.sameValue',
-    1 => 'en',
-    2 => 'numeric',
-    3 =>
-    array(
-      'type' => 'undefined',
-    ),
-    4 => 'plain_object',
-    5 => 'en',
-    6 => null,
-  ),
-  'case-2-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L44:C1:assert.sameValue',
-    1 => 'en-u-kn-true',
-    2 => 'numeric',
-    3 =>
-    array(
-      'type' => 'undefined',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-kn',
-    6 => null,
-  ),
-  'case-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L44:C1:assert.sameValue',
-    1 => 'en-u-kn-true',
-    2 => 'numeric',
-    3 =>
-    array(
-      'type' => 'undefined',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-kn',
-    6 => null,
-  ),
-  'case-3-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L50:C1:assert.sameValue',
-    1 => 'en-u-kf-lower',
-    2 => 'numeric',
-    3 =>
-    array(
-      'type' => 'undefined',
-    ),
-    4 => 'associative_array',
-    5 => false,
-    6 => 'numeric',
-  ),
-  'case-3-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L50:C1:assert.sameValue',
-    1 => 'en-u-kf-lower',
-    2 => 'numeric',
-    3 =>
-    array(
-      'type' => 'undefined',
-    ),
-    4 => 'plain_object',
-    5 => false,
-    6 => 'numeric',
-  ),
-);
+            'case-1-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L38:C1:assert.sameValue',
+                1 => 'en',
+                2 => 'numeric',
+                3 => array(
+                    'type' => 'undefined',
+                ),
+                4 => 'associative_array',
+                5 => 'en',
+                6 => null,
+            ),
+            'case-1-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L38:C1:assert.sameValue',
+                1 => 'en',
+                2 => 'numeric',
+                3 => array(
+                    'type' => 'undefined',
+                ),
+                4 => 'plain_object',
+                5 => 'en',
+                6 => null,
+            ),
+            'case-2-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L44:C1:assert.sameValue',
+                1 => 'en-u-kn-true',
+                2 => 'numeric',
+                3 => array(
+                    'type' => 'undefined',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-kn',
+                6 => null,
+            ),
+            'case-2-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L44:C1:assert.sameValue',
+                1 => 'en-u-kn-true',
+                2 => 'numeric',
+                3 => array(
+                    'type' => 'undefined',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-kn',
+                6 => null,
+            ),
+            'case-3-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L50:C1:assert.sameValue',
+                1 => 'en-u-kf-lower',
+                2 => 'numeric',
+                3 => array(
+                    'type' => 'undefined',
+                ),
+                4 => 'associative_array',
+                5 => false,
+                6 => 'numeric',
+            ),
+            'case-3-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numeric-undefined.js:L50:C1:assert.sameValue',
+                1 => 'en-u-kf-lower',
+                2 => 'numeric',
+                3 => array(
+                    'type' => 'undefined',
+                ),
+                4 => 'plain_object',
+                5 => false,
+                6 => 'numeric',
+            ),
+        );
     }
 
     /** @param array<string, mixed> $value */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string|bool $expected, ?string $property): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        string $optionName,
+        array $value,
+        string $representation,
+        string|bool $expected,
+        ?string $property,
+    ): void {
         $result = $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
             : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
-        self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
+        self::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
     }
 }

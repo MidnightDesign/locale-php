@@ -143,7 +143,7 @@ final class CiWorkflowContractTest extends TestCase
             $config = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
             $config['source']['excludes'] = array_values(array_filter(
                 $config['source']['excludes'],
-                static fn (string $exclude): bool => $exclude !== '/^CaseFirst\\.php$/',
+                static fn(string $exclude): bool => $exclude !== '/^CaseFirst\\.php$/',
             ));
             file_put_contents($path, json_encode($config, JSON_THROW_ON_ERROR));
 

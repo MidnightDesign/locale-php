@@ -47,7 +47,11 @@ final class ConstructorOptionAssertion
             return [
                 'status' => 'failing',
                 'actual' => $actual,
-                'failure' => sprintf('Expected %s but received %s.', var_export($expected, true), var_export($actual, true)),
+                'failure' => sprintf(
+                    'Expected %s but received %s.',
+                    var_export($expected, true),
+                    var_export($actual, true),
+                ),
             ];
         }
 
@@ -89,10 +93,10 @@ final class ConstructorOptionAssertion
             'string' => $optionValue['value'],
             'object' => new \stdClass(),
             'primitive' => new PrimitiveValue(self::primitivePayload($optionValue)),
-            'stringable' => new class (self::stringPayload($optionValue)) implements \Stringable {
-                public function __construct(private readonly string $value)
-                {
-                }
+            'stringable' => new class(self::stringPayload($optionValue)) implements \Stringable {
+                public function __construct(
+                    private readonly string $value,
+                ) {}
 
                 public function __toString(): string
                 {

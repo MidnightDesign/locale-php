@@ -18,61 +18,59 @@ final class CalendarCanonicalizeTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue',
-    1 => 'en',
-    2 =>
-    array(
-      'calendar' => 'islamicc',
-    ),
-    3 => 'associative_array',
-    4 => 'toString',
-    5 => 'en-u-ca-islamic-civil',
-  ),
-  'case-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue',
-    1 => 'en',
-    2 =>
-    array(
-      'calendar' => 'islamicc',
-    ),
-    3 => 'plain_object',
-    4 => 'toString',
-    5 => 'en-u-ca-islamic-civil',
-  ),
-  'case-3-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue',
-    1 => 'en',
-    2 =>
-    array(
-      'calendar' => 'islamicc',
-    ),
-    3 => 'associative_array',
-    4 => 'calendar',
-    5 => 'islamic-civil',
-  ),
-  'case-4-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue',
-    1 => 'en',
-    2 =>
-    array(
-      'calendar' => 'islamicc',
-    ),
-    3 => 'plain_object',
-    4 => 'calendar',
-    5 => 'islamic-civil',
-  ),
-);
+            'case-1-associative_array' => array(
+                0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'calendar' => 'islamicc',
+                ),
+                3 => 'associative_array',
+                4 => 'toString',
+                5 => 'en-u-ca-islamic-civil',
+            ),
+            'case-2-plain_object' => array(
+                0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'calendar' => 'islamicc',
+                ),
+                3 => 'plain_object',
+                4 => 'toString',
+                5 => 'en-u-ca-islamic-civil',
+            ),
+            'case-3-associative_array' => array(
+                0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'calendar' => 'islamicc',
+                ),
+                3 => 'associative_array',
+                4 => 'calendar',
+                5 => 'islamic-civil',
+            ),
+            'case-4-plain_object' => array(
+                0 => 'test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'calendar' => 'islamicc',
+                ),
+                3 => 'plain_object',
+                4 => 'calendar',
+                5 => 'islamic-civil',
+            ),
+        );
     }
 
     /** @param array<string, mixed>|null $options */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, ?array $options, string $representation, string $property, string|bool|null $expected): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        ?array $options,
+        string $representation,
+        string $property,
+        string|bool|null $expected,
+    ): void {
         $locale = match ($representation) {
             'direct' => new Locale($tag),
             'associative_array' => new Locale($tag, $options),

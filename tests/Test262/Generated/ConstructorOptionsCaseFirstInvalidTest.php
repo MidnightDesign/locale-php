@@ -19,212 +19,191 @@ final class ConstructorOptionsCaseFirstInvalidTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-1-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-2-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'u',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'u',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-3-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'Upper',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-3-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'Upper',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-4-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'upper' . "\0" . '',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-4-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'upper' . "\0" . '',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-5-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'uppercase',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-5-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'uppercase',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-6-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'true',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-6-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'true',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-7-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'primitive',
-      'value' => '[object Object]',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-7-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
-    1 => 'en',
-    2 => 'caseFirst',
-    3 =>
-    array(
-      'type' => 'primitive',
-      'value' => '[object Object]',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-);
+            'case-1-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-1-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-2-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'u',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-2-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'u',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-3-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'Upper',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-3-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'Upper',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-4-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'upper' . "\0" . '',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-4-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'upper' . "\0" . '',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-5-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'uppercase',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-5-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'uppercase',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-6-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'true',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-6-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'true',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-7-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'primitive',
+                    'value' => '[object Object]',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-7-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws',
+                1 => 'en',
+                2 => 'caseFirst',
+                3 => array(
+                    'type' => 'primitive',
+                    'value' => '[object Object]',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+        );
     }
 
     /** @param array<string, mixed> $value */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string|bool $expected, ?string $property): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        string $optionName,
+        array $value,
+        string $representation,
+        string|bool $expected,
+        ?string $property,
+    ): void {
         $result = $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
             : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
-        self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
+        self::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
     }
 }

@@ -19,352 +19,311 @@ final class ConstructorOptionsNumberingSystemInvalidTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-1-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-2-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'a',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'a',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-3-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'ab',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-3-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'ab',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-4-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefghi',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-4-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefghi',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-5-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abc-abcdefghi',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-5-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abc-abcdefghi',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-6-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '!invalid!',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-6-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '!invalid!',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-7-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '-latn-',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-7-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '-latn-',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-8-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-8-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-9-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn--',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-9-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn--',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-10-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-ca',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-10-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-ca',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-11-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-ca-',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-11-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-ca-',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-12-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-ca-gregory',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-  'case-12-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'latn-ca-gregory',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-    6 => null,
-  ),
-);
+            'case-1-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-1-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-2-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'a',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-2-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'a',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-3-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'ab',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-3-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'ab',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-4-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefghi',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-4-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefghi',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-5-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abc-abcdefghi',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-5-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abc-abcdefghi',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-6-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '!invalid!',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-6-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '!invalid!',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-7-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '-latn-',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-7-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '-latn-',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-8-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-8-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-9-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn--',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-9-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn--',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-10-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-ca',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-10-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-ca',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-11-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-ca-',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-11-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-ca-',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-12-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-ca-gregory',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+            'case-12-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'latn-ca-gregory',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+                6 => null,
+            ),
+        );
     }
 
     /** @param array<string, mixed> $value */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string|bool $expected, ?string $property): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        string $optionName,
+        array $value,
+        string $representation,
+        string|bool $expected,
+        ?string $property,
+    ): void {
         $result = $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
             : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
-        self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
+        self::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
     }
 }

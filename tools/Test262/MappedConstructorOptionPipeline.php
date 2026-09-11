@@ -61,8 +61,28 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
                 $assertionId = $assertions[$case['assertion']]['id'];
                 $executionId = sprintf('case-%d-%s', $caseIndex + 1, $representation);
                 $property = $case['property'] ?? null;
-                $generated[$executionId] = [$assertionId, $case['tag'], $this->optionName, $case['value'], $representation, $case['expected'], $property];
-                $executions[] = ['id' => $executionId, 'assertionId' => $assertionId, 'representation' => $representation, ...self::evaluate($case['tag'], $this->optionName, $case['value'], $representation, $case['expected'], $property)];
+                $generated[$executionId] = [
+                    $assertionId,
+                    $case['tag'],
+                    $this->optionName,
+                    $case['value'],
+                    $representation,
+                    $case['expected'],
+                    $property,
+                ];
+                $executions[] = [
+                    'id' => $executionId,
+                    'assertionId' => $assertionId,
+                    'representation' => $representation,
+                    ...self::evaluate(
+                        $case['tag'],
+                        $this->optionName,
+                        $case['value'],
+                        $representation,
+                        $case['expected'],
+                        $property,
+                    ),
+                ];
             }
         }
 
@@ -106,8 +126,14 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
     /** @param OptionValue $value
      * @return array{status: string, actual?: mixed, failure?: string}
      */
-    private static function evaluate(string $tag, string $optionName, array $value, string $representation, string|bool $expected, ?string $property): array
-    {
+    private static function evaluate(
+        string $tag,
+        string $optionName,
+        array $value,
+        string $representation,
+        string|bool $expected,
+        ?string $property,
+    ): array {
         return $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
             : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
@@ -122,40 +148,40 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
         }
         $className = $this->className;
 
-        return <<<PHP
-            <?php
+        return ltrim(<<<PHP
+                        <?php
 
-            declare(strict_types=1);
+                        declare(strict_types=1);
 
-            // This generated translation is governed by tests/Test262/upstream/LICENSE.
-            // Source: {$fixturePath} at Test262 {$this->test262Revision}.
-            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+                        // This generated translation is governed by tests/Test262/upstream/LICENSE.
+                        // Source: {$fixturePath} at Test262 {$this->test262Revision}.
+                        // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
+                        namespace Midnight\Intl\Tests\Test262\Generated;
 
-            use Midnight\Intl\Exception\RangeError;
-            use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+                        use Midnight\Intl\Exception\RangeError;
+                        use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
+                        use PHPUnit\Framework\Attributes\DataProvider;
+                        use PHPUnit\Framework\TestCase;
 
-final class {$className} extends TestCase
-{
-    /** @return array<string, array{string, string, string, array<string, mixed>, string, string|bool, ?string}> */
-    public static function cases(): array
-    {
-        return {$export};
-    }
+            final class {$className} extends TestCase
+            {
+                /** @return array<string, array{string, string, string, array<string, mixed>, string, string|bool, ?string}> */
+                public static function cases(): array
+                {
+                    return {$export};
+                }
 
-    /** @param array<string, mixed> \$value */
-    #[DataProvider('cases')]
-    public function testTranslatedAssertions(string \$assertionId, string \$tag, string \$optionName, array \$value, string \$representation, string|bool \$expected, ?string \$property): void
-    {
-        \$result = \$expected === RangeError::class
-            ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, \$value, \$representation)
-            : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, \$value, \$representation, \$expected, \$property);
-        self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
-    }
-}
-PHP."\n";
+                /** @param array<string, mixed> \$value */
+                #[DataProvider('cases')]
+                public function testTranslatedAssertions(string \$assertionId, string \$tag, string \$optionName, array \$value, string \$representation, string|bool \$expected, ?string \$property): void
+                {
+                    \$result = \$expected === RangeError::class
+                        ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, \$value, \$representation)
+                        : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, \$value, \$representation, \$expected, \$property);
+                    self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
+                }
+            }
+            PHP . "\n");
     }
 }

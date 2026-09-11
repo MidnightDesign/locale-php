@@ -24,7 +24,7 @@ $baseline = json_decode($baselineSource, true, flags: JSON_THROW_ON_ERROR);
 $active = $baseline['active']['test262'];
 $translatedPaths = array_fill_keys(array_filter(
     array_keys($active['sourceCopies']),
-    static fn (string $path): bool => str_ends_with($path, '.js'),
+    static fn(string $path): bool => str_ends_with($path, '.js'),
 ), true);
 
 $revision = $active['revision'];
@@ -76,7 +76,8 @@ foreach ($paths as $path) {
             default => 'translation_gap',
         },
         'reason' => match (true) {
-            $translated => 'All source assertions and representation executions are detailed in tests/Test262/evidence.json.',
+            $translated
+                => 'All source assertions and representation executions are detailed in tests/Test262/evidence.json.',
             default => 'The fixture remains visible as unfinished work for the incomplete initial slice.',
         },
         'detectedAssertions' => $assertions,

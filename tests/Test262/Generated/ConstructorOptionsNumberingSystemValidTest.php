@@ -19,520 +19,455 @@ final class ConstructorOptionsNumberingSystemValidTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abc',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abc',
-    6 => null,
-  ),
-  'case-1-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abc',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abc',
-    6 => null,
-  ),
-  'case-2-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abc',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abc',
-    6 => null,
-  ),
-  'case-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abc',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abc',
-    6 => null,
-  ),
-  'case-3-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcd',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcd',
-    6 => null,
-  ),
-  'case-3-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcd',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcd',
-    6 => null,
-  ),
-  'case-4-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcd',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcd',
-    6 => null,
-  ),
-  'case-4-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcd',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcd',
-    6 => null,
-  ),
-  'case-5-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcde',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcde',
-    6 => null,
-  ),
-  'case-5-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcde',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcde',
-    6 => null,
-  ),
-  'case-6-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcde',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcde',
-    6 => null,
-  ),
-  'case-6-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcde',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcde',
-    6 => null,
-  ),
-  'case-7-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdef',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcdef',
-    6 => null,
-  ),
-  'case-7-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdef',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcdef',
-    6 => null,
-  ),
-  'case-8-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdef',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcdef',
-    6 => null,
-  ),
-  'case-8-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdef',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcdef',
-    6 => null,
-  ),
-  'case-9-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefg',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcdefg',
-    6 => null,
-  ),
-  'case-9-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefg',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcdefg',
-    6 => null,
-  ),
-  'case-10-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefg',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcdefg',
-    6 => null,
-  ),
-  'case-10-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefg',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcdefg',
-    6 => null,
-  ),
-  'case-11-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefgh',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcdefgh',
-    6 => null,
-  ),
-  'case-11-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefgh',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcdefgh',
-    6 => null,
-  ),
-  'case-12-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefgh',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-abcdefgh',
-    6 => null,
-  ),
-  'case-12-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'abcdefgh',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-abcdefgh',
-    6 => null,
-  ),
-  'case-13-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '12345678',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-12345678',
-    6 => null,
-  ),
-  'case-13-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '12345678',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-12345678',
-    6 => null,
-  ),
-  'case-14-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '12345678',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-12345678',
-    6 => null,
-  ),
-  'case-14-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '12345678',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-12345678',
-    6 => null,
-  ),
-  'case-15-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-1234abcd',
-    6 => null,
-  ),
-  'case-15-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-1234abcd',
-    6 => null,
-  ),
-  'case-16-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-1234abcd',
-    6 => null,
-  ),
-  'case-16-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-1234abcd',
-    6 => null,
-  ),
-  'case-17-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd-abc123',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-1234abcd-abc123',
-    6 => null,
-  ),
-  'case-17-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
-    1 => 'en',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd-abc123',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-1234abcd-abc123',
-    6 => null,
-  ),
-  'case-18-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd-abc123',
-    ),
-    4 => 'associative_array',
-    5 => 'en-u-nu-1234abcd-abc123',
-    6 => null,
-  ),
-  'case-18-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
-    1 => 'en-u-nu-latn',
-    2 => 'numberingSystem',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => '1234abcd-abc123',
-    ),
-    4 => 'plain_object',
-    5 => 'en-u-nu-1234abcd-abc123',
-    6 => null,
-  ),
-);
+            'case-1-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abc',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abc',
+                6 => null,
+            ),
+            'case-1-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abc',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abc',
+                6 => null,
+            ),
+            'case-2-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abc',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abc',
+                6 => null,
+            ),
+            'case-2-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abc',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abc',
+                6 => null,
+            ),
+            'case-3-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcd',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcd',
+                6 => null,
+            ),
+            'case-3-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcd',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcd',
+                6 => null,
+            ),
+            'case-4-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcd',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcd',
+                6 => null,
+            ),
+            'case-4-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcd',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcd',
+                6 => null,
+            ),
+            'case-5-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcde',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcde',
+                6 => null,
+            ),
+            'case-5-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcde',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcde',
+                6 => null,
+            ),
+            'case-6-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcde',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcde',
+                6 => null,
+            ),
+            'case-6-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcde',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcde',
+                6 => null,
+            ),
+            'case-7-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdef',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcdef',
+                6 => null,
+            ),
+            'case-7-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdef',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcdef',
+                6 => null,
+            ),
+            'case-8-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdef',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcdef',
+                6 => null,
+            ),
+            'case-8-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdef',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcdef',
+                6 => null,
+            ),
+            'case-9-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefg',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcdefg',
+                6 => null,
+            ),
+            'case-9-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefg',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcdefg',
+                6 => null,
+            ),
+            'case-10-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefg',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcdefg',
+                6 => null,
+            ),
+            'case-10-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefg',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcdefg',
+                6 => null,
+            ),
+            'case-11-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefgh',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcdefgh',
+                6 => null,
+            ),
+            'case-11-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefgh',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcdefgh',
+                6 => null,
+            ),
+            'case-12-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefgh',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-abcdefgh',
+                6 => null,
+            ),
+            'case-12-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'abcdefgh',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-abcdefgh',
+                6 => null,
+            ),
+            'case-13-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '12345678',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-12345678',
+                6 => null,
+            ),
+            'case-13-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '12345678',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-12345678',
+                6 => null,
+            ),
+            'case-14-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '12345678',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-12345678',
+                6 => null,
+            ),
+            'case-14-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '12345678',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-12345678',
+                6 => null,
+            ),
+            'case-15-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-1234abcd',
+                6 => null,
+            ),
+            'case-15-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-1234abcd',
+                6 => null,
+            ),
+            'case-16-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-1234abcd',
+                6 => null,
+            ),
+            'case-16-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-1234abcd',
+                6 => null,
+            ),
+            'case-17-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd-abc123',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-1234abcd-abc123',
+                6 => null,
+            ),
+            'case-17-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue',
+                1 => 'en',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd-abc123',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-1234abcd-abc123',
+                6 => null,
+            ),
+            'case-18-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd-abc123',
+                ),
+                4 => 'associative_array',
+                5 => 'en-u-nu-1234abcd-abc123',
+                6 => null,
+            ),
+            'case-18-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue',
+                1 => 'en-u-nu-latn',
+                2 => 'numberingSystem',
+                3 => array(
+                    'type' => 'string',
+                    'value' => '1234abcd-abc123',
+                ),
+                4 => 'plain_object',
+                5 => 'en-u-nu-1234abcd-abc123',
+                6 => null,
+            ),
+        );
     }
 
     /** @param array<string, mixed> $value */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string|bool $expected, ?string $property): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        string $optionName,
+        array $value,
+        string $representation,
+        string|bool $expected,
+        ?string $property,
+    ): void {
         $result = $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
             : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
-        self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
+        self::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
     }
 }

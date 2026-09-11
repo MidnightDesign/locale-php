@@ -21,8 +21,7 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         private readonly string $generatedPath,
         private readonly string $className,
         private readonly array $scenarios,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -37,7 +36,13 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             foreach ($scenario['expectations'] as $expectation) {
                 $identity = $assertions[$expectation['assertion']] ?? null;
                 if ($identity === null) {
-                    return FixtureResult::translationGap($fixturePath, $source, ['direct'], $assertions, new TranslationGap('Mapped assertion index is absent.'));
+                    return FixtureResult::translationGap(
+                        $fixturePath,
+                        $source,
+                        ['direct'],
+                        $assertions,
+                        new TranslationGap('Mapped assertion index is absent.'),
+                    );
                 }
                 $mapped[$expectation['assertion']] = true;
                 foreach ($representations as $representation) {
@@ -55,20 +60,36 @@ final class MappedLocaleStatePipeline implements FixturePipeline
                         'id' => $executionId,
                         'assertionId' => $identity['id'],
                         'representation' => $representation,
-                        ...self::evaluate($scenario['tag'], $options, $representation, $expectation['property'], $expectation['expected']),
+                        ...self::evaluate(
+                            $scenario['tag'],
+                            $options,
+                            $representation,
+                            $expectation['property'],
+                            $expectation['expected'],
+                        ),
                     ];
                 }
             }
         }
 
         if (count($mapped) !== count($assertions)) {
-            return FixtureResult::translationGap($fixturePath, $source, ['direct'], $assertions, new TranslationGap('Every source assertion must have at least one mapped execution.'));
+            return FixtureResult::translationGap(
+                $fixturePath,
+                $source,
+                ['direct'],
+                $assertions,
+                new TranslationGap('Every source assertion must have at least one mapped execution.'),
+            );
         }
 
         $evidenceAssertions = [];
         foreach ($assertions as $assertion) {
-            $results = array_values(array_filter($executions, static fn (array $execution): bool => $execution['assertionId'] === $assertion['id']));
-            $passing = array_filter($results, static fn (array $execution): bool => $execution['status'] !== 'passing') === [];
+            $results = array_values(array_filter(
+                $executions,
+                static fn(array $execution): bool => $execution['assertionId'] === $assertion['id'],
+            ));
+            $passing = array_filter($results, static fn(array $execution): bool => $execution['status'] !== 'passing')
+            === [];
             $evidenceAssertions[] = [
                 ...$assertion,
                 'status' => $passing ? 'passing' : 'failing',
@@ -80,7 +101,10 @@ final class MappedLocaleStatePipeline implements FixturePipeline
                 'executions' => $results,
             ];
         }
-        $failureCount = count(array_filter($executions, static fn (array $execution): bool => $execution['status'] === 'failing'));
+        $failureCount = count(array_filter(
+            $executions,
+            static fn(array $execution): bool => $execution['status'] === 'failing',
+        ));
 
         return new FixtureResult(
             $fixturePath,
@@ -98,8 +122,13 @@ final class MappedLocaleStatePipeline implements FixturePipeline
      * @param array<string, mixed>|null $options
      * @return array{status: string, actual?: mixed, failure?: string}
      */
-    private static function evaluate(string $tag, ?array $options, string $representation, string $property, string|bool|null $expected): array
-    {
+    private static function evaluate(
+        string $tag,
+        ?array $options,
+        string $representation,
+        string $property,
+        string|bool|null $expected,
+    ): array {
         try {
             $locale = match ($representation) {
                 'direct' => new Locale($tag),
@@ -112,9 +141,19 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             return ['status' => 'failing', 'failure' => sprintf('%s: %s', $error::class, $error->getMessage())];
         }
 
-        return $actual === $expected
-            ? ['status' => 'passing', 'actual' => $actual]
-            : ['status' => 'failing', 'actual' => $actual, 'failure' => sprintf('Expected %s but received %s.', var_export($expected, true), var_export($actual, true))];
+        return (
+            $actual === $expected
+                ? ['status' => 'passing', 'actual' => $actual]
+                : [
+                    'status' => 'failing',
+                    'actual' => $actual,
+                    'failure' => sprintf(
+                        'Expected %s but received %s.',
+                        var_export($expected, true),
+                        var_export($actual, true),
+                    ),
+                ]
+        );
     }
 
     /** @param array<string, array{string, string, ?array<string, mixed>, string, string, string|bool|null}> $cases */
@@ -127,43 +166,43 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         $className = $this->className;
 
         return <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class {$className} extends TestCase
-{
-    /** @return array<string, array{string, string, ?array<string, mixed>, string, string, string|bool|null}> */
-    public static function cases(): array
-    {
-        return {$export};
-    }
+            final class {$className} extends TestCase
+            {
+                /** @return array<string, array{string, string, ?array<string, mixed>, string, string, string|bool|null}> */
+                public static function cases(): array
+                {
+                    return {$export};
+                }
 
-    /** @param array<string, mixed>|null \$options */
-    #[DataProvider('cases')]
-    public function testTranslatedAssertions(string \$assertionId, string \$tag, ?array \$options, string \$representation, string \$property, string|bool|null \$expected): void
-    {
-        \$locale = match (\$representation) {
-            'direct' => new Locale(\$tag),
-            'associative_array' => new Locale(\$tag, \$options),
-            'plain_object' => new Locale(\$tag, (object) \$options),
-            default => throw new \InvalidArgumentException('Unsupported representation.'),
-        };
-        \$actual = \$property === 'toString' ? \$locale->toString() : \$locale->{\$property};
+                /** @param array<string, mixed>|null \$options */
+                #[DataProvider('cases')]
+                public function testTranslatedAssertions(string \$assertionId, string \$tag, ?array \$options, string \$representation, string \$property, string|bool|null \$expected): void
+                {
+                    \$locale = match (\$representation) {
+                        'direct' => new Locale(\$tag),
+                        'associative_array' => new Locale(\$tag, \$options),
+                        'plain_object' => new Locale(\$tag, (object) \$options),
+                        default => throw new \InvalidArgumentException('Unsupported representation.'),
+                    };
+                    \$actual = \$property === 'toString' ? \$locale->toString() : \$locale->{\$property};
 
-        self::assertSame(\$expected, \$actual, \$assertionId);
-    }
-}
-PHP."\n";
+                    self::assertSame(\$expected, \$actual, \$assertionId);
+                }
+            }
+            PHP . "\n";
     }
 }

@@ -13,7 +13,7 @@ namespace Midnight\Intl\Internal\Test262;
 final readonly class PrimitiveValue
 {
     /** @psalm-api */
-    public function __construct(public string|bool|int|float|null $value)
-    {
-    }
+    public function __construct(
+        public string|bool|int|float|null $value,
+    ) {}
 }

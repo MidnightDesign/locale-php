@@ -322,8 +322,13 @@ class Locale
     private static function toBooleanValue(mixed $value): bool
     {
         return match (true) {
-            $value === null, $value === false, $value === 0, $value === 0.0,
-            is_float($value) && is_nan($value), $value === '' => false,
+            $value === null,
+            $value === false,
+            $value === 0,
+            $value === 0.0,
+            is_float($value) && is_nan($value),
+            $value === '',
+                => false,
             default => true,
         };
     }

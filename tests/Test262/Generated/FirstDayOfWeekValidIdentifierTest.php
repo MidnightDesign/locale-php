@@ -18,76 +18,75 @@ final class FirstDayOfWeekValidIdentifierTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-mon',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'mon',
-  ),
-  'case-2-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-tue',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'tue',
-  ),
-  'case-3-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-wed',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'wed',
-  ),
-  'case-4-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-thu',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'thu',
-  ),
-  'case-5-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-fri',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'fri',
-  ),
-  'case-6-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-sat',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'sat',
-  ),
-  'case-7-direct' =>
-  array(
-    0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
-    1 => 'en-u-fw-sun',
-    2 => null,
-    3 => 'direct',
-    4 => 'firstDayOfWeek',
-    5 => 'sun',
-  ),
-);
+            'case-1-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-mon',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'mon',
+            ),
+            'case-2-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-tue',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'tue',
+            ),
+            'case-3-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-wed',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'wed',
+            ),
+            'case-4-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-thu',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'thu',
+            ),
+            'case-5-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-fri',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'fri',
+            ),
+            'case-6-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-sat',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'sat',
+            ),
+            'case-7-direct' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue',
+                1 => 'en-u-fw-sun',
+                2 => null,
+                3 => 'direct',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+        );
     }
 
     /** @param array<string, mixed>|null $options */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, ?array $options, string $representation, string $property, string|bool|null $expected): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        ?array $options,
+        string $representation,
+        string $property,
+        string|bool|null $expected,
+    ): void {
         $locale = match ($representation) {
             'direct' => new Locale($tag),
             'associative_array' => new Locale($tag, $options),

@@ -44,19 +44,22 @@ final class Locale implements \Stringable, \JsonSerializable
             throw new TypeError('Locale is already initialized.');
         }
 
-        $options = array_filter([
-            'language' => $language,
-            'script' => $script,
-            'region' => $region,
-            'variants' => $variants,
-            'calendar' => $calendar,
-            'collation' => $collation,
-            'firstDayOfWeek' => $firstDayOfWeek,
-            'hourCycle' => $hourCycle instanceof HourCycle ? $hourCycle->value : $hourCycle,
-            'caseFirst' => $caseFirst instanceof CaseFirst ? $caseFirst->value : $caseFirst,
-            'numeric' => $numeric,
-            'numberingSystem' => $numberingSystem,
-        ], static fn (string|bool|null $value): bool => $value !== null);
+        $options = array_filter(
+            [
+                'language' => $language,
+                'script' => $script,
+                'region' => $region,
+                'variants' => $variants,
+                'calendar' => $calendar,
+                'collation' => $collation,
+                'firstDayOfWeek' => $firstDayOfWeek,
+                'hourCycle' => $hourCycle instanceof HourCycle ? $hourCycle->value : $hourCycle,
+                'caseFirst' => $caseFirst instanceof CaseFirst ? $caseFirst->value : $caseFirst,
+                'numeric' => $numeric,
+                'numberingSystem' => $numberingSystem,
+            ],
+            static fn(string|bool|null $value): bool => $value !== null,
+        );
 
         $this->spec = $options === [] ? new SpecLocale($tag) : new SpecLocale($tag, $options);
     }

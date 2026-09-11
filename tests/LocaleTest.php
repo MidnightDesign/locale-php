@@ -41,7 +41,16 @@ final class LocaleTest extends TestCase
         foreach ($constructor->getParameters() as $parameter) {
             $parameters[$parameter->getName()] = $parameter;
         }
-        foreach (['language', 'script', 'region', 'variants', 'calendar', 'collation', 'firstDayOfWeek', 'numberingSystem'] as $name) {
+        foreach ([
+            'language',
+            'script',
+            'region',
+            'variants',
+            'calendar',
+            'collation',
+            'firstDayOfWeek',
+            'numberingSystem',
+        ] as $name) {
             self::assertSame('?string', (string) $parameters[$name]->getType());
             self::assertNull($parameters[$name]->getDefaultValue());
         }
@@ -90,11 +99,7 @@ final class LocaleTest extends TestCase
         self::assertSame(['h11', 'h12', 'h23', 'h24'], array_column(HourCycle::cases(), 'value'));
         self::assertSame(['upper', 'lower', 'false'], array_column(CaseFirst::cases(), 'value'));
 
-        $locale = new Locale(
-            'en-u-hc-h11-kf-lower',
-            hourCycle: HourCycle::H24,
-            caseFirst: CaseFirst::Upper,
-        );
+        $locale = new Locale('en-u-hc-h11-kf-lower', hourCycle: HourCycle::H24, caseFirst: CaseFirst::Upper);
 
         self::assertSame('en-u-hc-h24-kf-upper', $locale->toString());
         self::assertSame(HourCycle::H24, $locale->hourCycle);
