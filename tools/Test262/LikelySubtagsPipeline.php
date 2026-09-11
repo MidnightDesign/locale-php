@@ -20,9 +20,9 @@ final class LikelySubtagsPipeline implements FixturePipeline
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $identities = $this->assertionIdentities->extract($source, $fixturePath);
-        $maximal = self::objectMap($source, 'testDataMaximal');
-        $minimal = self::objectMap($source, 'testDataMinimal');
-        $extras = self::stringArray($source, 'extras');
+        $maximal = JavaScriptDataExtractor::objectMap($source, 'testDataMaximal');
+        $minimal = JavaScriptDataExtractor::objectMap($source, 'testDataMinimal');
+        $extras = JavaScriptDataExtractor::stringArray($source, 'extras');
         if (count($identities) !== 5 || $maximal === [] || $minimal === [] || $extras === []) {
             return FixtureResult::translationGap(
                 $fixturePath,
@@ -68,32 +68,6 @@ final class LikelySubtagsPipeline implements FixturePipeline
             $failures,
             ['tests/Test262/Generated/LikelySubtagsTest.php' => $this->render($maximal, $minimal, $extras, $fixturePath)],
         );
-    }
-
-    /** @return array<string, string> */
-    public static function objectMap(string $source, string $name): array
-    {
-        if (preg_match('/(?:const|var)\s+'.preg_quote($name, '/').'\s*=\s*\{(?<body>.*?)\};/s', $source, $block) !== 1) {
-            return [];
-        }
-        preg_match_all('/"(?<tag>[^"]+)"\s*:\s*"(?<expected>[^"]+)"/', $block['body'], $matches, PREG_SET_ORDER);
-        $result = [];
-        foreach ($matches as $match) {
-            $result[$match['tag']] = $match['expected'];
-        }
-
-        return $result;
-    }
-
-    /** @return list<string> */
-    public static function stringArray(string $source, string $name): array
-    {
-        if (preg_match('/(?:const|var)\s+'.preg_quote($name, '/').'\s*=\s*\[(?<body>.*?)\];/s', $source, $block) !== 1) {
-            return [];
-        }
-        preg_match_all('/"([^"]*)"/', $block['body'], $matches);
-
-        return $matches[1];
     }
 
     /**

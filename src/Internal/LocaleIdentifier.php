@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Internal;
 
 use Midnight\Intl\Exception\RangeError;
+use Midnight\Intl\Internal\Data\LikelySubtags;
 use Midnight\Intl\Internal\Data\LocaleAliases;
 
 final class LocaleIdentifier
@@ -158,6 +159,7 @@ final class LocaleIdentifier
         if ($this->language !== 'und' && $sourceScript !== null && $sourceRegion !== null) {
             return clone $this;
         }
+        LikelySubtags::assertIntegrity();
 
         $language = strtolower($this->language);
         $script = $sourceScript === null ? null : strtolower($sourceScript);
@@ -173,7 +175,7 @@ final class LocaleIdentifier
         ])));
 
         foreach ($candidates as $candidate) {
-            $match = LocaleAliases::LIKELY_SUBTAG[$candidate] ?? null;
+            $match = LikelySubtags::MAP[$candidate] ?? null;
             if ($match === null) {
                 continue;
             }
@@ -353,11 +355,8 @@ final class LocaleIdentifier
     private function canonicalizeLanguageId(): void
     {
         $replacement = null;
-        foreach (LocaleAliases::LANGUAGE as $source => $compound) {
+        foreach (LocaleAliases::COMPOUND_LANGUAGE[$this->language] ?? [] as $source => $compound) {
             $sourceParts = explode('-', $source);
-            if (array_shift($sourceParts) !== $this->language || $sourceParts === []) {
-                continue;
-            }
             if (array_diff($sourceParts, $this->variants) === []) {
                 $replacement = $compound;
                 $this->variants = array_values(array_diff($this->variants, $sourceParts));

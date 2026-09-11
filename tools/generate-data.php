@@ -11,6 +11,12 @@ if ($source === false) {
     fwrite(STDERR, "Unable to read the locale alias projection source.\n");
     exit(1);
 }
+$likelySubtagsSourcePath = $root.'/resources/data/likely-subtags.json';
+$likelySubtagsSource = file_get_contents($likelySubtagsSourcePath);
+if ($likelySubtagsSource === false) {
+    fwrite(STDERR, "Unable to read the likely-subtag projection source.\n");
+    exit(1);
+}
 
 /** @var array{
  *     format: int,
@@ -18,10 +24,10 @@ if ($source === false) {
  *     upstreamSha512: string,
  *     sourceEntries: array<string, string>,
  *     language: array<string, string>,
+ *     compoundLanguage: array<string, array<string, string>>,
  *     script: array<string, string>,
  *     region: array<string, string>,
  *     regionAlternatives: array<string, list<string>>,
- *     likelySubtag: array<string, string>,
  *     likelyRegion: array<string, string>,
  *     variant: array<string, string>,
  *     subdivision: array<string, string>,
@@ -34,13 +40,26 @@ if ($data['format'] !== 3) {
     exit(1);
 }
 
+/** @var array{
+ *     format: int,
+ *     cldrRevision: string,
+ *     upstreamSha512: string,
+ *     sourceEntries: array<string, string>,
+ *     likelySubtag: array<string, string>
+ * } $likelySubtagsData */
+$likelySubtagsData = json_decode($likelySubtagsSource, true, flags: JSON_THROW_ON_ERROR);
+if ($likelySubtagsData['format'] !== 1) {
+    fwrite(STDERR, "The likely-subtag projection format is incompatible.\n");
+    exit(1);
+}
+
 $constants = '';
 foreach ([
     'LANGUAGE' => ['language', 'array<string, string>'],
+    'COMPOUND_LANGUAGE' => ['compoundLanguage', 'array<string, array<string, string>>'],
     'SCRIPT' => ['script', 'array<string, string>'],
     'REGION' => ['region', 'array<int|string, string>'],
     'REGION_ALTERNATIVES' => ['regionAlternatives', 'array<int|string, list<string>>'],
-    'LIKELY_SUBTAG' => ['likelySubtag', 'array<string, string>'],
     'LIKELY_REGION' => ['likelyRegion', 'array<string, string>'],
     'VARIANT' => ['variant', 'array<string, string>'],
     'SUBDIVISION' => ['subdivision', 'array<string, string>'],
@@ -62,10 +81,10 @@ $sourceSha256 = hash('sha256', $source);
 $payloadSha256 = hash('sha256', json_encode([
     'format' => $data['format'],
     'language' => $data['language'],
+    'compoundLanguage' => $data['compoundLanguage'],
     'script' => $data['script'],
     'region' => $data['region'],
     'regionAlternatives' => $data['regionAlternatives'],
-    'likelySubtag' => $data['likelySubtag'],
     'likelyRegion' => $data['likelyRegion'],
     'variant' => $data['variant'],
     'subdivision' => $data['subdivision'],
@@ -109,10 +128,10 @@ enum LocaleAliases
         \$actual = hash('sha256', json_encode([
             'format' => self::FORMAT,
             'language' => self::LANGUAGE,
+            'compoundLanguage' => self::COMPOUND_LANGUAGE,
             'script' => self::SCRIPT,
             'region' => self::REGION,
             'regionAlternatives' => self::REGION_ALTERNATIVES,
-            'likelySubtag' => self::LIKELY_SUBTAG,
             'likelyRegion' => self::LIKELY_REGION,
             'variant' => self::VARIANT,
             'subdivision' => self::SUBDIVISION,
@@ -133,10 +152,76 @@ enum LocaleAliases
 PHP;
 $generated .= "\n";
 
+$likelySubtagsSourceSha256 = hash('sha256', $likelySubtagsSource);
+$likelySubtagsPayloadSha256 = hash('sha256', json_encode([
+    'format' => $likelySubtagsData['format'],
+    'likelySubtag' => $likelySubtagsData['likelySubtag'],
+], JSON_THROW_ON_ERROR));
+$likelySubtagsExport = preg_replace(
+    '/[ \t]+$/m',
+    '',
+    Midnight\Intl\Tools\PhpExporter::export($likelySubtagsData['likelySubtag']),
+);
+if ($likelySubtagsExport === null) {
+    throw new RuntimeException('Unable to export the likely-subtag projection.');
+}
+$likelySubtagsGenerated = <<<PHP
+<?php
+
+declare(strict_types=1);
+
+namespace Midnight\Intl\Internal\Data;
+
+enum LikelySubtags
+{
+    public const FORMAT = {$likelySubtagsData['format']};
+
+    /** @var string */
+    public const CLDR_REVISION = '{$likelySubtagsData['cldrRevision']}';
+
+    /** @var string */
+    public const CLDR_CORE_SHA512 = '{$likelySubtagsData['upstreamSha512']}';
+
+    /** @var string */
+    public const SOURCE_SHA256 = '{$likelySubtagsSourceSha256}';
+
+    private const PAYLOAD_SHA256 = '{$likelySubtagsPayloadSha256}';
+
+    /** @var array<string, string> */
+    public const MAP = {$likelySubtagsExport};
+
+    public static function assertIntegrity(): void
+    {
+        /** @var bool|null \$verified */
+        static \$verified = null;
+        if (\$verified === true) {
+            return;
+        }
+
+        \$actual = hash('sha256', json_encode([
+            'format' => self::FORMAT,
+            'likelySubtag' => self::MAP,
+        ], JSON_THROW_ON_ERROR));
+        if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+            throw new \UnexpectedValueException('The bundled likely-subtag data is corrupt or incompatible.');
+        }
+        \$verified = true;
+    }
+
+    private static function supportsFormat(int \$format): bool
+    {
+        return \$format === 1;
+    }
+}
+PHP;
+$likelySubtagsGenerated .= "\n";
+
 $target = $root.'/src/Internal/Data/LocaleAliases.php';
+$likelySubtagsTarget = $root.'/src/Internal/Data/LikelySubtags.php';
 if (in_array('--check', $argv, true)) {
-    if (!is_file($target) || file_get_contents($target) !== $generated) {
-        fwrite(STDERR, "src/Internal/Data/LocaleAliases.php is not reproducible.\n");
+    if (!is_file($target) || file_get_contents($target) !== $generated
+        || !is_file($likelySubtagsTarget) || file_get_contents($likelySubtagsTarget) !== $likelySubtagsGenerated) {
+        fwrite(STDERR, "The generated locale data is not reproducible.\n");
         exit(1);
     }
 
@@ -146,20 +231,23 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
         'cldr' => $manifest['inputs']['cldr']['sha512'],
         'ianaLanguage' => $manifest['inputs']['languageRegistry']['sha256'],
         'tzdb' => $manifest['inputs']['tzdb']['sha512'],
-        'projection' => $sourceSha256,
+        'localeAliasesProjection' => $sourceSha256,
+        'likelySubtagsProjection' => $likelySubtagsSourceSha256,
     ], JSON_THROW_ON_ERROR));
     if ($manifest['format'] !== 3
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
-        || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)) {
+        || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
+        || $manifest['projections']['likelySubtags']['sourceSha256'] !== $likelySubtagsSourceSha256
+        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
     }
@@ -175,5 +263,9 @@ if (in_array('--check', $argv, true)) {
 
 if (file_put_contents($target, $generated) === false) {
     fwrite(STDERR, "Unable to write the locale alias projection.\n");
+    exit(1);
+}
+if (file_put_contents($likelySubtagsTarget, $likelySubtagsGenerated) === false) {
+    fwrite(STDERR, "Unable to write the likely-subtag projection.\n");
     exit(1);
 }

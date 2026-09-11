@@ -21,11 +21,11 @@ final class GrandfatheredLikelySubtagsPipeline implements FixturePipeline
     {
         $identities = $this->assertionIdentities->extract($source, $fixturePath);
         $rejected = [
-            ...LikelySubtagsPipeline::stringArray($source, 'irregularGrandfathered'),
-            ...LikelySubtagsPipeline::stringArray($source, 'regularGrandfatheredWithExtLang'),
+            ...JavaScriptDataExtractor::stringArray($source, 'irregularGrandfathered'),
+            ...JavaScriptDataExtractor::stringArray($source, 'regularGrandfatheredWithExtLang'),
         ];
         $regular = self::regularTags($source);
-        $extras = LikelySubtagsPipeline::stringArray($source, 'extras');
+        $extras = JavaScriptDataExtractor::stringArray($source, 'extras');
         if (count($identities) !== 16 || $rejected === [] || $regular === [] || $extras === []) {
             return FixtureResult::translationGap($fixturePath, $source, ['direct'], $identities, new TranslationGap(
                 'Expected the grandfathered tag lists, records, extras, and sixteen source assertions.',

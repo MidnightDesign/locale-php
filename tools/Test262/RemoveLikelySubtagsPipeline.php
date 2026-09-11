@@ -19,7 +19,7 @@ final class RemoveLikelySubtagsPipeline implements FixturePipeline
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $identities = $this->assertionIdentities->extract($source, $fixturePath);
-        $cases = LikelySubtagsPipeline::objectMap($source, 'testDataMinimal');
+        $cases = JavaScriptDataExtractor::objectMap($source, 'testDataMinimal');
         if (count($identities) !== 2 || $cases === []) {
             return FixtureResult::translationGap($fixturePath, $source, ['direct'], $identities, new TranslationGap(
                 'Expected one minimal map and two parameterized assertions.',

@@ -26,7 +26,7 @@ $metadata = readArchiveEntry($archive, 'common/supplemental/supplementalMetadata
 $metadataWithoutComments = preg_replace('/<!--.*?-->/s', '', $metadata)
     ?? throw new RuntimeException('Unable to remove CLDR XML comments.');
 
-$language = aliases(
+$languageAliases = aliases(
     $metadataWithoutComments,
     'languageAlias',
     static fn (string $value): bool => preg_match(
@@ -36,6 +36,20 @@ $language = aliases(
     static fn (string $value): string => str_replace('_', '-', strtolower($value)),
     static fn (string $value): string => str_replace('_', '-', $value),
 );
+$language = [];
+$compoundLanguage = [];
+foreach ($languageAliases as $source => $replacement) {
+    $parts = explode('-', $source, 2);
+    if (isset($parts[1])) {
+        $compoundLanguage[$parts[0]][$parts[1]] = $replacement;
+    } else {
+        $language[$source] = $replacement;
+    }
+}
+foreach ($compoundLanguage as &$aliasesByLanguage) {
+    ksort($aliasesByLanguage, SORT_STRING);
+}
+unset($aliasesByLanguage);
 $script = aliases(
     $metadataWithoutComments,
     'scriptAlias',
@@ -171,20 +185,33 @@ $projection = [
         'common/supplemental/likelySubtags.xml' => hash('sha256', $likelySubtags),
     ],
     'language' => $language,
+    'compoundLanguage' => $compoundLanguage,
     'script' => $script,
     'region' => $region,
     'regionAlternatives' => $regionAlternatives,
-    'likelySubtag' => $likelySubtag,
     'likelyRegion' => $likelyRegion,
     'variant' => $variant,
     'subdivision' => $subdivision,
     'key' => $key,
     'type' => $type,
 ];
+$likelySubtagsProjection = [
+    'format' => 1,
+    'cldrRevision' => CLDR_REVISION,
+    'upstreamSha512' => CLDR_CORE_SHA512,
+    'sourceEntries' => [
+        'common/supplemental/likelySubtags.xml' => hash('sha256', $likelySubtags),
+    ],
+    'likelySubtag' => $likelySubtag,
+];
 
 file_put_contents(
     dirname(__DIR__).'/resources/data/locale-aliases.json',
     json_encode($projection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+);
+file_put_contents(
+    dirname(__DIR__).'/resources/data/likely-subtags.json',
+    json_encode($likelySubtagsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
 );
 
 function readArchiveEntry(ZipArchive $archive, string $name): string
