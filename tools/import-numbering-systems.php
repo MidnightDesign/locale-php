@@ -45,11 +45,19 @@ $sourceEntries[$supplementalPath] = hash('sha256', $supplementalData);
 $numberingSystemsPath = 'common/supplemental/numberingSystems.xml';
 $numberingSystems = readArchiveEntry($archive, $numberingSystemsPath);
 $sourceEntries[$numberingSystemsPath] = hash('sha256', $numberingSystems);
+$likelySubtagsPath = 'common/supplemental/likelySubtags.xml';
+$likelySubtags = readArchiveEntry($archive, $likelySubtagsPath);
+$sourceEntries[$likelySubtagsPath] = hash('sha256', $likelySubtags);
 $archive->close();
 
 ksort($localeSources, SORT_STRING);
 ksort($sourceEntries, SORT_STRING);
-$projection = NumberingSystemDataImporter::project($localeSources, $supplementalData, $numberingSystems);
+$projection = NumberingSystemDataImporter::project(
+    $localeSources,
+    $supplementalData,
+    $likelySubtags,
+    $numberingSystems,
+);
 $data = [
     'format' => 1,
     'cldrRevision' => CLDR_REVISION,

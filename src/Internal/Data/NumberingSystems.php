@@ -15,9 +15,9 @@ enum NumberingSystems
     public const CLDR_CORE_SHA512 = 'de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62';
 
     /** @var string */
-    public const SOURCE_SHA256 = '0376533535b35ca3ffd91f7c8f1abd3a5e5ab3fc1937fd6e1ef78cf4383b7cac';
+    public const SOURCE_SHA256 = '40df33be301304fe24117cba02bd76a00b2268ae81d3290cfc078f7657ac46b3';
 
-    private const PAYLOAD_SHA256 = 'b68fd72f9abb9236abe1fd64a035807427fd718c23d98320e6cec007e57d85b9';
+    private const PAYLOAD_SHA256 = '9798f3962c9494fd4445c7f08ca9b4b0217c3037417b482b34b53c31b1bc0263';
 
     /** @var array<string, string> */
     public const DEFAULTS = array(
@@ -1150,8 +1150,7 @@ enum NumberingSystems
         'az-AZ' => 'az-Latn-AZ',
         'az-IQ' => 'az-Arab-IQ',
         'az-IR' => 'az-Arab-IR',
-        'az-TR' => 'az-Arab-TR',
-        'bal-PK' => 'bal-Latn-PK',
+        'bal-PK' => 'bal-Arab-PK',
         'bs-BA' => 'bs-Latn-BA',
         'ff-BF' => 'ff-Latn-BF',
         'ff-CM' => 'ff-Latn-CM',
@@ -1167,16 +1166,16 @@ enum NumberingSystems
         'ff-SN' => 'ff-Latn-SN',
         'ha-SD' => 'ha-Arab-SD',
         'hnj-US' => 'hnj-Hmnp-US',
-        'kaa-UZ' => 'kaa-Latn-UZ',
+        'kaa-UZ' => 'kaa-Cyrl-UZ',
         'kk-CN' => 'kk-Arab-CN',
-        'kok-IN' => 'kok-Latn-IN',
-        'ks-IN' => 'ks-Deva-IN',
-        'ku-IQ' => 'ku-Latn-IQ',
+        'kok-IN' => 'kok-Deva-IN',
+        'ks-IN' => 'ks-Arab-IN',
+        'ku-IQ' => 'ku-Arab-IQ',
         'ku-IR' => 'ku-Arab-IR',
         'ku-SY' => 'ku-Latn-SY',
-        'kxv-IN' => 'kxv-Telu-IN',
+        'kxv-IN' => 'kxv-Latn-IN',
         'mn-CN' => 'mn-Mong-CN',
-        'mni-IN' => 'mni-Mtei-IN',
+        'mni-IN' => 'mni-Beng-IN',
         'mww-US' => 'mww-Hmnp-US',
         'pa-IN' => 'pa-Guru-IN',
         'pa-PK' => 'pa-Arab-PK',
@@ -1187,22 +1186,22 @@ enum NumberingSystems
         'sd-IN' => 'sd-Deva-IN',
         'sd-PK' => 'sd-Arab-PK',
         'shi-MA' => 'shi-Tfng-MA',
-        'sr-BA' => 'sr-Latn-BA',
+        'sr-BA' => 'sr-Cyrl-BA',
         'sr-ME' => 'sr-Latn-ME',
-        'sr-RS' => 'sr-Latn-RS',
-        'sr-XK' => 'sr-Latn-XK',
+        'sr-RS' => 'sr-Cyrl-RS',
+        'sr-XK' => 'sr-Cyrl-XK',
         'su-ID' => 'su-Latn-ID',
-        'suz-NP' => 'suz-Sunu-NP',
+        'suz-NP' => 'suz-Deva-NP',
         'uz-AF' => 'uz-Arab-AF',
         'uz-UZ' => 'uz-Latn-UZ',
         'vai-LR' => 'vai-Vaii-LR',
-        'yue-CN' => 'yue-Hant-CN',
+        'yue-CN' => 'yue-Hans-CN',
         'yue-HK' => 'yue-Hant-HK',
         'yue-MO' => 'yue-Hant-MO',
-        'zh-CN' => 'zh-Latn-CN',
+        'zh-CN' => 'zh-Hans-CN',
         'zh-HK' => 'zh-Hant-HK',
         'zh-MO' => 'zh-Hant-MO',
-        'zh-MY' => 'zh-Hant-MY',
+        'zh-MY' => 'zh-Hans-MY',
         'zh-SG' => 'zh-Hans-SG',
         'zh-TW' => 'zh-Hant-TW',
     );

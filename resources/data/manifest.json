@@ -1,7 +1,7 @@
 {
     "format": 5,
     "scope": "unicode-locale-identifier-canonicalization-likely-subtags-primary-time-zones-and-numbering-systems",
-    "releaseDataFingerprint": "2c5b834c6bd60dc179b8796a8793644c36f44fa3a55a9a73479fe65e339df140",
+    "releaseDataFingerprint": "42119f31e877f541b43a666f6b832329af83a2410efcd91295150bc9292b7bb8",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -50,16 +50,16 @@
         },
         "numberingSystems": {
             "source": "resources/data/numbering-systems.json",
-            "sourceSha256": "0376533535b35ca3ffd91f7c8f1abd3a5e5ab3fc1937fd6e1ef78cf4383b7cac",
+            "sourceSha256": "40df33be301304fe24117cba02bd76a00b2268ae81d3290cfc078f7657ac46b3",
             "generated": "src/Internal/Data/NumberingSystems.php",
-            "generatedSha256": "f88a28dd170834b1f1690f1c666a8cdf0123f7360fed6c8aa0585191b21b0e16"
+            "generatedSha256": "f89378b05496938bdd6e3e376e8ff4b081d57a01f4365c4e0630ed1f512e0e24"
         }
     },
     "generators": {
         "tools/import-cldr-aliases.php": "6aca694b92cdae1615545b9a8c51c6c48988da5cf179c98e92d0702ef1474484",
         "tools/generate-data.php": "966a3c92731b67c89c8e636a1affd98128eab3510f118d4aa492597fae44a2aa",
-        "tools/import-numbering-systems.php": "8db97375f519dbcf844c8ef70ef37f8e618086be9b570e414c701bcb63893d7f",
-        "tools/NumberingSystemDataImporter.php": "7cab758ae4076ab524d80d4a280be1a42310d2eaf9b4629a3350b82570ef4e71",
+        "tools/import-numbering-systems.php": "be68d7d42b70a808fad8f2c4964aa732f56322f4730006d1b0b6a60c1fcb77de",
+        "tools/NumberingSystemDataImporter.php": "50f2c5e00b5be4094f96ace48373ebb3c5fa4f264638b0b138190ae7bfac69cc",
         "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",
         "tools/TimeZoneDataImporter.php": "e8a38fd4ba20461edb794a3a5976aac6864938a1822f9bd1e308a4de086fc26b",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",

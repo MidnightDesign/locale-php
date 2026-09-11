@@ -13,6 +13,7 @@ final class NumberingSystemDataImporter
     public static function project(
         array $localeSources,
         string $supplementalData,
+        string $likelySubtags,
         ?string $numberingSystems = null,
     ): array {
         $explicitDefaults = [];
@@ -48,6 +49,17 @@ final class NumberingSystemDataImporter
             }
         }
 
+        $likelySubtagMap = [];
+        preg_match_all(
+            '/<likelySubtag\s+from="([^"]+)"\s+to="([^"]+)"/',
+            $likelySubtags,
+            $likelyMatches,
+            PREG_SET_ORDER,
+        );
+        foreach ($likelyMatches as $likelyMatch) {
+            $likelySubtagMap[$likelyMatch[1]] = $likelyMatch[2];
+        }
+
         $defaults = [];
         $aliases = [];
         $inheritance = [];
@@ -73,7 +85,12 @@ final class NumberingSystemDataImporter
                 && (strlen($parts[2]) === 2 || strlen($parts[2]) === 3 && ctype_digit($parts[2]))
             ) {
                 $scriptless = self::canonicalizeLocale($parts[0] . '_' . $parts[2]);
-                if (!isset($defaults[$scriptless])) {
+                if (
+                    !isset($defaults[$scriptless])
+                    && self::maximizeLocale($parts[0] . '_' . $parts[2], $likelySubtagMap) === self::canonicalizeLocale(
+                        $locale,
+                    )
+                ) {
                     $aliases[$scriptless] = self::canonicalizeLocale($locale);
                 }
             }
@@ -84,6 +101,56 @@ final class NumberingSystemDataImporter
         ksort($inheritance, SORT_STRING);
 
         return ['defaults' => $defaults, 'aliases' => $aliases, 'inheritance' => $inheritance];
+    }
+
+    /** @param array<string, string> $likelySubtags */
+    private static function maximizeLocale(string $locale, array $likelySubtags): ?string
+    {
+        $parts = explode('_', $locale);
+        $language = strtolower($parts[0]);
+        $script = null;
+        $region = null;
+        foreach (array_slice($parts, 1) as $part) {
+            if (strlen($part) === 4) {
+                $script = ucfirst(strtolower($part));
+            } elseif (strlen($part) === 2 || strlen($part) === 3 && ctype_digit($part)) {
+                $region = strtoupper($part);
+            }
+        }
+
+        $candidates = [
+            self::likelySubtagKey($language, $script, $region),
+            self::likelySubtagKey($language, null, $region),
+            self::likelySubtagKey($language, $script, null),
+            self::likelySubtagKey($language, null, null),
+            self::likelySubtagKey('und', $script, $region),
+            self::likelySubtagKey('und', null, $region),
+            self::likelySubtagKey('und', $script, null),
+            'und',
+        ];
+        foreach (array_unique($candidates) as $candidate) {
+            if (!isset($likelySubtags[$candidate])) {
+                continue;
+            }
+
+            $match = explode('_', $likelySubtags[$candidate]);
+
+            return self::canonicalizeLocale(implode('_', [
+                $language === 'und' ? $match[0] : $language,
+                $script ?? $match[1],
+                $region ?? $match[2],
+            ]));
+        }
+
+        return null;
+    }
+
+    private static function likelySubtagKey(string $language, ?string $script, ?string $region): string
+    {
+        return implode('_', array_filter(
+            [$language, $script, $region],
+            static fn(?string $part): bool => $part !== null,
+        ));
     }
 
     /**

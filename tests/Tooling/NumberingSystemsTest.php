@@ -22,9 +22,9 @@ final class NumberingSystemsTest extends TestCase
         /** @var array{sourceEntries: array<string, string>, defaults: array<string, string>, aliases: array<string, string>, inheritance: array<string, string>} $projection */
         $projection = json_decode($source, true, flags: JSON_THROW_ON_ERROR);
 
-        self::assertSame(1124, count($projection['sourceEntries']));
+        self::assertSame(1125, count($projection['sourceEntries']));
         self::assertSame(1122, count($projection['defaults']));
-        self::assertSame(58, count($projection['aliases']));
+        self::assertSame(57, count($projection['aliases']));
         self::assertNotEmpty($projection['inheritance']);
         self::assertSame($projection['defaults'], NumberingSystems::DEFAULTS);
         self::assertSame($projection['aliases'], NumberingSystems::ALIASES);
@@ -32,6 +32,8 @@ final class NumberingSystemsTest extends TestCase
         self::assertSame('arabext', $projection['defaults']['fa']);
         self::assertSame('beng', $projection['defaults']['bn']);
         self::assertSame('mymr', $projection['defaults']['my']);
+        self::assertSame('sr-Cyrl-RS', $projection['aliases']['sr-RS']);
+        self::assertSame('zh-Hans-CN', $projection['aliases']['zh-CN']);
         self::assertNotContains('native', $projection['defaults']);
         self::assertNotContains('traditio', $projection['defaults']);
         self::assertNotContains('finance', $projection['defaults']);
