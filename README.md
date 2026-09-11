@@ -41,3 +41,24 @@ docker compose run --rm php composer data:check
 docker compose run --rm php composer test262:check
 docker compose run --rm php composer test:package
 ```
+
+### Codex local environment
+
+The shared `locale-php` environment is configured in
+[`.codex/environments/environment.toml`](.codex/environments/environment.toml).
+Start Docker Desktop (or a Docker engine with Compose) before using it. Select
+this environment when creating a Codex worktree; setup builds the PHP 8.2 image
+and installs the locked Composer dependencies, including development tools.
+The Test, Analyse, Style, and Verify CI actions run inside that container.
+
+To initialize the current checkout manually, run:
+
+```bash
+docker compose -f compose.yaml -f .codex/compose.yaml build php
+docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer install --no-interaction --no-progress --prefer-dist
+```
+
+The Codex Compose override keeps dependencies and the Composer download cache
+in named Docker volumes. These volumes are shared between worktrees, so rerun
+setup after switching dependency versions and avoid simultaneous installs from
+worktrees with different lockfiles.
