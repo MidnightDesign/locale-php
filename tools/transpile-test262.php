@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\MagoFormatter;
 use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
 use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
 use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
@@ -189,7 +190,7 @@ foreach ($fixtureResults as $result) {
         if (isset($outputs[$path])) {
             throw new RuntimeException('Multiple fixture pipelines generated ' . $path . '.');
         }
-        $outputs[$path] = $contents;
+        $outputs[$path] = MagoFormatter::format($root, $path, $contents);
     }
 }
 

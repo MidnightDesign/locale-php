@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\MagoFormatter;
+
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
 
@@ -124,6 +126,7 @@ $generated = <<<PHP
     }
     PHP;
 $generated .= "\n";
+$generated = MagoFormatter::format($root, 'src/Internal/Data/LocaleAliases.php', $generated);
 
 $target = $root . '/src/Internal/Data/LocaleAliases.php';
 if (in_array('--check', $argv, true)) {

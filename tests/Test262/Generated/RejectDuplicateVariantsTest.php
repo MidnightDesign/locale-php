@@ -19,19 +19,19 @@ final class RejectDuplicateVariantsTest extends TestCase
     public static function invalidTags(): iterable
     {
         foreach (array(
-  0 => 'en-emodeng-emodeng',
-  1 => 'en-Emodeng-emodeng',
-  2 => 'en-emodeng-Emodeng',
-  3 => 'en-variant-emodeng-emodeng',
-  4 => 'en-variant-Emodeng-emodeng',
-  5 => 'en-variant-emodeng-Emodeng',
-  6 => 'en-emodeng-variant-emodeng',
-  7 => 'en-Emodeng-variant-emodeng',
-  8 => 'en-emodeng-variant-Emodeng',
-  9 => 'en-emodeng-emodeng-variant',
-  10 => 'en-Emodeng-emodeng-variant',
-  11 => 'en-emodeng-Emodeng-variant',
-) as $tag) {
+            0 => 'en-emodeng-emodeng',
+            1 => 'en-Emodeng-emodeng',
+            2 => 'en-emodeng-Emodeng',
+            3 => 'en-variant-emodeng-emodeng',
+            4 => 'en-variant-Emodeng-emodeng',
+            5 => 'en-variant-emodeng-Emodeng',
+            6 => 'en-emodeng-variant-emodeng',
+            7 => 'en-Emodeng-variant-emodeng',
+            8 => 'en-emodeng-variant-Emodeng',
+            9 => 'en-emodeng-emodeng-variant',
+            10 => 'en-Emodeng-emodeng-variant',
+            11 => 'en-emodeng-Emodeng-variant',
+        ) as $tag) {
             yield $tag => [$tag];
         }
     }
