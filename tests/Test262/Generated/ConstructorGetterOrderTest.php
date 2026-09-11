@@ -15,12 +15,30 @@ final class ConstructorGetterOrderTest extends TestCase
 {
     public function testTranslatedAssertion(): void
     {
-        self::assertSame([
-            'tag toString', 'get language', 'toString language', 'get script', 'toString script',
-            'get region', 'toString region', 'get variants', 'toString variants',
-            'get calendar', 'toString calendar', 'get collation', 'toString collation',
-            'get hourCycle', 'toString hourCycle', 'get caseFirst', 'toString caseFirst',
-            'get numeric', 'get numberingSystem', 'toString numberingSystem',
-        ], OptionObservation::getterOrder());
+        self::assertSame(
+            [
+                'tag toString',
+                'get language',
+                'toString language',
+                'get script',
+                'toString script',
+                'get region',
+                'toString region',
+                'get variants',
+                'toString variants',
+                'get calendar',
+                'toString calendar',
+                'get collation',
+                'toString collation',
+                'get hourCycle',
+                'toString hourCycle',
+                'get caseFirst',
+                'toString caseFirst',
+                'get numeric',
+                'get numberingSystem',
+                'toString numberingSystem',
+            ],
+            OptionObservation::getterOrder(),
+        );
     }
 }

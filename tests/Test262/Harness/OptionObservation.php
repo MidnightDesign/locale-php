@@ -13,10 +13,11 @@ final class OptionObservation
     public static function getterOrder(): array
     {
         $log = new OptionObservationLog();
-        $tag = new class ($log) implements \Stringable {
-            public function __construct(private OptionObservationLog $log)
-            {
-            }
+        $tag = new class($log) implements \Stringable {
+            public function __construct(
+                private OptionObservationLog $log,
+            ) {}
+
             public function __toString(): string
             {
                 $this->log->entries[] = 'tag toString';
@@ -24,32 +25,45 @@ final class OptionObservation
             }
         };
         $values = [
-            'language' => 'de', 'script' => 'Latn', 'region' => 'DE', 'variants' => 'fonipa-1996',
-            'calendar' => 'gregory', 'collation' => 'zhuyin', 'hourCycle' => 'h24',
-            'caseFirst' => 'upper', 'numeric' => false, 'numberingSystem' => 'latn',
+            'language' => 'de',
+            'script' => 'Latn',
+            'region' => 'DE',
+            'variants' => 'fonipa-1996',
+            'calendar' => 'gregory',
+            'collation' => 'zhuyin',
+            'hourCycle' => 'h24',
+            'caseFirst' => 'upper',
+            'numeric' => false,
+            'numberingSystem' => 'latn',
         ];
-        $options = new class ($log, $values) implements OptionBag {
+        $options = new class($log, $values) implements OptionBag {
             /** @param array<string, string|bool> $values */
-            public function __construct(private OptionObservationLog $log, private array $values)
-            {
-            }
+            public function __construct(
+                private OptionObservationLog $log,
+                private array $values,
+            ) {}
+
             public function has(string $name): bool
             {
                 return array_key_exists($name, $this->values);
             }
+
             public function get(string $name): mixed
             {
-                $this->log->entries[] = 'get '.$name;
+                $this->log->entries[] = 'get ' . $name;
                 if ($name === 'numeric') {
                     return false;
                 }
-                return new class ($name, $this->values[$name], $this->log) implements \Stringable {
-                    public function __construct(private string $name, private string|bool $value, private OptionObservationLog $log)
-                    {
-                    }
+                return new class($name, $this->values[$name], $this->log) implements \Stringable {
+                    public function __construct(
+                        private string $name,
+                        private string|bool $value,
+                        private OptionObservationLog $log,
+                    ) {}
+
                     public function __toString(): string
                     {
-                        $this->log->entries[] = 'toString '.$this->name;
+                        $this->log->entries[] = 'toString ' . $this->name;
                         return (string) $this->value;
                     }
                 };
@@ -64,14 +78,17 @@ final class OptionObservation
     public static function propagates(string $option): bool
     {
         $failure = new OptionObservationError();
-        $options = new class ($option, $failure) implements OptionBag {
-            public function __construct(private string $option, private OptionObservationError $failure)
-            {
-            }
+        $options = new class($option, $failure) implements OptionBag {
+            public function __construct(
+                private string $option,
+                private OptionObservationError $failure,
+            ) {}
+
             public function has(string $name): bool
             {
                 return $name === $this->option;
             }
+
             public function get(string $name): mixed
             {
                 throw $this->failure;
@@ -92,6 +109,4 @@ final class OptionObservationLog
     public array $entries = [];
 }
 
-final class OptionObservationError extends \Exception
-{
-}
+final class OptionObservationError extends \Exception {}

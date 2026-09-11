@@ -17,9 +17,9 @@ final class MappedConstructorOptionPipelineTest extends TestCase
     public function testItBlocksGenerationWhenASourceAssertionHasNoExecution(): void
     {
         $source = <<<'JS'
-assert.sameValue(new Intl.Locale('en').toString(), 'en');
-assert.sameValue(new Intl.Locale('de').toString(), 'de');
-JS;
+            assert.sameValue(new Intl.Locale('en').toString(), 'en');
+            assert.sameValue(new Intl.Locale('de').toString(), 'de');
+            JS;
 
         $result = $this->pipeline([
             ['assertion' => 0, 'tag' => 'en', 'value' => ['type' => 'undefined'], 'expected' => 'en'],

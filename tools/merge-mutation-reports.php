@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Midnight\Intl\Tools\Ci\MatrixMutationScore;
 use Midnight\Intl\Tools\Ci\MutationCampaigns;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 if ($argc !== 3) {
     fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory>\n");
@@ -26,7 +26,12 @@ try {
             $path = sprintf('%s/%s/%s.json', $reportsDirectory, $campaign, $mode);
             $contents = @file_get_contents($path);
             if ($contents === false) {
-                throw new RuntimeException(sprintf('Unable to read %s/%s mutation report at %s.', $campaign, $mode, $path));
+                throw new RuntimeException(sprintf(
+                    'Unable to read %s/%s mutation report at %s.',
+                    $campaign,
+                    $mode,
+                    $path,
+                ));
             }
             $report = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
             if (!is_array($report) || !is_array($report['stats'] ?? null)) {
@@ -46,13 +51,13 @@ try {
     ];
 }
 
-$encoded = json_encode($evidence, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)."\n";
+$encoded = json_encode($evidence, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR) . "\n";
 if (file_put_contents($output, $encoded) === false) {
     throw new RuntimeException(sprintf('Unable to write merged mutation evidence at %s.', $output));
 }
 
 if (isset($evidence['error'])) {
-    fwrite(STDERR, $evidence['error']."\n");
+    fwrite(STDERR, $evidence['error'] . "\n");
 }
 
 exit($evidence['passing'] ? 0 : 1);

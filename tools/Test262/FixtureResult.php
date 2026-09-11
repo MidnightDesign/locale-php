@@ -17,15 +17,12 @@ final class FixtureResult
         array $identities,
         TranslationGap $gap,
     ): self {
-        $reason = 'Translation gap: '.$gap->getMessage();
-        $assertions = array_map(
-            static fn (array $assertion): array => [
-                ...$assertion,
-                'status' => 'translation_gap',
-                'reason' => $reason,
-            ],
-            $identities,
-        );
+        $reason = 'Translation gap: ' . $gap->getMessage();
+        $assertions = array_map(static fn(array $assertion): array => [
+            ...$assertion,
+            'status' => 'translation_gap',
+            'reason' => $reason,
+        ], $identities);
 
         return new self(
             $path,
@@ -56,8 +53,7 @@ final class FixtureResult
         private readonly int $executionFailures,
         private readonly array $generatedFiles,
         private readonly ?string $reason = null,
-    ) {
-    }
+    ) {}
 
     /** @return array<string, string> */
     public function generatedFiles(): array
@@ -107,7 +103,7 @@ final class FixtureResult
     {
         return count(array_filter(
             $this->assertions,
-            static fn (array $assertion): bool => ($assertion['status'] ?? null) === 'translation_gap',
+            static fn(array $assertion): bool => ($assertion['status'] ?? null) === 'translation_gap',
         ));
     }
 

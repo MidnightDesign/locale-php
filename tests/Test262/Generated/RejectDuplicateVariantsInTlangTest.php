@@ -19,19 +19,19 @@ final class RejectDuplicateVariantsInTlangTest extends TestCase
     public static function invalidTags(): iterable
     {
         foreach (array(
-  0 => 'de-t-en-emodeng-emodeng',
-  1 => 'de-t-en-Emodeng-emodeng',
-  2 => 'de-t-en-emodeng-Emodeng',
-  3 => 'de-t-en-variant-emodeng-emodeng',
-  4 => 'de-t-en-variant-Emodeng-emodeng',
-  5 => 'de-t-en-variant-emodeng-Emodeng',
-  6 => 'de-t-en-emodeng-variant-emodeng',
-  7 => 'de-t-en-Emodeng-variant-emodeng',
-  8 => 'de-t-en-emodeng-variant-Emodeng',
-  9 => 'de-t-en-emodeng-emodeng-variant',
-  10 => 'de-t-en-Emodeng-emodeng-variant',
-  11 => 'de-t-en-emodeng-Emodeng-variant',
-) as $tag) {
+            0 => 'de-t-en-emodeng-emodeng',
+            1 => 'de-t-en-Emodeng-emodeng',
+            2 => 'de-t-en-emodeng-Emodeng',
+            3 => 'de-t-en-variant-emodeng-emodeng',
+            4 => 'de-t-en-variant-Emodeng-emodeng',
+            5 => 'de-t-en-variant-emodeng-Emodeng',
+            6 => 'de-t-en-emodeng-variant-emodeng',
+            7 => 'de-t-en-Emodeng-variant-emodeng',
+            8 => 'de-t-en-emodeng-variant-Emodeng',
+            9 => 'de-t-en-emodeng-emodeng-variant',
+            10 => 'de-t-en-Emodeng-emodeng-variant',
+            11 => 'de-t-en-emodeng-Emodeng-variant',
+        ) as $tag) {
             yield $tag => [$tag];
         }
     }

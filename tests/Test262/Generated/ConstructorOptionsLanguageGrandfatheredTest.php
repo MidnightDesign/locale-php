@@ -19,68 +19,66 @@ final class ConstructorOptionsLanguageGrandfatheredTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'case-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L21:C1:assert.throws',
-    1 => 'nb',
-    2 => 'language',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'no-bok',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-  ),
-  'case-1-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L21:C1:assert.throws',
-    1 => 'nb',
-    2 => 'language',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'no-bok',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-  ),
-  'case-2-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws',
-    1 => 'nb',
-    2 => 'language',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'no-bok',
-    ),
-    4 => 'associative_array',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-  ),
-  'case-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws',
-    1 => 'nb',
-    2 => 'language',
-    3 =>
-    array(
-      'type' => 'string',
-      'value' => 'no-bok',
-    ),
-    4 => 'plain_object',
-    5 => 'Midnight\\Intl\\Exception\\RangeError',
-  ),
-);
+            'case-1-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L21:C1:assert.throws',
+                1 => 'nb',
+                2 => 'language',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'no-bok',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+            ),
+            'case-1-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L21:C1:assert.throws',
+                1 => 'nb',
+                2 => 'language',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'no-bok',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+            ),
+            'case-2-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws',
+                1 => 'nb',
+                2 => 'language',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'no-bok',
+                ),
+                4 => 'associative_array',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+            ),
+            'case-2-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws',
+                1 => 'nb',
+                2 => 'language',
+                3 => array(
+                    'type' => 'string',
+                    'value' => 'no-bok',
+                ),
+                4 => 'plain_object',
+                5 => 'Midnight\\Intl\\Exception\\RangeError',
+            ),
+        );
     }
 
     /** @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} $value */
     #[DataProvider('cases')]
-    public function testTranslatedAssertions(string $assertionId, string $tag, string $optionName, array $value, string $representation, string $expected): void
-    {
+    public function testTranslatedAssertions(
+        string $assertionId,
+        string $tag,
+        string $optionName,
+        array $value,
+        string $representation,
+        string $expected,
+    ): void {
         $result = $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
             : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected);
-        self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
+        self::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
     }
 }

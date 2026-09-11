@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 if ($argc < 6 || $argc > 7) {
-    fwrite(STDERR, "Usage: php tools/assert-ci-runtime.php <integer-size> <thread-safe:true|false> <os-family> <architecture> <php-minor> [icu-version]\n");
+    fwrite(
+        STDERR,
+        "Usage: php tools/assert-ci-runtime.php <integer-size> <thread-safe:true|false> <os-family> <architecture> <php-minor> [icu-version]\n",
+    );
     exit(2);
 }
 
@@ -16,7 +19,11 @@ if (PHP_INT_SIZE !== $integerSize) {
     throw new RuntimeException(sprintf('Expected %d-byte integers; got %d.', $integerSize, PHP_INT_SIZE));
 }
 if ((PHP_ZTS === 1) !== $threadSafe) {
-    throw new RuntimeException(sprintf('Expected threadSafe=%s; got %s.', $threadSafe ? 'true' : 'false', PHP_ZTS === 1 ? 'true' : 'false'));
+    throw new RuntimeException(sprintf(
+        'Expected threadSafe=%s; got %s.',
+        $threadSafe ? 'true' : 'false',
+        PHP_ZTS === 1 ? 'true' : 'false',
+    ));
 }
 
 $expectedOsFamily = $argv[3];
@@ -34,9 +41,7 @@ if ($actualArchitecture !== $argv[4]) {
     throw new RuntimeException(sprintf('Expected architecture %s; got %s.', $argv[4], php_uname('m')));
 }
 
-$actualPhp = substr_count($argv[5], '.') === 2
-    ? PHP_VERSION
-    : PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;
+$actualPhp = substr_count($argv[5], '.') === 2 ? PHP_VERSION : PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
 if ($actualPhp !== $argv[5]) {
     throw new RuntimeException(sprintf('Expected PHP %s; got %s.', $argv[5], PHP_VERSION));
 }

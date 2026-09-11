@@ -43,10 +43,7 @@ final class AssertionIdentityExtractor
                 'line' => $line,
                 'column' => $column,
                 'call' => $call,
-                'sha256' => hash(
-                    'sha256',
-                    substr($source, $callOffset, $closeParenthesis - $callOffset + 1),
-                ),
+                'sha256' => hash('sha256', substr($source, $callOffset, $closeParenthesis - $callOffset + 1)),
             ];
         }
 
@@ -246,10 +243,26 @@ final class AssertionIdentityExtractor
         }
         $word = substr($mask, $previous + 1, $end - $previous);
 
-        return in_array($word, [
-            'await', 'case', 'delete', 'do', 'else', 'in', 'instanceof', 'new',
-            'of', 'return', 'throw', 'typeof', 'void', 'yield',
-        ], true);
+        return in_array(
+            $word,
+            [
+                'await',
+                'case',
+                'delete',
+                'do',
+                'else',
+                'in',
+                'instanceof',
+                'new',
+                'of',
+                'return',
+                'throw',
+                'typeof',
+                'void',
+                'yield',
+            ],
+            true,
+        );
     }
 
     private function blank(string &$mask, int $offset): void
