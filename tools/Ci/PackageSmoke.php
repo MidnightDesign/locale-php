@@ -31,7 +31,13 @@ final class PackageSmoke
                 json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
             );
 
-            self::run(['composer', 'install', '--no-interaction', '--no-plugins', '--no-scripts'], $consumerDirectory);
+            self::run([
+                ...self::composerCommand(),
+                'install',
+                '--no-interaction',
+                '--no-plugins',
+                '--no-scripts',
+            ], $consumerDirectory);
             self::run([
                 PHP_BINARY,
                 '-r',
@@ -40,6 +46,17 @@ final class PackageSmoke
         } finally {
             self::removeDirectory($workDirectory);
         }
+    }
+
+    /** @return non-empty-list<string> */
+    public static function composerCommand(): array
+    {
+        $composerBinary = getenv('COMPOSER_BINARY');
+        if (is_string($composerBinary) && $composerBinary !== '') {
+            return [PHP_BINARY, $composerBinary];
+        }
+
+        return ['composer'];
     }
 
     /** @param list<string> $command */
