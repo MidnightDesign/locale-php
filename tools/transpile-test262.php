@@ -36,6 +36,51 @@ function writeRequiredFile(string $path, string $contents): void
     }
 }
 
+/** @return list<string> */
+function generatedPhpFiles(string $root): array
+{
+    $directory = $root.'/tests/Test262/Generated';
+    if (!is_dir($directory)) {
+        return [];
+    }
+
+    $paths = [];
+    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
+        $directory,
+        RecursiveDirectoryIterator::SKIP_DOTS,
+    ));
+    foreach ($files as $file) {
+        /** @var SplFileInfo $file */
+        if (!$file->isFile() || $file->getExtension() !== 'php') {
+            continue;
+        }
+
+        $paths[] = str_replace('\\', '/', substr($file->getPathname(), strlen($root) + 1));
+    }
+    sort($paths);
+
+    return $paths;
+}
+
+function removeEmptyGeneratedDirectories(string $root): void
+{
+    $directory = $root.'/tests/Test262/Generated';
+    if (!is_dir($directory)) {
+        return;
+    }
+
+    $directories = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::CHILD_FIRST,
+    );
+    foreach ($directories as $candidate) {
+        /** @var SplFileInfo $candidate */
+        if ($candidate->isDir()) {
+            @rmdir($candidate->getPathname());
+        }
+    }
+}
+
 /** @var array{
  *     initial: array{
  *         ecma402: array{
@@ -77,8 +122,6 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/ConstructorUnicodeExtensionInvalidTest.php',
-        'ConstructorUnicodeExtensionInvalidTest',
     ),
     'test/intl402/Locale/constructor-unicode-ext-valid.js' => new IdentifierCanonicalizationPipeline(
         $assertionIdentities,
@@ -94,15 +137,11 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/RejectDuplicateVariantsTest.php',
-        'RejectDuplicateVariantsTest',
     ),
     'test/intl402/Locale/reject-duplicate-variants-in-tlang.js' => new IdentifierRejectionPipeline(
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/RejectDuplicateVariantsInTlangTest.php',
-        'RejectDuplicateVariantsInTlangTest',
     ),
     'test/intl402/Locale/constructor-options-script-valid.js' => new ConstructorFixturePipeline(
         new ConstructorOptionsScriptTranslator($assertionIdentities),
@@ -209,6 +248,28 @@ foreach ($fixtureResults as $result) {
 }
 
 $check = in_array('--check', $argv, true);
+$expectedGeneratedFiles = array_values(array_filter(
+    array_keys($outputs),
+    static fn (string $path): bool => str_starts_with($path, 'tests/Test262/Generated/'),
+));
+sort($expectedGeneratedFiles);
+$staleGeneratedFiles = array_values(array_diff(generatedPhpFiles($root), $expectedGeneratedFiles));
+if ($staleGeneratedFiles !== []) {
+    if ($check) {
+        foreach ($staleGeneratedFiles as $path) {
+            fwrite(STDERR, $path." is stale.\n");
+        }
+        exit(1);
+    }
+
+    foreach ($staleGeneratedFiles as $path) {
+        if (!unlink($root.'/'.$path)) {
+            throw new RuntimeException('Unable to remove stale generated script '.$path.'.');
+        }
+    }
+    removeEmptyGeneratedDirectories($root);
+}
+
 foreach ($outputs as $path => $contents) {
     $absolutePath = $root.'/'.$path;
     if ($check) {

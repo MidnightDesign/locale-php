@@ -161,10 +161,11 @@ final class WorkflowContract
             self::read($root.'/phpunit.xml.dist', $failures),
             [
                 '<testsuite name="test262-upstream">',
-                '<directory>tests/Test262/Generated</directory>',
+                '<file>tests/Test262/RunnerTest.php</file>',
                 '<testsuite name="porcelain">',
                 '<file>tests/LocaleTest.php</file>',
                 '<exclude>tests/Test262/Generated</exclude>',
+                '<exclude>tests/Test262/RunnerTest.php</exclude>',
                 '<exclude>tests/LocaleTest.php</exclude>',
             ],
             'phpunit.xml.dist',

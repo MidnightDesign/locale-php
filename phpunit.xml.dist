@@ -11,10 +11,11 @@
         <testsuite name="unit">
             <directory>tests</directory>
             <exclude>tests/Test262/Generated</exclude>
+            <exclude>tests/Test262/RunnerTest.php</exclude>
             <exclude>tests/LocaleTest.php</exclude>
         </testsuite>
         <testsuite name="test262-upstream">
-            <directory>tests/Test262/Generated</directory>
+            <file>tests/Test262/RunnerTest.php</file>
         </testsuite>
         <testsuite name="porcelain">
             <file>tests/LocaleTest.php</file>

@@ -63,7 +63,7 @@ final class ConstructorFixturePipeline implements FixturePipeline
         $adaptations = [
             'The JavaScript options object is exercised as both an associative array and a plain PHP object.',
             'The JavaScript toString method object is represented by an equivalent PHP Stringable object.',
-            'The JavaScript loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage.',
+            'The JavaScript loop is expanded into fixture-local PHP checks without multiplying upstream assertion coverage.',
         ];
         $assertions = [];
         foreach ($translation['assertions'] as $assertion) {
@@ -95,7 +95,7 @@ final class ConstructorFixturePipeline implements FixturePipeline
             $assertions,
             count($executionResults),
             $failureCount,
-            ['tests/Test262/Generated/ConstructorOptionsScriptValidTest.php' => $this->render($generatedCases, $fixturePath)],
+            [GeneratedScript::pathFor($fixturePath) => $this->render($generatedCases, $fixturePath)],
         );
     }
 
@@ -125,51 +125,23 @@ declare(strict_types=1);
 // Source: {$fixturePath} at Test262 {$this->test262Revision}.
 // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
-
 use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-final class ConstructorOptionsScriptValidTest extends TestCase
-{
-    /**
-     * @return array<string, array{
-     *     string,
-     *     string,
-     *     array{type: 'null'}|array{type: 'string'|'stringable', value: string},
-     *     string,
-     *     string
-     * }>
-     */
-    public static function cases(): array
-    {
-        return {$caseExport};
-    }
+foreach ({$caseExport} as [\$assertionId, \$tag, \$optionValue, \$representation, \$expected]) {
+    \$result = ConstructorOptionAssertion::evaluate(
+        \$tag,
+        'script',
+        \$optionValue,
+        \$representation,
+        \$expected,
+    );
 
-    /** @param array{type: 'null'}|array{type: 'string'|'stringable', value: string} \$optionValue */
-    #[DataProvider('cases')]
-    public function testTranslatedAssertions(
-        string \$assertionId,
-        string \$tag,
-        array \$optionValue,
-        string \$representation,
-        string \$expected,
-    ): void {
-        \$result = ConstructorOptionAssertion::evaluate(
-            \$tag,
-            'script',
-            \$optionValue,
-            \$representation,
-            \$expected,
-        );
-
-        self::assertSame(
-            'passing',
-            \$result['status'],
-            \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'),
-        );
-    }
+    Assert::assertSame(
+        'passing',
+        \$result['status'],
+        \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'),
+    );
 }
 PHP;
 

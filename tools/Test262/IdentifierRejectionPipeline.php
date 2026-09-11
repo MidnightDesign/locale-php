@@ -14,8 +14,6 @@ final class IdentifierRejectionPipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-        private readonly string $generatedPath,
-        private readonly string $className,
     ) {
     }
 
@@ -49,7 +47,7 @@ final class IdentifierRejectionPipeline implements FixturePipeline
                 ...$identity,
                 'status' => $identity['call'] === 'assert.throws' && $failures > 0 ? 'failing' : 'passing',
                 'adaptations' => $identity['call'] === 'assert.throws'
-                    ? ['The JavaScript helper calls are expanded into named PHPUnit data sets.']
+                    ? ['The JavaScript helper calls are expanded into fixture-local PHP checks.']
                     : ['JavaScript constructor availability is represented by direct PHP class availability.'],
             ],
             $identities,
@@ -63,7 +61,7 @@ final class IdentifierRejectionPipeline implements FixturePipeline
             $assertions,
             count($tags) + (count($identities) > 1 ? 1 : 0),
             $failures,
-            [$this->generatedPath => $this->render($tags, $fixturePath)],
+            [GeneratedScript::pathFor($fixturePath) => $this->render($tags, $fixturePath)],
         );
     }
 
@@ -88,8 +86,6 @@ final class IdentifierRejectionPipeline implements FixturePipeline
         if ($export === null) {
             throw new \RuntimeException('Unable to format the generated rejection cases.');
         }
-        $className = $this->className;
-
         $generated = <<<PHP
 <?php
 
@@ -99,30 +95,19 @@ declare(strict_types=1);
 // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
 // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
-
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-final class {$className} extends TestCase
-{
-    /** @return iterable<string, array{string}> */
-    public static function invalidTags(): iterable
-    {
-        foreach ({$export} as \$tag) {
-            yield \$tag => [\$tag];
-        }
-    }
-
-    #[DataProvider('invalidTags')]
-    public function testTranslatedRangeErrorAssertion(string \$tag): void
-    {
-        \$this->expectException(RangeError::class);
-
+foreach ({$export} as \$tag) {
+    \$rejected = false;
+    try {
         new Locale(\$tag);
+    } catch (RangeError) {
+        \$rejected = true;
     }
+
+    Assert::assertTrue(\$rejected, 'Expected RangeError for '.\$tag.'.');
 }
 PHP;
 

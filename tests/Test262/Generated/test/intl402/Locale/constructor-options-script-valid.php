@@ -7,26 +7,10 @@ declare(strict_types=1);
 // Source: test/intl402/Locale/constructor-options-script-valid.js at Test262 419d3e0a2273ba01a3bfcbec423f2801425b8e93.
 // Spec baseline: ECMA-402 b1c961988b9a07894b1dc3dc2b5626ea48387d61; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
-
 use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-final class ConstructorOptionsScriptValidTest extends TestCase
-{
-    /**
-     * @return array<string, array{
-     *     string,
-     *     string,
-     *     array{type: 'null'}|array{type: 'string'|'stringable', value: string},
-     *     string,
-     *     string
-     * }>
-     */
-    public static function cases(): array
-    {
-        return array(
+foreach (array(
   'option-1-assertion-1-associative_array' =>
   array(
     0 => 'test/intl402/Locale/constructor-options-script-valid.js:L43:C3:assert.sameValue',
@@ -381,30 +365,18 @@ final class ConstructorOptionsScriptValidTest extends TestCase
     3 => 'plain_object',
     4 => 'en-Brai',
   ),
-);
-    }
+) as [$assertionId, $tag, $optionValue, $representation, $expected]) {
+    $result = ConstructorOptionAssertion::evaluate(
+        $tag,
+        'script',
+        $optionValue,
+        $representation,
+        $expected,
+    );
 
-    /** @param array{type: 'null'}|array{type: 'string'|'stringable', value: string} $optionValue */
-    #[DataProvider('cases')]
-    public function testTranslatedAssertions(
-        string $assertionId,
-        string $tag,
-        array $optionValue,
-        string $representation,
-        string $expected,
-    ): void {
-        $result = ConstructorOptionAssertion::evaluate(
-            $tag,
-            'script',
-            $optionValue,
-            $representation,
-            $expected,
-        );
-
-        self::assertSame(
-            'passing',
-            $result['status'],
-            $assertionId.': '.($result['failure'] ?? 'unknown failure'),
-        );
-    }
+    Assert::assertSame(
+        'passing',
+        $result['status'],
+        $assertionId.': '.($result['failure'] ?? 'unknown failure'),
+    );
 }

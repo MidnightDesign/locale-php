@@ -58,12 +58,12 @@ final class IdentifierCanonicalizationPipeline implements FixturePipeline
                 ...$identities[0],
                 'status' => $failures === 0 ? 'passing' : 'failing',
                 'adaptations' => [
-                    'The JavaScript object iteration is expanded into named PHPUnit data sets.',
+                    'The JavaScript object iteration is expanded into fixture-local PHP checks.',
                 ],
             ]],
             count($cases),
             $failures,
-            ['tests/Test262/Generated/IdentifierCanonicalizationTest.php' => $this->render($cases, $fixturePath)],
+            [GeneratedScript::pathFor($fixturePath) => $this->render($cases, $fixturePath)],
         );
     }
 
@@ -85,27 +85,11 @@ declare(strict_types=1);
 // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
 // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
-
 use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-final class IdentifierCanonicalizationTest extends TestCase
-{
-    /** @return iterable<string, array{string, string}> */
-    public static function cases(): iterable
-    {
-        foreach ({$export} as \$tag => \$expected) {
-            yield \$tag => [\$tag, \$expected];
-        }
-    }
-
-    #[DataProvider('cases')]
-    public function testTranslatedCanonicalizationAssertion(string \$tag, string \$expected): void
-    {
-        self::assertSame(\$expected, (new Locale(\$tag))->toString());
-    }
+foreach ({$export} as \$tag => \$expected) {
+    Assert::assertSame(\$expected, (new Locale(\$tag))->toString());
 }
 PHP;
 

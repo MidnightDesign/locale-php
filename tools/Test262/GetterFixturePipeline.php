@@ -92,7 +92,7 @@ final class GetterFixturePipeline implements FixturePipeline
             $assertions,
             count($assertions),
             0,
-            ['tests/Test262/Generated/GettersMissingTest.php' => $this->render($rows, $fixturePath)],
+            [GeneratedScript::pathFor($fixturePath) => $this->render($rows, $fixturePath)],
         );
     }
 
@@ -114,33 +114,14 @@ declare(strict_types=1);
 // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
 // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
-
 use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 
-final class GettersMissingTest extends TestCase
-{
-    /** @return list<array{string, array<string, string|null>}> */
-    public static function cases(): array
-    {
-        return array_map(
-            static fn (array \$expected, string \$tag): array => [\$tag, \$expected],
-            {$export},
-            array_keys({$export}),
-        );
-    }
+foreach ({$export} as \$tag => \$expected) {
+    \$locale = new Locale(\$tag);
 
-    /** @param array<string, string|null> \$expected */
-    #[DataProvider('cases')]
-    public function testTranslatedGetterAssertions(string \$tag, array \$expected): void
-    {
-        \$locale = new Locale(\$tag);
-
-        foreach (\$expected as \$property => \$value) {
-            self::assertSame(\$value, \$locale->{\$property});
-        }
+    foreach (\$expected as \$property => \$value) {
+        Assert::assertSame(\$value, \$locale->{\$property});
     }
 }
 PHP;

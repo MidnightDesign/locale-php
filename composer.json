@@ -83,6 +83,7 @@
         "data:check": "php tools/generate-data.php --check",
         "data:verify-sources": "php tools/verify-data-sources.php",
         "test262:generate": "php tools/transpile-test262.php",
-        "test262:check": "php tools/transpile-test262.php --check"
+        "test262:check": "php tools/transpile-test262.php --check",
+        "test262:run": "phpunit --testsuite test262-upstream"
     }
 }

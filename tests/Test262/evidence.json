@@ -118,7 +118,7 @@
                     "sha256": "1d1802f6ca19354e9381a59b334419d04e3d0cf15fa83c0a412c66a6a4b7e52d",
                     "status": "passing",
                     "adaptations": [
-                        "The JavaScript helper calls are expanded into named PHPUnit data sets."
+                        "The JavaScript helper calls are expanded into fixture-local PHP checks."
                     ]
                 }
             ]
@@ -143,7 +143,7 @@
                     "sha256": "799f5eb12d10fcf1f721361da515eec18cab886c62075e55ab85482ffdae6909",
                     "status": "passing",
                     "adaptations": [
-                        "The JavaScript object iteration is expanded into named PHPUnit data sets."
+                        "The JavaScript object iteration is expanded into fixture-local PHP checks."
                     ]
                 }
             ]
@@ -413,7 +413,7 @@
                     "sha256": "419c12317700789a960491656bef531c60e2e0cf2f92e1981df789b7882a1b1c",
                     "status": "passing",
                     "adaptations": [
-                        "The JavaScript helper calls are expanded into named PHPUnit data sets."
+                        "The JavaScript helper calls are expanded into fixture-local PHP checks."
                     ]
                 }
             ]
@@ -449,7 +449,7 @@
                     "sha256": "419c12317700789a960491656bef531c60e2e0cf2f92e1981df789b7882a1b1c",
                     "status": "passing",
                     "adaptations": [
-                        "The JavaScript helper calls are expanded into named PHPUnit data sets."
+                        "The JavaScript helper calls are expanded into fixture-local PHP checks."
                     ]
                 }
             ]
@@ -477,7 +477,7 @@
                     "adaptations": [
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
                         "The JavaScript toString method object is represented by an equivalent PHP Stringable object.",
-                        "The JavaScript loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage."
+                        "The JavaScript loop is expanded into fixture-local PHP checks without multiplying upstream assertion coverage."
                     ],
                     "executions": [
                         {
@@ -562,7 +562,7 @@
                     "adaptations": [
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
                         "The JavaScript toString method object is represented by an equivalent PHP Stringable object.",
-                        "The JavaScript loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage."
+                        "The JavaScript loop is expanded into fixture-local PHP checks without multiplying upstream assertion coverage."
                     ],
                     "executions": [
                         {
@@ -647,7 +647,7 @@
                     "adaptations": [
                         "The JavaScript options object is exercised as both an associative array and a plain PHP object.",
                         "The JavaScript toString method object is represented by an equivalent PHP Stringable object.",
-                        "The JavaScript loop is expanded into named PHPUnit data sets without multiplying upstream assertion coverage."
+                        "The JavaScript loop is expanded into fixture-local PHP checks without multiplying upstream assertion coverage."
                     ],
                     "executions": [
                         {
