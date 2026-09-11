@@ -54,6 +54,7 @@
             "sourceCopies": {
                 "test/intl402/Locale/constructor-options-calendar-invalid.js": "2bc75ead4cdd03ab2eb742930d73395832134dd5c69ab4b0c00418c351e26b1a",
                 "test/intl402/Locale/constructor-options-calendar-valid.js": "e30190ad76b38bdd07d9ce24529ac7b34d6da320e0df07272dd57195e2084517",
+                "test/intl402/Locale/constructor-options-canonicalized.js": "5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613",
                 "test/intl402/Locale/constructor-options-casefirst-invalid.js": "9148cb991c017d5dad7eaf1736cca3322d137ab1f960ae3bfaa4a9ab65e88a06",
                 "test/intl402/Locale/constructor-options-casefirst-valid.js": "abb926d4d19763f5a4bf6169b2d156714c8300aac95b73b185026a259eac4449",
                 "test/intl402/Locale/constructor-options-collation-invalid.js": "bfa787a24721a492dbfc3a4cf18987a6ceb90b31ffe25a203d38978ac1954c80",

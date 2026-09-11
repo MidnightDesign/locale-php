@@ -212,18 +212,12 @@ class Locale
             $value = $value->value;
         }
 
-        if (is_string($value) || is_int($value)) {
-            return (string) $value;
-        }
+        if (is_string($value) || is_int($value) || is_float($value)) {
+            if ($value === -0.0) {
+                return '0';
+            }
 
-        if (is_float($value)) {
-            return match (true) {
-                is_nan($value) => 'NaN',
-                $value === INF => 'Infinity',
-                $value === -INF => '-Infinity',
-                $value === 0.0 => '0',
-                default => (string) $value,
-            };
+            return (string) $value;
         }
 
         if ($value === null) {
@@ -254,10 +248,10 @@ class Locale
         }
 
         $value = self::toStringValue($option->value);
-        if (preg_match('/^[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*$/D', $value) !== 1) {
+        if (preg_match('/\A[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*\z/', $value) !== 1) {
             throw new RangeError(sprintf('Invalid %s option: "%s".', $optionName, $value));
         }
-        $identifier->setKeyword($key, strtolower($value));
+        $identifier->setKeyword($key, $value);
     }
 
     /**
@@ -302,7 +296,7 @@ class Locale
             '6' => 'sat',
             default => $value,
         };
-        if (preg_match('/^[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*$/D', $value) !== 1) {
+        if (preg_match('/\A[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*\z/', $value) !== 1) {
             throw new RangeError(sprintf('Invalid firstDayOfWeek option: "%s".', $value));
         }
         $identifier->setKeyword('fw', $value);
@@ -321,15 +315,10 @@ class Locale
 
     private static function toBooleanValue(mixed $value): bool
     {
-        return match (true) {
-            $value === null,
-            $value === false,
-            $value === 0,
-            $value === 0.0,
-            is_float($value) && is_nan($value),
-            $value === '',
-                => false,
-            default => true,
-        };
+        if (is_float($value) && is_nan($value)) {
+            return false;
+        }
+
+        return (bool) $value;
     }
 }

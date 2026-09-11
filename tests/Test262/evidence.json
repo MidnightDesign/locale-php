@@ -59,6 +59,7 @@
             "sourceCopies": {
                 "test/intl402/Locale/constructor-options-calendar-invalid.js": "2bc75ead4cdd03ab2eb742930d73395832134dd5c69ab4b0c00418c351e26b1a",
                 "test/intl402/Locale/constructor-options-calendar-valid.js": "e30190ad76b38bdd07d9ce24529ac7b34d6da320e0df07272dd57195e2084517",
+                "test/intl402/Locale/constructor-options-canonicalized.js": "5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613",
                 "test/intl402/Locale/constructor-options-casefirst-invalid.js": "9148cb991c017d5dad7eaf1736cca3322d137ab1f960ae3bfaa4a9ab65e88a06",
                 "test/intl402/Locale/constructor-options-casefirst-valid.js": "abb926d4d19763f5a4bf6169b2d156714c8300aac95b73b185026a259eac4449",
                 "test/intl402/Locale/constructor-options-collation-invalid.js": "bfa787a24721a492dbfc3a4cf18987a6ceb90b31ffe25a203d38978ac1954c80",
@@ -119,8 +120,8 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 38,
-        "passingFixtures": 38,
+        "translatedFixtures": 39,
+        "passingFixtures": 39,
         "partiallyTranslatedFixtures": 0,
         "translationGaps": 470,
         "executionFailures": 0
@@ -1552,7 +1553,7 @@
             "status": "passing",
             "reason": null,
             "sourceAssertionCount": 2,
-            "executionCount": 92,
+            "executionCount": 100,
             "executionFailures": 0,
             "phpRepresentations": [
                 "direct",
@@ -1894,6 +1895,34 @@
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
+                        },
+                        {
+                            "id": "case-93-associative_array",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "sun"
+                        },
+                        {
+                            "id": "case-94-plain_object",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "sun"
+                        },
+                        {
+                            "id": "case-97-associative_array",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "sun"
+                        },
+                        {
+                            "id": "case-98-plain_object",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "sun"
                         }
                     ]
                 },
@@ -2231,6 +2260,194 @@
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
+                        },
+                        {
+                            "id": "case-95-associative_array",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "sun"
+                        },
+                        {
+                            "id": "case-96-plain_object",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "sun"
+                        },
+                        {
+                            "id": "case-99-associative_array",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "sun"
+                        },
+                        {
+                            "id": "case-100-plain_object",
+                            "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "sun"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/constructor-options-canonicalized.js",
+            "sha256": "5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 4,
+            "executionCount": 12,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct",
+                "associative_array",
+                "plain_object"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
+                    "line": 36,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "939e4732ee5da4c075f0299f0e06cc88cbff04515fd5d3bf23cdb9ce9f34f72b",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript getter assertion is observed through the corresponding PHP readable property.",
+                        "JavaScript undefined getter results map to PHP null.",
+                        "Options-object scenarios run with associative-array and plain-object representations."
+                    ],
+                    "executions": [
+                        {
+                            "id": "case-1-direct",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
+                            "representation": "direct",
+                            "status": "passing",
+                            "actual": "islamic-civil"
+                        },
+                        {
+                            "id": "case-7-direct",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
+                            "representation": "direct",
+                            "status": "passing",
+                            "actual": "ethioaa"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
+                    "line": 45,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "25dfc13a7a036b7eee16f5507fbbb8eac6824f9f6400098665553a14a483eab0",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript getter assertion is observed through the corresponding PHP readable property.",
+                        "JavaScript undefined getter results map to PHP null.",
+                        "Options-object scenarios run with associative-array and plain-object representations."
+                    ],
+                    "executions": [
+                        {
+                            "id": "case-2-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "islamic-civil"
+                        },
+                        {
+                            "id": "case-3-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "islamic-civil"
+                        },
+                        {
+                            "id": "case-8-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "ethioaa"
+                        },
+                        {
+                            "id": "case-9-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "ethioaa"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
+                    "line": 54,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "6029ba287d7d0a04e94406efabd7b356ef3a3f6ecda2efff2a9a8a01da385469",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript getter assertion is observed through the corresponding PHP readable property.",
+                        "JavaScript undefined getter results map to PHP null.",
+                        "Options-object scenarios run with associative-array and plain-object representations."
+                    ],
+                    "executions": [
+                        {
+                            "id": "case-4-direct",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
+                            "representation": "direct",
+                            "status": "passing",
+                            "actual": "islamic-civil"
+                        },
+                        {
+                            "id": "case-10-direct",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
+                            "representation": "direct",
+                            "status": "passing",
+                            "actual": "ethioaa"
+                        }
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
+                    "line": 63,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "248daaec26a5110589bb027f85df354983cc15c6cc67b1069536b3628bc12208",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript getter assertion is observed through the corresponding PHP readable property.",
+                        "JavaScript undefined getter results map to PHP null.",
+                        "Options-object scenarios run with associative-array and plain-object representations."
+                    ],
+                    "executions": [
+                        {
+                            "id": "case-5-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "islamic-civil"
+                        },
+                        {
+                            "id": "case-6-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "islamic-civil"
+                        },
+                        {
+                            "id": "case-11-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "ethioaa"
+                        },
+                        {
+                            "id": "case-12-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "ethioaa"
                         }
                     ]
                 }
@@ -5314,7 +5531,7 @@
             "status": "passing",
             "reason": null,
             "sourceAssertionCount": 3,
-            "executionCount": 48,
+            "executionCount": 60,
             "executionFailures": 0,
             "phpRepresentations": [
                 "associative_array",
@@ -5395,28 +5612,28 @@
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-13-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-16-associative_array",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-16-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-19-associative_array",
@@ -5441,6 +5658,34 @@
                         },
                         {
                             "id": "case-22-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-25-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-25-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-28-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-28-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -5522,28 +5767,28 @@
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-14-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-17-associative_array",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-17-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
-                            "actual": "en-u-kn"
+                            "actual": "en-u-kn-false"
                         },
                         {
                             "id": "case-20-associative_array",
@@ -5568,6 +5813,34 @@
                         },
                         {
                             "id": "case-23-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-26-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-26-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-29-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": "en-u-kn"
+                        },
+                        {
+                            "id": "case-29-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -5649,28 +5922,28 @@
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
-                            "actual": true
+                            "actual": false
                         },
                         {
                             "id": "case-15-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
-                            "actual": true
+                            "actual": false
                         },
                         {
                             "id": "case-18-associative_array",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
-                            "actual": true
+                            "actual": false
                         },
                         {
                             "id": "case-18-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
-                            "actual": true
+                            "actual": false
                         },
                         {
                             "id": "case-21-associative_array",
@@ -5695,6 +5968,34 @@
                         },
                         {
                             "id": "case-24-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": true
+                        },
+                        {
+                            "id": "case-27-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": true
+                        },
+                        {
+                            "id": "case-27-plain_object",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
+                            "representation": "plain_object",
+                            "status": "passing",
+                            "actual": true
+                        },
+                        {
+                            "id": "case-30-associative_array",
+                            "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
+                            "representation": "associative_array",
+                            "status": "passing",
+                            "actual": true
+                        },
+                        {
+                            "id": "case-30-plain_object",
                             "assertionId": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",

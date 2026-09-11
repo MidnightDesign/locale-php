@@ -938,6 +938,86 @@ final class FirstDayOfWeekValidOptionsTest extends TestCase
                 4 => 'firstDayOfWeek',
                 5 => 'sun',
             ),
+            'case-93-associative_array' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'firstDayOfWeek' => 0.0,
+                ),
+                3 => 'associative_array',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-94-plain_object' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'firstDayOfWeek' => 0.0,
+                ),
+                3 => 'plain_object',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-95-associative_array' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue',
+                1 => 'en-u-fw-WED',
+                2 => array(
+                    'firstDayOfWeek' => 0.0,
+                ),
+                3 => 'associative_array',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-96-plain_object' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue',
+                1 => 'en-u-fw-WED',
+                2 => array(
+                    'firstDayOfWeek' => 0.0,
+                ),
+                3 => 'plain_object',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-97-associative_array' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'firstDayOfWeek' => -0.0,
+                ),
+                3 => 'associative_array',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-98-plain_object' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue',
+                1 => 'en',
+                2 => array(
+                    'firstDayOfWeek' => -0.0,
+                ),
+                3 => 'plain_object',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-99-associative_array' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue',
+                1 => 'en-u-fw-WED',
+                2 => array(
+                    'firstDayOfWeek' => -0.0,
+                ),
+                3 => 'associative_array',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
+            'case-100-plain_object' => array(
+                0 => 'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue',
+                1 => 'en-u-fw-WED',
+                2 => array(
+                    'firstDayOfWeek' => -0.0,
+                ),
+                3 => 'plain_object',
+                4 => 'firstDayOfWeek',
+                5 => 'sun',
+            ),
         );
     }
 

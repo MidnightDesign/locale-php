@@ -149,7 +149,7 @@ $optionCases = static function (array $values, array $observations): array {
                 'assertion' => $assertion,
                 'tag' => $tag,
                 'value' => $value,
-                'expected' => $property === null ? $expected : $expected,
+                'expected' => $expected,
             ];
             if ($property !== null) {
                 $case['property'] = $property;
@@ -378,6 +378,36 @@ $fixturePipelines = [
             [6, 'sat'],
             [7, 'sun'],
             [0, 'sun'],
+            [0.0, 'sun'],
+            [-0.0, 'sun'],
+        ])),
+    ),
+    'test/intl402/Locale/constructor-options-canonicalized.js' => $mappedStatePipeline(
+        '5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613',
+        'tests/Test262/Generated/ConstructorOptionsCanonicalizedTest.php',
+        'ConstructorOptionsCanonicalizedTest',
+        array_merge(...array_map(static fn(array $row): array => [
+            [
+                'tag' => 'en-u-ca-' . $row[1],
+                'expectations' => [['assertion' => 0, 'property' => 'calendar', 'expected' => $row[1]]],
+            ],
+            [
+                'tag' => 'en',
+                'options' => ['calendar' => $row[1]],
+                'expectations' => [['assertion' => 1, 'property' => 'calendar', 'expected' => $row[1]]],
+            ],
+            [
+                'tag' => 'en-u-ca-' . $row[0],
+                'expectations' => [['assertion' => 2, 'property' => 'calendar', 'expected' => $row[1]]],
+            ],
+            [
+                'tag' => 'en',
+                'options' => ['calendar' => $row[0]],
+                'expectations' => [['assertion' => 3, 'property' => 'calendar', 'expected' => $row[1]]],
+            ],
+        ], [
+            ['islamicc',            'islamic-civil'],
+            ['ethiopic-amete-alem', 'ethioaa'],
         ])),
     ),
     'test/intl402/Locale/constructor-options-calendar-invalid.js' => $mappedOptionPipeline(
@@ -609,6 +639,8 @@ $fixturePipelines = [
             [['type' => 'bool', 'value' => true], true],
             [['type' => 'null'], false],
             [['type' => 'int', 'value' => 0], false],
+            [['type' => 'float', 'value' => 0.0], false],
+            [['type' => 'float', 'value' => -0.0], false],
             [['type' => 'float', 'value' => 0.5], true],
             [$stringValue('true'), true],
             [$stringValue('false'), true],
