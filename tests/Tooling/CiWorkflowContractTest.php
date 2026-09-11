@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(WorkflowContract::class)]
 final class CiWorkflowContractTest extends TestCase
 {
-    public function testPreparedWorkflowsPreserveTheCiPolicyWithoutActivatingIt(): void
+    public function testPullRequestCiIsActiveAndPreservesTheCiPolicy(): void
     {
         self::assertSame([], WorkflowContract::validate(dirname(__DIR__, 2)));
     }
@@ -99,7 +99,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $path = $root.'/.github/ci/public-pull-request.yml';
+            $path = $root.'/.github/workflows/pull-request.yml';
             $contents = (string) file_get_contents($path);
             $contents = str_replace(
                 "on:\n  pull_request:",
@@ -109,7 +109,7 @@ final class CiWorkflowContractTest extends TestCase
             file_put_contents($path, $contents);
 
             self::assertContains(
-                '.github/ci/public-pull-request.yml has invalid activation triggers.',
+                '.github/workflows/pull-request.yml has invalid activation triggers.',
                 WorkflowContract::validate($root),
             );
         } finally {
@@ -128,7 +128,7 @@ final class CiWorkflowContractTest extends TestCase
             '.github/workflows/ci-quality.yml',
             '.github/workflows/ci-scheduled.yml',
             '.github/workflows/ci-release.yml',
-            '.github/ci/public-pull-request.yml',
+            '.github/workflows/pull-request.yml',
             '.github/ci/public-nightly.yml',
             '.github/ci/public-weekly.yml',
             '.github/ci/public-release.yml',

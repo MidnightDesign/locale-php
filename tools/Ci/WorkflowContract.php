@@ -48,7 +48,7 @@ final class WorkflowContract
         self::validateAdvisoryPolicy($workflows, $failures);
         self::validateToolPins($root, $workflows, $failures);
         self::validateTimeouts($workflows, $failures);
-        self::validateActivationTemplates($root, $failures);
+        self::validateActivationEntries($root, $failures);
 
         return $failures;
     }
@@ -276,10 +276,10 @@ final class WorkflowContract
     }
 
     /** @param list<string> $failures */
-    private static function validateActivationTemplates(string $root, array &$failures): void
+    private static function validateActivationEntries(string $root, array &$failures): void
     {
         $templates = [
-            '.github/ci/public-pull-request.yml' => ['pull_request'],
+            '.github/workflows/pull-request.yml' => ['pull_request'],
             '.github/ci/public-nightly.yml' => ['schedule', 'workflow_dispatch'],
             '.github/ci/public-weekly.yml' => ['schedule', 'workflow_dispatch'],
             '.github/ci/public-release.yml' => ['workflow_dispatch'],
