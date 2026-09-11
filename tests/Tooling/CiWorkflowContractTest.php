@@ -252,12 +252,13 @@ final class CiWorkflowContractTest extends TestCase
         try {
             $path = $root . '/infection.spec.json5';
             $contents = (string) file_get_contents($path);
-            $contents = str_replace(
-                '["/^Locale\\\\.php$/", "/^Internal\\\\/Data\\\\//"]',
-                '["/^Locale\\\\.php$/", "Internal", "/^Internal\\\\/Data\\\\//"]',
-                $contents,
-            );
-            file_put_contents($path, $contents);
+            /** @var array{source: array{excludes: list<string>}} $config */
+            $config = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
+            $config['source']['excludes'] = array_values(array_filter(
+                $config['source']['excludes'],
+                static fn(string $exclude): bool => $exclude !== '/^CaseFirst\\.php$/',
+            ));
+            file_put_contents($path, json_encode($config, JSON_THROW_ON_ERROR));
 
             self::assertContains(
                 'The spec mutation campaign has an invalid production-source boundary.',

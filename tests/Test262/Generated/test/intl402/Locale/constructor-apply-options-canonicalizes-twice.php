@@ -21,6 +21,7 @@ foreach (array(
         ),
         4 => 'associative_array',
         5 => 'ru-Armn-AM',
+        6 => null,
     ),
     'case-1-plain_object' => array(
         0 => 'test/intl402/Locale/constructor-apply-options-canonicalizes-twice.js:L48:C1:assert.sameValue',
@@ -32,10 +33,11 @@ foreach (array(
         ),
         4 => 'plain_object',
         5 => 'ru-Armn-AM',
+        6 => null,
     ),
-) as [$assertionId, $tag, $optionName, $value, $representation, $expected]) {
+) as [$assertionId, $tag, $optionName, $value, $representation, $expected, $property]) {
     $result = $expected === RangeError::class
         ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
-        : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected);
+        : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
     Assert::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
 }

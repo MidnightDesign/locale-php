@@ -9,8 +9,8 @@ use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
 use Midnight\Intl\Tools\PhpExporter;
 
 /**
- * @phpstan-type OptionValue array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int}
- * @phpstan-type MappedCase array{assertion: int, tag: string, value: OptionValue, expected: string}
+ * @phpstan-type OptionValue array<string, mixed>
+ * @phpstan-type MappedCase array{assertion: int, tag: string, value: array<string, mixed>, expected: string|bool, property?: string}
  */
 final class MappedConstructorOptionPipeline implements FixturePipeline
 {
@@ -58,6 +58,7 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
             foreach ($this->representations as $representation) {
                 $assertionId = $assertions[$case['assertion']]['id'];
                 $executionId = sprintf('case-%d-%s', $caseIndex + 1, $representation);
+                $property = $case['property'] ?? null;
                 $generated[$executionId] = [
                     $assertionId,
                     $case['tag'],
@@ -65,6 +66,7 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
                     $case['value'],
                     $representation,
                     $case['expected'],
+                    $property,
                 ];
                 $executions[] = [
                     'id' => $executionId,
@@ -76,6 +78,7 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
                         $case['value'],
                         $representation,
                         $case['expected'],
+                        $property,
                     ),
                 ];
             }
@@ -118,22 +121,23 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
         );
     }
 
-    /** @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} $value
-     * @return array{status: string, actual?: string, failure?: string}
+    /** @param OptionValue $value
+     * @return array{status: string, actual?: mixed, failure?: string}
      */
     private static function evaluate(
         string $tag,
         string $optionName,
         array $value,
         string $representation,
-        string $expected,
+        string|bool $expected,
+        ?string $property,
     ): array {
         return $expected === RangeError::class
             ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
-            : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected);
+            : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
     }
 
-    /** @param array<string, array{string, string, string, OptionValue, string, string}> $cases */
+    /** @param array<string, array{string, string, string, OptionValue, string, string|bool, ?string}> $cases */
     private function render(array $cases, string $fixturePath): string
     {
         $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($cases));
@@ -153,10 +157,10 @@ final class MappedConstructorOptionPipeline implements FixturePipeline
             use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
             use PHPUnit\Framework\Assert;
 
-            foreach ({$export} as [\$assertionId, \$tag, \$optionName, \$value, \$representation, \$expected]) {
+            foreach ({$export} as [\$assertionId, \$tag, \$optionName, \$value, \$representation, \$expected, \$property]) {
                 \$result = \$expected === RangeError::class
                     ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, \$value, \$representation)
-                    : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, \$value, \$representation, \$expected);
+                    : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, \$value, \$representation, \$expected, \$property);
                 Assert::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
             }
             PHP . "\n";

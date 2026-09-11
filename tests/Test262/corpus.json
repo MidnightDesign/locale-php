@@ -105,8 +105,8 @@
         {
             "path": "test/intl402/Locale/constructor-apply-options-canonicalizes-twice.js",
             "sha256": "aa542114d28bfdc89fe10ac51cde78837a8392ef1d52ecf47cbfcd9a5dec2fbb",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-apply-options-canonicalizes-twice.js:L48:C1:assert.sameValue",
@@ -114,20 +114,15 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "53260a0db85ec1eba52a8628b05e2ac98fd238e3ec4afdb658285e657ac7e64b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-apply-options-canonicalizes-twice.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-getter-order.js",
             "sha256": "ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-getter-order.js:L83:C1:assert.compareArray",
@@ -135,20 +130,15 @@
                     "column": 1,
                     "call": "assert.compareArray",
                     "sha256": "25b916ad10a37c550fbc7c8044ed49be58d7afc82264bd48aedccb894a7353c7",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-getter-order.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-locale-object.js",
             "sha256": "c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-locale-object.js:L18:C1:assert.sameValue",
@@ -156,7 +146,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "fa35a088a508bcc13ed37062475ea719c97110fe822a9c1243a28ca1c2cad407",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-locale-object.js:L19:C1:assert.sameValue",
@@ -164,7 +154,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "17aaf4a54cf4f0e6ef48624d60d1ad2a5d15a89b32258fa37ce19b1c291e0a2c",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-locale-object.js:L25:C1:assert.sameValue",
@@ -172,7 +162,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "d3eb5b32a45a1cb3471e594eb1094147915a24fca1cea53b68583b2dbd6a0a48",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-locale-object.js:L30:C1:assert.sameValue",
@@ -180,7 +170,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "b47ad1bd7ea1088c15f6c9b76d94f2815321bf8a0fccb4774953d4a46c4287f5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-locale-object.js:L36:C1:assert.sameValue",
@@ -188,7 +178,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "387a50f9ad60d60256d379fe4ec82f1957c24e7677417bc86e45945ce18639f5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-locale-object.js:L37:C1:assert.sameValue",
@@ -196,14 +186,9 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "cdfd3faabe12ecf86e8d6d2895523d9484f1176b29031ff618203712b7589cf7",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-locale-object.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-newtarget-undefined.js",
@@ -282,8 +267,8 @@
         {
             "path": "test/intl402/Locale/constructor-options-calendar-invalid.js",
             "sha256": "2bc75ead4cdd03ab2eb742930d73395832134dd5c69ab4b0c00418c351e26b1a",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-calendar-invalid.js:L33:C3:assert.throws",
@@ -291,20 +276,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "f70e428828d200f4e5a4c9bd7e657f17a214d7663f2d6230be30d2d52f88b9cf",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-calendar-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-calendar-valid.js",
             "sha256": "e30190ad76b38bdd07d9ce24529ac7b34d6da320e0df07272dd57195e2084517",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-calendar-valid.js:L31:C3:assert.sameValue",
@@ -312,7 +292,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "34d6b56e7dec647ebbcc573f32a5de876e70939ed2acd85a49237cf048eda6a1",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-calendar-valid.js:L36:C3:assert.sameValue",
@@ -320,20 +300,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "ed15f32465d46b2ae77da85afe3898594c78d967a86202ed4f72d0a63b57542f",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-calendar-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-canonicalized.js",
             "sha256": "5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
@@ -341,7 +316,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "939e4732ee5da4c075f0299f0e06cc88cbff04515fd5d3bf23cdb9ce9f34f72b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
@@ -349,7 +324,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "25dfc13a7a036b7eee16f5507fbbb8eac6824f9f6400098665553a14a483eab0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
@@ -357,7 +332,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "6029ba287d7d0a04e94406efabd7b356ef3a3f6ecda2efff2a9a8a01da385469",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
@@ -365,20 +340,15 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "248daaec26a5110589bb027f85df354983cc15c6cc67b1069536b3628bc12208",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-canonicalized.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-casefirst-invalid.js",
             "sha256": "9148cb991c017d5dad7eaf1736cca3322d137ab1f960ae3bfaa4a9ab65e88a06",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-casefirst-invalid.js:L34:C3:assert.throws",
@@ -386,20 +356,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "149dd971ced7d94104c6476258481638db4753c94aadbf509f807677c694509d",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-casefirst-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-casefirst-valid.js",
             "sha256": "abb926d4d19763f5a4bf6169b2d156714c8300aac95b73b185026a259eac4449",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-casefirst-valid.js:L48:C3:assert.sameValue",
@@ -407,7 +372,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "90a7c93d6c31be9ba05e239fae83516134c99f2c6de04323551791992abd47d5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-casefirst-valid.js:L55:C3:assert.sameValue",
@@ -415,7 +380,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "de0192906608e0887a2c304e1e6cd02a451f79f089204c90730afe592a733405",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-casefirst-valid.js:L61:C3:assert.sameValue",
@@ -423,20 +388,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "864cf12a75c46693ce63db35b580395bddb5f46ab007877aec7199999db86069",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-casefirst-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-collation-invalid.js",
             "sha256": "bfa787a24721a492dbfc3a4cf18987a6ceb90b31ffe25a203d38978ac1954c80",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-collation-invalid.js:L31:C3:assert.throws",
@@ -444,20 +404,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "352042ec1675d89216fd95d7ff241202637daafc49560e2aa0c6eec32ab46198",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-collation-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-collation-valid.js",
             "sha256": "e1b6b330d62172e723ac79708bdd013c9559d80f1504e8057a86a74e78b08e4a",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-collation-valid.js:L51:C3:assert.sameValue",
@@ -465,7 +420,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "f159e3b9904feea04a6fe5fb7ac6aaafc660e72a114adee44734589978bf97e3",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-collation-valid.js:L57:C3:assert.sameValue",
@@ -473,20 +428,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "ac524d07181bde49ba00a357b54970ef34fa131db052a36ea7681063caaf617f",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-collation-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-firstDayOfWeek-invalid.js",
             "sha256": "43fb84564abe6ad4696abb989ba45da508622a19589b20bc166a076a54e88bd2",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-firstDayOfWeek-invalid.js:L28:C3:assert.throws",
@@ -494,20 +444,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "9b950677a6e1a31e42338062f602c7942b2e47bec72d5f7d60bdc7125c7bfb3e",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-firstDayOfWeek-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js",
             "sha256": "f08f24636a0f4c6446925f82f71c176128c208618ea899312bc37fc6862f1d3f",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js:L70:C3:assert.sameValue",
@@ -515,7 +460,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "3285016df6d521566b695e763631ac345f35452ed0acbcbe86233742bec1cc07",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js:L75:C3:assert.sameValue",
@@ -523,20 +468,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "7b55b885b6f3fe3cfed4b67e8a4ad7e7198e96694baefb492b7031a2004900cd",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-hourcycle-invalid.js",
             "sha256": "5c72693abd40501d9911c66c0793e13f4dcc7fb32cd430e9f459feec8eaceade",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-hourcycle-invalid.js:L40:C3:assert.throws",
@@ -544,20 +484,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "0f9ac0d63f7fca73be1d8f029e3dbbb25c1e81c2a1bf5d9700b9c2b855f81bff",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-hourcycle-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-hourcycle-valid.js",
             "sha256": "ab8ee2541c2e2cba74b8c38be7eea57f90cdbd58be1e3ac8c50a6f04851f19b0",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-hourcycle-valid.js:L49:C3:assert.sameValue",
@@ -565,7 +500,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "74190627669d7cc9fea183f1a2d404beaa12ddcd33bba67b7be83ab9454c1903",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-hourcycle-valid.js:L55:C3:assert.sameValue",
@@ -573,7 +508,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "8d3e73f6cfa7a6a8722e51ee9b5a1784e7f5c31dbd4e7e41502ab3a6e0e80987",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-hourcycle-valid.js:L61:C3:assert.sameValue",
@@ -581,7 +516,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "0e26c71c99785f7b08916d3f1b17f96ee01c43029bdefcdfba5d2180558a1799",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-hourcycle-valid.js:L67:C3:assert.sameValue",
@@ -589,20 +524,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "3991340092d2826a3eaba8a3a2022563497e93ebcf6e768a230e6ff2c80666c7",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-hourcycle-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-language-grandfathered.js",
             "sha256": "c025cd8b7afbf52d8ee2b9c8be64dd25e45a3dc97b55d82bd95bde7f3ecc9f9a",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-language-grandfathered.js:L21:C1:assert.throws",
@@ -610,7 +540,7 @@
                     "column": 1,
                     "call": "assert.throws",
                     "sha256": "545dd20e75016d231050c3263e704dd25b99742aa117223727e53a60cbfaf402",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws",
@@ -618,20 +548,15 @@
                     "column": 1,
                     "call": "assert.throws",
                     "sha256": "8ad4645df3e31268a3f8ea7b46786861a0956153ab869a7e79910db8587cab6c",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-language-grandfathered.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-language-invalid.js",
             "sha256": "3b12a5a117b10381878f3a851ef231904e662da92cc3b5d0aa981119daba4720",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-language-invalid.js:L71:C3:assert.throws",
@@ -639,20 +564,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "b0428bea1305be3689f79976e8762b276d188a5016a36a1d07bd2d0d8e885ba9",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-language-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-language-valid-undefined.js",
             "sha256": "5b477146b9f9e57bce4d2fd67c4db4c05b1c17dfc58b3c06b8a52a96806dc8d0",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid-undefined.js:L31:C1:assert.sameValue",
@@ -660,7 +580,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "f166a075bca12e3f3a1c90a44616b12bca687ef49b7909f876e4111e29a65292",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid-undefined.js:L37:C1:assert.sameValue",
@@ -668,7 +588,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "33997356621af28bf95834e8413f772cedad597a5f69a9dc66f1e8994b532200",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid-undefined.js:L43:C1:assert.throws",
@@ -676,20 +596,15 @@
                     "column": 1,
                     "call": "assert.throws",
                     "sha256": "31cfa3573004997ecde185ef7437d3fbdbd4dbe47a36f46c933ee1a267a345d2",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-language-valid-undefined.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-language-valid.js",
             "sha256": "b770d910f1c14445d8ef0d2c8981baffce6f20920181edd8dda506c4c4f25959",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid.js:L39:C3:assert.sameValue",
@@ -697,7 +612,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "512dfad20957b31a928ca6be477a7d1a126d39016999545bc9c6f35af53aa842",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid.js:L46:C3:assert.sameValue",
@@ -705,7 +620,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "a4e213a68ceac980de336fb0c11b468be5120e50b061372d4c618b93d1d5e287",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid.js:L52:C3:assert.throws",
@@ -713,7 +628,7 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "a6c73420ed094e5351a0941aeae253508da49675d8329fdd1266357509a9fe64",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid.js:L63:C3:assert.throws",
@@ -721,7 +636,7 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "2c4fcadebd9292f72aa23223fc1a8655215de0a33457676a27e6756be7e070e5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid.js:L64:C3:assert.throws",
@@ -729,7 +644,7 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "ecbdae82e8f68d7f778154d30763a043cdb7f1a408e1b4cdd203cdc4968b88c0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-language-valid.js:L65:C3:assert.throws",
@@ -737,20 +652,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "a6c73420ed094e5351a0941aeae253508da49675d8329fdd1266357509a9fe64",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-language-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-numberingsystem-invalid.js",
             "sha256": "43c781dde99d7843e82ff4daf0a48825d41301749bfcc3a6ebd4ee3abe3ceb6d",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-numberingsystem-invalid.js:L38:C3:assert.throws",
@@ -758,20 +668,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "ff6a808ad70ea2f264d16a154311616fc00b1da8f6d9540be987cd6890d1d308",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-numberingsystem-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-numberingsystem-valid.js",
             "sha256": "d95df8c7fa8189de5f3e51d109130f02845fb7ba7c3c4aa7a132acb716d38862",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-numberingsystem-valid.js:L51:C3:assert.sameValue",
@@ -779,7 +684,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "e67dc9a4d9194c420298524404b7a91365353edcd66c95a4c7053bf4d8a254bf",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-numberingsystem-valid.js:L56:C3:assert.sameValue",
@@ -787,20 +692,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "fa2fbdc6abd19eee4e2ffd76ecdbe4996fa90cd334aeaae9959e978a4e7c78b8",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-numberingsystem-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-numeric-undefined.js",
             "sha256": "df2e3eeab1d34aae0cdd35e65e7495c9616b5d11aeb01d8ab0827fddd3a190d0",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-numeric-undefined.js:L38:C1:assert.sameValue",
@@ -808,7 +708,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "c79f8080e28768e570f1869c6faef6a74aef1ed62819742725de6c83b4e88587",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-numeric-undefined.js:L44:C1:assert.sameValue",
@@ -816,7 +716,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "2dd8bc46ba75da2fcaacf3e43f089642725e9fc7273a963f3862b785b0d0bdf4",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-numeric-undefined.js:L50:C1:assert.sameValue",
@@ -824,20 +724,15 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "93fb7a39289fd2a99a0b7d51c49274d4ebc578607d742e22e880114bda7c1df6",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-numeric-undefined.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-numeric-valid.js",
             "sha256": "1b2f6279e7c2187178a129266f020cece44c1a4e0099c27ddeec46ed8cfb90e0",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-numeric-valid.js:L51:C3:assert.sameValue",
@@ -845,7 +740,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "47462f66eee56afd6e5877f6dd553f6e260be7723a1728f9d1afca940864b758",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-numeric-valid.js:L57:C3:assert.sameValue",
@@ -853,7 +748,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "8c8c87bd6e7c185de2067e4f02b5a1ae9fed907a71a31f50a52986b414464984",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-numeric-valid.js:L63:C3:assert.sameValue",
@@ -861,20 +756,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "4180e861d0705bbade9fa89ffafcb6bc96f788831f128b0c227dec4ad4637687",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-numeric-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-region-invalid.js",
             "sha256": "eb88f909f874da2e065480c8cc2e86b8d6b4555dc8d80812d5691dac9b855569",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-region-invalid.js:L53:C3:assert.throws",
@@ -882,20 +772,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "eccd79056a5b8f4ff9fee0325666dccb87969fb4ccc0b437af7b692a4833ad4b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-region-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-region-valid.js",
             "sha256": "1d138f46632f20db49f2e6b96a2ca66cfc814d35ea94d5e93e6d6c50e8059f2d",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-region-valid.js:L41:C3:assert.sameValue",
@@ -903,7 +788,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "bbc4bb24b09967efe688bdc6ace0453a6e8b7eba36033ae6130a048b463dd4b0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-region-valid.js:L48:C3:assert.sameValue",
@@ -911,7 +796,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "a99da038590dfbb30bc496315f591606138d5a0c4b6259303382f7c571b9e899",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-region-valid.js:L55:C3:assert.sameValue",
@@ -919,7 +804,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "30b31303786f61190ecb93b4ffbcd5181cf0de461b3c58c43ebab85b4c042087",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-region-valid.js:L62:C3:assert.sameValue",
@@ -927,20 +812,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "2f3a7c30e8f270ff6f2c988be4dc9af52dd501058d53ed11487ab5d54d26fd2b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-region-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-script-invalid.js",
             "sha256": "eaffbb2741f360729d4f732331525876c4eaa9736be43efe724b2953455e0412",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-script-invalid.js:L49:C3:assert.throws",
@@ -948,20 +828,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "1269434702d7d7ec552083a42a9b0930e8c7b9cad2a8cf1c99d53f085d818f0f",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-script-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-script-valid-undefined.js",
             "sha256": "b30b5327784549c4da668e2b85b58f73f94c52af0af43a3e071c65f26d0985c7",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-script-valid-undefined.js:L31:C1:assert.sameValue",
@@ -969,7 +844,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "188730f156985582f9df9a3a81fad4b8ee8c3c2d1b4bb8164a49ac0a75631169",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-script-valid-undefined.js:L37:C1:assert.sameValue",
@@ -977,7 +852,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "feca01a97cdb3eda66370a71d32c4914fbd5e7ae3543690f5c7722f99f92e38e",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-script-valid-undefined.js:L43:C1:assert.sameValue",
@@ -985,14 +860,9 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "7e04794eb3274fce50b3cafe5ea2c10b1c3bbbfcab2dd048ef6e9d56a6c77ea9",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-script-valid-undefined.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-script-valid.js",
@@ -1029,8 +899,8 @@
         {
             "path": "test/intl402/Locale/constructor-options-throwing-getters.js",
             "sha256": "c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-throwing-getters.js:L28:C3:assert.throws",
@@ -1038,20 +908,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "0c707a8404896a3b1b689928d274aa4248c6778fe07ae92f8047f4870b0be41c",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-throwing-getters.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-variants-invalid.js",
             "sha256": "b2c1b4589959a1c94ab97ab3049489289a649ef9324e021541250063654a991f",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-variants-invalid.js:L51:C3:assert.throws",
@@ -1059,20 +924,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "1c48d5d96a2b67794b9e3d9b0c879f0655c039f40fb576ec3a5adeeafa04d2a6",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-variants-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-options-variants-valid.js",
             "sha256": "3f636ca71f4f6a75e8f818b341707ac17ead7ba0e432c3a12877e3dd1cbdaf07",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-options-variants-valid.js:L43:C3:assert.sameValue",
@@ -1080,7 +940,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "ae3a6c77600ef2800976613ba3f2bbfebacfab54b9eaaddf4f351469dc91cda1",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-variants-valid.js:L48:C3:assert.sameValue",
@@ -1088,7 +948,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "3b454d27f989d45c241649519606cb5e402d5a53b1e1b8d23f5fb9675cb60c01",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-variants-valid.js:L53:C3:assert.sameValue",
@@ -1096,7 +956,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "91fbc9b30b6ed69de572d600ded17cb37a39ef6a1c2239c0f164d2ff35c3c0ad",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/constructor-options-variants-valid.js:L58:C3:assert.sameValue",
@@ -1104,14 +964,9 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "bc7d5dc7ceb423bced99b113f4d5ca8a66b1065b6192a112040e87f2fa76f70b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-options-variants-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-parse-twice.js",
@@ -1235,8 +1090,8 @@
         {
             "path": "test/intl402/Locale/constructor-unicode-ext-invalid.js",
             "sha256": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-unicode-ext-invalid.js:L27:C3:assert.throws",
@@ -1244,20 +1099,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "1d1802f6ca19354e9381a59b334419d04e3d0cf15fa83c0a412c66a6a4b7e52d",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-unicode-ext-invalid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/constructor-unicode-ext-valid.js",
             "sha256": "92d26f3d6f7c908a1205624faecd5f342b7dc6df8520b220dbaf1863036c8643",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/constructor-unicode-ext-valid.js:L33:C5:assert.sameValue",
@@ -1265,14 +1115,9 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "799f5eb12d10fcf1f721361da515eec18cab886c62075e55ab85482ffdae6909",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/constructor-unicode-ext-valid.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/extensions-grandfathered.js",
@@ -1473,8 +1318,8 @@
         {
             "path": "test/intl402/Locale/getters-missing.js",
             "sha256": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
-            "status": "partially_translated",
-            "reason": "Applicable assertions and out-of-slice gaps are detailed in tests/Test262/evidence.json.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/getters-missing.js:L29:C1:assert.sameValue",
@@ -1641,8 +1486,8 @@
         {
             "path": "test/intl402/Locale/getters.js",
             "sha256": "8e0b947b19c9ba9b376341462d97391acd7d570dd7143c4c9fcb9b2a2646a615",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/getters.js:L105:C1:assert.sameValue",
@@ -1650,7 +1495,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "0ae1f7ff0f8e3fd2887d078208ad96c0dad02e67ae3a1d5379de735940340f9e",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L106:C1:assert.sameValue",
@@ -1658,7 +1503,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "bb6fbff4e76b302574717036fa269caae5db6a608394aed3f5a42115789190e8",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L107:C1:assert.sameValue",
@@ -1666,7 +1511,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "1c9ae4f58fc7e27c3cf6080a4c199043f0598db42630b0049b87c766cf3ee49b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L108:C1:assert.sameValue",
@@ -1674,7 +1519,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "8ede996c1b464309cd793a553699bfff312470b0753af758e3e2f639288dffa3",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L109:C1:assert.sameValue",
@@ -1682,7 +1527,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "8cddf6316c0dca40638d443d8442340e82690e933fc40cd2377dca28ad599732",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L110:C1:assert.sameValue",
@@ -1690,7 +1535,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "2d182790dc3f415f2a79fe2c52cdb12503e27c9ba80f64b36db3c67ad2fea3f0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L111:C1:assert.sameValue",
@@ -1698,7 +1543,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "3cf83052ffb916b56a62b228a8dafa46e21f72110c97033640fc4f6cef8d12f2",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L112:C1:assert.sameValue",
@@ -1706,7 +1551,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "03f30d69ee905962bbb01efdb34aa5094b4d98c78458e578ee865a867803265b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L113:C1:assert.sameValue",
@@ -1714,7 +1559,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "ac184759822aa685d6cefc8450b596857b569b2493f810c27069e88de83dbefd",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L115:C5:assert.sameValue",
@@ -1722,7 +1567,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "a14e576acc4891d35d4b99047b7aa7bd3da0073d518de201ef91b67ebf3f7144",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L118:C5:assert.sameValue",
@@ -1730,7 +1575,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "d48dad533cb311e84ba4555d88ec280d9b392910a95fd4694b4ccf3ce3f865af",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L120:C1:assert.sameValue",
@@ -1738,7 +1583,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "e886b7d11817685b9e42e9396dfde75e921770824a6cafb49d48992765391e66",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L137:C1:assert.sameValue",
@@ -1746,7 +1591,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "752f33cd64e38527b78cab8cbb0bb241121292ea92da69a63e12ab1408afeb34",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L138:C1:assert.sameValue",
@@ -1754,7 +1599,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "5ac201c872c6cc8f216a157c41634530173bd6d941dc7ac2906c07b1b92a6a1b",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L139:C1:assert.sameValue",
@@ -1762,7 +1607,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "231ae227d84e6ae068a7ea27c53e73350917182f8b66e52f7f49e17ea6557a06",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L140:C1:assert.sameValue",
@@ -1770,7 +1615,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "41c9e7176089489730e9f66a4650cc7e00fa332592ec2584d3d1d68221662433",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L141:C1:assert.sameValue",
@@ -1778,7 +1623,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "11768f7651e0201c87f91459c9919c28f03a0e09a487d334be5cbbd06a66e318",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L142:C1:assert.sameValue",
@@ -1786,7 +1631,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "610f2db61b822e35487ba873fe6608a3e5ab8c4e23a80d180387680fcb3094a8",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L143:C1:assert.sameValue",
@@ -1794,7 +1639,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "56f113165c239490976e9eb85b82bac33b1262bc2a4ac88e1a00f3d6f5b48a15",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L144:C1:assert.sameValue",
@@ -1802,7 +1647,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "6f20b001e3425ba422bf6e025910d9225c4a9958de7d35a4c1756bdd9d9c97b8",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L145:C1:assert.sameValue",
@@ -1810,7 +1655,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "bb3eb839de4846316cb97df5d5a9d96f2c32be057fe68cc9344e00db19096d50",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L147:C5:assert.sameValue",
@@ -1818,7 +1663,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "ee70ca5c1e8159ce04761505e9b12b075c4c2caa6aaa28e217f608df1ae450c5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L150:C5:assert.sameValue",
@@ -1826,7 +1671,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "dbb27e410a84c0ff9481a54f0b14f3123941bdfc3468e4114204a9443ebceb01",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L152:C1:assert.sameValue",
@@ -1834,7 +1679,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "8b2553f1af83970dc3b575366b8ef554b9139f37cfbe9269324c517361bde742",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L163:C1:assert.sameValue",
@@ -1842,7 +1687,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "9f7cb91baab9dfdf794f12ed2b5a48a02ee91b6db9d09910540f9d6e451f95af",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L164:C1:assert.sameValue",
@@ -1850,7 +1695,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "c3175c6231bda6f91c001a1b5af239f1f48a0fa9e810281469251ff49432ac51",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L165:C1:assert.sameValue",
@@ -1858,7 +1703,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "f6b13692743a9eae2b818921d2cdb95b767529d65f1881e11068a7fee32f04f5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L166:C1:assert.sameValue",
@@ -1866,7 +1711,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "8ede996c1b464309cd793a553699bfff312470b0753af758e3e2f639288dffa3",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L167:C1:assert.sameValue",
@@ -1874,7 +1719,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "0cf077952e20c2b58b194438e8e4833d97e66bfb70e53ed9d78d1806d66c7679",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L168:C1:assert.sameValue",
@@ -1882,7 +1727,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "2d182790dc3f415f2a79fe2c52cdb12503e27c9ba80f64b36db3c67ad2fea3f0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L169:C1:assert.sameValue",
@@ -1890,7 +1735,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "3cf83052ffb916b56a62b228a8dafa46e21f72110c97033640fc4f6cef8d12f2",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L170:C1:assert.sameValue",
@@ -1898,7 +1743,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "958aff29eb6ab346f540233229518101f955d0b5b9d36a92a7a3aafd915d1d83",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L171:C1:assert.sameValue",
@@ -1906,7 +1751,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "e60be5ccbeeff55e894921c45071cc2c959f1aa452182b3da6962d1c101aebd0",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L173:C5:assert.sameValue",
@@ -1914,7 +1759,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "a14e576acc4891d35d4b99047b7aa7bd3da0073d518de201ef91b67ebf3f7144",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L176:C5:assert.sameValue",
@@ -1922,7 +1767,7 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "d48dad533cb311e84ba4555d88ec280d9b392910a95fd4694b4ccf3ce3f865af",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L178:C1:assert.sameValue",
@@ -1930,7 +1775,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "e886b7d11817685b9e42e9396dfde75e921770824a6cafb49d48992765391e66",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L183:C1:assert.sameValue",
@@ -1938,7 +1783,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "174c3ff3c9c1f264ebda3b1d334cd408ff12b4317660b08438a00d7861391996",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L184:C1:assert.sameValue",
@@ -1946,7 +1791,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "1a098f25b38c21466dfe691052625949a9fba5e1083ebd9e8a99caf8056bde19",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L185:C1:assert.sameValue",
@@ -1954,7 +1799,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "b27dcb626e9cbdcee98adc4efde9752b0c4cd8a3a0e73378cfafd7ccc3b72187",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L186:C1:assert.sameValue",
@@ -1962,7 +1807,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "950c52823fc2084c3c2dce44eeeb52b1e4722db03a68121f56b4659589864414",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L187:C1:assert.sameValue",
@@ -1970,7 +1815,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "0032d8f0453784f293fa5228cc3cdc7ab1452ef79f393dfcfe5c2d8a4d7c2919",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L188:C1:assert.sameValue",
@@ -1978,7 +1823,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "e3ff6a0ae05f511621c4c97e2be4a14df788512a315b7999efb87dbef1f7d91a",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L192:C1:assert.sameValue",
@@ -1986,7 +1831,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "470c7d3ab728469bd63310d5eee514121d106d6da03576480f2bfbfb808eeee5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L193:C1:assert.sameValue",
@@ -1994,7 +1839,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "882533181a7621b9ace409b9e37e7daeead622205faff8773fc71b091ac1f4a5",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L194:C1:assert.sameValue",
@@ -2002,7 +1847,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "b27dcb626e9cbdcee98adc4efde9752b0c4cd8a3a0e73378cfafd7ccc3b72187",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L195:C1:assert.sameValue",
@@ -2010,7 +1855,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "950c52823fc2084c3c2dce44eeeb52b1e4722db03a68121f56b4659589864414",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L196:C1:assert.sameValue",
@@ -2018,7 +1863,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "20c331caea9c09a7a7a02b59c976827f0a91412fe60a149e91c821600ab51326",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L197:C1:assert.sameValue",
@@ -2026,7 +1871,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "e3ff6a0ae05f511621c4c97e2be4a14df788512a315b7999efb87dbef1f7d91a",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/getters.js:L199:C5:assert.sameValue",
@@ -2034,14 +1879,9 @@
                     "column": 5,
                     "call": "assert.sameValue",
                     "sha256": "f4e0a819ce7cbcda296e5b22afce3beed8eac2128a81619d7ce5d89bde0df323",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/getters.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/instance-extensibility.js",
@@ -2728,8 +2568,8 @@
         {
             "path": "test/intl402/Locale/prototype/calendar/canonicalize.js",
             "sha256": "f822a4c333493c03b953eabab70fd3cb65fdd35c2052175041f382c1d630fce1",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue",
@@ -2737,7 +2577,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "f19d03dac5a0ee1c48742d0ed3eae3b63f0dfddab79da6e16cc5b135e0b3c64e",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue",
@@ -2745,14 +2585,9 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "19b6a2ec9e0196bc90936b73fe648ff25d036d491c013b3e3e256f89832a7ece",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/prototype/calendar/canonicalize.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/prototype/calendar/name.js",
@@ -3073,8 +2908,8 @@
         {
             "path": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js",
             "sha256": "07f9babd1527066e864efb8b6b2d102a753a87c0b3324ffc1e9c17782d763c51",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
@@ -3082,20 +2917,15 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "31256a221c00fcb1735d27f9880e449f9053653533216145cd1e24421e5e8a25",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js",
             "sha256": "7cc86612c8c41133e3e17649c65b96f923604de8d02ff578398a1433b0dcc878",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
@@ -3103,7 +2933,7 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "dcd1bf96a51fafcde4d3ec8ddfd90f48bb4041d2275d672dc9c50ea155fe2bad",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
@@ -3111,14 +2941,9 @@
                     "column": 3,
                     "call": "assert.sameValue",
                     "sha256": "cd845921e30d60a257ebabf517883ebe91d6ee74176a9492627078c5ea5b9c29",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/prototype/getCalendars/branding.js",
@@ -5971,8 +5796,8 @@
         {
             "path": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js",
             "sha256": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js:L19:C1:assert.sameValue",
@@ -5980,7 +5805,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "8324ee502414811568a672d374893bccb49d07084a213cfc487e8ac2b8d83b22",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js:L22:C3:assert.throws",
@@ -5988,20 +5813,15 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "419c12317700789a960491656bef531c60e2e0cf2f92e1981df789b7882a1b1c",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/reject-duplicate-variants.js",
             "sha256": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
-            "status": "translation_gap",
-            "reason": "The fixture remains visible as unfinished work for the incomplete initial slice.",
+            "status": "translated",
+            "reason": "All source assertions and representation executions are detailed in tests/Test262/evidence.json.",
             "detectedAssertions": [
                 {
                     "id": "test/intl402/Locale/reject-duplicate-variants.js:L15:C1:assert.sameValue",
@@ -6009,7 +5829,7 @@
                     "column": 1,
                     "call": "assert.sameValue",
                     "sha256": "8324ee502414811568a672d374893bccb49d07084a213cfc487e8ac2b8d83b22",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 },
                 {
                     "id": "test/intl402/Locale/reject-duplicate-variants.js:L18:C3:assert.throws",
@@ -6017,14 +5837,9 @@
                     "column": 3,
                     "call": "assert.throws",
                     "sha256": "419c12317700789a960491656bef531c60e2e0cf2f92e1981df789b7882a1b1c",
-                    "status": "translation_gap"
+                    "status": "see-translated-evidence"
                 }
-            ],
-            "unresolvedAssertionScope": {
-                "id": "test/intl402/Locale/reject-duplicate-variants.js:unresolved-assertion-scope",
-                "status": "translation_gap",
-                "reason": "Parameterized executions and custom helper behavior remain part of this fixture-level translation gap until translated evidence accounts for them."
-            }
+            ]
         },
         {
             "path": "test/intl402/Locale/subclassing.js",

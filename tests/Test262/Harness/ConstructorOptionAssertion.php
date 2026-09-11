@@ -11,16 +11,17 @@ use Midnight\Intl\Spec\Locale;
 final class ConstructorOptionAssertion
 {
     /**
-     * @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} $optionValue
+     * @param array<string, mixed> $optionValue
      *
-     * @return array{status: 'passing', actual: string}|array{status: 'failing', actual?: string, failure: string}
+     * @return array{status: 'passing', actual: mixed}|array{status: 'failing', actual?: mixed, failure: string}
      */
     public static function evaluate(
         string $tag,
         string $optionName,
         array $optionValue,
         string $representation,
-        string $expected,
+        string|bool $expected,
+        ?string $property = null,
     ): array {
         try {
             $value = self::optionValue($optionValue);
@@ -32,7 +33,8 @@ final class ConstructorOptionAssertion
                     $representation,
                 )),
             };
-            $actual = (new Locale($tag, $options))->toString();
+            $locale = new Locale($tag, $options);
+            $actual = $property === null ? $locale->toString() : $locale->{$property};
         } catch (\Throwable $error) {
             return [
                 'status' => 'failing',
@@ -44,7 +46,11 @@ final class ConstructorOptionAssertion
             return [
                 'status' => 'failing',
                 'actual' => $actual,
-                'failure' => sprintf('Expected "%s" but received "%s".', $expected, $actual),
+                'failure' => sprintf(
+                    'Expected %s but received %s.',
+                    var_export($expected, true),
+                    var_export($actual, true),
+                ),
             ];
         }
 
@@ -52,7 +58,7 @@ final class ConstructorOptionAssertion
     }
 
     /**
-     * @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} $optionValue
+     * @param array<string, mixed> $optionValue
      * @return array{status: 'passing'}|array{status: 'failing', failure: string}
      */
     public static function evaluateRangeError(
@@ -74,15 +80,18 @@ final class ConstructorOptionAssertion
         return ['status' => 'failing', 'failure' => 'Expected RangeError, but construction succeeded.'];
     }
 
-    /** @param array{type: 'null'|'undefined'}|array{type: 'string'|'stringable', value: string}|array{type: 'int', value: int} $optionValue */
+    /** @param array<string, mixed> $optionValue */
     private static function optionValue(array $optionValue): mixed
     {
         return match ($optionValue['type']) {
             'null' => null,
             'undefined' => UndefinedValue::Value,
             'int' => $optionValue['value'],
+            'float' => $optionValue['value'],
+            'bool' => $optionValue['value'],
             'string' => $optionValue['value'],
-            'stringable' => new class($optionValue['value']) implements \Stringable {
+            'object' => new \stdClass(),
+            'primitive' => new class(self::primitiveStringPayload($optionValue)) implements \Stringable {
                 public function __construct(
                     private readonly string $value,
                 ) {}
@@ -92,6 +101,42 @@ final class ConstructorOptionAssertion
                     return $this->value;
                 }
             },
+            'stringable' => new class(self::stringPayload($optionValue)) implements \Stringable {
+                public function __construct(
+                    private readonly string $value,
+                ) {}
+
+                public function __toString(): string
+                {
+                    return $this->value;
+                }
+            },
+            default => throw new \InvalidArgumentException('Unsupported option value representation.'),
+        };
+    }
+
+    /** @param array<string, mixed> $optionValue */
+    private static function stringPayload(array $optionValue): string
+    {
+        $value = $optionValue['value'] ?? null;
+        if (!is_string($value)) {
+            throw new \InvalidArgumentException('The stringable option representation requires a string value.');
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $optionValue */
+    private static function primitiveStringPayload(array $optionValue): string
+    {
+        $value = $optionValue['value'] ?? null;
+
+        return match (true) {
+            is_string($value) => $value,
+            is_bool($value) => $value ? 'true' : 'false',
+            is_int($value), is_float($value) => (string) $value,
+            $value === null => 'null',
+            default => throw new \InvalidArgumentException('Unsupported primitive option value.'),
         };
     }
 }
