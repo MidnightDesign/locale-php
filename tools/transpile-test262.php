@@ -12,12 +12,16 @@ use Midnight\Intl\Tools\Test262\FixtureResult;
 use Midnight\Intl\Tools\Test262\GeneratedOutputPublisher;
 use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
+use Midnight\Intl\Tools\Test262\GrandfatheredLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
 use Midnight\Intl\Tools\Test262\InventoryAudit;
+use Midnight\Intl\Tools\Test262\LikelySubtagsPipeline;
+use Midnight\Intl\Tools\Test262\LocaleMethodFixturePipeline;
 use Midnight\Intl\Tools\Test262\LocaleObjectPipeline;
 use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
 use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
+use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
 
@@ -133,6 +137,16 @@ $invalidCases = static fn(array $values): array => array_map(static function (mi
 }, $values);
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
+    'test/intl402/Locale/likely-subtags-grandfathered.js' => new GrandfatheredLikelySubtagsPipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/likely-subtags.js' => new LikelySubtagsPipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
     'test/intl402/Locale/constructor-unicode-ext-invalid.js' => new IdentifierRejectionPipeline(
         $assertionIdentities,
         $test262Revision,
@@ -165,6 +179,64 @@ $fixturePipelines = [
         $test262Revision,
         $ecma402Revision,
     ),
+    'test/intl402/Locale/prototype/maximize/branding.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'maximize',
+        'branding',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/maximize/length.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'maximize',
+        'length',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/maximize/name.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'maximize',
+        'name',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/maximize/prop-desc.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'maximize',
+        'property',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/minimize/branding.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'minimize',
+        'branding',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/minimize/length.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'minimize',
+        'length',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/minimize/name.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'minimize',
+        'name',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/minimize/prop-desc.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'minimize',
+        'property',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js' =>
+        new RemoveLikelySubtagsPipeline($assertionIdentities, $test262Revision, $ecma402Revision),
     'test/intl402/Locale/constructor-options-script-valid-undefined.js' => new UndefinedConstructorOptionPipeline(
         $assertionIdentities,
         $representations,

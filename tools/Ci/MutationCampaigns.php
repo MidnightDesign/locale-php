@@ -9,7 +9,7 @@ final class MutationCampaigns
     private const CAMPAIGNS = [
         'spec' => [
             'suite' => 'test262-upstream',
-            'excludes' => ['/^Locale\\.php$/', '/^Internal\\/Data\\/LocaleAliases\\.php$/'],
+            'excludes' => ['/^Locale\\.php$/', '/^Internal\\/Data\\//'],
         ],
         'porcelain' => [
             'suite' => 'porcelain',
@@ -44,7 +44,7 @@ final class MutationCampaigns
 
     public static function forSource(string $source): ?string
     {
-        if ($source === 'src/Internal/Data/LocaleAliases.php') {
+        if (str_starts_with($source, 'src/Internal/Data/')) {
             return null;
         }
         if ($source === 'src/Locale.php') {

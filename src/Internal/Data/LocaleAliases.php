@@ -6,7 +6,7 @@ namespace Midnight\Intl\Internal\Data;
 
 enum LocaleAliases
 {
-    public const FORMAT = 2;
+    public const FORMAT = 3;
 
     /** @var string */
     public const CLDR_REVISION = '11299982335beb974c1c63c45265184e759c0f41';
@@ -15,9 +15,9 @@ enum LocaleAliases
     public const CLDR_CORE_SHA512 = 'de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62';
 
     /** @var string */
-    public const SOURCE_SHA256 = '5ea7e202fb639c3b80b6db9142e04f0411423ed7e159a0defcdde9ca46aa26b8';
+    public const SOURCE_SHA256 = '3a3728b4277a6a78e44eb0b14671d76c15fb457a76a177eed687c001d20baa1f';
 
-    private const PAYLOAD_SHA256 = '4ccf6a7fa17077b3c96969a2ca70abab4de29699978739595e2d69e871c0e55f';
+    private const PAYLOAD_SHA256 = '6f772207b1a70b7b43ce4d128514d272f0e4b878bc6bc55717d890232d201dbb';
 
     /** @var array<string, string> */
     public const LANGUAGE = array(
@@ -456,6 +456,43 @@ enum LocaleAliases
         'zsm' => 'ms',
         'zul' => 'zu',
         'zyb' => 'za',
+    );
+
+    /** @var array<string, array<string, string>> */
+    public const COMPOUND_LANGUAGE = array(
+        'aa' => array(
+            'saaho' => 'ssy',
+        ),
+        'art' => array(
+            'lojban' => 'jbo',
+        ),
+        'cel' => array(
+            'gaulish' => 'xtg',
+        ),
+        'hy' => array(
+            'arevmda' => 'hyw',
+        ),
+        'no' => array(
+            'bokmal' => 'nb',
+            'nynorsk' => 'nn',
+        ),
+        'und' => array(
+            'aaland' => 'und-AX',
+            'arevela' => 'und',
+            'arevmda' => 'und',
+            'bokmal' => 'und',
+            'hakka' => 'und',
+            'hepburn-heploc' => 'und-alalc97',
+            'lojban' => 'und',
+            'nynorsk' => 'und',
+            'saaho' => 'und',
+            'xiang' => 'und',
+        ),
+        'zh' => array(
+            'guoyu' => 'zh',
+            'hakka' => 'hak',
+            'xiang' => 'hsn',
+        ),
     );
 
     /** @var array<string, string> */
@@ -1428,6 +1465,7 @@ enum LocaleAliases
         $actual = hash('sha256', json_encode([
             'format' => self::FORMAT,
             'language' => self::LANGUAGE,
+            'compoundLanguage' => self::COMPOUND_LANGUAGE,
             'script' => self::SCRIPT,
             'region' => self::REGION,
             'regionAlternatives' => self::REGION_ALTERNATIVES,
@@ -1445,6 +1483,6 @@ enum LocaleAliases
 
     private static function supportsFormat(int $format): bool
     {
-        return $format === 2;
+        return $format === 3;
     }
 }
