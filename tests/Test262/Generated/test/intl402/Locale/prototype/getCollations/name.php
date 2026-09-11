@@ -10,4 +10,8 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
-Assert::assertSame('getCollations', (new ReflectionMethod(Locale::class, 'getCollations'))->getName());
+$method = new \ReflectionMethod(Locale::class, 'getCollations');
+
+Assert::assertTrue($method->isPublic());
+Assert::assertSame('getCollations', $method->getName());
+Assert::assertSame(0, $method->getNumberOfRequiredParameters());

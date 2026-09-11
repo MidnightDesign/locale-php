@@ -10,4 +10,8 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
-Assert::assertSame('getTimeZones', (new ReflectionMethod(Locale::class, 'getTimeZones'))->getName());
+$method = new \ReflectionMethod(Locale::class, 'getTimeZones');
+
+Assert::assertTrue($method->isPublic());
+Assert::assertSame('getTimeZones', $method->getName());
+Assert::assertSame(0, $method->getNumberOfRequiredParameters());

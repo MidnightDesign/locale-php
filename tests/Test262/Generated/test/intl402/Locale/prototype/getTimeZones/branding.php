@@ -13,16 +13,13 @@ use PHPUnit\Framework\Assert;
 Assert::assertTrue(method_exists(Locale::class, 'getTimeZones'));
 $uninitialized = (new ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
 $receivers = [null, null, true, '', 'Symbol()', 1, new stdClass(), Locale::class, $uninitialized];
-$invoke = static function (mixed $receiver): void {
-    if (!$receiver instanceof Locale) {
-        throw new TypeError('Locale receiver is not initialized.');
-    }
-    $receiver->getTimeZones();
-};
 foreach ($receivers as $receiver) {
     $rejected = false;
     try {
-        $invoke($receiver);
+        if (!$receiver instanceof Locale) {
+            throw new TypeError('Locale receiver is not initialized.');
+        }
+        $receiver->getTimeZones();
     } catch (TypeError) {
         $rejected = true;
     }

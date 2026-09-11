@@ -96,6 +96,11 @@ final readonly class FixtureCatalog
         );
     }
 
+    public function sourceBoundLocaleMethod(string $method, string $mode, string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound($this->localeMethod($method, $mode), ['php_reflection'], $sourceSha256);
+    }
+
     public function removeLikelySubtags(): FixturePipeline
     {
         return new RemoveLikelySubtagsPipeline(

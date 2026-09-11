@@ -87,9 +87,6 @@ final class CollationDataImporter
     private static function parents(\SimpleXMLElement $document): array
     {
         $parents = [];
-        foreach ($document->xpath('//parentLocales[not(@component)]/parentLocale') ?: [] as $entry) {
-            self::addParents($parents, $entry);
-        }
         foreach ($document->xpath(
             '//parentLocales[contains(concat(" ", @component, " "), " collations ")]/parentLocale',
         ) ?: [] as $entry) {

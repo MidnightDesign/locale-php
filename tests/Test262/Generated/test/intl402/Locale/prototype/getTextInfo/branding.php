@@ -10,16 +10,18 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
-$method = new \ReflectionMethod(Locale::class, 'getTextInfo');
-
-Assert::assertTrue($method->isPublic());
-Assert::assertSame('getTextInfo', $method->getName());
-Assert::assertSame(0, $method->getNumberOfRequiredParameters());
-
-$locale = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
-try {
-    $locale->getTextInfo();
-    Assert::fail('Expected an uninitialized Locale to fail its brand check.');
-} catch (TypeError) {
-    Assert::assertTrue(true);
+Assert::assertTrue(method_exists(Locale::class, 'getTextInfo'));
+$uninitialized = (new ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+$receivers = [null, null, true, '', 'Symbol()', 1, new stdClass(), Locale::class, $uninitialized];
+foreach ($receivers as $receiver) {
+    $rejected = false;
+    try {
+        if (!$receiver instanceof Locale) {
+            throw new TypeError('Locale receiver is not initialized.');
+        }
+        $receiver->getTextInfo();
+    } catch (TypeError) {
+        $rejected = true;
+    }
+    Assert::assertTrue($rejected);
 }

@@ -47,4 +47,26 @@ final class CollationDataImporterTest extends TestCase
         self::assertSame(['emoji', 'eor', 'phonebk'], $projection['locales']['de']);
         self::assertSame(['dict', 'emoji', 'eor', 'phonebk'], $projection['locales']['de-CH']);
     }
+
+    public function testCollationParentsDoNotInheritMainComponentOverrides(): void
+    {
+        $projection = CollationDataImporter::project(
+            [
+                'root' => '<ldml><collations><collation type="emoji"/></collations></ldml>',
+                'de' => '<ldml><collations><collation type="phonebk"/></collations></ldml>',
+                'fr' => '<ldml><collations><collation type="trad"/></collations></ldml>',
+                'de-AT' => '<ldml><collations><collation type="dict"/></collations></ldml>',
+            ],
+            '<ldmlBCP47/>',
+            <<<'XML'
+                <supplementalData><parentLocales>
+                  <parentLocale parent="fr" locales="de_AT"/>
+                </parentLocales><parentLocales component="collations">
+                  <parentLocale parent="zh" locales="yue"/>
+                </parentLocales></supplementalData>
+                XML,
+        );
+
+        self::assertSame(['dict', 'emoji', 'phonebk'], $projection['locales']['de-AT']);
+    }
 }

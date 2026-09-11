@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\GeneratedDataArtifact;
 use Midnight\Intl\Tools\MagoFormatter;
 use Midnight\Intl\Tools\NumberingSystemsProjectionGenerator;
 
@@ -448,8 +449,6 @@ $collationGenerated = <<<PHP
 $collationGenerated .= "\n";
 $collationGenerated = MagoFormatter::format($root, 'src/Internal/Data/CollationAvailability.php', $collationGenerated);
 
-$target = $root . '/src/Internal/Data/LocaleAliases.php';
-$collationTarget = $root . '/src/Internal/Data/CollationAvailability.php';
 $timeZoneSourcePath = $root . '/resources/data/primary-time-zones.json';
 $timeZoneSource = file_get_contents($timeZoneSourcePath);
 if ($timeZoneSource === false) {
@@ -545,55 +544,57 @@ $timeZoneGenerated = <<<PHP
     PHP;
 $timeZoneGenerated .= "\n";
 $timeZoneGenerated = MagoFormatter::format($root, 'src/Internal/Data/PrimaryTimeZones.php', $timeZoneGenerated);
-$timeZoneTarget = $root . '/src/Internal/Data/PrimaryTimeZones.php';
 $numberingSystemSourcePath = $root . '/resources/data/numbering-systems.json';
 $numberingSystemSource = file_get_contents($numberingSystemSourcePath);
 if ($numberingSystemSource === false) {
     fwrite(STDERR, "Unable to read the numbering-system projection source.\n");
     exit(1);
 }
-$numberingSystemArtifact = NumberingSystemsProjectionGenerator::generate($root, $numberingSystemSource);
-$numberingSystemSourceSha256 = $numberingSystemArtifact['sourceSha256'];
-$numberingSystemGenerated = $numberingSystemArtifact['generated'];
-$generatedArtifacts = [
-    [
-        'sourceSha256' => $sourceSha256,
-        'generated' => $generated,
-        'label' => 'locale alias',
-        'target' => 'src/Internal/Data/LocaleAliases.php',
-    ],
-    ...array_values($mapArtifacts),
-    [
-        'sourceSha256' => $timeZoneSourceSha256,
-        'generated' => $timeZoneGenerated,
-        'label' => 'primary time-zone',
-        'target' => 'src/Internal/Data/PrimaryTimeZones.php',
-    ],
-    [
-        'sourceSha256' => hash('sha256', $calendarSource),
-        'generated' => $calendarGenerated,
-        'label' => 'calendar preference',
-        'target' => 'src/Internal/Data/CalendarPreferences.php',
-    ],
-    [
-        'sourceSha256' => hash('sha256', $hourCycleSource),
-        'generated' => $hourCycleGenerated,
-        'label' => 'hour-cycle preference',
-        'target' => 'src/Internal/Data/HourCyclePreferences.php',
-    ],
-    [
-        'sourceSha256' => $collationSourceSha256,
-        'generated' => $collationGenerated,
-        'label' => 'collation availability',
-        'target' => 'src/Internal/Data/CollationAvailability.php',
-    ],
-    $numberingSystemArtifact,
+$numberingSystemProjection = NumberingSystemsProjectionGenerator::generate($root, $numberingSystemSource);
+$numberingSystemArtifact = new GeneratedDataArtifact(
+    $numberingSystemSource,
+    $numberingSystemProjection['generated'],
+    $numberingSystemProjection['label'],
+    $numberingSystemProjection['target'],
+);
+$artifacts = [
+    'localeAliases' => new GeneratedDataArtifact(
+        $source,
+        $generated,
+        'locale alias',
+        'src/Internal/Data/LocaleAliases.php',
+    ),
+    ...$mapArtifacts,
+    'collations' => new GeneratedDataArtifact(
+        $collationSource,
+        $collationGenerated,
+        'collation availability',
+        'src/Internal/Data/CollationAvailability.php',
+    ),
+    'calendarPreferences' => new GeneratedDataArtifact(
+        $calendarSource,
+        $calendarGenerated,
+        'calendar preference',
+        'src/Internal/Data/CalendarPreferences.php',
+    ),
+    'hourCyclePreferences' => new GeneratedDataArtifact(
+        $hourCycleSource,
+        $hourCycleGenerated,
+        'hour-cycle preference',
+        'src/Internal/Data/HourCyclePreferences.php',
+    ),
+    'primaryTimeZones' => new GeneratedDataArtifact(
+        $timeZoneSource,
+        $timeZoneGenerated,
+        'primary time-zone',
+        'src/Internal/Data/PrimaryTimeZones.php',
+    ),
+    'numberingSystems' => $numberingSystemArtifact,
 ];
 if (in_array('--check', $argv, true)) {
-    foreach ($generatedArtifacts as $artifact) {
-        $target = $root . '/' . $artifact['target'];
-        if (!is_file($target) || file_get_contents($target) !== $artifact['generated']) {
-            fwrite(STDERR, sprintf("The generated %s data is not reproducible.\n", $artifact['label']));
+    foreach ($artifacts as $artifact) {
+        if (!$artifact->isReproducible($root)) {
+            fwrite(STDERR, sprintf("The generated %s projection is not reproducible.\n", $artifact->label));
             exit(1);
         }
     }
@@ -611,45 +612,28 @@ if (in_array('--check', $argv, true)) {
         'ianaLanguage' => $manifest['inputs']['languageRegistry']['sha256'],
         'tzdb' => $manifest['inputs']['tzdb']['sha512'],
         'localeAliasesProjection' => $sourceSha256,
-        'likelySubtagsProjection' => $mapArtifacts['likelySubtags']['sourceSha256'],
-        'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']['sourceSha256'],
-        'calendarPreferencesProjection' => hash('sha256', $calendarSource),
-        'hourCyclePreferencesProjection' => hash('sha256', $hourCycleSource),
-        'collationsProjection' => $collationSourceSha256,
-        'primaryTimeZonesProjection' => $timeZoneSourceSha256,
-        'numberingSystemsProjection' => $numberingSystemSourceSha256,
+        'likelySubtagsProjection' => $mapArtifacts['likelySubtags']->sourceSha256,
+        'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']->sourceSha256,
+        'calendarPreferencesProjection' => $artifacts['calendarPreferences']->sourceSha256,
+        'hourCyclePreferencesProjection' => $artifacts['hourCyclePreferences']->sourceSha256,
+        'collationsProjection' => $artifacts['collations']->sourceSha256,
+        'primaryTimeZonesProjection' => $artifacts['primaryTimeZones']->sourceSha256,
+        'numberingSystemsProjection' => $numberingSystemArtifact->sourceSha256,
     ], JSON_THROW_ON_ERROR));
     if (
         $manifest['format'] !== 6
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
-        || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemArtifact['upstreamSha512']
+        || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemProjection['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
-        || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
-        || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
-        || $manifest['projections']['likelySubtags']['sourceSha256'] !== $mapArtifacts['likelySubtags']['sourceSha256']
-        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash(
-            'sha256',
-            $mapArtifacts['likelySubtags']['generated'],
-        )
-        || $manifest['projections']['scriptDirections']['sourceSha256']
-            !== $mapArtifacts['scriptDirections']['sourceSha256']
-        || $manifest['projections']['scriptDirections']['generatedSha256'] !== hash(
-            'sha256',
-            $mapArtifacts['scriptDirections']['generated'],
-        )
-        || $manifest['projections']['calendarPreferences']['sourceSha256'] !== hash('sha256', $calendarSource)
-        || $manifest['projections']['calendarPreferences']['generatedSha256'] !== hash('sha256', $calendarGenerated)
-        || $manifest['projections']['hourCyclePreferences']['sourceSha256'] !== hash('sha256', $hourCycleSource)
-        || $manifest['projections']['hourCyclePreferences']['generatedSha256'] !== hash('sha256', $hourCycleGenerated)
-        || $manifest['projections']['collations']['sourceSha256'] !== $collationSourceSha256
-        || $manifest['projections']['collations']['generatedSha256'] !== hash('sha256', $collationGenerated)
-        || $manifest['projections']['primaryTimeZones']['sourceSha256'] !== $timeZoneSourceSha256
-        || $manifest['projections']['primaryTimeZones']['generatedSha256'] !== hash('sha256', $timeZoneGenerated)
-        || $manifest['projections']['numberingSystems']['sourceSha256'] !== $numberingSystemSourceSha256
-        || $manifest['projections']['numberingSystems']['generatedSha256'] !== hash('sha256', $numberingSystemGenerated)
     ) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
+    }
+    foreach ($artifacts as $name => $artifact) {
+        if (!$artifact->matchesManifest($manifest['projections'][$name])) {
+            fwrite(STDERR, sprintf("The release data manifest fingerprint does not match for %s.\n", $name));
+            exit(1);
+        }
     }
     foreach ($manifest['generators'] as $path => $expectedHash) {
         if (!is_file($root . '/' . $path) || hash_file('sha256', $root . '/' . $path) !== $expectedHash) {
@@ -661,15 +645,11 @@ if (in_array('--check', $argv, true)) {
     exit(0);
 }
 
-foreach ($generatedArtifacts as $artifact) {
-    if (file_put_contents($root . '/' . $artifact['target'], $artifact['generated']) === false) {
-        fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact['label']));
+foreach ($artifacts as $artifact) {
+    if (!$artifact->write($root)) {
+        fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact->label));
         exit(1);
     }
-}
-if (file_put_contents($collationTarget, $collationGenerated) === false) {
-    fwrite(STDERR, "Unable to write the collation availability projection.\n");
-    exit(1);
 }
 
 /**
@@ -682,9 +662,8 @@ if (file_put_contents($collationTarget, $collationGenerated) === false) {
  *     label: string,
  *     target: string
  * } $definition
- * @return array{sourceSha256: string, generated: string, label: string, target: string}
  */
-function generateMapProjection(string $root, array $definition): array
+function generateMapProjection(string $root, array $definition): GeneratedDataArtifact
 {
     $data = $definition['data'];
     $field = $definition['field'];
@@ -759,10 +738,5 @@ function generateMapProjection(string $root, array $definition): array
         PHP;
     $generated = MagoFormatter::format($root, $definition['target'], $generated . "\n");
 
-    return [
-        'sourceSha256' => $sourceSha256,
-        'generated' => $generated,
-        'label' => $label,
-        'target' => $definition['target'],
-    ];
+    return new GeneratedDataArtifact($definition['source'], $generated, $label, $definition['target']);
 }

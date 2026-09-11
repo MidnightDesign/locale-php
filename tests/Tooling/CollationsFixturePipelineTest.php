@@ -27,9 +27,8 @@ final class CollationsFixturePipelineTest extends TestCase
         self::assertTrue($result->isPassing());
         self::assertSame(2, $result->evidence()['sourceAssertionCount']);
         self::assertSame(10, $result->evidence()['executionCount']);
-        self::assertStringContainsString("['und', 'pinyin']", $result->generatedScripts()[0]->contents());
         self::assertStringContainsString(
-            "new Locale(\$base, ['collation' => \$collation])",
+            "CollationsFixtureAssertions::evaluate('collation-keyword.js')",
             $result->generatedScripts()[0]->contents(),
         );
     }

@@ -165,8 +165,8 @@
     },
     "summary": {
         "translatedFixtures": 91,
-        "passingFixtures": 78,
-        "partiallyTranslatedFixtures": 13,
+        "passingFixtures": 74,
+        "partiallyTranslatedFixtures": 17,
         "translationGaps": 465,
         "executionFailures": 0
     },
@@ -7470,7 +7470,7 @@
                     "sha256": "f3fcb295decdb62c288b77715feb1879447abf884b44444ba905fab405565a95",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "ECMAScript function branding is represented by an existing PHP instance method."
                     ]
                 },
                 {
@@ -7481,7 +7481,7 @@
                     "sha256": "cad15e0b94cadcf4713763fdaac40f526797b32d3e6aea330e5f82d3a1e2d069",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 }
             ],
@@ -7620,7 +7620,7 @@
                     "sha256": "0d5d9b791e61e89799d0f0bc526eba1e47af56883f43980b4820e8677b356c28",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "ECMAScript function branding is represented by an existing PHP instance method."
                     ]
                 },
                 {
@@ -7631,7 +7631,7 @@
                     "sha256": "36a4c75efd5b5a79644566052376f1404558ddae4962ec9dc5b847dbab89bd97",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 }
             ],
@@ -7770,7 +7770,7 @@
                     "sha256": "bcddcc39ff45f9a0de4fd595ede28cf18504ce51fae97da824df4518177891e3",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "ECMAScript function branding is represented by an existing PHP instance method."
                     ]
                 },
                 {
@@ -7781,7 +7781,7 @@
                     "sha256": "bedf05f14b9ac4ec93393a8eea1ba064f518b12c296be23096526465391c3054",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7792,7 +7792,7 @@
                     "sha256": "f3b203a602171158fc9ac0dbc65c9a41fe5cdbe5ae6319f1b45c0a438ee5f3bd",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7803,7 +7803,7 @@
                     "sha256": "e880d5418b929d71a7ae677836c2272e6eff7755566aeef3c255fc3b541c3bc2",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7814,7 +7814,7 @@
                     "sha256": "bf31ad2825b57b2b6c8cd830eddf94dac5ded26d25d5e7cbdfd099b818d6b018",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7825,7 +7825,7 @@
                     "sha256": "04feb98caad79a13ecdc9c0a8676be21914dd08cde25c62d59dccbe1541645fc",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7836,7 +7836,7 @@
                     "sha256": "7195803f679969f4e09b2613463ab24b0e41a1506ab7b5fcc88d88a46d9f36b9",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7847,7 +7847,7 @@
                     "sha256": "425495fb6bce642f4a19794a02273b4d41f30217353f36087c95ccbf67c293c6",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7858,7 +7858,7 @@
                     "sha256": "2f9d3fe8a1b296ae9497b8b48a1ca1558e68bab14fda599f33c1d53daee8adda",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -7869,7 +7869,7 @@
                     "sha256": "42f80707e81a866642f8984dae885832401a1cc8cf55d1818a2827c697e46385",
                     "status": "passing",
                     "adaptations": [
-                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 }
             ],
@@ -10803,7 +10803,7 @@
             "executionCount": 10,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -10825,8 +10825,7 @@
                     "sha256": "65e5f11e11b28b59afda782c93d020d883f0cefc30e7775d90c7df45c334b875",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10837,8 +10836,7 @@
                     "sha256": "e7dca696e9267ab7a8c518527d4786aa32f56eb762fcf0f08b6a341c99a3a7c3",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10849,8 +10847,7 @@
                     "sha256": "9dc58e5a0c54e7c2fbe35ab220ad077e5f3b13ecad0bc757eaeb127c0fd0249b",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10861,8 +10858,7 @@
                     "sha256": "86643223033e956eb2be1b0247bbb1076d7fea753a14763387724d46f2fde892",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10873,8 +10869,7 @@
                     "sha256": "879f19a38cfef5d58bb37b79881d46d5203303c2f4280e635f26278e97375846",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10885,8 +10880,7 @@
                     "sha256": "35b8d3fc237e28f1a928361df5dd82724fe7784dee453e6fca39610894ac6dba",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10897,8 +10891,7 @@
                     "sha256": "c6b4c257383002c389f66de9c02908adafebae3fea1da865c46dec97e68bb5a4",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10909,8 +10902,7 @@
                     "sha256": "7c108a7230db47bd68c2eeca0f8f9bbc3e13c7a417ebb17ba8e395f23f1ec06b",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -10921,8 +10913,7 @@
                     "sha256": "941dba802071329c3e4079f8da45759452aa96a6b658dad4f5f5db67306f02b7",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 }
             ],
@@ -10937,13 +10928,13 @@
         {
             "path": "test/intl402/Locale/prototype/getTimeZones/name.js",
             "sha256": "661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260",
-            "status": "passing",
-            "reason": null,
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
             "sourceAssertionCount": 1,
             "executionCount": 1,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -10952,10 +10943,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "24bec785fbd12b000ff2ed1b46cb4e671715caaec663c3bc5c0dc7ceb7027ab7",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
-                        "The ECMAScript name value is represented by ReflectionMethod::getName().",
-                        "ECMAScript name-property descriptor flags have no PHP method-metadata counterpart."
+                        "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
                     ]
                 }
             ],
@@ -11077,13 +11067,13 @@
         {
             "path": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js",
             "sha256": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
-            "status": "passing",
-            "reason": null,
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
             "sourceAssertionCount": 2,
             "executionCount": 2,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -11094,7 +11084,7 @@
                     "sha256": "f1beb9d650403dd4b1406c81aa5b3bea5345203bce460e7ed8a31d00461ea452",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                        "Public PHP method visibility represents the applicable method-availability assertion."
                     ]
                 },
                 {
@@ -11103,10 +11093,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "09d5bf7714b954304e2fbb0abcac4cc85e3aa542080dd513736d42cfd337e47c",
-                    "status": "passing",
+                    "status": "inapplicable",
                     "adaptations": [
-                        "The ECMAScript prototype data property is represented by a public, non-static PHP method.",
-                        "ECMAScript writable, enumerable, and configurable flags have no PHP method-metadata counterparts."
+                        "JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable."
                     ]
                 }
             ],
@@ -12282,7 +12271,7 @@
             "executionCount": 10,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -12304,8 +12293,7 @@
                     "sha256": "ea7bd22dede9cca7727d35b81be2465b184c84ff31618cf4d48938fd5c347885",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12316,8 +12304,7 @@
                     "sha256": "69ae5fdead73b074e3f43b903ea01c503a82b188791cae6bcad4d8343eef9d98",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12328,8 +12315,7 @@
                     "sha256": "2e0d8c30a181c579736325e06ab96de51ec8a57c94fe46cb5cef2c497ac12ccb",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12340,8 +12326,7 @@
                     "sha256": "658177a315306d214200cf3944d0ccd31ac6455078a40dc150858596a033e04c",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12352,8 +12337,7 @@
                     "sha256": "496f767c58c4212afb41236591d077129c533f506c0fa842d6cdf59362111dbf",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12364,8 +12348,7 @@
                     "sha256": "ea0dc8f0474399e9e0fde9fcbc5a11594b3d0bf41675ed084bf3b0cb4a20e727",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12376,8 +12359,7 @@
                     "sha256": "7a85b342119180f8521a155611a6656495a58b7e71e75e739ce5b3ea71b9d06b",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12388,8 +12370,7 @@
                     "sha256": "8fd590a7d1b15365041cc2c6d5e8f9f5f4186ed1e6c5e8a5c4bb882e30d87de8",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 },
                 {
@@ -12400,8 +12381,7 @@
                     "sha256": "57ef97dffd4ce03be837b432fa13ad8dfa581bef4e86178d60c22632c28dff41",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
-                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics."
                     ]
                 }
             ],
@@ -12459,13 +12439,13 @@
         {
             "path": "test/intl402/Locale/prototype/getCollations/name.js",
             "sha256": "e03e578281f9842482da2821d8f4c92a4bfc0731ea4ac27919ad89d2447611bf",
-            "status": "passing",
-            "reason": null,
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
             "sourceAssertionCount": 1,
             "executionCount": 1,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -12474,10 +12454,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "8329b7977fe424086f626c37f77e4861f115f4cfb76489741c7eeb24823669ca",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
-                        "The ECMAScript name value is represented by ReflectionMethod::getName().",
-                        "ECMAScript name-property descriptor flags have no PHP method-metadata counterpart."
+                        "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
                     ]
                 }
             ],
@@ -12610,13 +12589,13 @@
         {
             "path": "test/intl402/Locale/prototype/getCollations/prop-desc.js",
             "sha256": "e8192ddb54381113c2863db3ebfc5511e3cc009620a98e167fb9f0567c633b3b",
-            "status": "passing",
-            "reason": null,
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
             "sourceAssertionCount": 2,
             "executionCount": 2,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -12627,7 +12606,7 @@
                     "sha256": "4fa1278172f8ecf47bb1d22b5ade8598e15fa51d73b5f772de6195cd6670081b",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                        "Public PHP method visibility represents the applicable method-availability assertion."
                     ]
                 },
                 {
@@ -12636,10 +12615,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "8beb9fd08f36e2b078af286e7675e2331c6b14dbc0291849f5db5f9ba2b736ed",
-                    "status": "passing",
+                    "status": "inapplicable",
                     "adaptations": [
-                        "The ECMAScript prototype data property is represented by a public, non-static PHP method.",
-                        "ECMAScript writable, enumerable, and configurable flags have no PHP method-metadata counterparts."
+                        "JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable."
                     ]
                 }
             ],
