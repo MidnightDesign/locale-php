@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests;
 
+use Midnight\Intl\CaseFirst;
+use Midnight\Intl\HourCycle;
 use Midnight\Intl\Locale;
 use Midnight\Intl\Spec\Locale as SpecLocale;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -39,10 +41,21 @@ final class LocaleTest extends TestCase
         foreach ($constructor->getParameters() as $parameter) {
             $parameters[$parameter->getName()] = $parameter;
         }
-        foreach (['language', 'script', 'region', 'variants'] as $name) {
+        foreach ([
+            'language',
+            'script',
+            'region',
+            'variants',
+            'calendar',
+            'collation',
+            'firstDayOfWeek',
+            'numberingSystem',
+        ] as $name) {
             self::assertSame('?string', (string) $parameters[$name]->getType());
             self::assertNull($parameters[$name]->getDefaultValue());
         }
+        self::assertSame('Midnight\Intl\HourCycle|string|null', (string) $parameters['hourCycle']->getType());
+        self::assertSame('Midnight\Intl\CaseFirst|string|null', (string) $parameters['caseFirst']->getType());
 
         $this->expectException(\TypeError::class);
         (new \ReflectionClass(Locale::class))->newInstance(null);
@@ -50,14 +63,59 @@ final class LocaleTest extends TestCase
 
     public function testItExposesCompleteCanonicalIdentifiersThroughThePorcelainLayer(): void
     {
-        $locale = new Locale('EN-fonipa-u-ca-gregory-x-private', calendar: 'islamicc', numeric: true, variants: '1901');
+        $locale = new Locale(
+            'EN-fonipa-u-ca-gregory-zz-abc-x-private',
+            calendar: 'islamicc',
+            collation: 'phonebk',
+            firstDayOfWeek: '7',
+            hourCycle: 'h23',
+            caseFirst: 'upper',
+            numeric: true,
+            numberingSystem: 'latn',
+            variants: '1901',
+        );
 
-        self::assertSame('en-1901-u-ca-islamic-civil-kn-x-private', $locale->toString());
+        self::assertSame(
+            'en-1901-u-ca-islamic-civil-co-phonebk-fw-sun-hc-h23-kf-upper-kn-nu-latn-zz-abc-x-private',
+            $locale->toString(),
+        );
         self::assertSame('en-1901', $locale->baseName);
         self::assertSame('islamic-civil', $locale->calendar);
+        self::assertSame('phonebk', $locale->collation);
+        self::assertSame('sun', $locale->firstDayOfWeek);
+        self::assertSame(HourCycle::H23, $locale->hourCycle);
+        self::assertSame(CaseFirst::Upper, $locale->caseFirst);
         self::assertTrue($locale->numeric);
+        self::assertSame('latn', $locale->numberingSystem);
         self::assertSame('1901', $locale->variants);
-        self::assertSame($locale->toString(), Locale::fromSpec($locale->toSpec())->toString());
+        $roundTrip = Locale::fromSpec($locale->toSpec());
+        self::assertSame($locale->toString(), $roundTrip->toString());
+        self::assertSame($locale->toString(), (string) $locale);
+        self::assertSame(json_encode($locale->toString()), json_encode($locale));
+    }
+
+    public function testItUsesBackedEnumsForClosedKeywordContracts(): void
+    {
+        self::assertSame(['h11', 'h12', 'h23', 'h24'], array_column(HourCycle::cases(), 'value'));
+        self::assertSame(['upper', 'lower', 'false'], array_column(CaseFirst::cases(), 'value'));
+
+        $locale = new Locale('en-u-hc-h11-kf-lower', hourCycle: HourCycle::H24, caseFirst: CaseFirst::Upper);
+
+        self::assertSame('en-u-hc-h24-kf-upper', $locale->toString());
+        self::assertSame(HourCycle::H24, $locale->hourCycle);
+        self::assertSame(CaseFirst::Upper, $locale->caseFirst);
+
+        $backingValues = new Locale('en', hourCycle: 'h23', caseFirst: 'false');
+        self::assertSame(HourCycle::H23, $backingValues->hourCycle);
+        self::assertSame(CaseFirst::False, $backingValues->caseFirst);
+
+        $openIdentifierValues = new Locale('en-u-hc-h00-kf-yes');
+        self::assertSame('h00', $openIdentifierValues->hourCycle);
+        self::assertSame('yes', $openIdentifierValues->caseFirst);
+
+        $missingValues = new Locale('en');
+        self::assertNull($missingValues->hourCycle);
+        self::assertNull($missingValues->caseFirst);
     }
 
     public function testPorcelainRejectsReuseAndUninitializedAccess(): void

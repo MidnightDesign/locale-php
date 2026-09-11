@@ -9,7 +9,12 @@ final class MutationCampaigns
     private const CAMPAIGNS = [
         'spec' => [
             'suite' => 'test262-upstream',
-            'excludes' => ['/^Locale\\.php$/', '/^Internal\\/Data\\//'],
+            'excludes' => [
+                '/^Locale\\.php$/',
+                '/^CaseFirst\\.php$/',
+                '/^HourCycle\\.php$/',
+                '/^Internal\\/Data\\//',
+            ],
         ],
         'porcelain' => [
             'suite' => 'porcelain',
@@ -47,7 +52,7 @@ final class MutationCampaigns
         if (str_starts_with($source, 'src/Internal/Data/')) {
             return null;
         }
-        if ($source === 'src/Locale.php') {
+        if (in_array($source, ['src/Locale.php', 'src/CaseFirst.php', 'src/HourCycle.php'], true)) {
             return 'porcelain';
         }
         foreach (['src/Spec/', 'src/Internal/', 'src/Exception/'] as $prefix) {

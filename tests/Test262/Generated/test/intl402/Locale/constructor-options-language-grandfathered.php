@@ -21,6 +21,7 @@ foreach (array(
         ),
         4 => 'associative_array',
         5 => 'Midnight\\Intl\\Exception\\RangeError',
+        6 => null,
     ),
     'case-1-plain_object' => array(
         0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L21:C1:assert.throws',
@@ -32,6 +33,7 @@ foreach (array(
         ),
         4 => 'plain_object',
         5 => 'Midnight\\Intl\\Exception\\RangeError',
+        6 => null,
     ),
     'case-2-associative_array' => array(
         0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws',
@@ -43,6 +45,7 @@ foreach (array(
         ),
         4 => 'associative_array',
         5 => 'Midnight\\Intl\\Exception\\RangeError',
+        6 => null,
     ),
     'case-2-plain_object' => array(
         0 => 'test/intl402/Locale/constructor-options-language-grandfathered.js:L27:C1:assert.throws',
@@ -54,10 +57,11 @@ foreach (array(
         ),
         4 => 'plain_object',
         5 => 'Midnight\\Intl\\Exception\\RangeError',
+        6 => null,
     ),
-) as [$assertionId, $tag, $optionName, $value, $representation, $expected]) {
+) as [$assertionId, $tag, $optionName, $value, $representation, $expected, $property]) {
     $result = $expected === RangeError::class
         ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, $value, $representation)
-        : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected);
+        : ConstructorOptionAssertion::evaluate($tag, $optionName, $value, $representation, $expected, $property);
     Assert::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
 }

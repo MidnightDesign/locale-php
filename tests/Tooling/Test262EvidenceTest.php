@@ -30,7 +30,7 @@ final class Test262EvidenceTest extends TestCase
      *         sourceAssertionCount: int,
      *         executionCount: int,
      *         executionFailures: int,
-     *         phpRepresentations?: list<string>,
+     *         phpRepresentations: list<string>,
      *         assertions: list<array{id: string, adaptations?: list<string>, status: string}>
      *     }>
      * }
@@ -61,7 +61,7 @@ final class Test262EvidenceTest extends TestCase
          *         sourceAssertionCount: int,
          *         executionCount: int,
          *         executionFailures: int,
-         *         phpRepresentations?: list<string>,
+         *         phpRepresentations: list<string>,
          *         assertions: list<array{id: string, adaptations?: list<string>, status: string}>
          *     }>
          * } $evidence
@@ -124,6 +124,27 @@ final class Test262EvidenceTest extends TestCase
                 'variant' => null,
             ]],
             $fixture['generatedScripts'],
+        );
+    }
+
+    public function testMappedLocaleStateFixturesReportOnlyExecutedRepresentations(): void
+    {
+        $fixtures = [];
+        foreach (self::evidence()['fixtures'] as $fixture) {
+            $fixtures[$fixture['path']] = $fixture;
+        }
+
+        self::assertSame(
+            ['direct'],
+            $fixtures['test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js']['phpRepresentations'],
+        );
+        self::assertSame(
+            ['associative_array', 'plain_object'],
+            $fixtures['test/intl402/Locale/prototype/calendar/canonicalize.js']['phpRepresentations'],
+        );
+        self::assertSame(
+            ['direct', 'associative_array', 'plain_object'],
+            $fixtures['test/intl402/Locale/getters.js']['phpRepresentations'],
         );
     }
 

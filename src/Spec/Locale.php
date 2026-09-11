@@ -237,6 +237,10 @@ class Locale
     private static function toStringValue(mixed $value): string
     {
         if (is_string($value) || is_int($value) || is_float($value)) {
+            if ($value === -0.0) {
+                return '0';
+            }
+
             return (string) $value;
         }
 
@@ -268,10 +272,10 @@ class Locale
         }
 
         $value = self::toStringValue($option->value);
-        if (preg_match('/^[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*$/D', $value) !== 1) {
+        if (preg_match('/\A[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*\z/', $value) !== 1) {
             throw new RangeError(sprintf('Invalid %s option: "%s".', $optionName, $value));
         }
-        $identifier->setKeyword($key, strtolower($value));
+        $identifier->setKeyword($key, $value);
     }
 
     /**
@@ -306,34 +310,20 @@ class Locale
         }
 
         $value = self::toStringValue($option->value);
-        $weekdays = [
-            '0' => 'sun',
-            '7' => 'sun',
-            'sun' => 'sun',
-            'sunday' => 'sun',
+        $value = match ($value) {
+            '0', '7' => 'sun',
             '1' => 'mon',
-            'mon' => 'mon',
-            'monday' => 'mon',
             '2' => 'tue',
-            'tue' => 'tue',
-            'tuesday' => 'tue',
             '3' => 'wed',
-            'wed' => 'wed',
-            'wednesday' => 'wed',
             '4' => 'thu',
-            'thu' => 'thu',
-            'thursday' => 'thu',
             '5' => 'fri',
-            'fri' => 'fri',
-            'friday' => 'fri',
             '6' => 'sat',
-            'sat' => 'sat',
-            'saturday' => 'sat',
-        ];
-        if (!isset($weekdays[$value])) {
+            default => $value,
+        };
+        if (preg_match('/\A[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*\z/', $value) !== 1) {
             throw new RangeError(sprintf('Invalid firstDayOfWeek option: "%s".', $value));
         }
-        $identifier->setKeyword('fw', $weekdays[$value]);
+        $identifier->setKeyword('fw', $value);
     }
 
     /** @param array<array-key, mixed>|object $options */
@@ -349,9 +339,14 @@ class Locale
 
     private static function toBooleanValue(mixed $value): bool
     {
-        return match (true) {
-            $value === null, $value === false, $value === 0, $value === 0.0, $value === '' => false,
-            default => true,
-        };
+        if (is_float($value) && is_nan($value)) {
+            return false;
+        }
+
+        if (is_scalar($value) || $value === null) {
+            return (bool) $value;
+        }
+
+        return true;
     }
 }
