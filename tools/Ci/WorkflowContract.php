@@ -115,6 +115,38 @@ final class WorkflowContract
         );
 
         $jobs = $workflow->jobs();
+        $readOnlySpec = $jobs['read-only-spec'] ?? null;
+        $readOnlySteps = is_array($readOnlySpec) && is_array($readOnlySpec['steps'] ?? null)
+            ? $readOnlySpec['steps']
+            : [];
+        $hasNoIntlSetup = false;
+        $hasReadOnlyRun = false;
+        foreach ($readOnlySteps as $step) {
+            if (!is_array($step)) {
+                continue;
+            }
+            $with = is_array($step['with'] ?? null) ? $step['with'] : [];
+            if (
+                is_string($step['uses'] ?? null)
+                && str_starts_with($step['uses'], 'shivammathur/setup-php@')
+                && ($with['extensions'] ?? null) === ':intl'
+            ) {
+                $hasNoIntlSetup = true;
+            }
+            if (
+                is_string($step['run'] ?? null)
+                && str_contains(
+                    $step['run'],
+                    'chmod -R a-w . && vendor/bin/phpunit --do-not-cache-result --testsuite=test262-upstream',
+                )
+            ) {
+                $hasReadOnlyRun = true;
+            }
+        }
+        if (!$hasNoIntlSetup || !$hasReadOnlyRun) {
+            $failures[] = 'The quality workflow must run the upstream spec suite without ext-intl or writable package storage.';
+        }
+
         $mutation = $jobs['mutation'] ?? null;
         $strategy = is_array($mutation) && is_array($mutation['strategy'] ?? null) ? $mutation['strategy'] : [];
         $matrix = is_array($strategy['matrix'] ?? null) ? $strategy['matrix'] : [];

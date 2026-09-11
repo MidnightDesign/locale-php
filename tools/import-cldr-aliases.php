@@ -104,6 +104,28 @@ foreach ($likelyMatches as $likelyMatch) {
 }
 ksort($likelySubtag, SORT_STRING);
 ksort($likelyRegion, SORT_STRING);
+$scriptMetadata = readArchiveEntry($archive, 'common/properties/scriptMetadata.txt');
+$scriptDirection = [];
+foreach (preg_split('/\R/', $scriptMetadata) ?: [] as $line) {
+    $dataLine = trim(explode('#', $line, 2)[0]);
+    if ($dataLine === '') {
+        continue;
+    }
+
+    $fields = array_map('trim', explode(';', $dataLine));
+    $scriptIdentifier = $fields[0];
+    $rtl = $fields[6] ?? '';
+    if (preg_match('/^[A-Z][a-z]{3}$/D', $scriptIdentifier) !== 1 || !in_array($rtl, ['YES', 'NO', 'UNKNOWN'], true)) {
+        throw new RuntimeException('The CLDR script metadata has an unsupported direction record.');
+    }
+
+    $scriptDirection[$scriptIdentifier] = match ($rtl) {
+        'YES' => 'rtl',
+        'NO' => 'ltr',
+        'UNKNOWN' => null,
+    };
+}
+ksort($scriptDirection, SORT_STRING);
 $variant = aliases(
     $metadataWithoutComments,
     'variantAlias',
@@ -188,8 +210,8 @@ $projection = [
         'common/supplemental/likelySubtags.xml' => hash('sha256', $likelySubtags),
     ],
     'language' => $language,
-    'compoundLanguage' => $compoundLanguage,
     'script' => $script,
+    'compoundLanguage' => $compoundLanguage,
     'region' => $region,
     'regionAlternatives' => $regionAlternatives,
     'likelyRegion' => $likelyRegion,
@@ -207,6 +229,15 @@ $likelySubtagsProjection = [
     ],
     'likelySubtag' => $likelySubtag,
 ];
+$scriptDirectionsProjection = [
+    'format' => 1,
+    'cldrRevision' => CLDR_REVISION,
+    'upstreamSha512' => CLDR_CORE_SHA512,
+    'sourceEntries' => [
+        'common/properties/scriptMetadata.txt' => hash('sha256', $scriptMetadata),
+    ],
+    'scriptDirection' => $scriptDirection,
+];
 
 file_put_contents(
     dirname(__DIR__) . '/resources/data/locale-aliases.json',
@@ -215,6 +246,10 @@ file_put_contents(
 file_put_contents(
     dirname(__DIR__) . '/resources/data/likely-subtags.json',
     json_encode($likelySubtagsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
+);
+file_put_contents(
+    dirname(__DIR__) . '/resources/data/script-directions.json',
+    json_encode($scriptDirectionsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
 );
 
 function readArchiveEntry(ZipArchive $archive, string $name): string

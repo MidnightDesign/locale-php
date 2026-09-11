@@ -1,7 +1,7 @@
 {
-    "format": 3,
-    "scope": "unicode-locale-identifier-canonicalization-and-likely-subtags",
-    "releaseDataFingerprint": "155978b38ba1712f35e6927e3eec15c726a5f8186c5649234fc41f79e6b8ae66",
+    "format": 4,
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-and-script-directions",
+    "releaseDataFingerprint": "934c0e2dc88b9a90d34073d45a5ccc512972f612a96a4af5fcd035f05c6c7dbd",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -41,11 +41,17 @@
             "sourceSha256": "320dd0a8cb5d60b82ec73d4a3caff9508ed981a9aaacd4761be748429578e0f4",
             "generated": "src/Internal/Data/LikelySubtags.php",
             "generatedSha256": "d81b7276de01c64b033ab24f83c9e6c87b6b3c8e19b3e10c180482ff2d383c02"
+        },
+        "scriptDirections": {
+            "source": "resources/data/script-directions.json",
+            "sourceSha256": "e71dc41671b2a3d15807e4dcda0bd38735000bc947fcf8bfbe6f7754d1e27215",
+            "generated": "src/Internal/Data/ScriptDirections.php",
+            "generatedSha256": "714daa2337ae2d4dc68d2d831d11973e5d773cff7f90fea8df40c0004bac037e"
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "6aca694b92cdae1615545b9a8c51c6c48988da5cf179c98e92d0702ef1474484",
-        "tools/generate-data.php": "63144a1a10b937855165e917b431a4426b7ec476f6f7f3845ceea606134ce352",
+        "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
+        "tools/generate-data.php": "58bd88b728bc94ca99a98c2258b0ebf213335940158541f9ad24977d40e442cd",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",
         "tools/verify-data-sources.php": "0c8d76e31fa3266e6980c919cb2353dbe6ac29574cc86fb8452ada8125fc379b"
     },

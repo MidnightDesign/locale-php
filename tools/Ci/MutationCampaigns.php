@@ -47,7 +47,7 @@ final class MutationCampaigns
         if (str_starts_with($source, 'src/Internal/Data/')) {
             return null;
         }
-        if ($source === 'src/Locale.php') {
+        if (in_array($source, ['src/Locale.php', 'src/TextDirection.php', 'src/TextInfo.php'], true)) {
             return 'porcelain';
         }
         foreach (['src/Spec/', 'src/Internal/', 'src/Exception/'] as $prefix) {

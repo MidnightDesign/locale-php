@@ -97,6 +97,29 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRejectsAMissingReadOnlySpecRunWithoutIntl(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root . '/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace(
+                'chmod -R a-w . && vendor/bin/phpunit --do-not-cache-result --testsuite=test262-upstream',
+                'vendor/bin/phpunit --testsuite=test262-upstream',
+                $contents,
+            );
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The quality workflow must run the upstream spec suite without ext-intl or writable package storage.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testItRejectsAMissingMutationCampaignLane(): void
     {
         $root = $this->fixtureRoot();

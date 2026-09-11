@@ -19,6 +19,12 @@ if ($likelySubtagsSource === false) {
     fwrite(STDERR, "Unable to read the likely-subtag projection source.\n");
     exit(1);
 }
+$scriptDirectionsSourcePath = $root . '/resources/data/script-directions.json';
+$scriptDirectionsSource = file_get_contents($scriptDirectionsSourcePath);
+if ($scriptDirectionsSource === false) {
+    fwrite(STDERR, "Unable to read the script-direction projection source.\n");
+    exit(1);
+}
 
 /** @var array{
  *     format: int,
@@ -52,6 +58,19 @@ if ($data['format'] !== 3) {
 $likelySubtagsData = json_decode($likelySubtagsSource, true, flags: JSON_THROW_ON_ERROR);
 if ($likelySubtagsData['format'] !== 1) {
     fwrite(STDERR, "The likely-subtag projection format is incompatible.\n");
+    exit(1);
+}
+
+/** @var array{
+ *     format: int,
+ *     cldrRevision: string,
+ *     upstreamSha512: string,
+ *     sourceEntries: array<string, string>,
+ *     scriptDirection: array<string, 'ltr'|'rtl'|null>
+ * } $scriptDirectionsData */
+$scriptDirectionsData = json_decode($scriptDirectionsSource, true, flags: JSON_THROW_ON_ERROR);
+if ($scriptDirectionsData['format'] !== 1) {
+    fwrite(STDERR, "The script-direction projection format is incompatible.\n");
     exit(1);
 }
 
@@ -216,14 +235,86 @@ $likelySubtagsGenerated = <<<PHP
 $likelySubtagsGenerated .= "\n";
 $likelySubtagsGenerated = MagoFormatter::format($root, 'src/Internal/Data/LikelySubtags.php', $likelySubtagsGenerated);
 
+$scriptDirectionsSourceSha256 = hash('sha256', $scriptDirectionsSource);
+$scriptDirectionsPayloadSha256 = hash('sha256', json_encode([
+    'format' => $scriptDirectionsData['format'],
+    'scriptDirection' => $scriptDirectionsData['scriptDirection'],
+], JSON_THROW_ON_ERROR));
+$scriptDirectionsExport = preg_replace(
+    '/[ \t]+$/m',
+    '',
+    Midnight\Intl\Tools\PhpExporter::export($scriptDirectionsData['scriptDirection']),
+);
+if ($scriptDirectionsExport === null) {
+    throw new RuntimeException('Unable to export the script-direction projection.');
+}
+$scriptDirectionsGenerated = <<<PHP
+    <?php
+
+    declare(strict_types=1);
+
+    namespace Midnight\Intl\Internal\Data;
+
+    enum ScriptDirections
+    {
+        public const FORMAT = {$scriptDirectionsData['format']};
+
+        /** @var string */
+        public const CLDR_REVISION = '{$scriptDirectionsData['cldrRevision']}';
+
+        /** @var string */
+        public const CLDR_CORE_SHA512 = '{$scriptDirectionsData['upstreamSha512']}';
+
+        /** @var string */
+        public const SOURCE_SHA256 = '{$scriptDirectionsSourceSha256}';
+
+        private const PAYLOAD_SHA256 = '{$scriptDirectionsPayloadSha256}';
+
+        /** @var array<string, 'ltr'|'rtl'|null> */
+        public const MAP = {$scriptDirectionsExport};
+
+        public static function assertIntegrity(): void
+        {
+            /** @var bool|null \$verified */
+            static \$verified = null;
+            if (\$verified === true) {
+                return;
+            }
+
+            \$actual = hash('sha256', json_encode([
+                'format' => self::FORMAT,
+                'scriptDirection' => self::MAP,
+            ], JSON_THROW_ON_ERROR));
+            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+                throw new \UnexpectedValueException('The bundled script-direction data is corrupt or incompatible.');
+            }
+            \$verified = true;
+        }
+
+        private static function supportsFormat(int \$format): bool
+        {
+            return \$format === 1;
+        }
+    }
+    PHP;
+$scriptDirectionsGenerated .= "\n";
+$scriptDirectionsGenerated = MagoFormatter::format(
+    $root,
+    'src/Internal/Data/ScriptDirections.php',
+    $scriptDirectionsGenerated,
+);
+
 $target = $root . '/src/Internal/Data/LocaleAliases.php';
 $likelySubtagsTarget = $root . '/src/Internal/Data/LikelySubtags.php';
+$scriptDirectionsTarget = $root . '/src/Internal/Data/ScriptDirections.php';
 if (in_array('--check', $argv, true)) {
     if (
         !is_file($target)
         || file_get_contents($target) !== $generated
         || !is_file($likelySubtagsTarget)
         || file_get_contents($likelySubtagsTarget) !== $likelySubtagsGenerated
+        || !is_file($scriptDirectionsTarget)
+        || file_get_contents($scriptDirectionsTarget) !== $scriptDirectionsGenerated
     ) {
         fwrite(STDERR, "The generated locale data is not reproducible.\n");
         exit(1);
@@ -235,7 +326,7 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -244,15 +335,21 @@ if (in_array('--check', $argv, true)) {
         'tzdb' => $manifest['inputs']['tzdb']['sha512'],
         'localeAliasesProjection' => $sourceSha256,
         'likelySubtagsProjection' => $likelySubtagsSourceSha256,
+        'scriptDirectionsProjection' => $scriptDirectionsSourceSha256,
     ], JSON_THROW_ON_ERROR));
     if (
-        $manifest['format'] !== 3
+        $manifest['format'] !== 4
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
         || $manifest['projections']['likelySubtags']['sourceSha256'] !== $likelySubtagsSourceSha256
         || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)
+        || $manifest['projections']['scriptDirections']['sourceSha256'] !== $scriptDirectionsSourceSha256
+        || $manifest['projections']['scriptDirections']['generatedSha256'] !== hash(
+            'sha256',
+            $scriptDirectionsGenerated,
+        )
     ) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
@@ -273,5 +370,9 @@ if (file_put_contents($target, $generated) === false) {
 }
 if (file_put_contents($likelySubtagsTarget, $likelySubtagsGenerated) === false) {
     fwrite(STDERR, "Unable to write the likely-subtag projection.\n");
+    exit(1);
+}
+if (file_put_contents($scriptDirectionsTarget, $scriptDirectionsGenerated) === false) {
+    fwrite(STDERR, "Unable to write the script-direction projection.\n");
     exit(1);
 }

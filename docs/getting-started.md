@@ -36,3 +36,15 @@ $locale = new Locale('zh-Hant-u-ca-chinese-x-catalog');
 echo $locale->maximize(); // zh-Hant-TW-u-ca-chinese-x-catalog
 echo $locale->minimize(); // zh-TW-u-ca-chinese-x-catalog
 ```
+
+`getTextInfo()` returns a fresh immutable `TextInfo` value. Its nullable `TextDirection` enum is `LeftToRight` (`ltr`) or `RightToLeft` (`rtl`); it is `null` only when the pinned release data snapshot cannot determine a direction. An explicit script takes precedence, otherwise the script is inferred from likely subtags.
+
+```php
+use Midnight\Intl\TextDirection;
+
+$direction = (new Locale('ar'))->getTextInfo()->direction;
+
+if ($direction === TextDirection::RightToLeft) {
+    // Select a right-to-left application layout.
+}
+```

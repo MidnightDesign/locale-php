@@ -41,7 +41,7 @@ final class PackageSmoke
             self::run([
                 PHP_BINARY,
                 '-r',
-                'require "vendor/autoload.php"; $locale = new Midnight\\Intl\\Locale("EN-latn-us"); if ($locale->toString() !== "en-Latn-US") { exit(1); }',
+                'require "vendor/autoload.php"; $locale = new Midnight\\Intl\\Locale("ar"); if ($locale->toString() !== "ar" || $locale->getTextInfo()->direction !== Midnight\\Intl\\TextDirection::RightToLeft) { exit(1); }',
             ], $consumerDirectory);
         } finally {
             self::removeDirectory($workDirectory);

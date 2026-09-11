@@ -23,6 +23,7 @@ use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
 use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
 use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
+use Midnight\Intl\Tools\Test262\TextInfoFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
 
 $root = dirname(__DIR__);
@@ -176,6 +177,39 @@ $fixturePipelines = [
         new ConstructorOptionsScriptTranslator($assertionIdentities),
         $assertionIdentities,
         $representations,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTextInfo/branding.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'getTextInfo',
+        'branding',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTextInfo/name.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'getTextInfo',
+        'name',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTextInfo/output-object-keys.js' => new TextInfoFixturePipeline(
+        $assertionIdentities,
+        'keys',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTextInfo/output-object.js' => new TextInfoFixturePipeline(
+        $assertionIdentities,
+        'record',
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTextInfo/prop-desc.js' => new LocaleMethodFixturePipeline(
+        $assertionIdentities,
+        'getTextInfo',
+        'property',
         $test262Revision,
         $ecma402Revision,
     ),

@@ -6,6 +6,8 @@ namespace Midnight\Intl\Tests;
 
 use Midnight\Intl\Locale;
 use Midnight\Intl\Spec\Locale as SpecLocale;
+use Midnight\Intl\TextDirection;
+use Midnight\Intl\TextInfo;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -107,5 +109,27 @@ final class LocaleTest extends TestCase
         self::assertNotSame($locale, $maximal);
         self::assertNotSame($maximal, $minimal);
         self::assertNotSame($locale->toSpec(), $maximal->toSpec());
+    }
+
+    public function testItReturnsFreshTypedTextInformation(): void
+    {
+        $locale = new Locale('ar');
+
+        $first = $locale->getTextInfo();
+        $second = $locale->getTextInfo();
+
+        self::assertInstanceOf(TextInfo::class, $first);
+        self::assertSame(TextDirection::RightToLeft, $first->direction);
+        self::assertNotSame($first, $second);
+        self::assertSame('ar', $locale->toString());
+    }
+
+    public function testTextInformationUsesANullableReadonlyDirection(): void
+    {
+        $info = (new Locale('en-Zzzz'))->getTextInfo();
+
+        self::assertNull($info->direction);
+        self::assertTrue((new \ReflectionClass(TextInfo::class))->isReadOnly());
+        self::assertTrue((new \ReflectionProperty(TextInfo::class, 'direction'))->isReadOnly());
     }
 }
