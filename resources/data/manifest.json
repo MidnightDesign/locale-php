@@ -46,7 +46,7 @@
     "generators": {
         "tools/import-cldr-aliases.php": "6aca694b92cdae1615545b9a8c51c6c48988da5cf179c98e92d0702ef1474484",
         "tools/generate-data.php": "63144a1a10b937855165e917b431a4426b7ec476f6f7f3845ceea606134ce352",
-        "tools/MagoFormatter.php": "0eea4a879ee81997e6ba6c1cdfaf3136a13e7b1e7cafe535df51b04acaccae63",
+        "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",
         "tools/verify-data-sources.php": "0c8d76e31fa3266e6980c919cb2353dbe6ac29574cc86fb8452ada8125fc379b"
     },
     "conformanceBaseline": {
