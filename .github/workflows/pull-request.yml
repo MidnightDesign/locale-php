@@ -14,3 +14,19 @@ jobs:
     uses: ./.github/workflows/ci-quality.yml
     with:
       separate-macos-install: false
+
+  gate:
+    name: CI gate
+    if: ${{ always() }}
+    needs: [runtime, quality]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require successful evidence
+        env:
+          RUNTIME_RESULT: ${{ needs.runtime.result }}
+          QUALITY_RESULT: ${{ needs.quality.result }}
+        run: |
+          if [[ "$RUNTIME_RESULT" != "success" || "$QUALITY_RESULT" != "success" ]]; then
+            echo "Runtime or quality evidence failed."
+            exit 1
+          fi
