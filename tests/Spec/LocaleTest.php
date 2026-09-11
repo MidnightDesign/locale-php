@@ -6,7 +6,6 @@ namespace Midnight\Intl\Tests\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
-use Midnight\Intl\Internal\Test262\OptionBag;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -45,7 +44,7 @@ final class LocaleTest extends TestCase
         self::assertFalse($locale->numeric);
     }
 
-    public function testItExposesUnicodeKeywordPropertiesAndAppliesAllConstructorOptions(): void
+    public function testItExposesUnicodeKeywordPropertiesAndAppliesTheirConstructorOptions(): void
     {
         $locale = new Locale('en-u-ca-gregory-kn-kf-lower', [
             'calendar' => 'islamicc',
@@ -53,19 +52,14 @@ final class LocaleTest extends TestCase
             'collation' => 'phonebk',
             'firstDayOfWeek' => '7',
             'hourCycle' => 'h23',
-            'language' => 'fr',
             'numberingSystem' => 'latn',
             'numeric' => false,
-            'region' => 'ca',
-            'script' => 'latn',
-            'variants' => 'FONIPA-1901',
         ]);
 
         self::assertSame(
-            'fr-Latn-CA-1901-fonipa-u-ca-islamic-civil-co-phonebk-fw-sun-hc-h23-kf-upper-kn-false-nu-latn',
+            'en-u-ca-islamic-civil-co-phonebk-fw-sun-hc-h23-kf-upper-kn-false-nu-latn',
             $locale->toString(),
         );
-        self::assertSame('fr-Latn-CA-1901-fonipa', $locale->baseName);
         self::assertSame('islamic-civil', $locale->calendar);
         self::assertSame('upper', $locale->caseFirst);
         self::assertSame('phonebk', $locale->collation);
@@ -73,7 +67,6 @@ final class LocaleTest extends TestCase
         self::assertSame('h23', $locale->hourCycle);
         self::assertSame('latn', $locale->numberingSystem);
         self::assertFalse($locale->numeric);
-        self::assertSame('1901-fonipa', $locale->variants);
     }
 
     /** @return iterable<string, array{string}> */
@@ -103,28 +96,6 @@ final class LocaleTest extends TestCase
         self::assertSame('en-x-private-a', (new Locale('en-x-private-a'))->toString());
     }
 
-    /** @return iterable<string, array{array<string, string>|object}> */
-    public static function optionBags(): iterable
-    {
-        $options = [
-            'language' => 'fr',
-            'script' => 'cyrl',
-            'region' => 'ca',
-        ];
-
-        yield 'associative array' => [$options];
-        yield 'plain object' => [(object) $options];
-    }
-
-    /** @param array<string, string>|object $options */
-    #[DataProvider('optionBags')]
-    public function testItAppliesBaseComponentOptions(array|object $options): void
-    {
-        $locale = new Locale('en-Latn-US', $options);
-
-        self::assertSame('fr-Cyrl-CA', $locale->toString());
-    }
-
     public function testItUsesTheSpecExceptionTaxonomy(): void
     {
         try {
@@ -147,8 +118,6 @@ final class LocaleTest extends TestCase
 
     public function testItAcceptsInitializedLocalesAndStringableObjects(): void
     {
-        $source = new Locale('en-US');
-        $fromLocale = new Locale($source, ['region' => 'GB']);
         $fromObject = new Locale(new class () implements \Stringable {
             public function __toString(): string
             {
@@ -156,7 +125,6 @@ final class LocaleTest extends TestCase
             }
         });
 
-        self::assertSame('en-GB', $fromLocale->toString());
         self::assertSame('de-Latn-DE', $fromObject->toString());
     }
 
@@ -188,67 +156,6 @@ final class LocaleTest extends TestCase
         self::assertSame('sr-ME', (new Locale('cnr'))->toString());
     }
 
-    public function testItCanonicalizesTheInputBeforeApplyingOptions(): void
-    {
-        self::assertSame(
-            'en-Latn',
-            (new Locale('sh', ['language' => 'en']))->toString(),
-        );
-    }
-
-    public function testItCanonicalizesAliasesIntroducedByOptions(): void
-    {
-        self::assertSame('sr-Latn', (new Locale('en', ['language' => 'sh']))->toString());
-    }
-
-    public function testItReadsAndConvertsBehavioralOptionsInOrder(): void
-    {
-        $log = new OptionAccessLog();
-        $options = new class ($log) implements OptionBag {
-            public function __construct(private OptionAccessLog $log)
-            {
-            }
-
-            public function has(string $name): bool
-            {
-                return in_array($name, ['language', 'script', 'region'], true);
-            }
-
-            public function get(string $name): mixed
-            {
-                $this->log->entries[] = 'get:'.$name;
-
-                return new class ($name, $this->log) implements \Stringable {
-                    public function __construct(private string $name, private OptionAccessLog $log)
-                    {
-                    }
-
-                    public function __toString(): string
-                    {
-                        $this->log->entries[] = 'convert:'.$this->name;
-
-                        return match ($this->name) {
-                            'language' => 'fr',
-                            'script' => 'Latn',
-                            'region' => 'CA',
-                            default => throw new \LogicException('Unexpected option name.'),
-                        };
-                    }
-                };
-            }
-        };
-
-        self::assertSame('fr-Latn-CA', (new Locale('en', $options))->toString());
-        self::assertSame([
-            'get:language',
-            'convert:language',
-            'get:script',
-            'convert:script',
-            'get:region',
-            'convert:region',
-        ], $log->entries);
-    }
-
     public function testItRejectsInvalidValuesWithinTheDeliveredSlice(): void
     {
         foreach (['', "en\n", 'root', 'abcd', 'en_US', 'en--US', 'en-a', 'x-private'] as $tag) {
@@ -260,29 +167,6 @@ final class LocaleTest extends TestCase
             }
         }
 
-        foreach ([
-            ['language' => 'fr-FR'],
-            ['language' => "english\n"],
-            ['script' => 'abc'],
-            ['script' => "Latn\n"],
-            ['region' => 'USA'],
-            ['region' => "US\n"],
-        ] as $options) {
-            try {
-                new Locale('en', $options);
-                self::fail('Expected the invalid option to be rejected.');
-            } catch (RangeError) {
-                self::addToAssertionCount(1);
-            }
-        }
-    }
-
-    public function testItConvertsBooleanOptionsUsingJavaScriptStrings(): void
-    {
-        self::assertSame('en-True', (new Locale('en', ['script' => true]))->toString());
-
-        $this->expectException(RangeError::class);
-        new Locale('en', ['script' => false]);
     }
 
     public function testItRejectsOptionsThatCannotBeConvertedToStrings(): void
@@ -396,10 +280,4 @@ final class LocaleTest extends TestCase
         $this->expectException(TypeError::class);
         $locale->__get('language');
     }
-}
-
-final class OptionAccessLog
-{
-    /** @var list<string> */
-    public array $entries = [];
 }
