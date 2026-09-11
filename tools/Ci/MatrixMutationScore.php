@@ -157,28 +157,64 @@ final class MatrixMutationScore
     /**
      * @param array{
      *     passing: bool,
+     *     failures: array<string, int>,
      *     campaigns: array<string, array{modes: array<string, array{obligations: int, killed: int, failures: int}>}>
      * } $evidence
+     * @param array<string, mixed> $baseline
      */
-    public static function acceptsExpectedFailure(array $evidence, string $expectedCampaign): bool
+    public static function acceptsExpectedFailure(array $evidence, array $baseline): bool
     {
+        $expectedCampaign = $baseline['campaign'] ?? null;
+        $baselineModes = $baseline['modes'] ?? null;
+        $baselineFailures = $baseline['failures'] ?? null;
+        if (!is_string($expectedCampaign) || !is_array($baselineModes) || !is_array($baselineFailures)) {
+            throw new \RuntimeException('The expected mutation failure baseline has an invalid shape.');
+        }
         if ($evidence['passing'] || !isset($evidence['campaigns'][$expectedCampaign])) {
             return false;
         }
 
         $expectedFailures = 0;
-        $unexpectedFailures = 0;
         foreach ($evidence['campaigns'] as $campaign => $campaignEvidence) {
-            foreach ($campaignEvidence['modes'] as $modeEvidence) {
-                if ($campaign === $expectedCampaign) {
-                    $expectedFailures += $modeEvidence['failures'];
-                } else {
-                    $unexpectedFailures += $modeEvidence['failures'];
+            foreach ($campaignEvidence['modes'] as $mode => $modeEvidence) {
+                if ($campaign !== $expectedCampaign) {
+                    if ($modeEvidence['failures'] !== 0) {
+                        return false;
+                    }
+
+                    continue;
                 }
+                $modeBaseline = $baselineModes[$mode] ?? null;
+                if (!is_array($modeBaseline)) {
+                    throw new \RuntimeException(sprintf('The expected mutation failure baseline is missing %s mode.', $mode));
+                }
+                $baselineObligations = $modeBaseline['obligations'] ?? null;
+                $baselineKilled = $modeBaseline['killed'] ?? null;
+                $baselineFailureCount = $modeBaseline['failures'] ?? null;
+                if (!is_int($baselineObligations) || $baselineObligations <= 0
+                    || !is_int($baselineKilled) || $baselineKilled < 0
+                    || !is_int($baselineFailureCount) || $baselineFailureCount < 0) {
+                    throw new \RuntimeException(sprintf('The expected mutation failure baseline has invalid %s counts.', $mode));
+                }
+                if ($modeEvidence['failures'] > $baselineFailureCount
+                    || $modeEvidence['killed'] * $baselineObligations < $baselineKilled * $modeEvidence['obligations']) {
+                    return false;
+                }
+                $expectedFailures += $modeEvidence['failures'];
             }
         }
 
-        return $expectedFailures > 0 && $unexpectedFailures === 0;
+        foreach ($evidence['failures'] as $failure => $count) {
+            $maximum = $baselineFailures[$failure] ?? null;
+            if (!is_int($maximum) || $maximum < 0) {
+                throw new \RuntimeException(sprintf('The expected mutation failure baseline is missing %s.', $failure));
+            }
+            if ($count > $maximum) {
+                return false;
+            }
+        }
+
+        return $expectedFailures > 0;
     }
 
     /**

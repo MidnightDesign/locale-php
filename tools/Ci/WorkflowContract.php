@@ -143,9 +143,9 @@ final class WorkflowContract
             $failures[] = 'The mutation-score job must depend on the complete mutation matrix.';
         }
         self::requireJobRuns($score, [
-            'tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=spec',
+            'tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=.ci/spec-mutation-expected-failure.json',
         ], 'mutation-score job', $failures);
-        if (!$workflow->hasScalarContaining('--expect-failing=spec')) {
+        if (!$workflow->hasScalarContaining('--expect-failing=.ci/spec-mutation-expected-failure.json')) {
             $failures[] = 'The mutation score job must require the spec campaign to remain an expected failure.';
         }
     }

@@ -1,0 +1,19 @@
+{
+  "format": 1,
+  "campaign": "spec",
+  "modes": {
+    "absent": {"obligations": 490, "killed": 181, "failures": 309},
+    "disabled": {"obligations": 490, "killed": 181, "failures": 309},
+    "native": {"obligations": 490, "killed": 181, "failures": 309}
+  },
+  "failures": {
+    "escaped": 288,
+    "uncovered": 630,
+    "errored": 0,
+    "syntaxErrors": 0,
+    "skipped": 0,
+    "ignored": 0,
+    "timedOut": 9,
+    "staticAnalysis": 0
+  }
+}

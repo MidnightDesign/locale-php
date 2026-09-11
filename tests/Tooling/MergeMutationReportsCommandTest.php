@@ -15,11 +15,13 @@ final class MergeMutationReportsCommandTest extends TestCase
         $directory = PackageSmoke::temporaryDirectory('intl-locale-mutation-canary');
         $reports = $directory.'/reports';
         $output = $directory.'/merged.json';
+        $baseline = $directory.'/baseline.json';
 
         try {
             $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'escaped');
             $this->writeCampaign($reports, 'porcelain', 'src/Locale.php', 'killed');
-            $process = $this->runMerge($output, $reports, '--expect-failing=spec');
+            $this->writeBaseline($baseline);
+            $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
 
             self::assertSame(0, $process->getExitCode());
             $evidence = json_decode((string) file_get_contents($output), true, flags: JSON_THROW_ON_ERROR);
@@ -29,8 +31,17 @@ final class MergeMutationReportsCommandTest extends TestCase
             self::assertIsArray($expectedFailure);
             self::assertTrue($expectedFailure['accepted']);
 
+            $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'uncovered');
+            $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
+
+            self::assertSame(1, $process->getExitCode());
+            self::assertStringContainsString(
+                'Mutation evidence regressed beyond the reviewed spec expected-failure baseline.',
+                $process->getErrorOutput(),
+            );
+
             $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'killed');
-            $process = $this->runMerge($output, $reports, '--expect-failing=spec');
+            $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
 
             self::assertSame(1, $process->getExitCode());
             self::assertStringContainsString(
@@ -94,6 +105,7 @@ final class MergeMutationReportsCommandTest extends TestCase
         $resultToStat = [
             'killed' => 'killedCount',
             'escaped' => 'escapedCount',
+            'uncovered' => 'notCoveredCount',
         ];
         $stats = [
             'totalMutantsCount' => 1,
@@ -134,5 +146,29 @@ final class MergeMutationReportsCommandTest extends TestCase
         foreach (['absent', 'disabled', 'native'] as $mode) {
             file_put_contents($target.'/'.$mode.'.json', $encoded);
         }
+    }
+
+    private function writeBaseline(string $path): void
+    {
+        $baseline = [
+            'format' => 1,
+            'campaign' => 'spec',
+            'modes' => [
+                'absent' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
+                'disabled' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
+                'native' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
+            ],
+            'failures' => [
+                'escaped' => 3,
+                'uncovered' => 0,
+                'errored' => 0,
+                'syntaxErrors' => 0,
+                'skipped' => 0,
+                'ignored' => 0,
+                'timedOut' => 0,
+                'staticAnalysis' => 0,
+            ],
+        ];
+        file_put_contents($path, json_encode($baseline, JSON_THROW_ON_ERROR));
     }
 }

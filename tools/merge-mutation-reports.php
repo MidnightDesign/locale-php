@@ -8,29 +8,26 @@ use Midnight\Intl\Tools\Ci\MutationCampaigns;
 require dirname(__DIR__).'/vendor/autoload.php';
 
 if ($argc < 3 || $argc > 4) {
-    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory> [--expect-failing=<campaign>]\n");
+    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory> [--expect-failing=<baseline-file>]\n");
     exit(2);
 }
 
 $output = $argv[1];
-$expectedFailure = null;
+$expectedFailureBaselinePath = null;
 if ($argc === 4) {
     $prefix = '--expect-failing=';
     if (!str_starts_with($argv[3], $prefix)) {
-        fwrite(STDERR, "The optional argument must use --expect-failing=<campaign>.\n");
+        fwrite(STDERR, "The optional argument must use --expect-failing=<baseline-file>.\n");
         exit(2);
     }
-    $expectedFailure = substr($argv[3], strlen($prefix));
-    if (!in_array($expectedFailure, MutationCampaigns::names(), true)) {
-        fwrite(STDERR, sprintf("Unknown expected-failure campaign %s.\n", $expectedFailure));
-        exit(2);
-    }
+    $expectedFailureBaselinePath = substr($argv[3], strlen($prefix));
 }
 $directory = dirname($output);
 if (!is_dir($directory) && !mkdir($directory, 0777, true) && !is_dir($directory)) {
     throw new RuntimeException(sprintf('Unable to create evidence directory %s.', $directory));
 }
 
+$expectedCampaign = null;
 try {
     $reports = [];
     $reportsDirectory = rtrim($argv[2], '/\\');
@@ -52,10 +49,24 @@ try {
 
     $evidence = MatrixMutationScore::aggregate($reports);
     $accepted = $evidence['passing'];
-    if ($expectedFailure !== null) {
-        $accepted = MatrixMutationScore::acceptsExpectedFailure($evidence, $expectedFailure);
+    if ($expectedFailureBaselinePath !== null) {
+        $baselineContents = @file_get_contents($expectedFailureBaselinePath);
+        if ($baselineContents === false) {
+            throw new RuntimeException(sprintf('Unable to read expected mutation failure baseline at %s.', $expectedFailureBaselinePath));
+        }
+        $baseline = json_decode($baselineContents, true, flags: JSON_THROW_ON_ERROR);
+        if (!is_array($baseline)) {
+            throw new RuntimeException('The expected mutation failure baseline must contain a JSON object.');
+        }
+        /** @var array<string, mixed> $baseline */
+        $expectedCampaign = $baseline['campaign'] ?? null;
+        if (!is_string($expectedCampaign) || !in_array($expectedCampaign, MutationCampaigns::names(), true)) {
+            throw new RuntimeException('The expected mutation failure baseline names an unknown campaign.');
+        }
+        $accepted = MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
         $evidence['expectedFailure'] = [
-            'campaign' => $expectedFailure,
+            'campaign' => $expectedCampaign,
+            'baseline' => $expectedFailureBaselinePath,
             'accepted' => $accepted,
         ];
     }
@@ -75,10 +86,10 @@ if (file_put_contents($output, $encoded) === false) {
 
 if (isset($evidence['error'])) {
     fwrite(STDERR, $evidence['error']."\n");
-} elseif ($expectedFailure !== null && !$accepted) {
+} elseif (is_string($expectedCampaign) && !$accepted) {
     $message = $evidence['passing']
-        ? sprintf('The %s mutation campaign now passes; remove its temporary expected-failure handling.', $expectedFailure)
-        : sprintf('Mutation failures are no longer confined to the expected %s campaign.', $expectedFailure);
+        ? sprintf('The %s mutation campaign now passes; remove its temporary expected-failure handling.', $expectedCampaign)
+        : sprintf('Mutation evidence regressed beyond the reviewed %s expected-failure baseline.', $expectedCampaign);
     fwrite(STDERR, $message."\n");
 }
 

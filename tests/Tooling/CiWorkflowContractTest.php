@@ -165,7 +165,7 @@ final class CiWorkflowContractTest extends TestCase
         try {
             $path = $root.'/.github/workflows/ci-quality.yml';
             $contents = (string) file_get_contents($path);
-            $contents = str_replace('--expect-failing=spec', '', $contents);
+            $contents = str_replace('--expect-failing=.ci/spec-mutation-expected-failure.json', '', $contents);
             file_put_contents($path, $contents);
 
             self::assertContains(
@@ -294,6 +294,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = PackageSmoke::temporaryDirectory('intl-locale-workflow-contract');
         foreach ([
             '.ci/action-pins.json',
+            '.ci/spec-mutation-expected-failure.json',
             '.github/workflows/ci-runtime.yml',
             '.github/workflows/ci-runtime-lane.yml',
             '.github/workflows/ci-quality.yml',
