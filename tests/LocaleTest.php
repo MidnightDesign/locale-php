@@ -105,4 +105,19 @@ final class LocaleTest extends TestCase
         self::assertNotNull($second);
         self::assertNotContains('Injected/Mutation', $second);
     }
+
+    public function testItReturnsFreshPorcelainLikelySubtagValues(): void
+    {
+        $locale = new Locale('zh-Hant');
+        $original = $locale->toString();
+        $maximal = $locale->maximize();
+        $minimal = $maximal->minimize();
+
+        self::assertSame($original, $locale->toString());
+        self::assertInstanceOf(Locale::class, $maximal);
+        self::assertInstanceOf(Locale::class, $minimal);
+        self::assertNotSame($locale, $maximal);
+        self::assertNotSame($maximal, $minimal);
+        self::assertNotSame($locale->toSpec(), $maximal->toSpec());
+    }
 }

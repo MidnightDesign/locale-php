@@ -2,7 +2,7 @@
 
 A pure-PHP implementation of ECMAScript `Intl.Locale`. It requires PHP 8.2 or newer and does not require `ext-intl`.
 
-The package is not yet ECMA-402 conformant. Locale identifier construction is complete, and both public layers provide pinned, deterministic primary time-zone identifiers for explicit regions through `getTimeZones()`. Other locale-information and likely-subtag methods remain unfinished.
+The package is not yet ECMA-402 conformant. Locale identifier construction and likely-subtag operations are implemented: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, expose the canonical identifier properties, provide deterministic `maximize()` and `minimize()` results, and return pinned primary time-zone identifiers for explicit regions through `getTimeZones()`. Other locale-information methods remain unfinished.
 
 ## Install
 
@@ -23,6 +23,8 @@ echo $locale;              // en-Latn-GB-u-ca-gregory-kn
 echo $locale->language;    // en
 echo $locale->calendar;    // gregory
 echo $locale->numeric;     // 1
+echo $locale->maximize();  // en-Latn-GB-u-ca-gregory-kn
+echo $locale->minimize();  // en-GB-u-ca-gregory-kn
 echo json_encode($locale); // "en-Latn-GB-u-ca-gregory-kn"
 $locale->getTimeZones();   // ['Europe/London']
 ```
@@ -40,3 +42,24 @@ docker compose run --rm php composer data:check
 docker compose run --rm php composer test262:check
 docker compose run --rm php composer test:package
 ```
+
+### Codex local environment
+
+The shared `locale-php` environment is configured in
+[`.codex/environments/environment.toml`](.codex/environments/environment.toml).
+Start Docker Desktop (or a Docker engine with Compose) before using it. Select
+this environment when creating a Codex worktree; setup builds the PHP 8.2 image
+and installs the locked Composer dependencies, including development tools.
+The Test, Analyse, Style, and Verify CI actions run inside that container.
+
+To initialize the current checkout manually, run:
+
+```bash
+docker compose -f compose.yaml -f .codex/compose.yaml build php
+docker compose -f compose.yaml -f .codex/compose.yaml run --rm php composer install --no-interaction --no-progress --prefer-dist
+```
+
+The Codex Compose override keeps dependencies and the Composer download cache
+in named Docker volumes. These volumes are shared between worktrees, so rerun
+setup after switching dependency versions and avoid simultaneous installs from
+worktrees with different lockfiles.

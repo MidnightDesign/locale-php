@@ -28,13 +28,29 @@ $metadataWithoutComments = preg_replace('/<!--.*?-->/s', '', $metadata) ?? throw
     'Unable to remove CLDR XML comments.',
 );
 
-$language = aliases(
+$languageAliases = aliases(
     $metadataWithoutComments,
     'languageAlias',
-    static fn(string $value): bool => preg_match('/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})$/D', $value) === 1,
-    static fn(string $value): string => strtolower($value),
+    static fn(string $value): bool => (
+        preg_match('/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:_(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/D', $value) === 1
+    ),
+    static fn(string $value): string => str_replace('_', '-', strtolower($value)),
     static fn(string $value): string => str_replace('_', '-', $value),
 );
+$language = [];
+$compoundLanguage = [];
+foreach ($languageAliases as $source => $replacement) {
+    $parts = explode('-', $source, 2);
+    if (isset($parts[1])) {
+        $compoundLanguage[$parts[0]][$parts[1]] = $replacement;
+    } else {
+        $language[$source] = $replacement;
+    }
+}
+foreach ($compoundLanguage as &$aliasesByLanguage) {
+    ksort($aliasesByLanguage, SORT_STRING);
+}
+unset($aliasesByLanguage);
 $script = aliases(
     $metadataWithoutComments,
     'scriptAlias',
@@ -62,10 +78,20 @@ foreach ($territoryMatches as $territoryMatch) {
 ksort($regionAlternatives, SORT_STRING);
 
 $likelySubtags = readArchiveEntry($archive, 'common/supplemental/likelySubtags.xml');
+$likelySubtag = [];
 $candidateRegions = array_fill_keys(array_merge(...array_values($regionAlternatives)), true);
 $likelyRegion = [];
 preg_match_all('/<likelySubtag\s+from="([^"]+)"\s+to="([^"]+)"/', $likelySubtags, $likelyMatches, PREG_SET_ORDER);
 foreach ($likelyMatches as $likelyMatch) {
+    $target = explode('_', $likelyMatch[2]);
+    $target[0] = strtolower($target[0]);
+    if (isset($target[1])) {
+        $target[1] = ucfirst(strtolower($target[1]));
+    }
+    if (isset($target[2])) {
+        $target[2] = strtoupper($target[2]);
+    }
+    $likelySubtag[str_replace('_', '-', strtolower($likelyMatch[1]))] = implode('-', $target);
     $from = explode('_', $likelyMatch[1]);
     $to = explode('_', $likelyMatch[2]);
     $regionPart = end($to);
@@ -76,6 +102,7 @@ foreach ($likelyMatches as $likelyMatch) {
         $likelyRegion[strtolower(implode('-', $from))] = $regionPart;
     }
 }
+ksort($likelySubtag, SORT_STRING);
 ksort($likelyRegion, SORT_STRING);
 $variant = aliases(
     $metadataWithoutComments,
@@ -153,7 +180,7 @@ foreach ($type as &$aliasesByKey) {
 unset($aliasesByKey);
 
 $projection = [
-    'format' => 2,
+    'format' => 3,
     'cldrRevision' => CLDR_REVISION,
     'upstreamSha512' => CLDR_CORE_SHA512,
     'sourceEntries' => [
@@ -161,6 +188,7 @@ $projection = [
         'common/supplemental/likelySubtags.xml' => hash('sha256', $likelySubtags),
     ],
     'language' => $language,
+    'compoundLanguage' => $compoundLanguage,
     'script' => $script,
     'region' => $region,
     'regionAlternatives' => $regionAlternatives,
@@ -170,10 +198,23 @@ $projection = [
     'key' => $key,
     'type' => $type,
 ];
+$likelySubtagsProjection = [
+    'format' => 1,
+    'cldrRevision' => CLDR_REVISION,
+    'upstreamSha512' => CLDR_CORE_SHA512,
+    'sourceEntries' => [
+        'common/supplemental/likelySubtags.xml' => hash('sha256', $likelySubtags),
+    ],
+    'likelySubtag' => $likelySubtag,
+];
 
 file_put_contents(
     dirname(__DIR__) . '/resources/data/locale-aliases.json',
     json_encode($projection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
+);
+file_put_contents(
+    dirname(__DIR__) . '/resources/data/likely-subtags.json',
+    json_encode($likelySubtagsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
 );
 
 function readArchiveEntry(ZipArchive $archive, string $name): string
