@@ -106,7 +106,23 @@ final class WorkflowContract
         }
         self::requireJobRuns($mutation, [
             'composer "mutation:${{ matrix.campaign }}"',
+            'cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"',
         ], 'mutation job', $failures);
+        $mutationSteps = is_array($mutation) && is_array($mutation['steps'] ?? null) ? $mutation['steps'] : [];
+        $uploadsBuildRoot = false;
+        foreach ($mutationSteps as $step) {
+            if (!is_array($step) || !is_string($step['uses'] ?? null)
+                || !str_starts_with($step['uses'], 'actions/upload-artifact@')) {
+                continue;
+            }
+            $with = is_array($step['with'] ?? null) ? $step['with'] : [];
+            if (($with['path'] ?? null) === 'build') {
+                $uploadsBuildRoot = true;
+            }
+        }
+        if (!$uploadsBuildRoot) {
+            $failures[] = 'The mutation job must upload build as the artifact root.';
+        }
 
         $score = $jobs['mutation-score'] ?? null;
         if (!is_array($score) || ($score['needs'] ?? null) !== 'mutation') {

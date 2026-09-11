@@ -237,6 +237,7 @@ jobs:
       - name: Preserve attributable raw test coverage and JUnit evidence
         run: |
           mkdir -p "build/infection/${{ matrix.campaign }}"
+          cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"
           vendor/bin/phpunit --testsuite="${{ matrix.campaign == 'spec' && 'test262-upstream' || 'porcelain' }}" --coverage-xml="build/infection/${{ matrix.campaign }}/coverage-xml" --log-junit="build/infection/${{ matrix.campaign }}/junit.xml"
       - run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
       - if: always()
@@ -248,11 +249,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: mutation-${{ matrix.campaign }}-${{ matrix.extensionMode }}
-          path: |
-            build/ci
-            build/infection
-            build/matrix
-            infection.${{ matrix.campaign }}.json5
+          path: build
           if-no-files-found: error
 
   mutation-score:

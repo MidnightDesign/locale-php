@@ -139,6 +139,25 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRejectsMutationArtifactsWithAnExtraDirectoryLevel(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('path: build', 'path: build/ci', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job must upload build as the artifact root.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testItRejectsMutationSourceAreaOmissions(): void
     {
         $root = $this->fixtureRoot();
