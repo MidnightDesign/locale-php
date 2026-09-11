@@ -7,12 +7,25 @@ use Midnight\Intl\Tools\Ci\MutationCampaigns;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-if ($argc !== 3) {
-    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory>\n");
+if ($argc < 3 || $argc > 4) {
+    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory> [--expect-failing=<campaign>]\n");
     exit(2);
 }
 
 $output = $argv[1];
+$expectedFailure = null;
+if ($argc === 4) {
+    $prefix = '--expect-failing=';
+    if (!str_starts_with($argv[3], $prefix)) {
+        fwrite(STDERR, "The optional argument must use --expect-failing=<campaign>.\n");
+        exit(2);
+    }
+    $expectedFailure = substr($argv[3], strlen($prefix));
+    if (!in_array($expectedFailure, MutationCampaigns::names(), true)) {
+        fwrite(STDERR, sprintf("Unknown expected-failure campaign %s.\n", $expectedFailure));
+        exit(2);
+    }
+}
 $directory = dirname($output);
 if (!is_dir($directory) && !mkdir($directory, 0777, true) && !is_dir($directory)) {
     throw new RuntimeException(sprintf('Unable to create evidence directory %s.', $directory));
@@ -38,12 +51,21 @@ try {
     }
 
     $evidence = MatrixMutationScore::aggregate($reports);
+    $accepted = $evidence['passing'];
+    if ($expectedFailure !== null) {
+        $accepted = MatrixMutationScore::acceptsExpectedFailure($evidence, $expectedFailure);
+        $evidence['expectedFailure'] = [
+            'campaign' => $expectedFailure,
+            'accepted' => $accepted,
+        ];
+    }
 } catch (Throwable $error) {
     $evidence = [
         'format' => 2,
         'passing' => false,
         'error' => $error->getMessage(),
     ];
+    $accepted = false;
 }
 
 $encoded = json_encode($evidence, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)."\n";
@@ -53,6 +75,11 @@ if (file_put_contents($output, $encoded) === false) {
 
 if (isset($evidence['error'])) {
     fwrite(STDERR, $evidence['error']."\n");
+} elseif ($expectedFailure !== null && !$accepted) {
+    $message = $evidence['passing']
+        ? sprintf('The %s mutation campaign now passes; remove its temporary expected-failure handling.', $expectedFailure)
+        : sprintf('Mutation failures are no longer confined to the expected %s campaign.', $expectedFailure);
+    fwrite(STDERR, $message."\n");
 }
 
-exit($evidence['passing'] ? 0 : 1);
+exit($accepted ? 0 : 1);

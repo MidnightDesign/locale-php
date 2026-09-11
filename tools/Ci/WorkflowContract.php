@@ -92,6 +92,7 @@ final class WorkflowContract
             'xdebug-3.5.3',
             'infection.${{ matrix.campaign }}.json5',
             'register_argc_argv=On',
+            'steps.mutation_campaign.outcome',
         ], 'quality workflow', $failures);
 
         $jobs = $workflow->jobs();
@@ -107,11 +108,21 @@ final class WorkflowContract
         self::requireJobRuns($mutation, [
             'composer "mutation:${{ matrix.campaign }}"',
             'cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"',
+            'The spec mutation campaign no longer fails; remove its temporary expected-failure handling.',
         ], 'mutation job', $failures);
         $mutationSteps = is_array($mutation) && is_array($mutation['steps'] ?? null) ? $mutation['steps'] : [];
         $uploadsBuildRoot = false;
+        $allowsOnlySpecFailure = false;
         foreach ($mutationSteps as $step) {
-            if (!is_array($step) || !is_string($step['uses'] ?? null)
+            if (!is_array($step)) {
+                continue;
+            }
+            $run = $step['run'] ?? null;
+            if (is_string($run) && str_contains($run, 'composer "mutation:${{ matrix.campaign }}"')) {
+                $allowsOnlySpecFailure = ($step['id'] ?? null) === 'mutation_campaign'
+                    && ($step['continue-on-error'] ?? null) === "\${{ matrix.campaign == 'spec' }}";
+            }
+            if (!is_string($step['uses'] ?? null)
                 || !str_starts_with($step['uses'], 'actions/upload-artifact@')) {
                 continue;
             }
@@ -119,6 +130,9 @@ final class WorkflowContract
             if (($with['path'] ?? null) === 'build') {
                 $uploadsBuildRoot = true;
             }
+        }
+        if (!$allowsOnlySpecFailure) {
+            $failures[] = 'The mutation job may continue on error only for the temporary spec failure.';
         }
         if (!$uploadsBuildRoot) {
             $failures[] = 'The mutation job must upload build as the artifact root.';
@@ -129,8 +143,11 @@ final class WorkflowContract
             $failures[] = 'The mutation-score job must depend on the complete mutation matrix.';
         }
         self::requireJobRuns($score, [
-            'tools/merge-mutation-reports.php',
+            'tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=spec',
         ], 'mutation-score job', $failures);
+        if (!$workflow->hasScalarContaining('--expect-failing=spec')) {
+            $failures[] = 'The mutation score job must require the spec campaign to remain an expected failure.';
+        }
     }
 
     /** @param list<string> $failures */

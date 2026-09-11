@@ -155,6 +155,33 @@ final class MatrixMutationScore
     }
 
     /**
+     * @param array{
+     *     passing: bool,
+     *     campaigns: array<string, array{modes: array<string, array{obligations: int, killed: int, failures: int}>}>
+     * } $evidence
+     */
+    public static function acceptsExpectedFailure(array $evidence, string $expectedCampaign): bool
+    {
+        if ($evidence['passing'] || !isset($evidence['campaigns'][$expectedCampaign])) {
+            return false;
+        }
+
+        $expectedFailures = 0;
+        $unexpectedFailures = 0;
+        foreach ($evidence['campaigns'] as $campaign => $campaignEvidence) {
+            foreach ($campaignEvidence['modes'] as $modeEvidence) {
+                if ($campaign === $expectedCampaign) {
+                    $expectedFailures += $modeEvidence['failures'];
+                } else {
+                    $unexpectedFailures += $modeEvidence['failures'];
+                }
+            }
+        }
+
+        return $expectedFailures > 0 && $unexpectedFailures === 0;
+    }
+
+    /**
      * @param array<string, mixed> $report
      * @return array{
      *     mutations: array<string, array{definition: array{source: string, line: int, mutator: string, original: string, mutated: string, diff: string}, result: string}>

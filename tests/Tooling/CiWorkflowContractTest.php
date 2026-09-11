@@ -158,6 +158,48 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRequiresTheTemporarySpecMutationFailureCanary(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace('--expect-failing=spec', '', $contents);
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation score job must require the spec campaign to remain an expected failure.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsBroadMutationFailureSuppression(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $path = $root.'/.github/workflows/ci-quality.yml';
+            $contents = (string) file_get_contents($path);
+            $contents = str_replace(
+                "continue-on-error: \${{ matrix.campaign == 'spec' }}",
+                'continue-on-error: true',
+                $contents,
+            );
+            file_put_contents($path, $contents);
+
+            self::assertContains(
+                'The mutation job may continue on error only for the temporary spec failure.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     public function testItRejectsMutationSourceAreaOmissions(): void
     {
         $root = $this->fixtureRoot();

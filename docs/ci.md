@@ -10,6 +10,8 @@ Mutation evidence is split by source ownership. `infection.spec.json5` mutates t
 
 `tools/merge-mutation-reports.php` compares the complete mutant identity multiset across absent, disabled, and native extension modes. Every current mutant must be killed in all three modes; there is no unchecked applicability or suppression mechanism. It records every per-mode obligation in `build/matrix-mutation-score.json` and fails unless every obligation is killed by its attributed test suite. Static-analysis detections do not receive test-kill credit. Escaped, uncovered, timed-out, errored, syntax-error, ignored, skipped, missing, malformed, or inconsistent evidence fails the gate; aggregation failures are themselves retained as machine-readable evidence.
 
+Until the upstream-derived Test262 roadmap supplies complete spec coverage, pull-request CI treats only the spec mutation campaign as an expected failure. The individual job records its raw failed outcome, and the aggregate command accepts it only when every failure belongs to that campaign. A porcelain regression, missing or malformed evidence, or an unexpectedly passing spec campaign makes CI red; the latter is the canary requiring removal of `--expect-failing=spec` and the step-level handling.
+
 ## Pull-request CI
 
 The pull-request workflow runs the complete stable runtime matrix and quality suite. Do not configure a check as required until its first hosted run has completed successfully and its retained provenance has been inspected.

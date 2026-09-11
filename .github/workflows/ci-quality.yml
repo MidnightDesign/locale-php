@@ -239,7 +239,18 @@ jobs:
           mkdir -p "build/infection/${{ matrix.campaign }}"
           cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"
           vendor/bin/phpunit --testsuite="${{ matrix.campaign == 'spec' && 'test262-upstream' || 'porcelain' }}" --coverage-xml="build/infection/${{ matrix.campaign }}/coverage-xml" --log-junit="build/infection/${{ matrix.campaign }}/junit.xml"
-      - run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
+      - id: mutation_campaign
+        continue-on-error: ${{ matrix.campaign == 'spec' }}
+        run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
+      - name: Require the temporary spec mutation failure
+        if: always() && matrix.campaign == 'spec'
+        env:
+          MUTATION_OUTCOME: ${{ steps.mutation_campaign.outcome }}
+        run: |
+          if [[ "$MUTATION_OUTCOME" != "failure" ]]; then
+            echo '::error::The spec mutation campaign no longer fails; remove its temporary expected-failure handling.'
+            exit 1
+          fi
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json '8.5' ubuntu-24.04 "${{ matrix.extensionMode }}"
       - if: always()
@@ -273,7 +284,7 @@ jobs:
           pattern: mutation-*
           path: build/downloaded
           merge-multiple: true
-      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix
+      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=spec
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:

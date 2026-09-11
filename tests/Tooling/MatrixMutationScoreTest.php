@@ -74,6 +74,33 @@ final class MatrixMutationScoreTest extends TestCase
         ]);
     }
 
+    public function testItAcceptsOnlyTheDeclaredFailingCampaignAsATemporaryExpectedFailure(): void
+    {
+        $spec = $this->campaign('src/Spec/Locale.php');
+        $spec['disabled'] = $this->report('src/Spec/Locale.php', 'escaped');
+        $evidence = MatrixMutationScore::aggregate([
+            'spec' => $spec,
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+
+        self::assertTrue(MatrixMutationScore::acceptsExpectedFailure($evidence, 'spec'));
+        self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($evidence, 'porcelain'));
+
+        $passing = MatrixMutationScore::aggregate([
+            'spec' => $this->campaign('src/Spec/Locale.php'),
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+        self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($passing, 'spec'));
+
+        $porcelain = $this->campaign('src/Locale.php');
+        $porcelain['native'] = $this->report('src/Locale.php', 'uncovered');
+        $multipleFailures = MatrixMutationScore::aggregate([
+            'spec' => $spec,
+            'porcelain' => $porcelain,
+        ]);
+        self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($multipleFailures, 'spec'));
+    }
+
     public function testItRejectsAMissingProjectCampaign(): void
     {
         $this->expectException(\RuntimeException::class);
