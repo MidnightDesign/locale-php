@@ -93,4 +93,29 @@ final class LocaleTest extends TestCase
         $this->expectException(\TypeError::class);
         $locale->__set('language', 'fr');
     }
+
+    public function testItReturnsFreshLikelySubtagValuesWithoutLosingLocaleDetail(): void
+    {
+        $locale = new Locale(
+            'zh-Hant-fonipa-a-not-assigned-t-en-us-h0-hybrid-u-attr-ca-chinese-x-private',
+        );
+        $original = $locale->toString();
+        $maximal = $locale->maximize();
+        $minimal = $maximal->minimize();
+
+        self::assertSame($original, $locale->toString());
+        self::assertSame(
+            'zh-Hant-TW-fonipa-a-not-assigned-t-en-US-h0-hybrid-u-attr-ca-chinese-x-private',
+            $maximal->toString(),
+        );
+        self::assertSame(
+            'zh-TW-fonipa-a-not-assigned-t-en-US-h0-hybrid-u-attr-ca-chinese-x-private',
+            $minimal->toString(),
+        );
+        self::assertInstanceOf(Locale::class, $maximal);
+        self::assertInstanceOf(Locale::class, $minimal);
+        self::assertNotSame($locale, $maximal);
+        self::assertNotSame($maximal, $minimal);
+        self::assertNotSame($locale->toSpec(), $maximal->toSpec());
+    }
 }

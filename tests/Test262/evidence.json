@@ -57,12 +57,23 @@
             "fixtureCount": 168,
             "aggregateSha256": "0366a0f02c81798ce9ea290e44e3673c5990de4af7292f00bf4863f97da209b3",
             "sourceCopies": {
+                "test/intl402/Locale/likely-subtags-grandfathered.js": "21fbdf44641fd89f6f883677851048e75ae361847a5c896de2bd8c9211c43b7e",
+                "test/intl402/Locale/likely-subtags.js": "bf0cc7e4c569f481f3d9cae54d6f261d7e61413d262ff03ea634cc66906fad68",
                 "test/intl402/Locale/constructor-unicode-ext-invalid.js": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
                 "test/intl402/Locale/constructor-unicode-ext-valid.js": "92d26f3d6f7c908a1205624faecd5f342b7dc6df8520b220dbaf1863036c8643",
                 "test/intl402/Locale/getters-missing.js": "c2240161788e4a0deffadaff24efc3c43cc031703b4999c9779d5270061ba5e3",
                 "test/intl402/Locale/reject-duplicate-variants-in-tlang.js": "dadef2c3aaf5a359afb5eddce81698d06eda340ac8352e01a907a6cd3ba3ddf6",
                 "test/intl402/Locale/reject-duplicate-variants.js": "86625b8c1b5be435c61303914b7426402d60a9021e1ab278d343b33d9e12d097",
                 "test/intl402/Locale/constructor-options-script-valid.js": "e1c6b51bbf0884107f995194cd9a8458b8959e809f89b8a240d269cd2eb4203e",
+                "test/intl402/Locale/prototype/maximize/branding.js": "e9516a0e068476037eab9c56807559605b3d7a675f942f427c403fa604190fdf",
+                "test/intl402/Locale/prototype/maximize/length.js": "18c22292ecbc328f7e8b2d551188a09a7e7e4a51f2c33c1214987b3fafa8e00e",
+                "test/intl402/Locale/prototype/maximize/name.js": "5792cfffcf984da09bca8eeeea0965204c4ada86c5a0334e19b59420f1e47079",
+                "test/intl402/Locale/prototype/maximize/prop-desc.js": "a6d88fb9ab7acbe411dc3486a118a6de956a20605707f4e4e91aa67b058006fd",
+                "test/intl402/Locale/prototype/minimize/branding.js": "197a765ae83ab747f9a72aaeea4b7eb57d8b8084963409e123dfd3aa5180dd0e",
+                "test/intl402/Locale/prototype/minimize/length.js": "d355601f663c197d9cb735b20bbca6cab78fa47f30b197ac81bd7e51f4ba7a0b",
+                "test/intl402/Locale/prototype/minimize/name.js": "bd4f10e2fc84bcde9e8d3a5808d45c2e0b516c210bd977d286b5d8a79aa8d338",
+                "test/intl402/Locale/prototype/minimize/prop-desc.js": "d5d737027c892f3b161bbf3779440b0ab1c7e5b91e9a9817607521ae12e565e8",
+                "test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js": "f975ba847107f6564e1bc376c1622671998174afe07c160aec7ec04ce3d11e06",
                 "test/intl402/Locale/constructor-options-script-valid-undefined.js": "b30b5327784549c4da668e2b85b58f73f94c52af0af43a3e071c65f26d0985c7",
                 "test/intl402/Locale/constructor-options-language-grandfathered.js": "c025cd8b7afbf52d8ee2b9c8be64dd25e45a3dc97b55d82bd95bde7f3ecc9f9a",
                 "test/intl402/Locale/constructor-options-language-invalid.js": "3b12a5a117b10381878f3a851ef231904e662da92cc3b5d0aa981119daba4720",
@@ -101,9 +112,9 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 20,
-        "passingFixtures": 20,
-        "partiallyTranslatedFixtures": 0,
+        "translatedFixtures": 31,
+        "passingFixtures": 25,
+        "partiallyTranslatedFixtures": 6,
         "translationGaps": 628,
         "executionFailures": 0
     },
@@ -112,6 +123,265 @@
         "reason": "The initial slice has an incomplete inventory, translation gaps, incomplete applicable translations, or execution failures."
     },
     "fixtures": [
+        {
+            "path": "test/intl402/Locale/likely-subtags-grandfathered.js",
+            "sha256": "21fbdf44641fd89f6f883677851048e75ae361847a5c896de2bd8c9211c43b7e",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 16,
+            "executionCount": 266,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L60:C5:assert.throws",
+                    "line": 60,
+                    "column": 5,
+                    "call": "assert.throws",
+                    "sha256": "b14c5add9b95bea9a8c9fd06f25e45ed46e209daec88e7b1d21f5a7df0d2a51d",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L92:C5:assert.sameValue",
+                    "line": 92,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "c78b6cd42f36d5e10b4abaa9c369abf5c39e0361baaf570477b9757501493813",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L94:C5:assert.sameValue",
+                    "line": 94,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "7d9890f9ac50d526828d02edb854bc62db36970951ce462e1b83a3a2b2ff8c72",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L95:C5:assert.sameValue",
+                    "line": 95,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "ce0ca1ecbd28c68c820ab165d68624919e3cead5b9cd8e8a7861c490612def08",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L97:C5:assert.sameValue",
+                    "line": 97,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "197ba40a753bc57cbf0b288af13aece6de7457e4bcdd4861be132f3eb2060e22",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L98:C5:assert.sameValue",
+                    "line": 98,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "81a05af366bfe1e8db2a50d978393bdc4fe36a45db84681e22bf39ddbc5312a5",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L100:C5:assert.sameValue",
+                    "line": 100,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "eab5d9dcd72a4d6e464fc811ff8fbfd74f0c9e022f1ba71478c7c9bdc8e5787f",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L101:C5:assert.sameValue",
+                    "line": 101,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "b36e23a0c15d29f5076fb6d3738117eb01dc7363bfb2de07f6b73ee75acb7862",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L112:C5:assert.throws",
+                    "line": 112,
+                    "column": 5,
+                    "call": "assert.throws",
+                    "sha256": "b14c5add9b95bea9a8c9fd06f25e45ed46e209daec88e7b1d21f5a7df0d2a51d",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L187:C9:assert.sameValue",
+                    "line": 187,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "d6faec8134ee8668f96e0f9fedd9c8a11704c0a8306f9ac49d9b46bc259a9fe5",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L189:C9:assert.sameValue",
+                    "line": 189,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "f9d7d3ea42c69e6c82228ec52a8ec16bf383203f5f6a7f389c5907ec4bb0ab56",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L190:C9:assert.sameValue",
+                    "line": 190,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "450dfea9f7de1ac8eab581fb269be53c04ad82e443579c9a6635b7ba40a206b4",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L192:C9:assert.sameValue",
+                    "line": 192,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "93791707d708adf686d13dcf7fa57ac9e37431eae9742bd979a99a0bf20a8001",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L193:C9:assert.sameValue",
+                    "line": 193,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "456f2060ac31c2c2ec8298b66859cbf8602fc7eef5f9d1c841f84779c190b06b",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L195:C9:assert.sameValue",
+                    "line": 195,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "7e4a72ce8dcf9e56d0e7471a6c22784a31fd52a02d011791b9da01f9b0427dd8",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags-grandfathered.js:L196:C9:assert.sameValue",
+                    "line": 196,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "d721f6534efb435cecc0a3dba1d4eccb7a143eb32e871d5fc2ffe2cdb7ee6355",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript loops and defaulted record fields are expanded into named PHPUnit data sets."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/likely-subtags.js",
+            "sha256": "bf0cc7e4c569f481f3d9cae54d6f261d7e61413d262ff03ea634cc66906fad68",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 5,
+            "executionCount": 257,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/likely-subtags.js:L87:C5:assert.sameValue",
+                    "line": 87,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "ad53de7688160b9acd18183c61fe524d4da4901b7e8676d20b3f22f51c4a94a9",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object and array iteration is expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags.js:L93:C9:assert.sameValue",
+                    "line": 93,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "7327a1cf5c94c69a71aac85eb6a1c8119fbdb56302aebb001cd0dc7de1d3fe5c",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object and array iteration is expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags.js:L99:C5:assert.sameValue",
+                    "line": 99,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "3a5f7e8c69cdd9e06f3cca8e008e1320d27a5d24d9b13a94a846ec84eed7802f",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object and array iteration is expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags.js:L105:C9:assert.sameValue",
+                    "line": 105,
+                    "column": 9,
+                    "call": "assert.sameValue",
+                    "sha256": "c9598577203af249b9f01950381bf6484d6de6a0449bc8924a29bc3566dd9c30",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object and array iteration is expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/likely-subtags.js:L113:C1:assert.throws",
+                    "line": 113,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "d5ef884f28ac05e6668474489bcb08b107d494e65cbf922b29a5304be13508b4",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object and array iteration is expanded into named PHPUnit data sets."
+                    ]
+                }
+            ]
+        },
         {
             "path": "test/intl402/Locale/constructor-unicode-ext-invalid.js",
             "sha256": "268cc6976fa53ddfdc3d37cb4ad6106375b4dd442c74ac81a149b6787e5180ee",
@@ -734,6 +1004,286 @@
                             "status": "passing",
                             "actual": "en-Brai"
                         }
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/branding.js",
+            "sha256": "e9516a0e068476037eab9c56807559605b3d7a675f942f427c403fa604190fdf",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/maximize/branding.js:L18:C1:assert.sameValue",
+                    "line": 18,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "f3fcb295decdb62c288b77715feb1879447abf884b44444ba905fab405565a95",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
+                    "line": 32,
+                    "column": 3,
+                    "call": "assert.throws",
+                    "sha256": "cad15e0b94cadcf4713763fdaac40f526797b32d3e6aea330e5f82d3a1e2d069",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/length.js",
+            "sha256": "18c22292ecbc328f7e8b2d551188a09a7e7e4a51f2c33c1214987b3fafa8e00e",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/maximize/length.js:L17:C1:verifyProperty",
+                    "line": 17,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "47be240c880bbc8f72073a2c8a29e058a86e0e5b094ef8e2631441e913e4617c",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript function length is represented by zero required PHP parameters; descriptor flags are inapplicable."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/name.js",
+            "sha256": "5792cfffcf984da09bca8eeeea0965204c4ada86c5a0334e19b59420f1e47079",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/maximize/name.js:L16:C1:verifyProperty",
+                    "line": 16,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "8f2606ab45c0430c123b212e113021e5891a76d1f95db474d3fdf65b7ce9a4f1",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/maximize/prop-desc.js",
+            "sha256": "a6d88fb9ab7acbe411dc3486a118a6de956a20605707f4e4e91aa67b058006fd",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/maximize/prop-desc.js:L18:C1:assert.sameValue",
+                    "line": 18,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "e437e917d50e35f533459a0ad88e6aa342f65492afd29046a5a57ee6af2d83a9",
+                    "status": "passing",
+                    "adaptations": [
+                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/maximize/prop-desc.js:L24:C1:verifyProperty",
+                    "line": 24,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "a5d55726785f0532808aff125058dcbd60fc4efa23273eab3d16398c8fce67c0",
+                    "status": "passing",
+                    "adaptations": [
+                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/branding.js",
+            "sha256": "197a765ae83ab747f9a72aaeea4b7eb57d8b8084963409e123dfd3aa5180dd0e",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/branding.js:L18:C1:assert.sameValue",
+                    "line": 18,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "0d5d9b791e61e89799d0f0bc526eba1e47af56883f43980b4820e8677b356c28",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
+                    "line": 32,
+                    "column": 3,
+                    "call": "assert.throws",
+                    "sha256": "36a4c75efd5b5a79644566052376f1404558ddae4962ec9dc5b847dbab89bd97",
+                    "status": "passing",
+                    "adaptations": [
+                        "PHP method dispatch rejects non-objects; an uninitialized Locale verifies the observable branded-state failure."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/length.js",
+            "sha256": "d355601f663c197d9cb735b20bbca6cab78fa47f30b197ac81bd7e51f4ba7a0b",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/length.js:L17:C1:verifyProperty",
+                    "line": 17,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "cb545c3f65fba6c8cdd7945cd71c9c118dc0a8c4ba95eb3dceabd1b84a985b6f",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript function length is represented by zero required PHP parameters; descriptor flags are inapplicable."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/name.js",
+            "sha256": "bd4f10e2fc84bcde9e8d3a5808d45c2e0b516c210bd977d286b5d8a79aa8d338",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/name.js:L16:C1:verifyProperty",
+                    "line": 16,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "0c6b2346ff1dd0da47351416ed4cad16577b5a07694381dd1822cf1dac473987",
+                    "status": "passing",
+                    "adaptations": [
+                        "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/prop-desc.js",
+            "sha256": "d5d737027c892f3b161bbf3779440b0ab1c7e5b91e9a9817607521ae12e565e8",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "php_reflection"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/prop-desc.js:L18:C1:assert.sameValue",
+                    "line": 18,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "ed3768071a85e58b3cafc67b1fd2255154696c7bbf8a80855fd0a5d81d8b4e64",
+                    "status": "passing",
+                    "adaptations": [
+                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/prop-desc.js:L24:C1:verifyProperty",
+                    "line": 24,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "d7701e6a0af4f153c3d25a71370ec2888028bc5be88d7bda2c1bb06ff86a9054",
+                    "status": "passing",
+                    "adaptations": [
+                        "Public PHP method visibility represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js",
+            "sha256": "f975ba847107f6564e1bc376c1622671998174afe07c160aec7ec04ce3d11e06",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 22,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js:L43:C5:assert.sameValue",
+                    "line": 43,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "3a5f7e8c69cdd9e06f3cca8e008e1320d27a5d24d9b13a94a846ec84eed7802f",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object iteration is expanded into named PHPUnit data sets."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js:L47:C5:assert.sameValue",
+                    "line": 47,
+                    "column": 5,
+                    "call": "assert.sameValue",
+                    "sha256": "36b64449518a05829edb078dd2175dd142e6c6e98db07e1811328a22e7ff9010",
+                    "status": "passing",
+                    "adaptations": [
+                        "JavaScript object iteration is expanded into named PHPUnit data sets."
                     ]
                 }
             ]

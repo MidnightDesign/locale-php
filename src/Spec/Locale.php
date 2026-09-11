@@ -178,6 +178,24 @@ class Locale
         return $this->identifier->toString();
     }
 
+    public function maximize(): self
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return new self($this->identifier->maximize()->toString());
+    }
+
+    public function minimize(): self
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return new self($this->identifier->minimize()->toString());
+    }
+
     /**
      * @param array<array-key, mixed>|object $options
      */
