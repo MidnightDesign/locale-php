@@ -33,6 +33,17 @@ final class LocaleTest extends TestCase
     {
         self::assertTrue((new \ReflectionClass(Locale::class))->isFinal());
 
+        $constructor = (new \ReflectionClass(Locale::class))->getConstructor();
+        self::assertNotNull($constructor);
+        $parameters = [];
+        foreach ($constructor->getParameters() as $parameter) {
+            $parameters[$parameter->getName()] = $parameter;
+        }
+        foreach (['language', 'script', 'region', 'variants'] as $name) {
+            self::assertSame('?string', (string) $parameters[$name]->getType());
+            self::assertNull($parameters[$name]->getDefaultValue());
+        }
+
         $this->expectException(\TypeError::class);
         (new \ReflectionClass(Locale::class))->newInstance(null);
     }

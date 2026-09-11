@@ -9,6 +9,7 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
+use Midnight\Intl\Internal\Test262\UndefinedValue;
 
 /**
  * @property-read string $baseName
@@ -181,22 +182,31 @@ class Locale
     private static function readOption(array|object $options, string $name): OptionValue
     {
         if ($options instanceof OptionBag) {
-            return $options->has($name)
-                ? OptionValue::present($options->get($name))
-                : OptionValue::missing();
+            if (!$options->has($name)) {
+                return OptionValue::missing();
+            }
+
+            return self::optionValue($options->get($name));
         }
 
         if (is_array($options)) {
             return array_key_exists($name, $options)
-                ? OptionValue::present($options[$name])
+                ? self::optionValue($options[$name])
                 : OptionValue::missing();
         }
 
         $properties = get_object_vars($options);
 
         return array_key_exists($name, $properties)
-            ? OptionValue::present($properties[$name])
+            ? self::optionValue($properties[$name])
             : OptionValue::missing();
+    }
+
+    private static function optionValue(mixed $value): OptionValue
+    {
+        return $value === UndefinedValue::Value
+            ? OptionValue::missing()
+            : OptionValue::present($value);
     }
 
     private static function toStringValue(mixed $value): string

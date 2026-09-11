@@ -12,6 +12,16 @@ $locale->language; // de
 $locale->script;   // Latn
 $locale->region;   // DE
 $locale->calendar; // gregory
+
+$overridden = new Locale(
+    $locale->toString(),
+    language: 'fr',
+    script: 'Cyrl',
+    region: 'CA',
+    variants: 'spanglis-oxendict',
+);
+
+$overridden->toString(); // fr-Cyrl-CA-oxendict-spanglis-u-ca-gregory
 ```
 
 The constructor accepts named `language`, `script`, `region`, `variants`, `calendar`, `collation`, `firstDayOfWeek`, `hourCycle`, `caseFirst`, `numeric`, and `numberingSystem` options. A non-null option replaces the corresponding input component or Unicode keyword. `toString()`, string conversion, and JSON serialization return the complete canonical identifier.
