@@ -17,7 +17,12 @@ final class Test262RunnerContractTest extends TestCase
 
         try {
             [$exitCode, $output] = self::runPhpUnit([
-                '--testsuite', 'test262-upstream', '--no-progress', '--testdox', '--log-junit', $junit,
+                '--testsuite',
+                'test262-upstream',
+                '--no-progress',
+                '--testdox',
+                '--log-junit',
+                $junit,
             ]);
 
             self::assertSame(0, $exitCode, $output);
@@ -42,7 +47,13 @@ final class Test262RunnerContractTest extends TestCase
         try {
             $selected = 'test/intl402/Locale/constructor-unicode-ext-invalid.js';
             [$exitCode, $output] = self::runPhpUnit([
-                '--testsuite', 'test262-upstream', '--filter', $selected, '--no-progress', '--log-junit', $junit,
+                '--testsuite',
+                'test262-upstream',
+                '--filter',
+                $selected,
+                '--no-progress',
+                '--log-junit',
+                $junit,
             ]);
 
             self::assertSame(0, $exitCode, $output);
@@ -65,17 +76,17 @@ final class Test262RunnerContractTest extends TestCase
         ];
         yield 'representation failure' => [
             <<<'PHP'
-<?php
+                <?php
 
-$result = Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion::evaluate(
-    'en',
-    'script',
-    ['type' => 'string', 'value' => 'Latn'],
-    'unsupported-representation',
-    'en-Latn',
-);
-PHPUnit\Framework\Assert::assertSame('passing', $result['status'], $result['failure'] ?? 'unknown failure');
-PHP,
+                $result = Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion::evaluate(
+                    'en',
+                    'script',
+                    ['type' => 'string', 'value' => 'Latn'],
+                    'unsupported-representation',
+                    'en-Latn',
+                );
+                PHPUnit\Framework\Assert::assertSame('passing', $result['status'], $result['failure'] ?? 'unknown failure');
+                PHP,
             'Unsupported PHP representation',
         ];
         yield 'malformed PHP' => [
@@ -94,25 +105,38 @@ PHP,
         try {
             $fixturePath = 'test/intl402/Locale/injected.js';
             $scriptPath = 'tests/Test262/Generated/test/intl402/Locale/injected.php';
-            self::write($root.'/'.$scriptPath, $script);
+            self::write($root . '/' . $scriptPath, $script);
             self::write(
-                $root.'/tests/Test262/evidence.json',
-                json_encode(['fixtures' => [[
-                    'path' => $fixturePath,
-                    'status' => 'failing',
-                    'generatedScripts' => [[
-                        'path' => $scriptPath,
-                        'identity' => $fixturePath,
-                        'variant' => null,
-                    ]],
-                ]]], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+                $root . '/tests/Test262/evidence.json',
+                json_encode(
+                    [
+                        'fixtures' => [[
+                            'path' => $fixturePath,
+                            'status' => 'failing',
+                            'generatedScripts' => [[
+                                'path' => $scriptPath,
+                                'identity' => $fixturePath,
+                                'variant' => null,
+                            ]],
+                        ]],
+                    ],
+                    JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+                )
+                    . "\n",
             );
-            $runner = $root.'/TemporaryTest262Runner.php';
+            $runner = $root . '/TemporaryTest262Runner.php';
             self::write($runner, self::temporaryRunner($root));
 
             [$exitCode, $output] = self::runPhpUnit([
-                '--no-configuration', '--bootstrap', dirname(__DIR__).'/bootstrap.php',
-                '--filter', $fixturePath, '--no-progress', '--log-junit', $junit, $runner,
+                '--no-configuration',
+                '--bootstrap',
+                dirname(__DIR__) . '/bootstrap.php',
+                '--filter',
+                $fixturePath,
+                '--no-progress',
+                '--log-junit',
+                $junit,
+                $runner,
             ]);
 
             self::assertNotSame(0, $exitCode, $output);
@@ -134,9 +158,9 @@ PHP,
     private static function runPhpUnit(array $arguments): array
     {
         $root = dirname(__DIR__, 2);
-        $command = escapeshellarg(PHP_BINARY).' '.escapeshellarg($root.'/vendor/bin/phpunit');
+        $command = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($root . '/vendor/bin/phpunit');
         foreach ($arguments as $argument) {
-            $command .= ' '.escapeshellarg($argument);
+            $command .= ' ' . escapeshellarg($argument);
         }
         $command .= ' 2>&1';
 
@@ -150,30 +174,30 @@ PHP,
         $root = var_export(str_replace('\\', '/', $root), true);
 
         return <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class TemporaryTest262Runner extends TestCase
-{
-    public static function scripts(): iterable
-    {
-        foreach ((new GeneratedScriptCatalog({$root}, {$root}.'/tests/Test262/evidence.json'))->scripts() as \$identity => \$path) {
-            yield \$identity => [\$path];
-        }
-    }
+            final class TemporaryTest262Runner extends TestCase
+            {
+                public static function scripts(): iterable
+                {
+                    foreach ((new GeneratedScriptCatalog({$root}, {$root}.'/tests/Test262/evidence.json'))->scripts() as \$identity => \$path) {
+                        yield \$identity => [\$path];
+                    }
+                }
 
-    #[DataProvider('scripts')]
-    public function testScript(string \$path): void
-    {
-        require \$path;
-    }
-}
-PHP;
+                #[DataProvider('scripts')]
+                public function testScript(string \$path): void
+                {
+                    require \$path;
+                }
+            }
+            PHP;
     }
 
     private static function write(string $path, string $contents): void

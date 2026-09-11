@@ -12,8 +12,7 @@ final class GetterFixturePipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -21,13 +20,7 @@ final class GetterFixturePipeline implements FixturePipeline
         try {
             return $this->translate($source, $fixturePath, $identities);
         } catch (TranslationGap $gap) {
-            return FixtureResult::translationGap(
-                $fixturePath,
-                $source,
-                ['direct'],
-                $identities,
-                $gap,
-            );
+            return FixtureResult::translationGap($fixturePath, $source, ['direct'], $identities, $gap);
         }
     }
 
@@ -49,7 +42,7 @@ final class GetterFixturePipeline implements FixturePipeline
         foreach ($cases as $case) {
             preg_match_all(
                 '/assert\.sameValue\(loc\.(?<property>baseName|language|script|region|variants),\s*'
-                .'(?<expected>undefined|"[^"]*"|\'[^\']*\')\);/',
+                . '(?<expected>undefined|"[^"]*"|\'[^\']*\')\);/',
                 $case['body'],
                 $matches,
                 PREG_SET_ORDER,
@@ -65,9 +58,7 @@ final class GetterFixturePipeline implements FixturePipeline
                 }
                 ++$assertionIndex;
                 $property = $assertion['property'];
-                $value = $assertion['expected'] === 'undefined'
-                    ? null
-                    : substr($assertion['expected'], 1, -1);
+                $value = $assertion['expected'] === 'undefined' ? null : substr($assertion['expected'], 1, -1);
 
                 $expected[$property] = $value;
                 $assertions[] = [
@@ -105,27 +96,27 @@ final class GetterFixturePipeline implements FixturePipeline
         }
 
         $generated = <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Assert;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Assert;
 
-foreach ({$export} as \$tag => \$expected) {
-    \$locale = new Locale(\$tag);
+            foreach ({$export} as \$tag => \$expected) {
+                \$locale = new Locale(\$tag);
 
-    foreach (\$expected as \$property => \$value) {
-        Assert::assertSame(\$value, \$locale->{\$property});
-    }
-}
-PHP;
+                foreach (\$expected as \$property => \$value) {
+                    Assert::assertSame(\$value, \$locale->{\$property});
+                }
+            }
+            PHP;
 
-        return $generated."\n";
+        return $generated . "\n";
     }
 }

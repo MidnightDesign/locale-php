@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Midnight\Intl\Tools\Ci\Matrix;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-$matrix = Matrix::fromFile(dirname(__DIR__).'/.ci/matrix.json');
+$matrix = Matrix::fromFile(dirname(__DIR__) . '/.ci/matrix.json');
 $selection = $argv[1] ?? null;
 $lanes = match ($selection) {
     'runtime' => $matrix->runtimeLanes(),

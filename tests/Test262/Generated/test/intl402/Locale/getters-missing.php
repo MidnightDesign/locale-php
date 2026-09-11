@@ -11,38 +11,34 @@ use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
 foreach (array(
-  'sv' =>
-  array(
-    'baseName' => 'sv',
-    'language' => 'sv',
-    'script' => null,
-    'region' => null,
-    'variants' => null,
-  ),
-  'sv-Latn' =>
-  array(
-    'baseName' => 'sv-Latn',
-    'language' => 'sv',
-    'script' => 'Latn',
-    'region' => null,
-    'variants' => null,
-  ),
-  'sv-SE' =>
-  array(
-    'baseName' => 'sv-SE',
-    'language' => 'sv',
-    'script' => null,
-    'region' => 'SE',
-    'variants' => null,
-  ),
-  'de-1901' =>
-  array(
-    'baseName' => 'de-1901',
-    'language' => 'de',
-    'script' => null,
-    'region' => null,
-    'variants' => '1901',
-  ),
+    'sv' => array(
+        'baseName' => 'sv',
+        'language' => 'sv',
+        'script' => null,
+        'region' => null,
+        'variants' => null,
+    ),
+    'sv-Latn' => array(
+        'baseName' => 'sv-Latn',
+        'language' => 'sv',
+        'script' => 'Latn',
+        'region' => null,
+        'variants' => null,
+    ),
+    'sv-SE' => array(
+        'baseName' => 'sv-SE',
+        'language' => 'sv',
+        'script' => null,
+        'region' => 'SE',
+        'variants' => null,
+    ),
+    'de-1901' => array(
+        'baseName' => 'de-1901',
+        'language' => 'de',
+        'script' => null,
+        'region' => null,
+        'variants' => '1901',
+    ),
 ) as $tag => $expected) {
     $locale = new Locale($tag);
 

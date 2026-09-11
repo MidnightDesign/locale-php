@@ -13,14 +13,14 @@ final class MergeMutationReportsCommandTest extends TestCase
     public function testItRetainsMachineReadableFailureEvidenceForAMissingCampaignReport(): void
     {
         $directory = PackageSmoke::temporaryDirectory('intl-locale-mutation-merge');
-        $output = $directory.'/merged.json';
+        $output = $directory . '/merged.json';
 
         try {
             $process = new Process([
                 PHP_BINARY,
-                dirname(__DIR__, 2).'/tools/merge-mutation-reports.php',
+                dirname(__DIR__, 2) . '/tools/merge-mutation-reports.php',
                 $output,
-                $directory.'/reports',
+                $directory . '/reports',
             ]);
             $process->run();
 

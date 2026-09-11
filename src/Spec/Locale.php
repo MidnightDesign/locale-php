@@ -9,6 +9,7 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
+use Midnight\Intl\Internal\UndefinedValue;
 
 /**
  * @property-read string $baseName
@@ -59,29 +60,25 @@ class Locale
                 ? self::toStringValue($languageOption->value)
                 : $this->identifier->language;
             $scriptOption = self::readOption($options, 'script');
-            $script = $scriptOption->present
-                ? self::toStringValue($scriptOption->value)
-                : $this->identifier->script;
+            $script = $scriptOption->present ? self::toStringValue($scriptOption->value) : $this->identifier->script;
             $regionOption = self::readOption($options, 'region');
-            $region = $regionOption->present
-                ? self::toStringValue($regionOption->value)
-                : $this->identifier->region;
+            $region = $regionOption->present ? self::toStringValue($regionOption->value) : $this->identifier->region;
             $variantsOption = self::readOption($options, 'variants');
             $variants = $variantsOption->present
                 ? self::toStringValue($variantsOption->value)
                 : ($this->identifier->variants === [] ? null : implode('-', $this->identifier->variants));
 
-            $this->identifier->replaceLanguageId(
-                $language,
-                $script,
-                $region,
-                $variants,
-            );
+            $this->identifier->replaceLanguageId($language, $script, $region, $variants);
 
             self::applyStringKeywordOption($this->identifier, $options, 'calendar', 'ca');
             self::applyStringKeywordOption($this->identifier, $options, 'collation', 'co');
             self::applyFirstDayOfWeekOption($this->identifier, $options);
-            self::applyClosedKeywordOption($this->identifier, $options, 'hourCycle', 'hc', ['h11', 'h12', 'h23', 'h24']);
+            self::applyClosedKeywordOption($this->identifier, $options, 'hourCycle', 'hc', [
+                'h11',
+                'h12',
+                'h23',
+                'h24',
+            ]);
             self::applyClosedKeywordOption($this->identifier, $options, 'caseFirst', 'kf', ['upper', 'lower', 'false']);
             self::applyNumericOption($this->identifier, $options);
             self::applyStringKeywordOption($this->identifier, $options, 'numberingSystem', 'nu');
@@ -101,7 +98,9 @@ class Locale
             $name === 'language' => $this->identifier->language,
             $name === 'script' => $this->identifier->script,
             $name === 'region' => $this->identifier->region,
-            $name === 'variants' => $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+            $name === 'variants' => $this->identifier->variants === []
+                ? null
+                : implode('-', $this->identifier->variants),
             $name === 'calendar' => $this->identifier->keyword('ca'),
             $name === 'caseFirst' => $this->identifier->keyword('kf'),
             $name === 'collation' => $this->identifier->keyword('co'),
@@ -124,8 +123,10 @@ class Locale
 
     public function __isset(string $name): bool
     {
-        return (array_key_exists($name, $this->consumerProperties) || self::isDeliveredProperty($name))
-            && $this->__get($name) !== null;
+        return (
+            (array_key_exists($name, $this->consumerProperties) || self::isDeliveredProperty($name))
+            && $this->__get($name) !== null
+        );
     }
 
     private static function isDeliveredProperty(string $name): bool
@@ -142,7 +143,8 @@ class Locale
             'numeric',
             'region',
             'script',
-            'variants' => true,
+            'variants',
+                => true,
             default => false,
         };
     }
@@ -161,7 +163,8 @@ class Locale
             'numeric',
             'region',
             'script',
-            'variants' => true,
+            'variants',
+                => true,
             default => false,
         };
     }
@@ -181,22 +184,25 @@ class Locale
     private static function readOption(array|object $options, string $name): OptionValue
     {
         if ($options instanceof OptionBag) {
-            return $options->has($name)
-                ? OptionValue::present($options->get($name))
-                : OptionValue::missing();
+            if (!$options->has($name)) {
+                return OptionValue::missing();
+            }
+
+            return self::optionValue($options->get($name));
         }
 
         if (is_array($options)) {
-            return array_key_exists($name, $options)
-                ? OptionValue::present($options[$name])
-                : OptionValue::missing();
+            return array_key_exists($name, $options) ? self::optionValue($options[$name]) : OptionValue::missing();
         }
 
         $properties = get_object_vars($options);
 
-        return array_key_exists($name, $properties)
-            ? OptionValue::present($properties[$name])
-            : OptionValue::missing();
+        return array_key_exists($name, $properties) ? self::optionValue($properties[$name]) : OptionValue::missing();
+    }
+
+    private static function optionValue(mixed $value): OptionValue
+    {
+        return $value === UndefinedValue::Value ? OptionValue::missing() : OptionValue::present($value);
     }
 
     private static function toStringValue(mixed $value): string
@@ -272,13 +278,28 @@ class Locale
 
         $value = self::toStringValue($option->value);
         $weekdays = [
-            '0' => 'sun', '7' => 'sun', 'sun' => 'sun', 'sunday' => 'sun',
-            '1' => 'mon', 'mon' => 'mon', 'monday' => 'mon',
-            '2' => 'tue', 'tue' => 'tue', 'tuesday' => 'tue',
-            '3' => 'wed', 'wed' => 'wed', 'wednesday' => 'wed',
-            '4' => 'thu', 'thu' => 'thu', 'thursday' => 'thu',
-            '5' => 'fri', 'fri' => 'fri', 'friday' => 'fri',
-            '6' => 'sat', 'sat' => 'sat', 'saturday' => 'sat',
+            '0' => 'sun',
+            '7' => 'sun',
+            'sun' => 'sun',
+            'sunday' => 'sun',
+            '1' => 'mon',
+            'mon' => 'mon',
+            'monday' => 'mon',
+            '2' => 'tue',
+            'tue' => 'tue',
+            'tuesday' => 'tue',
+            '3' => 'wed',
+            'wed' => 'wed',
+            'wednesday' => 'wed',
+            '4' => 'thu',
+            'thu' => 'thu',
+            'thursday' => 'thu',
+            '5' => 'fri',
+            'fri' => 'fri',
+            'friday' => 'fri',
+            '6' => 'sat',
+            'sat' => 'sat',
+            'saturday' => 'sat',
         ];
         if (!isset($weekdays[$value])) {
             throw new RangeError(sprintf('Invalid firstDayOfWeek option: "%s".', $value));

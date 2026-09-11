@@ -9,15 +9,14 @@ final class GeneratedScriptCatalog
     public function __construct(
         private readonly string $repositoryRoot,
         private readonly string $evidencePath,
-    ) {
-    }
+    ) {}
 
     /** @return array<string, string> */
     public function scripts(): array
     {
         $scripts = [];
         foreach ($this->entries() as $entry) {
-            $scripts[$entry['identity']] = $this->repositoryRoot.'/'.$entry['path'];
+            $scripts[$entry['identity']] = $this->repositoryRoot . '/' . $entry['path'];
         }
 
         return $scripts;
@@ -31,10 +30,12 @@ final class GeneratedScriptCatalog
         $entries = $this->manifestEntries();
         foreach ($entries as $entry) {
             if (isset($expectedPaths[$entry['path']])) {
-                throw new \RuntimeException('Generated script path is duplicated in evidence: '.$entry['path'].'.');
+                throw new \RuntimeException('Generated script path is duplicated in evidence: ' . $entry['path'] . '.');
             }
             if (isset($identities[$entry['identity']])) {
-                throw new \RuntimeException('Generated script identity is duplicated in evidence: '.$entry['identity'].'.');
+                throw new \RuntimeException(
+                    'Generated script identity is duplicated in evidence: ' . $entry['identity'] . '.',
+                );
             }
 
             $expectedPaths[$entry['path']] = true;
@@ -52,7 +53,7 @@ final class GeneratedScriptCatalog
             ));
         }
 
-        usort($entries, static fn (array $left, array $right): int => $left['identity'] <=> $right['identity']);
+        usort($entries, static fn(array $left, array $right): int => $left['identity'] <=> $right['identity']);
 
         return $entries;
     }
@@ -60,7 +61,7 @@ final class GeneratedScriptCatalog
     /** @return list<string> */
     public static function generatedPhpFiles(string $repositoryRoot): array
     {
-        $directory = $repositoryRoot.'/tests/Test262/Generated';
+        $directory = $repositoryRoot . '/tests/Test262/Generated';
         if (!is_dir($directory)) {
             return [];
         }
@@ -95,7 +96,7 @@ final class GeneratedScriptCatalog
         foreach ($evidence['fixtures'] as $fixture) {
             $primaryCount = count(array_filter(
                 $fixture['generatedScripts'],
-                static fn (array $entry): bool => $entry['variant'] === null,
+                static fn(array $entry): bool => $entry['variant'] === null,
             ));
             $expectedPrimaryCount = $fixture['status'] === 'translation_gap' ? 0 : 1;
             if ($primaryCount !== $expectedPrimaryCount) {

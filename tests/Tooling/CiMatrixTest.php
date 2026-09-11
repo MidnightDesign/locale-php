@@ -13,7 +13,7 @@ final class CiMatrixTest extends TestCase
 {
     public function testItBuildsTheCompleteStablePhpOsAndExtensionMatrix(): void
     {
-        $matrix = Matrix::fromFile(dirname(__DIR__, 2).'/.ci/matrix.json');
+        $matrix = Matrix::fromFile(dirname(__DIR__, 2) . '/.ci/matrix.json');
         $lanes = $matrix->runtimeLanes();
 
         self::assertCount(36, $lanes);
@@ -25,15 +25,18 @@ final class CiMatrixTest extends TestCase
         foreach ($runtimes as $runner => [$osFamily, $architecture]) {
             foreach (['8.2', '8.3', '8.4', '8.5'] as $php) {
                 foreach (['absent', 'disabled', 'native'] as $mode) {
-                    self::assertContains([
-                        'runner' => $runner,
-                        'php' => $php,
-                        'threadSafe' => false,
-                        'integerSize' => 8,
-                        'osFamily' => $osFamily,
-                        'architecture' => $architecture,
-                        'extensionMode' => $mode,
-                    ], $lanes);
+                    self::assertContains(
+                        [
+                            'runner' => $runner,
+                            'php' => $php,
+                            'threadSafe' => false,
+                            'integerSize' => 8,
+                            'osFamily' => $osFamily,
+                            'architecture' => $architecture,
+                            'extensionMode' => $mode,
+                        ],
+                        $lanes,
+                    );
                 }
             }
         }
@@ -41,7 +44,7 @@ final class CiMatrixTest extends TestCase
 
     public function testItKeepsEndpointAndSpecializedCoverageExplicit(): void
     {
-        $matrix = Matrix::fromFile(dirname(__DIR__, 2).'/.ci/matrix.json');
+        $matrix = Matrix::fromFile(dirname(__DIR__, 2) . '/.ci/matrix.json');
 
         self::assertCount(6, $matrix->installLanes());
         self::assertCount(3, $matrix->armRuntimeLanes());

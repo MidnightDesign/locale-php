@@ -11,8 +11,7 @@ final class GeneratedScript
         private readonly string $identity,
         private readonly ?string $variant,
         private readonly string $contents,
-    ) {
-    }
+    ) {}
 
     public static function primary(string $fixturePath, string $contents): self
     {
@@ -23,14 +22,16 @@ final class GeneratedScript
     {
         self::pathFor($fixturePath);
         if (preg_match('/\A[a-z0-9][a-z0-9-]*\z/D', $variant) !== 1) {
-            throw new \InvalidArgumentException('A generated Test262 script variant requires a stable kebab-case name.');
+            throw new \InvalidArgumentException(
+                'A generated Test262 script variant requires a stable kebab-case name.',
+            );
         }
 
         $primaryPath = self::pathFor($fixturePath);
 
         return new self(
-            substr($primaryPath, 0, -4).'.'.$variant.'.php',
-            $fixturePath.' ['.$variant.']',
+            substr($primaryPath, 0, -4) . '.' . $variant . '.php',
+            $fixturePath . ' [' . $variant . ']',
             $variant,
             $contents,
         );
@@ -38,24 +39,30 @@ final class GeneratedScript
 
     public static function pathFor(string $fixturePath): string
     {
-        if ($fixturePath === ''
+        if (
+            $fixturePath === ''
             || str_starts_with($fixturePath, '/')
             || str_contains($fixturePath, '\\')
             || str_contains($fixturePath, ':')
             || preg_match('#(^|/)\.\.(/|$)#', $fixturePath) === 1
-            || !str_ends_with($fixturePath, '.js')) {
-            throw new \InvalidArgumentException('A generated Test262 script requires a safe relative .js fixture path.');
+            || !str_ends_with($fixturePath, '.js')
+        ) {
+            throw new \InvalidArgumentException(
+                'A generated Test262 script requires a safe relative .js fixture path.',
+            );
         }
 
-        return 'tests/Test262/Generated/'.substr($fixturePath, 0, -3).'.php';
+        return 'tests/Test262/Generated/' . substr($fixturePath, 0, -3) . '.php';
     }
 
     public static function isGeneratedPath(string $path): bool
     {
-        return str_starts_with($path, 'tests/Test262/Generated/')
+        return (
+            str_starts_with($path, 'tests/Test262/Generated/')
             && str_ends_with($path, '.php')
             && !str_contains($path, '\\')
-            && preg_match('#(^|/)\.\.(/|$)#', $path) !== 1;
+            && preg_match('#(^|/)\.\.(/|$)#', $path) !== 1
+        );
     }
 
     public function path(): string

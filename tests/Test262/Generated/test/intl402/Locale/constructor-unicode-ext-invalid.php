@@ -11,12 +11,12 @@ use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
 foreach (array(
-  0 => 'da-u',
-  1 => 'da-u-',
-  2 => 'da-u--',
-  3 => 'da-u-t-latn',
-  4 => 'da-u-x-priv',
-  5 => 'da-u-ca-gregory-u-ca-buddhist',
+    0 => 'da-u',
+    1 => 'da-u-',
+    2 => 'da-u--',
+    3 => 'da-u-t-latn',
+    4 => 'da-u-x-priv',
+    5 => 'da-u-ca-gregory-u-ca-buddhist',
 ) as $tag) {
     $rejected = false;
     try {
@@ -25,5 +25,5 @@ foreach (array(
         $rejected = true;
     }
 
-    Assert::assertTrue($rejected, 'Expected RangeError for '.$tag.'.');
+    Assert::assertTrue($rejected, 'Expected RangeError for ' . $tag . '.');
 }

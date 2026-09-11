@@ -37,7 +37,7 @@ final class Test262EvidenceTest extends TestCase
      */
     private static function evidence(): array
     {
-        $contents = file_get_contents(dirname(__DIR__).'/Test262/evidence.json');
+        $contents = file_get_contents(dirname(__DIR__) . '/Test262/evidence.json');
         self::assertNotFalse($contents);
 
         /** @var array{
@@ -109,10 +109,7 @@ final class Test262EvidenceTest extends TestCase
         self::assertSame('passing', $fixture['status']);
         self::assertSame(3, $fixture['sourceAssertionCount']);
         self::assertSame(30, $fixture['executionCount']);
-        self::assertSame(
-            ['associative_array', 'plain_object'],
-            $fixture['phpRepresentations'],
-        );
+        self::assertSame(['associative_array', 'plain_object'], $fixture['phpRepresentations']);
 
         foreach ($fixture['assertions'] as $assertion) {
             self::assertNotEmpty($assertion['id']);
@@ -120,11 +117,14 @@ final class Test262EvidenceTest extends TestCase
             self::assertSame('passing', $assertion['status']);
         }
 
-        self::assertSame([[
-            'path' => 'tests/Test262/Generated/test/intl402/Locale/constructor-options-script-valid.php',
-            'identity' => 'test/intl402/Locale/constructor-options-script-valid.js',
-            'variant' => null,
-        ]], $fixture['generatedScripts']);
+        self::assertSame(
+            [[
+                'path' => 'tests/Test262/Generated/test/intl402/Locale/constructor-options-script-valid.php',
+                'identity' => 'test/intl402/Locale/constructor-options-script-valid.js',
+                'variant' => null,
+            ]],
+            $fixture['generatedScripts'],
+        );
     }
 
     public function testIncompleteTranslationsPreventAConformanceClaim(): void

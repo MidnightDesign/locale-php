@@ -17,8 +17,8 @@ final class Test262GeneratedScriptCatalogTest extends TestCase
         try {
             $primary = 'tests/Test262/Generated/test/intl402/Locale/example.php';
             $variant = 'tests/Test262/Generated/test/intl402/Locale/example.plain-object.php';
-            self::write($root.'/'.$primary, "<?php\n");
-            self::write($root.'/'.$variant, "<?php\n");
+            self::write($root . '/' . $primary, "<?php\n");
+            self::write($root . '/' . $variant, "<?php\n");
             self::writeEvidence($root, [[
                 'path' => 'test/intl402/Locale/example.js',
                 'status' => 'passing',
@@ -32,26 +32,32 @@ final class Test262GeneratedScriptCatalogTest extends TestCase
                 ],
             ]]);
 
-            $catalog = new GeneratedScriptCatalog($root, $root.'/tests/Test262/evidence.json');
-            self::assertSame([
+            $catalog = new GeneratedScriptCatalog($root, $root . '/tests/Test262/evidence.json');
+            self::assertSame(
                 [
-                    'source' => 'test/intl402/Locale/example.js',
-                    'path' => $primary,
-                    'identity' => 'test/intl402/Locale/example.js',
-                    'variant' => null,
+                    [
+                        'source' => 'test/intl402/Locale/example.js',
+                        'path' => $primary,
+                        'identity' => 'test/intl402/Locale/example.js',
+                        'variant' => null,
+                    ],
+                    [
+                        'source' => 'test/intl402/Locale/example.js',
+                        'path' => $variant,
+                        'identity' => 'test/intl402/Locale/example.js [plain-object]',
+                        'variant' => 'plain-object',
+                    ],
                 ],
-                [
-                    'source' => 'test/intl402/Locale/example.js',
-                    'path' => $variant,
-                    'identity' => 'test/intl402/Locale/example.js [plain-object]',
-                    'variant' => 'plain-object',
-                ],
-            ], $catalog->entries());
+                $catalog->entries(),
+            );
 
-            self::assertSame([
-                'test/intl402/Locale/example.js' => $root.'/'.$primary,
-                'test/intl402/Locale/example.js [plain-object]' => $root.'/'.$variant,
-            ], $catalog->scripts());
+            self::assertSame(
+                [
+                    'test/intl402/Locale/example.js' => $root . '/' . $primary,
+                    'test/intl402/Locale/example.js [plain-object]' => $root . '/' . $variant,
+                ],
+                $catalog->scripts(),
+            );
         } finally {
             PackageSmoke::removeDirectory($root);
         }
@@ -62,13 +68,13 @@ final class Test262GeneratedScriptCatalogTest extends TestCase
         $root = PackageSmoke::temporaryDirectory('locale-test262-catalog');
 
         try {
-            self::write($root.'/tests/Test262/Generated/stale.php', "<?php\n");
+            self::write($root . '/tests/Test262/Generated/stale.php', "<?php\n");
             self::writeEvidence($root, []);
 
             $this->expectException(\RuntimeException::class);
             $this->expectExceptionMessage('stale: tests/Test262/Generated/stale.php');
 
-            (new GeneratedScriptCatalog($root, $root.'/tests/Test262/evidence.json'))->scripts();
+            (new GeneratedScriptCatalog($root, $root . '/tests/Test262/evidence.json'))->scripts();
         } finally {
             PackageSmoke::removeDirectory($root);
         }
@@ -81,8 +87,8 @@ final class Test262GeneratedScriptCatalogTest extends TestCase
         try {
             $first = 'tests/Test262/Generated/test/intl402/Locale/example.php';
             $second = 'tests/Test262/Generated/test/intl402/Locale/example.second.php';
-            self::write($root.'/'.$first, "<?php\n");
-            self::write($root.'/'.$second, "<?php\n");
+            self::write($root . '/' . $first, "<?php\n");
+            self::write($root . '/' . $second, "<?php\n");
             self::writeEvidence($root, [[
                 'path' => 'test/intl402/Locale/example.js',
                 'status' => 'passing',
@@ -108,7 +114,7 @@ final class Test262GeneratedScriptCatalogTest extends TestCase
             $this->expectException(\RuntimeException::class);
             $this->expectExceptionMessage('path is duplicated in evidence');
 
-            (new GeneratedScriptCatalog($root, $root.'/tests/Test262/evidence.json'))->scripts();
+            (new GeneratedScriptCatalog($root, $root . '/tests/Test262/evidence.json'))->scripts();
         } finally {
             PackageSmoke::removeDirectory($root);
         }
@@ -118,8 +124,9 @@ final class Test262GeneratedScriptCatalogTest extends TestCase
     private static function writeEvidence(string $root, array $fixtures): void
     {
         self::write(
-            $root.'/tests/Test262/evidence.json',
-            json_encode(['fixtures' => $fixtures], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+            $root . '/tests/Test262/evidence.json',
+            json_encode(['fixtures' => $fixtures], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
+                . "\n",
         );
     }
 

@@ -17,15 +17,12 @@ final class FixtureResult
         array $identities,
         TranslationGap $gap,
     ): self {
-        $reason = 'Translation gap: '.$gap->getMessage();
-        $assertions = array_map(
-            static fn (array $assertion): array => [
-                ...$assertion,
-                'status' => 'translation_gap',
-                'reason' => $reason,
-            ],
-            $identities,
-        );
+        $reason = 'Translation gap: ' . $gap->getMessage();
+        $assertions = array_map(static fn(array $assertion): array => [
+            ...$assertion,
+            'status' => 'translation_gap',
+            'reason' => $reason,
+        ], $identities);
 
         return new self(
             $path,
@@ -56,8 +53,7 @@ final class FixtureResult
         private readonly int $executionFailures,
         private readonly array $generatedScripts,
         private readonly ?string $reason = null,
-    ) {
-    }
+    ) {}
 
     /** @return list<GeneratedScript> */
     public function generatedScripts(): array
@@ -107,7 +103,7 @@ final class FixtureResult
     {
         return count(array_filter(
             $this->assertions,
-            static fn (array $assertion): bool => ($assertion['status'] ?? null) === 'translation_gap',
+            static fn(array $assertion): bool => ($assertion['status'] ?? null) === 'translation_gap',
         ));
     }
 
@@ -138,7 +134,7 @@ final class FixtureResult
             'phpRepresentations' => $this->phpRepresentations,
             'assertions' => $this->assertions,
             'generatedScripts' => array_map(
-                static fn (GeneratedScript $script): array => $script->evidence(),
+                static fn(GeneratedScript $script): array => $script->evidence(),
                 $this->generatedScripts,
             ),
         ];

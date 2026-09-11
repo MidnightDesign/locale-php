@@ -14,8 +14,7 @@ final class IdentifierRejectionPipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -42,16 +41,13 @@ final class IdentifierRejectionPipeline implements FixturePipeline
             }
         }
 
-        $assertions = array_map(
-            static fn (array $identity): array => [
-                ...$identity,
-                'status' => $identity['call'] === 'assert.throws' && $failures > 0 ? 'failing' : 'passing',
-                'adaptations' => $identity['call'] === 'assert.throws'
-                    ? ['The JavaScript helper calls are expanded into fixture-local PHP checks.']
-                    : ['JavaScript constructor availability is represented by direct PHP class availability.'],
-            ],
-            $identities,
-        );
+        $assertions = array_map(static fn(array $identity): array => [
+            ...$identity,
+            'status' => $identity['call'] === 'assert.throws' && $failures > 0 ? 'failing' : 'passing',
+            'adaptations' => $identity['call'] === 'assert.throws'
+                ? ['The JavaScript helper calls are expanded into fixture-local PHP checks.']
+                : ['JavaScript constructor availability is represented by direct PHP class availability.'],
+        ], $identities);
 
         return new FixtureResult(
             $fixturePath,
@@ -87,30 +83,30 @@ final class IdentifierRejectionPipeline implements FixturePipeline
             throw new \RuntimeException('Unable to format the generated rejection cases.');
         }
         $generated = <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-use Midnight\Intl\Exception\RangeError;
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Assert;
+            use Midnight\Intl\Exception\RangeError;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Assert;
 
-foreach ({$export} as \$tag) {
-    \$rejected = false;
-    try {
-        new Locale(\$tag);
-    } catch (RangeError) {
-        \$rejected = true;
-    }
+            foreach ({$export} as \$tag) {
+                \$rejected = false;
+                try {
+                    new Locale(\$tag);
+                } catch (RangeError) {
+                    \$rejected = true;
+                }
 
-    Assert::assertTrue(\$rejected, 'Expected RangeError for '.\$tag.'.');
-}
-PHP;
+                Assert::assertTrue(\$rejected, 'Expected RangeError for '.\$tag.'.');
+            }
+            PHP;
 
-        return $generated."\n";
+        return $generated . "\n";
     }
 }

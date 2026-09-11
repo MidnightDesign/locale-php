@@ -33,8 +33,8 @@ final class Provenance
         string $extensionMode,
         array $branchTrace,
     ): array {
-        $manifest = self::readJson($root.'/resources/data/manifest.json');
-        $actionPins = self::actionPins($root.'/.ci/action-pins.json');
+        $manifest = self::readJson($root . '/resources/data/manifest.json');
+        $actionPins = self::actionPins($root . '/.ci/action-pins.json');
         $extensions = get_loaded_extensions();
         sort($extensions);
 
@@ -70,10 +70,10 @@ final class Provenance
             ],
             'tools' => [
                 'composerVersion' => self::composerVersion(),
-                'xdebugVersion' => extension_loaded('xdebug') ? phpversion('xdebug') ?: null : null,
+                'xdebugVersion' => extension_loaded('xdebug') ? (phpversion('xdebug') ?: null) : null,
             ],
             'dependencies' => [
-                'lockSha256' => self::sha256($root.'/composer.lock'),
+                'lockSha256' => self::sha256($root . '/composer.lock'),
                 'installed' => self::installedDependencies($root),
             ],
             'actions' => $actionPins,
@@ -83,7 +83,7 @@ final class Provenance
             ],
             'releaseDataSnapshot' => [
                 'manifest' => 'resources/data/manifest.json',
-                'fingerprint' => self::sha256($root.'/resources/data/manifest.json'),
+                'fingerprint' => self::sha256($root . '/resources/data/manifest.json'),
                 'cldrRevision' => self::stringAt(
                     self::objectAt(self::objectAt($manifest, 'inputs'), 'cldr'),
                     'revision',
@@ -122,11 +122,7 @@ final class Provenance
     private static function composerVersion(): string
     {
         $pipes = [];
-        $process = proc_open(
-            'composer --version --no-ansi',
-            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes,
-        );
+        $process = proc_open('composer --version --no-ansi', [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
         if (!is_resource($process)) {
             throw new \RuntimeException('Unable to start Composer for provenance.');
         }
@@ -137,8 +133,15 @@ final class Provenance
         fclose($pipes[2]);
         $exitCode = proc_close($process);
         $matches = [];
-        if ($exitCode !== 0 || $output === false || preg_match('/Composer version ([^\s]+)/D', trim($output), $matches) !== 1) {
-            throw new \RuntimeException(sprintf('Unable to identify Composer: %s', trim($error === false ? '' : $error)));
+        if (
+            $exitCode !== 0
+            || $output === false
+            || preg_match('/Composer version ([^\s]+)/D', trim($output), $matches) !== 1
+        ) {
+            throw new \RuntimeException(sprintf(
+                'Unable to identify Composer: %s',
+                trim($error === false ? '' : $error),
+            ));
         }
 
         return $matches[1];
@@ -197,7 +200,7 @@ final class Provenance
     /** @return array<string, string> */
     private static function installedDependencies(string $root): array
     {
-        $path = $root.'/vendor/composer/installed.json';
+        $path = $root . '/vendor/composer/installed.json';
         if (!is_file($path)) {
             return [];
         }
@@ -210,7 +213,11 @@ final class Provenance
 
         $versions = [];
         foreach ($packages as $package) {
-            if (!is_array($package) || !is_string($package['name'] ?? null) || !is_string($package['version'] ?? null)) {
+            if (
+                !is_array($package)
+                || !is_string($package['name'] ?? null)
+                || !is_string($package['version'] ?? null)
+            ) {
                 continue;
             }
 

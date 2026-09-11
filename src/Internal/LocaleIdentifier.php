@@ -19,8 +19,7 @@ final class LocaleIdentifier
         public ?string $region,
         public array $variants,
         private array $extensions,
-    ) {
-    }
+    ) {}
 
     public static function parse(string $tag): self
     {
@@ -64,9 +63,7 @@ final class LocaleIdentifier
             $extensions[$singleton] = match ($singleton) {
                 'u' => self::canonicalizeUnicodeExtension($value, $tag),
                 't' => self::canonicalizeTransformedExtension($value, $tag),
-                default => self::allMatch($value, '/^[a-z0-9]{2,8}$/D')
-                    ? $value
-                    : throw self::invalid($tag),
+                default => self::allMatch($value, '/^[a-z0-9]{2,8}$/D') ? $value : throw self::invalid($tag),
             };
         }
 
@@ -77,12 +74,8 @@ final class LocaleIdentifier
         return $identifier;
     }
 
-    public function replaceLanguageId(
-        string $language,
-        ?string $script,
-        ?string $region,
-        ?string $variants,
-    ): void {
+    public function replaceLanguageId(string $language, ?string $script, ?string $region, ?string $variants): void
+    {
         if (preg_match('/^(?:[a-z]{2,3}|[a-z]{5,8})$/iD', $language) !== 1) {
             throw new RangeError(sprintf('Invalid language subtag: "%s".', $language));
         }
@@ -94,9 +87,14 @@ final class LocaleIdentifier
         }
 
         $variantList = $variants === null ? [] : explode('-', strtolower($variants));
-        if ($variants !== null && ($variants === ''
-            || !self::allMatch($variantList, '/^(?:[a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/D')
-            || count(array_unique($variantList)) !== count($variantList))) {
+        if (
+            $variants !== null
+            && (
+                $variants === ''
+                || !self::allMatch($variantList, '/^(?:[a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/D')
+                || count(array_unique($variantList)) !== count($variantList)
+            )
+        ) {
             throw new RangeError(sprintf('Invalid variants value: "%s".', $variants));
         }
 
@@ -169,14 +167,15 @@ final class LocaleIdentifier
         }
 
         $region = null;
-        if (isset($subtags[$offset])
-            && preg_match('/^(?:[a-z]{2}|[0-9]{3})$/D', $subtags[$offset]) === 1) {
+        if (isset($subtags[$offset]) && preg_match('/^(?:[a-z]{2}|[0-9]{3})$/D', $subtags[$offset]) === 1) {
             $region = strtoupper($subtags[$offset++]);
         }
 
         $variants = [];
-        while (isset($subtags[$offset])
-            && preg_match('/^(?:[a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/D', $subtags[$offset]) === 1) {
+        while (
+            isset($subtags[$offset])
+            && preg_match('/^(?:[a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/D', $subtags[$offset]) === 1
+        ) {
             $variants[] = $subtags[$offset++];
         }
         if (count(array_unique($variants)) !== count($variants)) {
@@ -301,10 +300,9 @@ final class LocaleIdentifier
         if ($this->region !== null) {
             $alternatives = LocaleAliases::REGION_ALTERNATIVES[$this->region] ?? null;
             if ($alternatives !== null) {
-                $likelyKey = strtolower($this->language.($this->script === null ? '' : '-'.$this->script));
-                $likelyRegion = LocaleAliases::LIKELY_REGION[$likelyKey]
-                    ?? LocaleAliases::LIKELY_REGION[$this->language]
-                    ?? null;
+                $likelyKey = strtolower($this->language . ($this->script === null ? '' : '-' . $this->script));
+                $likelyRegion =
+                    LocaleAliases::LIKELY_REGION[$likelyKey] ?? LocaleAliases::LIKELY_REGION[$this->language] ?? null;
                 $this->region = $likelyRegion !== null && in_array($likelyRegion, $alternatives, true)
                     ? $likelyRegion
                     : $alternatives[0];
@@ -370,7 +368,7 @@ final class LocaleIdentifier
         if ($key === 'rg' && preg_match('/^(?<region>[a-z]{2}|[0-9]{3})(?<suffix>zzzz)$/D', $type, $matches) === 1) {
             $region = LocaleAliases::REGION[strtoupper($matches['region'])] ?? strtoupper($matches['region']);
 
-            return strtolower($region).$matches['suffix'];
+            return strtolower($region) . $matches['suffix'];
         }
 
         $typeAliases = LocaleAliases::TYPE;
