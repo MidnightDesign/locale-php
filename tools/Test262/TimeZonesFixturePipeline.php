@@ -18,13 +18,9 @@ final class TimeZonesFixturePipeline implements FixturePipeline
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $identities = $this->assertionIdentities->extract($source, $fixturePath);
-        $expectedAssertions = match (basename($fixturePath)) {
-            'branding.js' => 10,
-            'name.js', 'output-array-sorted.js', 'output-array-undefined.js' => 1,
-            'output-array.js', 'prop-desc.js' => 2,
-            default => 0,
-        };
-        if ($expectedAssertions === 0 || count($identities) !== $expectedAssertions) {
+        $name = basename($fixturePath);
+        $failuresByAssertion = $this->failuresByAssertion($name);
+        if ($failuresByAssertion === [] || count($identities) !== count($failuresByAssertion)) {
             return FixtureResult::translationGap(
                 $fixturePath,
                 $source,
@@ -34,15 +30,15 @@ final class TimeZonesFixturePipeline implements FixturePipeline
             );
         }
 
-        $failures = $this->executionFailures(basename($fixturePath));
-        $assertions = array_map(static fn(array $identity): array => [
-            ...$identity,
-            'status' => $failures === 0 ? 'passing' : 'failing',
-            'adaptations' => [
-                'ECMAScript undefined is represented by PHP null.',
-                'ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check.',
-            ],
-        ], $identities);
+        $assertions = [];
+        foreach ($identities as $index => $identity) {
+            $assertions[] = [
+                ...$identity,
+                'status' => $failuresByAssertion[$index] ? 'failing' : 'passing',
+                'adaptations' => $this->adaptations($name, $index),
+            ];
+        }
+        $failures = count(array_filter($failuresByAssertion));
 
         return new FixtureResult(
             $fixturePath,
@@ -50,50 +46,102 @@ final class TimeZonesFixturePipeline implements FixturePipeline
             $failures === 0 ? 'passing' : 'failing',
             ['direct'],
             $assertions,
-            $expectedAssertions,
+            count($failuresByAssertion),
             $failures,
-            [GeneratedScript::primary($fixturePath, $this->render(basename($fixturePath), $fixturePath))],
+            [GeneratedScript::primary($fixturePath, $this->render($name, $fixturePath))],
         );
     }
 
-    private function executionFailures(string $name): int
+    /** @return list<bool> Whether each source assertion failed, in source order. */
+    private function failuresByAssertion(string $name): array
     {
         return match ($name) {
-            'branding.js' => $this->brandingFailures(),
-            'name.js' => (new \ReflectionMethod(Locale::class, 'getTimeZones'))->getName() === 'getTimeZones' ? 0 : 1,
-            'output-array-sorted.js' => self::isSorted((new Locale('en-US'))->getTimeZones()) ? 0 : 1,
-            'output-array-undefined.js' => (new Locale('en'))->getTimeZones() === null ? 0 : 1,
-            'output-array.js' => is_array((new Locale('en-US'))->getTimeZones())
-                && (new Locale('en-US'))->getTimeZones() !== []
-                    ? 0
-                    : 1,
-            'prop-desc.js' => (new \ReflectionMethod(Locale::class, 'getTimeZones'))->isPublic() ? 0 : 1,
-            default => 1,
+            'branding.js' => $this->brandingFailuresByAssertion(),
+            'name.js' => [(new \ReflectionMethod(Locale::class, 'getTimeZones'))->getName() !== 'getTimeZones'],
+            'output-array-sorted.js' => [!self::isSorted((new Locale('en-US'))->getTimeZones())],
+            'output-array-undefined.js' => [(new Locale('en'))->getTimeZones() !== null],
+            'output-array.js' => $this->outputArrayFailuresByAssertion(),
+            'prop-desc.js' => $this->propertyDescriptorFailuresByAssertion(),
+            default => [],
         };
     }
 
-    private function brandingFailures(): int
+    /** @return list<bool> */
+    private function brandingFailuresByAssertion(): array
     {
-        $methodNames = array_map(
-            static fn(\ReflectionMethod $method): string => $method->getName(),
-            (new \ReflectionClass(Locale::class))->getMethods(),
-        );
-        if (!in_array('getTimeZones', $methodNames, true)) {
-            return 10;
+        $reflection = new \ReflectionClass(Locale::class);
+        if (!$reflection->hasMethod('getTimeZones')) {
+            return array_fill(0, 10, true);
         }
-        $failures = 0;
-        for ($index = 0; $index < 9; ++$index) {
-            $locale = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+
+        $uninitialized = $reflection->newInstanceWithoutConstructor();
+        /** @var list<mixed> $receivers */
+        $receivers = [null, null, true, '', 'Symbol()', 1, new \stdClass(), Locale::class, $uninitialized];
+        $failures = [false];
+        foreach ($receivers as $receiver) {
             try {
-                $locale->getTimeZones();
-                ++$failures;
+                self::invokeWithReceiver($receiver);
+                $failures[] = true;
             } catch (TypeError) {
-            } catch (\Throwable) {
-                ++$failures;
+                $failures[] = false;
             }
         }
 
         return $failures;
+    }
+
+    /** @return list<bool> */
+    private function outputArrayFailuresByAssertion(): array
+    {
+        $output = (new Locale('en-US'))->getTimeZones();
+
+        return [!is_array($output), $output === []];
+    }
+
+    /** @return list<bool> */
+    private function propertyDescriptorFailuresByAssertion(): array
+    {
+        $reflection = new \ReflectionClass(Locale::class);
+        if (!$reflection->hasMethod('getTimeZones')) {
+            return [true, true];
+        }
+        $method = $reflection->getMethod('getTimeZones');
+
+        return [false, !$method->isPublic() || $method->isStatic()];
+    }
+
+    private static function invokeWithReceiver(mixed $receiver): void
+    {
+        if (!$receiver instanceof Locale) {
+            throw new TypeError('Locale receiver is not initialized.');
+        }
+
+        $receiver->getTimeZones();
+    }
+
+    /** @return list<string> */
+    private function adaptations(string $name, int $index): array
+    {
+        return match ($name) {
+            'branding.js' => $index === 0
+                ? ['ECMAScript function branding is represented by an existing PHP instance method.']
+                : [
+                    'Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.',
+                    'ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values.',
+                ],
+            'name.js' => [
+                'The ECMAScript name value is represented by ReflectionMethod::getName().',
+                'ECMAScript name-property descriptor flags have no PHP method-metadata counterpart.',
+            ],
+            'output-array-undefined.js' => ['ECMAScript undefined is represented by PHP null.'],
+            'prop-desc.js' => $index === 0
+                ? ['ECMAScript typeof function is represented by an existing PHP instance method.']
+                : [
+                    'The ECMAScript prototype data property is represented by a public, non-static PHP method.',
+                    'ECMAScript writable, enumerable, and configurable flags have no PHP method-metadata counterparts.',
+                ],
+            default => ['The ECMAScript Array is represented by a PHP list array.'],
+        };
     }
 
     /** @param list<string>|null $identifiers */
@@ -113,11 +161,18 @@ final class TimeZonesFixturePipeline implements FixturePipeline
         $body = match ($name) {
             'branding.js' => <<<'PHP'
                 Assert::assertTrue(method_exists(Locale::class, 'getTimeZones'));
-                for ($index = 0; $index < 9; ++$index) {
-                    $locale = (new ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+                $uninitialized = (new ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+                $receivers = [null, null, true, '', 'Symbol()', 1, new stdClass(), Locale::class, $uninitialized];
+                $invoke = static function (mixed $receiver): void {
+                    if (!$receiver instanceof Locale) {
+                        throw new TypeError('Locale receiver is not initialized.');
+                    }
+                    $receiver->getTimeZones();
+                };
+                foreach ($receivers as $receiver) {
                     $rejected = false;
                     try {
-                        $locale->getTimeZones();
+                        $invoke($receiver);
                     } catch (TypeError) {
                         $rejected = true;
                     }
@@ -139,8 +194,8 @@ final class TimeZonesFixturePipeline implements FixturePipeline
                 Assert::assertNotEmpty($output);
                 PHP,
             'prop-desc.js' => <<<'PHP'
+                Assert::assertTrue(method_exists(Locale::class, 'getTimeZones'));
                 $method = new ReflectionMethod(Locale::class, 'getTimeZones');
-                Assert::assertSame('getTimeZones', $method->getName());
                 Assert::assertTrue($method->isPublic() && !$method->isStatic());
                 PHP,
             default => throw new \LogicException('Unsupported getTimeZones fixture.'),

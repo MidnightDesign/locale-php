@@ -132,6 +132,8 @@ $invalidCases = static fn(array $values): array => array_map(static function (mi
         'expected' => Midnight\Intl\Exception\RangeError::class,
     ];
 }, $values);
+$timeZonesPipeline = new TimeZonesFixturePipeline($assertionIdentities, $test262Revision, $ecma402Revision);
+
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
     'test/intl402/Locale/constructor-unicode-ext-invalid.js' => new IdentifierRejectionPipeline(
@@ -489,36 +491,12 @@ $fixturePipelines = [
         $representations,
         'c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d',
     ),
-    'test/intl402/Locale/prototype/getTimeZones/branding.js' => new TimeZonesFixturePipeline(
-        $assertionIdentities,
-        $test262Revision,
-        $ecma402Revision,
-    ),
-    'test/intl402/Locale/prototype/getTimeZones/name.js' => new TimeZonesFixturePipeline(
-        $assertionIdentities,
-        $test262Revision,
-        $ecma402Revision,
-    ),
-    'test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js' => new TimeZonesFixturePipeline(
-        $assertionIdentities,
-        $test262Revision,
-        $ecma402Revision,
-    ),
-    'test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js' => new TimeZonesFixturePipeline(
-        $assertionIdentities,
-        $test262Revision,
-        $ecma402Revision,
-    ),
-    'test/intl402/Locale/prototype/getTimeZones/output-array.js' => new TimeZonesFixturePipeline(
-        $assertionIdentities,
-        $test262Revision,
-        $ecma402Revision,
-    ),
-    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => new TimeZonesFixturePipeline(
-        $assertionIdentities,
-        $test262Revision,
-        $ecma402Revision,
-    ),
+    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $timeZonesPipeline,
+    'test/intl402/Locale/prototype/getTimeZones/name.js' => $timeZonesPipeline,
+    'test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js' => $timeZonesPipeline,
+    'test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js' => $timeZonesPipeline,
+    'test/intl402/Locale/prototype/getTimeZones/output-array.js' => $timeZonesPipeline,
+    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => $timeZonesPipeline,
 ];
 
 $fixtureSources = [];

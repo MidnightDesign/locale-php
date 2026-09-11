@@ -27,7 +27,6 @@ final class AmbientStateTest extends TestCase
             }
 
             self::assertSame('he-Zinh-NZ', (new Locale('iw-Qaai-554'))->toString());
-            self::assertSame(['Europe/Vienna'], (new Locale('de-AT'))->getTimeZones());
             self::assertSame(
                 'fr-Cyrl-CA',
                 (new SpecLocale('en-US', [

@@ -10,6 +10,6 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
+Assert::assertTrue(method_exists(Locale::class, 'getTimeZones'));
 $method = new ReflectionMethod(Locale::class, 'getTimeZones');
-Assert::assertSame('getTimeZones', $method->getName());
 Assert::assertTrue($method->isPublic() && !$method->isStatic());

@@ -3515,8 +3515,7 @@
                     "sha256": "68a70615327909c723a990441701d2e57ad0d4ce0d41a9e47863f5136c444224",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "ECMAScript function branding is represented by an existing PHP instance method."
                     ]
                 },
                 {
@@ -3527,8 +3526,8 @@
                     "sha256": "65e5f11e11b28b59afda782c93d020d883f0cefc30e7775d90c7df45c334b875",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3539,8 +3538,8 @@
                     "sha256": "e7dca696e9267ab7a8c518527d4786aa32f56eb762fcf0f08b6a341c99a3a7c3",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3551,8 +3550,8 @@
                     "sha256": "9dc58e5a0c54e7c2fbe35ab220ad077e5f3b13ecad0bc757eaeb127c0fd0249b",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3563,8 +3562,8 @@
                     "sha256": "86643223033e956eb2be1b0247bbb1076d7fea753a14763387724d46f2fde892",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3575,8 +3574,8 @@
                     "sha256": "879f19a38cfef5d58bb37b79881d46d5203303c2f4280e635f26278e97375846",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3587,8 +3586,8 @@
                     "sha256": "35b8d3fc237e28f1a928361df5dd82724fe7784dee453e6fca39610894ac6dba",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3599,8 +3598,8 @@
                     "sha256": "c6b4c257383002c389f66de9c02908adafebae3fea1da865c46dec97e68bb5a4",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3611,8 +3610,8 @@
                     "sha256": "7c108a7230db47bd68c2eeca0f8f9bbc3e13c7a417ebb17ba8e395f23f1ec06b",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 },
                 {
@@ -3623,8 +3622,8 @@
                     "sha256": "941dba802071329c3e4079f8da45759452aa96a6b658dad4f5f5db67306f02b7",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
                     ]
                 }
             ],
@@ -3656,8 +3655,8 @@
                     "sha256": "24bec785fbd12b000ff2ed1b46cb4e671715caaec663c3bc5c0dc7ceb7027ab7",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "The ECMAScript name value is represented by ReflectionMethod::getName().",
+                        "ECMAScript name-property descriptor flags have no PHP method-metadata counterpart."
                     ]
                 }
             ],
@@ -3689,8 +3688,7 @@
                     "sha256": "36994d97dea25cec3296ba2589df1dbfcce6e5e0c0df03f7e0151159d4de7a73",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "The ECMAScript Array is represented by a PHP list array."
                     ]
                 }
             ],
@@ -3722,8 +3720,7 @@
                     "sha256": "17185427bb60406f0c4db6e98424a91aaa82151f527ca4e145462f622650741a",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "ECMAScript undefined is represented by PHP null."
                     ]
                 }
             ],
@@ -3755,8 +3752,7 @@
                     "sha256": "372f06ebacf0eaed155350e68b780419e753f2759853999772f319f593cde4d5",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "The ECMAScript Array is represented by a PHP list array."
                     ]
                 },
                 {
@@ -3767,8 +3763,7 @@
                     "sha256": "44ee4baeb3bec3127c76d194c860681a43b88c4c62148699ae02735e5fae3fdf",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "The ECMAScript Array is represented by a PHP list array."
                     ]
                 }
             ],
@@ -3800,8 +3795,7 @@
                     "sha256": "f1beb9d650403dd4b1406c81aa5b3bea5345203bce460e7ed8a31d00461ea452",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "ECMAScript typeof function is represented by an existing PHP instance method."
                     ]
                 },
                 {
@@ -3812,8 +3806,8 @@
                     "sha256": "09d5bf7714b954304e2fbb0abcac4cc85e3aa542080dd513736d42cfd337e47c",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript undefined is represented by PHP null.",
-                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                        "The ECMAScript prototype data property is represented by a public, non-static PHP method.",
+                        "ECMAScript writable, enumerable, and configurable flags have no PHP method-metadata counterparts."
                     ]
                 }
             ],

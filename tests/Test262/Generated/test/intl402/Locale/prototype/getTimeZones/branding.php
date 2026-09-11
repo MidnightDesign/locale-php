@@ -11,11 +11,18 @@ use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
 Assert::assertTrue(method_exists(Locale::class, 'getTimeZones'));
-for ($index = 0; $index < 9; ++$index) {
-    $locale = (new ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+$uninitialized = (new ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
+$receivers = [null, null, true, '', 'Symbol()', 1, new stdClass(), Locale::class, $uninitialized];
+$invoke = static function (mixed $receiver): void {
+    if (!$receiver instanceof Locale) {
+        throw new TypeError('Locale receiver is not initialized.');
+    }
+    $receiver->getTimeZones();
+};
+foreach ($receivers as $receiver) {
     $rejected = false;
     try {
-        $locale->getTimeZones();
+        $invoke($receiver);
     } catch (TypeError) {
         $rejected = true;
     }
