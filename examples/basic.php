@@ -29,3 +29,4 @@ echo $locale->caseFirst instanceof CaseFirst ? $locale->caseFirst->value : $loca
 echo json_encode($locale, JSON_THROW_ON_ERROR), PHP_EOL;
 echo $locale->maximize(), PHP_EOL;
 echo $locale->maximize()->minimize(), PHP_EOL;
+echo $locale->getTextInfo()->direction?->value ?? 'unknown', PHP_EOL;
