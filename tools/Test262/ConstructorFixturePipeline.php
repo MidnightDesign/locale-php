@@ -95,7 +95,7 @@ final class ConstructorFixturePipeline implements FixturePipeline
             $assertions,
             count($executionResults),
             $failureCount,
-            [GeneratedScript::pathFor($fixturePath) => $this->render($generatedCases, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($generatedCases, $fixturePath))],
         );
     }
 

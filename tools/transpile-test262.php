@@ -8,6 +8,8 @@ use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
 use Midnight\Intl\Tools\Test262\EvidenceBuilder;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\FixtureResult;
+use Midnight\Intl\Tools\Test262\GeneratedOutputPublisher;
+use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
 use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
@@ -33,51 +35,6 @@ function writeRequiredFile(string $path, string $contents): void
     }
     if (file_put_contents($path, $contents) === false) {
         throw new RuntimeException('Unable to write '.$path.'.');
-    }
-}
-
-/** @return list<string> */
-function generatedPhpFiles(string $root): array
-{
-    $directory = $root.'/tests/Test262/Generated';
-    if (!is_dir($directory)) {
-        return [];
-    }
-
-    $paths = [];
-    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
-        $directory,
-        RecursiveDirectoryIterator::SKIP_DOTS,
-    ));
-    foreach ($files as $file) {
-        /** @var SplFileInfo $file */
-        if (!$file->isFile() || $file->getExtension() !== 'php') {
-            continue;
-        }
-
-        $paths[] = str_replace('\\', '/', substr($file->getPathname(), strlen($root) + 1));
-    }
-    sort($paths);
-
-    return $paths;
-}
-
-function removeEmptyGeneratedDirectories(string $root): void
-{
-    $directory = $root.'/tests/Test262/Generated';
-    if (!is_dir($directory)) {
-        return;
-    }
-
-    $directories = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-        RecursiveIteratorIterator::CHILD_FIRST,
-    );
-    foreach ($directories as $candidate) {
-        /** @var SplFileInfo $candidate */
-        if ($candidate->isDir()) {
-            @rmdir($candidate->getPathname());
-        }
     }
 }
 
@@ -239,11 +196,12 @@ if ($blockingResults !== []) {
 
 $outputs = ['tests/Test262/evidence.json' => $evidenceJson];
 foreach ($fixtureResults as $result) {
-    foreach ($result->generatedFiles() as $path => $contents) {
+    foreach ($result->generatedScripts() as $script) {
+        $path = $script->path();
         if (isset($outputs[$path])) {
             throw new RuntimeException('Multiple fixture pipelines generated '.$path.'.');
         }
-        $outputs[$path] = $contents;
+        $outputs[$path] = $script->contents();
     }
 }
 
@@ -253,32 +211,23 @@ $expectedGeneratedFiles = array_values(array_filter(
     static fn (string $path): bool => str_starts_with($path, 'tests/Test262/Generated/'),
 ));
 sort($expectedGeneratedFiles);
-$staleGeneratedFiles = array_values(array_diff(generatedPhpFiles($root), $expectedGeneratedFiles));
-if ($staleGeneratedFiles !== []) {
-    if ($check) {
+$staleGeneratedFiles = array_values(array_diff(GeneratedScriptCatalog::generatedPhpFiles($root), $expectedGeneratedFiles));
+if ($check) {
+    if ($staleGeneratedFiles !== []) {
         foreach ($staleGeneratedFiles as $path) {
             fwrite(STDERR, $path." is stale.\n");
         }
         exit(1);
     }
-
-    foreach ($staleGeneratedFiles as $path) {
-        if (!unlink($root.'/'.$path)) {
-            throw new RuntimeException('Unable to remove stale generated script '.$path.'.');
-        }
-    }
-    removeEmptyGeneratedDirectories($root);
-}
-
-foreach ($outputs as $path => $contents) {
-    $absolutePath = $root.'/'.$path;
-    if ($check) {
+    foreach ($outputs as $path => $contents) {
+        $absolutePath = $root.'/'.$path;
         if (!is_file($absolutePath) || file_get_contents($absolutePath) !== $contents) {
             fwrite(STDERR, $path." is not reproducible.\n");
             exit(1);
         }
-        continue;
     }
 
-    writeRequiredFile($absolutePath, $contents);
+    exit(0);
 }
+
+(new GeneratedOutputPublisher($root))->publish($outputs);

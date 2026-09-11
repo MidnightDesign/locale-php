@@ -121,6 +121,13 @@
                         "The JavaScript helper calls are expanded into fixture-local PHP checks."
                     ]
                 }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/constructor-unicode-ext-invalid.php",
+                    "identity": "test/intl402/Locale/constructor-unicode-ext-invalid.js",
+                    "variant": null
+                }
             ]
         },
         {
@@ -145,6 +152,13 @@
                     "adaptations": [
                         "The JavaScript object iteration is expanded into fixture-local PHP checks."
                     ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/constructor-unicode-ext-valid.php",
+                    "identity": "test/intl402/Locale/constructor-unicode-ext-valid.js",
+                    "variant": null
                 }
             ]
         },
@@ -380,6 +394,13 @@
                         "direct"
                     ]
                 }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/getters-missing.php",
+                    "identity": "test/intl402/Locale/getters-missing.js",
+                    "variant": null
+                }
             ]
         },
         {
@@ -416,6 +437,13 @@
                         "The JavaScript helper calls are expanded into fixture-local PHP checks."
                     ]
                 }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/reject-duplicate-variants.php",
+                    "identity": "test/intl402/Locale/reject-duplicate-variants.js",
+                    "variant": null
+                }
             ]
         },
         {
@@ -451,6 +479,13 @@
                     "adaptations": [
                         "The JavaScript helper calls are expanded into fixture-local PHP checks."
                     ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/reject-duplicate-variants-in-tlang.php",
+                    "identity": "test/intl402/Locale/reject-duplicate-variants-in-tlang.js",
+                    "variant": null
                 }
             ]
         },
@@ -721,6 +756,13 @@
                             "actual": "en-Brai"
                         }
                     ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/constructor-options-script-valid.php",
+                    "identity": "test/intl402/Locale/constructor-options-script-valid.js",
+                    "variant": null
                 }
             ]
         }

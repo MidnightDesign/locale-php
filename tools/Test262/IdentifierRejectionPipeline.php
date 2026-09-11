@@ -61,7 +61,7 @@ final class IdentifierRejectionPipeline implements FixturePipeline
             $assertions,
             count($tags) + (count($identities) > 1 ? 1 : 0),
             $failures,
-            [GeneratedScript::pathFor($fixturePath) => $this->render($tags, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($tags, $fixturePath))],
         );
     }
 

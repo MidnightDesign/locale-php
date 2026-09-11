@@ -63,7 +63,7 @@ final class IdentifierCanonicalizationPipeline implements FixturePipeline
             ]],
             count($cases),
             $failures,
-            [GeneratedScript::pathFor($fixturePath) => $this->render($cases, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($cases, $fixturePath))],
         );
     }
 

@@ -92,7 +92,7 @@ final class GetterFixturePipeline implements FixturePipeline
             $assertions,
             count($assertions),
             0,
-            [GeneratedScript::pathFor($fixturePath) => $this->render($rows, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($rows, $fixturePath))],
         );
     }
 
