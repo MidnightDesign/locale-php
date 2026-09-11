@@ -299,6 +299,43 @@ final class CiWorkflowContractTest extends TestCase
         }
     }
 
+    public function testItRejectsDroppingNativeChecksFromGroupedRuntimeJobs(): void
+    {
+        $root = $this->fixtureRoot();
+        try {
+            $path = $root . '/.github/workflows/ci-runtime.yml';
+            $contents = (string) file_get_contents($path);
+            file_put_contents($path, str_replace(
+                'run-native: ${{ matrix.runNative }}',
+                'run-native: false',
+                $contents,
+            ));
+            self::assertContains('runtime workflow is missing run-native.', WorkflowContract::validate($root));
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsInstallingDependenciesBeforeMatrixGeneration(): void
+    {
+        $root = $this->fixtureRoot();
+        try {
+            $path = $root . '/.github/workflows/ci-runtime.yml';
+            $contents = (string) file_get_contents($path);
+            file_put_contents($path, str_replace(
+                '      - id: matrix',
+                "      - run: composer install\n      - id: matrix",
+                $contents,
+            ));
+            self::assertContains(
+                'Matrix generation must use runner PHP without provisioning or Composer installation.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
     private function fixtureRoot(): string
     {
         $source = dirname(__DIR__, 2);

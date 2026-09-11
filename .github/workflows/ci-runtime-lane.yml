@@ -3,6 +3,15 @@ name: Reusable runtime lane
 on:
   workflow_call:
     inputs:
+      run-native:
+        type: boolean
+        default: false
+      test-package:
+        type: boolean
+        default: false
+      native-artifact-name:
+        type: string
+        default: ''
       runner:
         type: string
         required: true
@@ -76,7 +85,8 @@ jobs:
         run: composer install --no-interaction --no-progress --prefer-dist
       - if: ${{ inputs.advisory }}
         run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
-      - if: ${{ inputs.expected-icu == '' }}
+      - id: runtime_ready
+        if: ${{ inputs.expected-icu == '' }}
         run: php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}"
       - if: ${{ inputs.expected-icu != '' }}
         run: php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}" "${{ inputs.expected-icu }}"
@@ -90,3 +100,27 @@ jobs:
           path: build/ci
           if-no-files-found: ${{ inputs.advisory && 'warn' || 'error' }}
           retention-days: 30
+
+      # Each mode runs in its own PHP process and retains its own evidence.
+      # Run these checks even if an earlier test or artifact step failed.
+      - name: Test native mode
+        if: ${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}
+        env:
+          INTL_LOCALE_EXTENSION_MODE: native
+          INTL_LOCALE_BRANCH_TRACE: build/ci-native/branch-trace.json
+        run: vendor/bin/phpunit --log-junit build/ci-native/junit.xml
+      - name: Record native provenance
+        if: ${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}
+        env:
+          INTL_LOCALE_BRANCH_TRACE: build/ci-native/branch-trace.json
+        run: php tools/record-ci-provenance.php build/ci-native/provenance.json "${{ inputs.php }}" "${{ inputs.runner }}" native
+      - if: ${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ inputs.native-artifact-name }}
+          path: build/ci-native
+          if-no-files-found: error
+          retention-days: 30
+      - name: Test package installation
+        if: ${{ !cancelled() && inputs.test-package && steps.runtime_ready.outcome == 'success' }}
+        run: composer test:package

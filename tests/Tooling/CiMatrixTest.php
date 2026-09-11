@@ -8,10 +8,76 @@ use Midnight\Intl\Tools\Ci\Matrix;
 use Midnight\Intl\Tools\Ci\PackageSmoke;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Process\Process;
 
 #[CoversClass(Matrix::class)]
 final class CiMatrixTest extends TestCase
 {
+    public function testGroupedJobsPreserveEveryRuntimeAndPackageBoundary(): void
+    {
+        $matrix = Matrix::fromFile(dirname(__DIR__, 2) . '/.ci/matrix.json');
+        $jobs = $matrix->runtimeJobs();
+        self::assertCount(28, $jobs);
+        $expanded = [];
+        $packages = $matrix->installLanes(false);
+        foreach ($jobs as $job) {
+            $lane = $job;
+            unset($lane['runNative'], $lane['testPackage']);
+            $expanded[] = $lane;
+            if ($job['runNative']) {
+                self::assertSame('Darwin', $job['osFamily']);
+                self::assertSame('disabled', $job['extensionMode']);
+                $expanded[] = [...$lane, 'extensionMode' => 'native'];
+            }
+            if ($job['testPackage']) {
+                $packages[] = ['runner' => $job['runner'], 'php' => $job['php']];
+            }
+        }
+        self::assertEqualsCanonicalizing($matrix->runtimeLanes(), $expanded);
+        self::assertEqualsCanonicalizing($matrix->installLanes(), $packages);
+        self::assertCount(4, $matrix->installLanes(false));
+    }
+
+    public function testMatrixCommandWorksWithoutVendorDependencies(): void
+    {
+        $root = dirname(__DIR__, 2);
+        $directory = PackageSmoke::temporaryDirectory('intl-locale-matrix-bootstrap');
+        try {
+            mkdir($directory . '/tools/Ci', 0700, true);
+            mkdir($directory . '/.ci', 0700, true);
+            foreach (['tools/ci-matrix.php', 'tools/Ci/Matrix.php', '.ci/matrix.json'] as $file) {
+                copy($root . '/' . $file, $directory . '/' . $file);
+            }
+            $matrix = Matrix::fromFile($directory . '/.ci/matrix.json');
+            $selections = [
+                'runtime' => $matrix->runtimeLanes(),
+                'runtime-jobs' => $matrix->runtimeJobs(),
+                'install' => $matrix->installLanes(),
+                'arm-runtime' => $matrix->armRuntimeLanes(),
+                'windows-x86-runtime' => $matrix->windowsX86RuntimeLanes(),
+                'windows-ts-runtime' => $matrix->windowsThreadSafeRuntimeLanes(),
+                'icu-runtime' => $matrix->icuRuntimeLanes(),
+                'advisory-runtime' => $matrix->advisoryRuntimeLanes(),
+            ];
+            foreach ($selections as $selection => $expected) {
+                $process = new Process([PHP_BINARY, $directory . '/tools/ci-matrix.php', $selection]);
+                $process->mustRun();
+                self::assertSame(
+                    ['include' => $expected],
+                    json_decode($process->getOutput(), true, flags: JSON_THROW_ON_ERROR),
+                );
+            }
+            $process = new Process([PHP_BINARY, $directory . '/tools/ci-matrix.php', 'install', '--without-macos']);
+            $process->mustRun();
+            self::assertSame(
+                ['include' => $matrix->installLanes(false)],
+                json_decode($process->getOutput(), true, flags: JSON_THROW_ON_ERROR),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($directory);
+        }
+    }
+
     public function testItBuildsTheCompleteStablePhpOsAndExtensionMatrix(): void
     {
         $matrix = Matrix::fromFile(dirname(__DIR__, 2) . '/.ci/matrix.json');

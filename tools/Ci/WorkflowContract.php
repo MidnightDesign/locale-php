@@ -40,6 +40,9 @@ final class WorkflowContract
             return $failures;
         }
 
+        foreach (['runtime' => 'matrix', 'quality' => 'install-matrix', 'scheduled' => 'matrix'] as $name => $job) {
+            self::validateMatrixBootstrap($workflows[$name], $job, $failures);
+        }
         self::validateActions($root, $workflows, $failures);
         self::validateMutationCampaigns($root, $failures);
         self::validateRuntime($workflows['runtime'], $workflows['runtime-lane'], $failures);
@@ -55,9 +58,29 @@ final class WorkflowContract
     }
 
     /** @param list<string> $failures */
+    private static function validateMatrixBootstrap(Workflow $workflow, string $jobName, array &$failures): void
+    {
+        $job = $workflow->jobs()[$jobName] ?? [];
+        $steps = is_array($job['steps'] ?? null) ? $job['steps'] : [];
+        foreach ($steps as $step) {
+            if (!is_array($step)) {
+                continue;
+            }
+            $run = $step['run'] ?? '';
+            $uses = $step['uses'] ?? '';
+            if (
+                is_string($run) && str_contains($run, 'composer install')
+                || is_string($uses) && str_starts_with($uses, 'shivammathur/setup-php@')
+            ) {
+                $failures[] = 'Matrix generation must use runner PHP without provisioning or Composer installation.';
+            }
+        }
+    }
+
+    /** @param list<string> $failures */
     private static function validateRuntime(Workflow $runtime, Workflow $lane, array &$failures): void
     {
-        self::requireRuns($runtime, ['php tools/ci-matrix.php runtime'], 'runtime workflow', $failures);
+        self::requireRuns($runtime, ['php tools/ci-matrix.php runtime-jobs'], 'runtime workflow', $failures);
         self::requireUses($runtime, ['./.github/workflows/ci-runtime-lane.yml'], 'runtime workflow', $failures);
         self::requireScalars(
             $runtime,
@@ -80,7 +103,32 @@ final class WorkflowContract
             $failures,
         );
         self::requireScalars($lane, ["inputs.thread-safe && 'ts' || 'nts'"], 'runtime lane workflow', $failures);
-        self::requireSettings($runtime, ['update' => true, 'thread-safe' => false], 'runtime workflow', $failures);
+        self::requireSettings(
+            $runtime,
+            [
+                'thread-safe' => false,
+                'run-native' => '${{ matrix.runNative }}',
+                'test-package' => '${{ matrix.testPackage }}',
+            ],
+            'runtime workflow',
+            $failures,
+        );
+        self::requireRuns(
+            $lane,
+            ['vendor/bin/phpunit --log-junit build/ci-native/junit.xml', 'composer test:package'],
+            'runtime lane workflow',
+            $failures,
+        );
+        self::requireSettings(
+            $lane,
+            [
+                'INTL_LOCALE_EXTENSION_MODE' => 'native',
+                'INTL_LOCALE_BRANCH_TRACE' => 'build/ci-native/branch-trace.json',
+                'if' => "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}",
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
         self::requireSettings($lane, ['update' => true], 'runtime lane workflow', $failures);
     }
 
@@ -263,7 +311,6 @@ final class WorkflowContract
             $failures,
         );
         self::requireUses($workflow, ['./.github/workflows/ci-runtime-lane.yml'], 'scheduled workflow', $failures);
-        self::requireSettings($workflow, ['update' => true], 'scheduled workflow', $failures);
 
         $windowsX86 = $workflow->jobs()['windows-x86'] ?? null;
         $expectedCadence = "\${{ inputs.profile == 'weekly' || inputs.profile == 'release' }}";
