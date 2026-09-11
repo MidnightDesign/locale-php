@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Midnight\Intl\Tools\Ci\PackageSmoke;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $archive = $argv[1] ?? null;
 if (!is_string($archive) || !is_file($archive)) {
@@ -23,14 +23,14 @@ try {
     $zip->close();
 
     $packageDirectory = $extractionDirectory;
-    if (!is_file($packageDirectory.DIRECTORY_SEPARATOR.'composer.json')) {
-        $candidates = glob($extractionDirectory.DIRECTORY_SEPARATOR.'*'.DIRECTORY_SEPARATOR.'composer.json');
+    if (!is_file($packageDirectory . DIRECTORY_SEPARATOR . 'composer.json')) {
+        $candidates = glob($extractionDirectory . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . 'composer.json');
         if ($candidates === false || count($candidates) !== 1) {
             throw new RuntimeException('The packed artifact must contain one package root.');
         }
         $packageDirectory = dirname($candidates[0]);
     }
-    if (is_dir($packageDirectory.DIRECTORY_SEPARATOR.'vendor')) {
+    if (is_dir($packageDirectory . DIRECTORY_SEPARATOR . 'vendor')) {
         throw new RuntimeException('The packed artifact must not contain development dependencies.');
     }
 

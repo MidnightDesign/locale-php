@@ -98,6 +98,7 @@ jobs:
           if-no-files-found: error
 
   style:
+    name: Mago formatting
     runs-on: ubuntu-24.04
     timeout-minutes: ${{ inputs.timeout-minutes }}
     steps:
@@ -110,13 +111,7 @@ jobs:
         env:
           fail-fast: true
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: mkdir -p build/style && vendor/bin/php-cs-fixer check --format=json > build/style/php-cs-fixer.json
-      - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: style-report
-          path: build/style/php-cs-fixer.json
-          if-no-files-found: error
+      - run: composer style
 
   regeneration:
     runs-on: ubuntu-24.04

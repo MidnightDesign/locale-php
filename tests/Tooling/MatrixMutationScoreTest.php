@@ -141,11 +141,8 @@ final class MatrixMutationScoreTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function report(
-        string $file,
-        string $result = 'killed',
-        string $mutatedCode = 'return false;',
-    ): array {
+    private function report(string $file, string $result = 'killed', string $mutatedCode = 'return false;'): array
+    {
         $resultToStat = [
             'killed' => 'killedCount',
             'killedByStaticAnalysis' => 'killedByStaticAnalysisCount',
@@ -185,7 +182,7 @@ final class MatrixMutationScoreTest extends TestCase
                     'mutatorName' => 'FalseValue',
                     'originalSourceCode' => 'return true;',
                     'mutatedSourceCode' => $mutatedCode,
-                    'originalFilePath' => 'C:\\project\\'.$file,
+                    'originalFilePath' => 'C:\\project\\' . $file,
                     'originalStartLine' => 12,
                 ],
                 'diff' => "- return true;\n+ {$mutatedCode}",

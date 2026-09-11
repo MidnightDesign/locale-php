@@ -8,7 +8,7 @@ final class PhpExporter
 {
     public static function export(mixed $value): string
     {
-        $tokens = token_get_all('<?php '.var_export($value, true));
+        $tokens = token_get_all('<?php ' . var_export($value, true));
         $output = '';
         $afterArray = false;
 

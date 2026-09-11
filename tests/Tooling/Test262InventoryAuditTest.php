@@ -11,7 +11,7 @@ final class Test262InventoryAuditTest extends TestCase
 {
     public function testTheCommittedInventoryAccountsForEveryTranslatedAssertion(): void
     {
-        $auditPath = dirname(__DIR__, 2).'/tools/Test262/InventoryAudit.php';
+        $auditPath = dirname(__DIR__, 2) . '/tools/Test262/InventoryAudit.php';
         self::assertFileExists($auditPath);
         require_once $auditPath;
 
@@ -22,7 +22,7 @@ final class Test262InventoryAuditTest extends TestCase
 
     public function testAMissingTranslatedAssertionMakesTheInventoryIncomplete(): void
     {
-        $auditPath = dirname(__DIR__, 2).'/tools/Test262/InventoryAudit.php';
+        $auditPath = dirname(__DIR__, 2) . '/tools/Test262/InventoryAudit.php';
         self::assertFileExists($auditPath);
         require_once $auditPath;
 
@@ -65,7 +65,7 @@ final class Test262InventoryAuditTest extends TestCase
             }
         }
 
-        $contents = file_get_contents(dirname(__DIR__).'/Test262/evidence.json');
+        $contents = file_get_contents(dirname(__DIR__) . '/Test262/evidence.json');
         self::assertNotFalse($contents);
         /** @var array{fixtures: list<array{assertions: list<array{id: string, sha256: string}>}>} $evidence */
         $evidence = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
@@ -86,7 +86,7 @@ final class Test262InventoryAuditTest extends TestCase
      */
     private static function corpus(): array
     {
-        $contents = file_get_contents(dirname(__DIR__).'/Test262/corpus.json');
+        $contents = file_get_contents(dirname(__DIR__) . '/Test262/corpus.json');
         self::assertNotFalse($contents);
 
         /** @var array{
@@ -100,7 +100,7 @@ final class Test262InventoryAuditTest extends TestCase
     /** @return list<string> */
     private static function translatedAssertionIds(): array
     {
-        $contents = file_get_contents(dirname(__DIR__).'/Test262/evidence.json');
+        $contents = file_get_contents(dirname(__DIR__) . '/Test262/evidence.json');
         self::assertNotFalse($contents);
         /** @var array{fixtures: list<array{assertions: list<array{id: string}>}>} $evidence */
         $evidence = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);

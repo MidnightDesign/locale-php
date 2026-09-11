@@ -19,55 +19,49 @@ final class ConstructorOptionsScriptValidUndefinedTest extends TestCase
     public static function cases(): array
     {
         return array(
-  'assertion-1-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L31:C1:assert.sameValue',
-    1 => 'en',
-    2 => 'script',
-    3 => 'associative_array',
-    4 => 'en',
-  ),
-  'assertion-1-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L31:C1:assert.sameValue',
-    1 => 'en',
-    2 => 'script',
-    3 => 'plain_object',
-    4 => 'en',
-  ),
-  'assertion-2-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L37:C1:assert.sameValue',
-    1 => 'en-DK',
-    2 => 'script',
-    3 => 'associative_array',
-    4 => 'en-DK',
-  ),
-  'assertion-2-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L37:C1:assert.sameValue',
-    1 => 'en-DK',
-    2 => 'script',
-    3 => 'plain_object',
-    4 => 'en-DK',
-  ),
-  'assertion-3-associative_array' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L43:C1:assert.sameValue',
-    1 => 'en-Cyrl',
-    2 => 'script',
-    3 => 'associative_array',
-    4 => 'en-Cyrl',
-  ),
-  'assertion-3-plain_object' =>
-  array(
-    0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L43:C1:assert.sameValue',
-    1 => 'en-Cyrl',
-    2 => 'script',
-    3 => 'plain_object',
-    4 => 'en-Cyrl',
-  ),
-);
+            'assertion-1-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L31:C1:assert.sameValue',
+                1 => 'en',
+                2 => 'script',
+                3 => 'associative_array',
+                4 => 'en',
+            ),
+            'assertion-1-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L31:C1:assert.sameValue',
+                1 => 'en',
+                2 => 'script',
+                3 => 'plain_object',
+                4 => 'en',
+            ),
+            'assertion-2-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L37:C1:assert.sameValue',
+                1 => 'en-DK',
+                2 => 'script',
+                3 => 'associative_array',
+                4 => 'en-DK',
+            ),
+            'assertion-2-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L37:C1:assert.sameValue',
+                1 => 'en-DK',
+                2 => 'script',
+                3 => 'plain_object',
+                4 => 'en-DK',
+            ),
+            'assertion-3-associative_array' => array(
+                0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L43:C1:assert.sameValue',
+                1 => 'en-Cyrl',
+                2 => 'script',
+                3 => 'associative_array',
+                4 => 'en-Cyrl',
+            ),
+            'assertion-3-plain_object' => array(
+                0 => 'test/intl402/Locale/constructor-options-script-valid-undefined.js:L43:C1:assert.sameValue',
+                1 => 'en-Cyrl',
+                2 => 'script',
+                3 => 'plain_object',
+                4 => 'en-Cyrl',
+            ),
+        );
     }
 
     #[DataProvider('cases')]
@@ -79,9 +73,20 @@ final class ConstructorOptionsScriptValidUndefinedTest extends TestCase
         string $expected,
     ): void {
         $result = $expected === RangeError::class
-            ? ConstructorOptionAssertion::evaluateRangeError($tag, $optionName, ['type' => 'undefined'], $representation)
-            : ConstructorOptionAssertion::evaluate($tag, $optionName, ['type' => 'undefined'], $representation, $expected);
+            ? ConstructorOptionAssertion::evaluateRangeError(
+                $tag,
+                $optionName,
+                ['type' => 'undefined'],
+                $representation,
+            )
+            : ConstructorOptionAssertion::evaluate(
+                $tag,
+                $optionName,
+                ['type' => 'undefined'],
+                $representation,
+                $expected,
+            );
 
-        self::assertSame('passing', $result['status'], $assertionId.': '.($result['failure'] ?? 'unknown failure'));
+        self::assertSame('passing', $result['status'], $assertionId . ': ' . ($result['failure'] ?? 'unknown failure'));
     }
 }

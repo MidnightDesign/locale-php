@@ -19,13 +19,13 @@ final class ConstructorUnicodeExtensionInvalidTest extends TestCase
     public static function invalidTags(): iterable
     {
         foreach (array(
-  0 => 'da-u',
-  1 => 'da-u-',
-  2 => 'da-u--',
-  3 => 'da-u-t-latn',
-  4 => 'da-u-x-priv',
-  5 => 'da-u-ca-gregory-u-ca-buddhist',
-) as $tag) {
+            0 => 'da-u',
+            1 => 'da-u-',
+            2 => 'da-u--',
+            3 => 'da-u-t-latn',
+            4 => 'da-u-x-priv',
+            5 => 'da-u-ca-gregory-u-ca-buddhist',
+        ) as $tag) {
             yield $tag => [$tag];
         }
     }

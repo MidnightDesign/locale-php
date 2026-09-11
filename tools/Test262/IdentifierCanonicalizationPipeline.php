@@ -13,8 +13,7 @@ final class IdentifierCanonicalizationPipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -76,39 +75,39 @@ final class IdentifierCanonicalizationPipeline implements FixturePipeline
         }
 
         $generated = <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class IdentifierCanonicalizationTest extends TestCase
-{
-    /** @return iterable<string, array{string, string}> */
-    public static function cases(): iterable
-    {
-        foreach ({$export} as \$tag => \$expected) {
-            yield \$tag => [\$tag, \$expected];
-        }
-    }
+            final class IdentifierCanonicalizationTest extends TestCase
+            {
+                /** @return iterable<string, array{string, string}> */
+                public static function cases(): iterable
+                {
+                    foreach ({$export} as \$tag => \$expected) {
+                        yield \$tag => [\$tag, \$expected];
+                    }
+                }
 
-    #[DataProvider('cases')]
-    public function testTranslatedCanonicalizationAssertion(string \$tag, string \$expected): void
-    {
-        self::assertSame(\$expected, (new Locale(\$tag))->toString());
-    }
-}
-PHP;
+                #[DataProvider('cases')]
+                public function testTranslatedCanonicalizationAssertion(string \$tag, string \$expected): void
+                {
+                    self::assertSame(\$expected, (new Locale(\$tag))->toString());
+                }
+            }
+            PHP;
 
-        return $generated."\n";
+        return $generated . "\n";
     }
 }

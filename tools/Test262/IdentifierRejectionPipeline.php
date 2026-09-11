@@ -16,8 +16,7 @@ final class IdentifierRejectionPipeline implements FixturePipeline
         private readonly string $ecma402Revision,
         private readonly string $generatedPath,
         private readonly string $className,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -44,16 +43,13 @@ final class IdentifierRejectionPipeline implements FixturePipeline
             }
         }
 
-        $assertions = array_map(
-            static fn (array $identity): array => [
-                ...$identity,
-                'status' => $identity['call'] === 'assert.throws' && $failures > 0 ? 'failing' : 'passing',
-                'adaptations' => $identity['call'] === 'assert.throws'
-                    ? ['The JavaScript helper calls are expanded into named PHPUnit data sets.']
-                    : ['JavaScript constructor availability is represented by direct PHP class availability.'],
-            ],
-            $identities,
-        );
+        $assertions = array_map(static fn(array $identity): array => [
+            ...$identity,
+            'status' => $identity['call'] === 'assert.throws' && $failures > 0 ? 'failing' : 'passing',
+            'adaptations' => $identity['call'] === 'assert.throws'
+                ? ['The JavaScript helper calls are expanded into named PHPUnit data sets.']
+                : ['JavaScript constructor availability is represented by direct PHP class availability.'],
+        ], $identities);
 
         return new FixtureResult(
             $fixturePath,
@@ -91,41 +87,41 @@ final class IdentifierRejectionPipeline implements FixturePipeline
         $className = $this->className;
 
         $generated = <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Exception\RangeError;
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Exception\RangeError;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class {$className} extends TestCase
-{
-    /** @return iterable<string, array{string}> */
-    public static function invalidTags(): iterable
-    {
-        foreach ({$export} as \$tag) {
-            yield \$tag => [\$tag];
-        }
-    }
+            final class {$className} extends TestCase
+            {
+                /** @return iterable<string, array{string}> */
+                public static function invalidTags(): iterable
+                {
+                    foreach ({$export} as \$tag) {
+                        yield \$tag => [\$tag];
+                    }
+                }
 
-    #[DataProvider('invalidTags')]
-    public function testTranslatedRangeErrorAssertion(string \$tag): void
-    {
-        \$this->expectException(RangeError::class);
+                #[DataProvider('invalidTags')]
+                public function testTranslatedRangeErrorAssertion(string \$tag): void
+                {
+                    \$this->expectException(RangeError::class);
 
-        new Locale(\$tag);
-    }
-}
-PHP;
+                    new Locale(\$tag);
+                }
+            }
+            PHP;
 
-        return $generated."\n";
+        return $generated . "\n";
     }
 }

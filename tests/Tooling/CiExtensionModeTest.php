@@ -13,35 +13,44 @@ final class CiExtensionModeTest extends TestCase
 {
     public function testItProvesIntlIsAbsent(): void
     {
-        self::assertSame([
-            'mode' => 'absent',
-            'intlLoaded' => false,
-            'eligibleNativePaths' => [],
-            'exercisedNativePaths' => [],
-            'fallbackReason' => 'ext-intl-absent',
-        ], ExtensionMode::trace('absent', false, [], []));
+        self::assertSame(
+            [
+                'mode' => 'absent',
+                'intlLoaded' => false,
+                'eligibleNativePaths' => [],
+                'exercisedNativePaths' => [],
+                'fallbackReason' => 'ext-intl-absent',
+            ],
+            ExtensionMode::trace('absent', false, [], []),
+        );
     }
 
     public function testItProvesNativeAccelerationIsDisabled(): void
     {
-        self::assertSame([
-            'mode' => 'disabled',
-            'intlLoaded' => true,
-            'eligibleNativePaths' => [],
-            'exercisedNativePaths' => [],
-            'fallbackReason' => 'native-acceleration-disabled',
-        ], ExtensionMode::trace('disabled', true, [], []));
+        self::assertSame(
+            [
+                'mode' => 'disabled',
+                'intlLoaded' => true,
+                'eligibleNativePaths' => [],
+                'exercisedNativePaths' => [],
+                'fallbackReason' => 'native-acceleration-disabled',
+            ],
+            ExtensionMode::trace('disabled', true, [], []),
+        );
     }
 
     public function testItRecordsWhenNoNativePathIsEligible(): void
     {
-        self::assertSame([
-            'mode' => 'native',
-            'intlLoaded' => true,
-            'eligibleNativePaths' => [],
-            'exercisedNativePaths' => [],
-            'fallbackReason' => 'no-native-path-implemented',
-        ], ExtensionMode::trace('native', true, [], []));
+        self::assertSame(
+            [
+                'mode' => 'native',
+                'intlLoaded' => true,
+                'eligibleNativePaths' => [],
+                'exercisedNativePaths' => [],
+                'fallbackReason' => 'no-native-path-implemented',
+            ],
+            ExtensionMode::trace('native', true, [], []),
+        );
     }
 
     public function testItRejectsADeclaredModeThatDidNotActuallyRun(): void

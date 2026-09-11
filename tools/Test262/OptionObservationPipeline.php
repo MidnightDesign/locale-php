@@ -35,23 +35,81 @@ final class OptionObservationPipeline implements FixturePipeline
     {
         $assertions = $this->assertionIdentities->extract($source, $fixturePath);
         if (count($assertions) !== 1) {
-            return FixtureResult::translationGap($fixturePath, $source, ['behavioral_object'], $assertions, new TranslationGap('Expected exactly one source assertion.'));
+            return FixtureResult::translationGap(
+                $fixturePath,
+                $source,
+                ['behavioral_object'],
+                $assertions,
+                new TranslationGap('Expected exactly one source assertion.'),
+            );
         }
         $results = [];
         if ($this->mode === 'order') {
-            $expected = ['tag toString', 'get language', 'toString language', 'get script', 'toString script', 'get region', 'toString region', 'get variants', 'toString variants', 'get calendar', 'toString calendar', 'get collation', 'toString collation', 'get hourCycle', 'toString hourCycle', 'get caseFirst', 'toString caseFirst', 'get numeric', 'get numberingSystem', 'toString numberingSystem'];
+            $expected = [
+                'tag toString',
+                'get language',
+                'toString language',
+                'get script',
+                'toString script',
+                'get region',
+                'toString region',
+                'get variants',
+                'toString variants',
+                'get calendar',
+                'toString calendar',
+                'get collation',
+                'toString collation',
+                'get hourCycle',
+                'toString hourCycle',
+                'get caseFirst',
+                'toString caseFirst',
+                'get numeric',
+                'get numberingSystem',
+                'toString numberingSystem',
+            ];
             $actual = OptionObservation::getterOrder();
-            $results[] = ['id' => 'getter-order', 'assertionId' => $assertions[0]['id'], 'representation' => 'behavioral_object', 'status' => $actual === $expected ? 'passing' : 'failing', 'actual' => json_encode($actual, JSON_THROW_ON_ERROR)];
+            $results[] = [
+                'id' => 'getter-order',
+                'assertionId' => $assertions[0]['id'],
+                'representation' => 'behavioral_object',
+                'status' => $actual === $expected ? 'passing' : 'failing',
+                'actual' => json_encode($actual, JSON_THROW_ON_ERROR),
+            ];
         } elseif ($this->mode === 'throws') {
             foreach ($this->options as $option) {
                 $passing = OptionObservation::propagates($option);
-                $results[] = ['id' => 'throw-'.$option, 'assertionId' => $assertions[0]['id'], 'representation' => 'behavioral_object', 'status' => $passing ? 'passing' : 'failing'];
+                $results[] = [
+                    'id' => 'throw-' . $option,
+                    'assertionId' => $assertions[0]['id'],
+                    'representation' => 'behavioral_object',
+                    'status' => $passing ? 'passing' : 'failing',
+                ];
             }
         }
-        $failureCount = count(array_filter($results, static fn (array $result): bool => $result['status'] === 'failing'));
-        $evidence = [[...$assertions[0], 'status' => $failureCount === 0 ? 'passing' : 'failing', 'adaptations' => ['JavaScript accessors are represented by the internal lazy OptionBag bridge.', 'JavaScript object string conversion is represented by PHP Stringable.'], 'executions' => $results]];
+        $failureCount = count(array_filter(
+            $results,
+            static fn(array $result): bool => $result['status'] === 'failing',
+        ));
+        $evidence = [[
+            ...$assertions[0],
+            'status' => $failureCount === 0 ? 'passing' : 'failing',
+            'adaptations' => [
+                'JavaScript accessors are represented by the internal lazy OptionBag bridge.',
+                'JavaScript object string conversion is represented by PHP Stringable.',
+            ],
+            'executions' => $results,
+        ]];
 
-        return new FixtureResult($fixturePath, hash('sha256', $source), $failureCount === 0 ? 'passing' : 'failing', ['behavioral_object'], $evidence, count($results), $failureCount, [$this->generatedPath => $this->render($fixturePath)]);
+        return new FixtureResult(
+            $fixturePath,
+            hash('sha256', $source),
+            $failureCount === 0 ? 'passing' : 'failing',
+            ['behavioral_object'],
+            $evidence,
+            count($results),
+            $failureCount,
+            [$this->generatedPath => $this->render($fixturePath)],
+        );
     }
 
     private function render(string $fixturePath): string
@@ -60,56 +118,54 @@ final class OptionObservationPipeline implements FixturePipeline
         $provider = preg_replace(
             '/[ \t]+$/m',
             '',
-            PhpExporter::export(array_map(static fn (string $option): array => [$option], $this->options)),
+            PhpExporter::export(array_map(static fn(string $option): array => [$option], $this->options)),
         );
         if ($provider === null) {
             throw new \RuntimeException('Unable to export throwing getter options.');
         }
-        $body = $this->mode === 'order'
-            ? <<<'PHP'
-    public function testTranslatedAssertion(): void
-    {
-        self::assertSame([
-            'tag toString', 'get language', 'toString language', 'get script', 'toString script',
-            'get region', 'toString region', 'get variants', 'toString variants',
-            'get calendar', 'toString calendar', 'get collation', 'toString collation',
-            'get hourCycle', 'toString hourCycle', 'get caseFirst', 'toString caseFirst',
-            'get numeric', 'get numberingSystem', 'toString numberingSystem',
-        ], OptionObservation::getterOrder());
-    }
-PHP
-            : sprintf(<<<'PHP'
-    /** @return list<array{string}> */
-    public static function options(): array
-    {
-        return %s;
-    }
+        $body = $this->mode === 'order' ? <<<'PHP'
+                    public function testTranslatedAssertion(): void
+                    {
+                        self::assertSame([
+                            'tag toString', 'get language', 'toString language', 'get script', 'toString script',
+                            'get region', 'toString region', 'get variants', 'toString variants',
+                            'get calendar', 'toString calendar', 'get collation', 'toString collation',
+                            'get hourCycle', 'toString hourCycle', 'get caseFirst', 'toString caseFirst',
+                            'get numeric', 'get numberingSystem', 'toString numberingSystem',
+                        ], OptionObservation::getterOrder());
+                    }
+                PHP : sprintf(<<<'PHP'
+                    /** @return list<array{string}> */
+                    public static function options(): array
+                    {
+                        return %s;
+                    }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('options')]
-    public function testTranslatedAssertion(string $option): void
-    {
-        self::assertTrue(OptionObservation::propagates($option));
-    }
-PHP, $provider);
+                    #[\PHPUnit\Framework\Attributes\DataProvider('options')]
+                    public function testTranslatedAssertion(string $option): void
+                    {
+                        self::assertTrue(OptionObservation::propagates($option));
+                    }
+                PHP, $provider);
 
         return <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Tests\Test262\Harness\OptionObservation;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Tests\Test262\Harness\OptionObservation;
+            use PHPUnit\Framework\TestCase;
 
-final class {$className} extends TestCase
-{
-{$body}
-}
-PHP."\n";
+            final class {$className} extends TestCase
+            {
+            {$body}
+            }
+            PHP . "\n";
     }
 }

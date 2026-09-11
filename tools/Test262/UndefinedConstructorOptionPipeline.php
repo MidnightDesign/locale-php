@@ -19,8 +19,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         private readonly string $optionName,
         private readonly string $generatedPath,
         private readonly string $className,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -65,12 +64,11 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         foreach ($assertions as $assertion) {
             $results = array_values(array_filter(
                 $executionResults,
-                static fn (array $result): bool => $result['assertionId'] === $assertion['id'],
+                static fn(array $result): bool => $result['assertionId'] === $assertion['id'],
             ));
-            $passing = $results !== [] && array_filter(
-                $results,
-                static fn (array $result): bool => $result['status'] !== 'passing',
-            ) === [];
+            $passing =
+                $results !== []
+                && array_filter($results, static fn(array $result): bool => $result['status'] !== 'passing') === [];
             $evidenceAssertions[] = [
                 ...$assertion,
                 'status' => $passing ? 'passing' : 'failing',
@@ -80,7 +78,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         }
         $failureCount = count(array_filter(
             $executionResults,
-            static fn (array $result): bool => $result['status'] === 'failing',
+            static fn(array $result): bool => $result['status'] === 'failing',
         ));
 
         return new FixtureResult(
@@ -121,13 +119,13 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         foreach ($throwMatches as $match) {
             $rows[] = ['offset' => $match[0][1], 'tag' => $match['tag'][0], 'expected' => RangeError::class];
         }
-        usort($rows, static fn (array $left, array $right): int => $left['offset'] <=> $right['offset']);
+        usort($rows, static fn(array $left, array $right): int => $left['offset'] <=> $right['offset']);
         if (count($rows) !== count($assertions)) {
             return null;
         }
 
         return array_map(
-            static fn (array $row, int $index): array => [
+            static fn(array $row, int $index): array => [
                 'assertionId' => $assertions[$index]['id'],
                 'tag' => $row['tag'],
                 'expected' => $row['expected'],
@@ -140,9 +138,22 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
     /** @return array{status: string, actual?: mixed, failure?: string} */
     private function evaluate(string $tag, string $representation, string $expected): array
     {
-        return $expected === RangeError::class
-            ? ConstructorOptionAssertion::evaluateRangeError($tag, $this->optionName, ['type' => 'undefined'], $representation)
-            : ConstructorOptionAssertion::evaluate($tag, $this->optionName, ['type' => 'undefined'], $representation, $expected);
+        return (
+            $expected === RangeError::class
+                ? ConstructorOptionAssertion::evaluateRangeError(
+                    $tag,
+                    $this->optionName,
+                    ['type' => 'undefined'],
+                    $representation,
+                )
+                : ConstructorOptionAssertion::evaluate(
+                    $tag,
+                    $this->optionName,
+                    ['type' => 'undefined'],
+                    $representation,
+                    $expected,
+                )
+        );
     }
 
     /** @param array<string, array{string, string, string, string, string}> $cases */
@@ -155,44 +166,44 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         $className = $this->className;
 
         return <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Exception\RangeError;
-use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Exception\RangeError;
+            use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class {$className} extends TestCase
-{
-    /** @return array<string, array{string, string, string, string, string}> */
-    public static function cases(): array
-    {
-        return {$caseExport};
-    }
+            final class {$className} extends TestCase
+            {
+                /** @return array<string, array{string, string, string, string, string}> */
+                public static function cases(): array
+                {
+                    return {$caseExport};
+                }
 
-    #[DataProvider('cases')]
-    public function testTranslatedAssertions(
-        string \$assertionId,
-        string \$tag,
-        string \$optionName,
-        string \$representation,
-        string \$expected,
-    ): void {
-        \$result = \$expected === RangeError::class
-            ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, ['type' => 'undefined'], \$representation)
-            : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, ['type' => 'undefined'], \$representation, \$expected);
+                #[DataProvider('cases')]
+                public function testTranslatedAssertions(
+                    string \$assertionId,
+                    string \$tag,
+                    string \$optionName,
+                    string \$representation,
+                    string \$expected,
+                ): void {
+                    \$result = \$expected === RangeError::class
+                        ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, ['type' => 'undefined'], \$representation)
+                        : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, ['type' => 'undefined'], \$representation, \$expected);
 
-        self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
-    }
-}
-PHP."\n";
+                    self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
+                }
+            }
+            PHP . "\n";
     }
 }

@@ -58,9 +58,7 @@ final class Locale implements \Stringable, \JsonSerializable
             'numberingSystem' => $numberingSystem,
         ], static fn (string|bool|null $value): bool => $value !== null);
 
-        $this->spec = $options === []
-            ? new SpecLocale($tag)
-            : new SpecLocale($tag, $options);
+        $this->spec = $options === [] ? new SpecLocale($tag) : new SpecLocale($tag, $options);
     }
 
     public static function fromSpec(SpecLocale $locale): self
