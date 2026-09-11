@@ -560,16 +560,20 @@ if ($blockingResults !== []) {
     exit(1);
 }
 
-$outputs = ['tests/Test262/evidence.json' => $evidenceJson];
+$generatedFiles = [];
 foreach ($fixtureResults as $result) {
     foreach ($result->generatedScripts() as $script) {
         $path = $script->path();
-        if (isset($outputs[$path])) {
+        if ($path === 'tests/Test262/evidence.json' || isset($generatedFiles[$path])) {
             throw new RuntimeException('Multiple fixture pipelines generated ' . $path . '.');
         }
-        $outputs[$path] = MagoFormatter::format($root, $path, $script->contents());
+        $generatedFiles[$path] = $script->contents();
     }
 }
+$outputs = [
+    'tests/Test262/evidence.json' => $evidenceJson,
+    ...MagoFormatter::formatAll($root, $generatedFiles),
+];
 
 $check = in_array('--check', $argv, true);
 $expectedGeneratedFiles = array_values(array_filter(

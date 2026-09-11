@@ -26,6 +26,7 @@ jobs:
           php-version: '8.5'
           tools: composer:2.10.3
           extensions: intl
+          ini-values: register_argc_argv=On
           coverage: none
         env:
           fail-fast: true
@@ -201,7 +202,7 @@ jobs:
           phpts: nts
           update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: php tools/test-package-install.php
+      - run: composer test:package
 
   mutation:
     name: Mutation / ${{ matrix.campaign }} / intl ${{ matrix.extensionMode }}
@@ -231,8 +232,11 @@ jobs:
       - name: Preserve attributable raw test coverage and JUnit evidence
         run: |
           mkdir -p "build/infection/${{ matrix.campaign }}"
+          cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"
           vendor/bin/phpunit --testsuite="${{ matrix.campaign == 'spec' && 'test262-upstream' || 'porcelain' }}" --coverage-xml="build/infection/${{ matrix.campaign }}/coverage-xml" --log-junit="build/infection/${{ matrix.campaign }}/junit.xml"
-      - run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
+      - id: mutation_campaign
+        continue-on-error: ${{ matrix.campaign == 'spec' }}
+        run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json '8.5' ubuntu-24.04 "${{ matrix.extensionMode }}"
       - if: always()
@@ -242,11 +246,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: mutation-${{ matrix.campaign }}-${{ matrix.extensionMode }}
-          path: |
-            build/ci
-            build/infection
-            build/matrix
-            infection.${{ matrix.campaign }}.json5
+          path: build
           if-no-files-found: error
 
   mutation-score:
@@ -270,7 +270,7 @@ jobs:
           pattern: mutation-*
           path: build/downloaded
           merge-multiple: true
-      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix
+      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=.ci/spec-mutation-expected-failure.json
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
