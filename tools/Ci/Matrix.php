@@ -8,7 +8,7 @@ namespace Midnight\Intl\Tools\Ci;
  * @phpstan-type RuntimeLane array{runner: string, php: string, extensionMode: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type RuntimeBaseLane array{runner: string, php: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type InstallLane array{runner: string, php: string}
- * @phpstan-type StableRunner array{runner: string, osFamily: string, architecture: string, integerSize: int}
+ * @phpstan-type StableRunner array{runner: string, osFamily: string, architecture: string, integerSize: int, excludedExtensionModes: list<string>}
  * @phpstan-type ArmLane array{runner: string, php: string, architecture: string}
  * @phpstan-type WindowsX86Lane array{runner: string, php: string, architecture: string, threadSafe: bool, runtimeVersion: string, runtimeUrl: string, runtimeSha256: string}
  * @phpstan-type WindowsThreadSafeLane array{runner: string, php: string, architecture: string, threadSafe: bool}
@@ -53,11 +53,13 @@ final class Matrix
             throw new \RuntimeException('The CI matrix must be a JSON object.');
         }
 
+        $extensionModes = self::stringList($data, 'extensionModes');
+
         return new self(
             self::stringList($data, 'stablePhp'),
             self::stringList($data, 'advisoryPhp'),
-            self::stableRunnersFromData($data),
-            self::stringList($data, 'extensionModes'),
+            self::stableRunnersFromData($data, $extensionModes),
+            $extensionModes,
             self::armLanesFromData($data),
             self::windowsX86LanesFromData($data),
             self::windowsThreadSafeLanesFromData($data),
@@ -82,8 +84,14 @@ final class Matrix
             }
         }
 
-        /** @phpstan-var list<RuntimeLane> $result */
-        $result = self::withExtensionModes($lanes, $this->extensionModes);
+        $result = [];
+        foreach ($lanes as $lane) {
+            $runner = $this->stableRunner($lane['runner']);
+            $extensionModes = array_values(array_diff($this->extensionModes, $runner['excludedExtensionModes']));
+            foreach ($extensionModes as $mode) {
+                $result[] = [...$lane, 'extensionMode' => $mode];
+            }
+        }
 
         return $result;
     }
@@ -189,9 +197,10 @@ final class Matrix
 
     /**
      * @param array<mixed> $data
+     * @param list<string> $extensionModes
      * @return list<StableRunner>
      */
-    private static function stableRunnersFromData(array $data): array
+    private static function stableRunnersFromData(array $data, array $extensionModes): array
     {
         $records = $data['stableRunners'] ?? null;
         if (!is_array($records) || $records === []) {
@@ -209,11 +218,30 @@ final class Matrix
             ) {
                 throw new \RuntimeException('CI matrix stable runner is invalid.');
             }
+            $excludedExtensionModes = $record['excludedExtensionModes'] ?? [];
+            if (!is_array($excludedExtensionModes)) {
+                throw new \RuntimeException('CI matrix stable runner extension mode exclusions must be a list.');
+            }
+            foreach ($excludedExtensionModes as $mode) {
+                if (!is_string($mode) || !in_array($mode, $extensionModes, true)) {
+                    throw new \RuntimeException(
+                        'CI matrix stable runner contains an unknown extension mode exclusion.',
+                    );
+                }
+            }
+            /** @var list<string> $excludedExtensionModes */
+            if (count(array_unique($excludedExtensionModes)) !== count($excludedExtensionModes)) {
+                throw new \RuntimeException('CI matrix stable runner contains duplicate extension mode exclusions.');
+            }
+            if (array_diff($extensionModes, $excludedExtensionModes) === []) {
+                throw new \RuntimeException('CI matrix stable runner must retain at least one extension mode.');
+            }
             $result[] = [
                 'runner' => $record['runner'],
                 'osFamily' => $record['osFamily'],
                 'architecture' => $record['architecture'],
                 'integerSize' => $record['integerSize'],
+                'excludedExtensionModes' => $excludedExtensionModes,
             ];
         }
 
