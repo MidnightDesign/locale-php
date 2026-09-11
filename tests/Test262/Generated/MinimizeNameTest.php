@@ -22,5 +22,4 @@ final class MinimizeNameTest extends TestCase
         self::assertSame('minimize', $method->getName());
         self::assertSame(0, $method->getNumberOfRequiredParameters());
     }
-
 }

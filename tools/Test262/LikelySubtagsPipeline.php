@@ -14,8 +14,7 @@ final class LikelySubtagsPipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
@@ -37,13 +36,13 @@ final class LikelySubtagsPipeline implements FixturePipeline
         foreach ($maximal as $tag => $expected) {
             $failures += (new Locale($expected))->maximize()->toString() === $expected ? 0 : 1;
             foreach ($extras as $extra) {
-                $failures += (new Locale($tag.$extra))->maximize()->toString() === $expected.$extra ? 0 : 1;
+                $failures += (new Locale($tag . $extra))->maximize()->toString() === $expected . $extra ? 0 : 1;
             }
         }
         foreach ($minimal as $tag => $expected) {
             $failures += (new Locale($expected))->minimize()->toString() === $expected ? 0 : 1;
             foreach ($extras as $extra) {
-                $failures += (new Locale($tag.$extra))->minimize()->toString() === $expected.$extra ? 0 : 1;
+                $failures += (new Locale($tag . $extra))->minimize()->toString() === $expected . $extra ? 0 : 1;
             }
         }
         try {
@@ -59,14 +58,19 @@ final class LikelySubtagsPipeline implements FixturePipeline
             hash('sha256', $source),
             $status,
             ['direct'],
-            array_map(static fn (array $identity): array => [
+            array_map(static fn(array $identity): array => [
                 ...$identity,
                 'status' => $status,
                 'adaptations' => ['JavaScript object and array iteration is expanded into named PHPUnit data sets.'],
             ], $identities),
-            count($maximal) * (count($extras) + 1) + count($minimal) * (count($extras) + 1) + 1,
+            (count($maximal) * (count($extras) + 1)) + (count($minimal) * (count($extras) + 1)) + 1,
             $failures,
-            ['tests/Test262/Generated/LikelySubtagsTest.php' => $this->render($maximal, $minimal, $extras, $fixturePath)],
+            ['tests/Test262/Generated/LikelySubtagsTest.php' => $this->render(
+                $maximal,
+                $minimal,
+                $extras,
+                $fixturePath,
+            )],
         );
     }
 
@@ -82,72 +86,75 @@ final class LikelySubtagsPipeline implements FixturePipeline
         $extrasExport = self::export($extras);
 
         return <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // Copyright 2018 André Bargull; Igalia, S.L. All rights reserved.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Exception\RangeError;
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Exception\RangeError;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class LikelySubtagsTest extends TestCase
-{
-    /** @return iterable<string, array{string, string}> */
-    public static function maximalCases(): iterable
-    {
-        foreach ({$maximalExport} as \$tag => \$maximal) {
-            yield \$tag.' maximal fixed point' => [\$maximal, \$maximal];
-            foreach ({$extrasExport} as \$extra) {
-                yield \$tag.\$extra => [\$tag.\$extra, \$maximal.\$extra];
+            final class LikelySubtagsTest extends TestCase
+            {
+                /** @return iterable<string, array{string, string}> */
+                public static function maximalCases(): iterable
+                {
+                    foreach ({$maximalExport} as \$tag => \$maximal) {
+                        yield \$tag.' maximal fixed point' => [\$maximal, \$maximal];
+                        foreach ({$extrasExport} as \$extra) {
+                            yield \$tag.\$extra => [\$tag.\$extra, \$maximal.\$extra];
+                        }
+                    }
+                }
+
+                /** @return iterable<string, array{string, string}> */
+                public static function minimalCases(): iterable
+                {
+                    foreach ({$minimalExport} as \$tag => \$minimal) {
+                        yield \$tag.' minimal fixed point' => [\$minimal, \$minimal];
+                        foreach ({$extrasExport} as \$extra) {
+                            yield \$tag.\$extra => [\$tag.\$extra, \$minimal.\$extra];
+                        }
+                    }
+                }
+
+                #[DataProvider('maximalCases')]
+                public function testTranslatedMaximizeAssertions(string \$tag, string \$expected): void
+                {
+                    self::assertSame(\$expected, (new Locale(\$tag))->maximize()->toString());
+                }
+
+                #[DataProvider('minimalCases')]
+                public function testTranslatedMinimizeAssertions(string \$tag, string \$expected): void
+                {
+                    self::assertSame(\$expected, (new Locale(\$tag))->minimize()->toString());
+                }
+
+                public function testTranslatedPrivateUseRejectionAssertion(): void
+                {
+                    \$this->expectException(RangeError::class);
+
+                    new Locale('x-private');
+                }
             }
-        }
-    }
-
-    /** @return iterable<string, array{string, string}> */
-    public static function minimalCases(): iterable
-    {
-        foreach ({$minimalExport} as \$tag => \$minimal) {
-            yield \$tag.' minimal fixed point' => [\$minimal, \$minimal];
-            foreach ({$extrasExport} as \$extra) {
-                yield \$tag.\$extra => [\$tag.\$extra, \$minimal.\$extra];
-            }
-        }
-    }
-
-    #[DataProvider('maximalCases')]
-    public function testTranslatedMaximizeAssertions(string \$tag, string \$expected): void
-    {
-        self::assertSame(\$expected, (new Locale(\$tag))->maximize()->toString());
-    }
-
-    #[DataProvider('minimalCases')]
-    public function testTranslatedMinimizeAssertions(string \$tag, string \$expected): void
-    {
-        self::assertSame(\$expected, (new Locale(\$tag))->minimize()->toString());
-    }
-
-    public function testTranslatedPrivateUseRejectionAssertion(): void
-    {
-        \$this->expectException(RangeError::class);
-
-        new Locale('x-private');
-    }
-}
-PHP."\n";
+            PHP . "\n";
     }
 
     /** @param array<array-key, mixed> $value */
     private static function export(array $value): string
     {
-        return preg_replace('/[ \t]+$/m', '', PhpExporter::export($value))
-            ?? throw new \RuntimeException('Unable to format likely-subtag cases.');
+        return (
+            preg_replace('/[ \t]+$/m', '', PhpExporter::export($value)) ?? throw new \RuntimeException(
+                'Unable to format likely-subtag cases.',
+            )
+        );
     }
 }

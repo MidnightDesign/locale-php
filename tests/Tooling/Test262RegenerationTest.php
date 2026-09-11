@@ -13,7 +13,7 @@ final class Test262RegenerationTest extends TestCase
         $command = sprintf(
             '%s %s --check 2>&1',
             escapeshellarg(PHP_BINARY),
-            escapeshellarg(dirname(__DIR__, 2).'/tools/transpile-test262.php'),
+            escapeshellarg(dirname(__DIR__, 2) . '/tools/transpile-test262.php'),
         );
         exec($command, $output, $exitCode);
 
@@ -25,7 +25,7 @@ final class Test262RegenerationTest extends TestCase
         $command = sprintf(
             '%s %s --check 2>&1',
             escapeshellarg(PHP_BINARY),
-            escapeshellarg(dirname(__DIR__, 2).'/tools/generate-data.php'),
+            escapeshellarg(dirname(__DIR__, 2) . '/tools/generate-data.php'),
         );
         exec($command, $output, $exitCode);
 

@@ -22,5 +22,4 @@ final class MaximizePropertyTest extends TestCase
         self::assertSame('maximize', $method->getName());
         self::assertSame(0, $method->getNumberOfRequiredParameters());
     }
-
 }

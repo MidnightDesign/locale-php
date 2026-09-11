@@ -19,6 +19,6 @@ final class LikelySubtagsDataTest extends TestCase
         self::assertSame('en-Latn-US', LikelySubtags::MAP['und']);
         self::assertSame('bg-Cyrl-RO', LikelySubtags::MAP['und-cyrl-ro']);
         self::assertSame('aae-Latn-IT', LikelySubtags::MAP['aae']);
-        self::assertFalse(defined(LocaleAliases::class.'::LIKELY_SUBTAG'));
+        self::assertFalse(defined(LocaleAliases::class . '::LIKELY_SUBTAG'));
     }
 }

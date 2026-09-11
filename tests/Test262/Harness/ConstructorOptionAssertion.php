@@ -82,10 +82,10 @@ final class ConstructorOptionAssertion
             'undefined' => UndefinedValue::Value,
             'int' => $optionValue['value'],
             'string' => $optionValue['value'],
-            'stringable' => new class ($optionValue['value']) implements \Stringable {
-                public function __construct(private readonly string $value)
-                {
-                }
+            'stringable' => new class($optionValue['value']) implements \Stringable {
+                public function __construct(
+                    private readonly string $value,
+                ) {}
 
                 public function __toString(): string
                 {

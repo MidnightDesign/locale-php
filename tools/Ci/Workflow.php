@@ -10,16 +10,19 @@ use Symfony\Component\Yaml\Yaml;
 final class Workflow
 {
     /** @param array<string, mixed> $data */
-    private function __construct(private array $data)
-    {
-    }
+    private function __construct(
+        private array $data,
+    ) {}
 
     public static function fromFile(string $path): self
     {
         try {
             $data = Yaml::parseFile($path);
         } catch (ParseException $error) {
-            throw new \RuntimeException(sprintf('Unable to parse %s: %s', $path, $error->getMessage()), previous: $error);
+            throw new \RuntimeException(
+                sprintf('Unable to parse %s: %s', $path, $error->getMessage()),
+                previous: $error,
+            );
         }
 
         if (!is_array($data)) {

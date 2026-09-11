@@ -9,7 +9,10 @@ final class JavaScriptDataExtractor
     /** @return array<string, string> */
     public static function objectMap(string $source, string $name): array
     {
-        if (preg_match('/(?:const|var)\s+'.preg_quote($name, '/').'\s*=\s*\{(?<body>.*?)\};/s', $source, $block) !== 1) {
+        if (
+            preg_match('/(?:const|var)\s+' . preg_quote($name, '/') . '\s*=\s*\{(?<body>.*?)\};/s', $source, $block)
+            !== 1
+        ) {
             return [];
         }
         preg_match_all('/"(?<tag>[^"]+)"\s*:\s*"(?<expected>[^"]+)"/', $block['body'], $matches, PREG_SET_ORDER);
@@ -24,7 +27,10 @@ final class JavaScriptDataExtractor
     /** @return list<string> */
     public static function stringArray(string $source, string $name): array
     {
-        if (preg_match('/(?:const|var)\s+'.preg_quote($name, '/').'\s*=\s*\[(?<body>.*?)\];/s', $source, $block) !== 1) {
+        if (
+            preg_match('/(?:const|var)\s+' . preg_quote($name, '/') . '\s*=\s*\[(?<body>.*?)\];/s', $source, $block)
+            !== 1
+        ) {
             return [];
         }
         preg_match_all('/"([^"]*)"/', $block['body'], $matches);

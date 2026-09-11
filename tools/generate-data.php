@@ -2,16 +2,18 @@
 
 declare(strict_types=1);
 
-$root = dirname(__DIR__);
-require $root.'/vendor/autoload.php';
+use Midnight\Intl\Tools\MagoFormatter;
 
-$sourcePath = $root.'/resources/data/locale-aliases.json';
+$root = dirname(__DIR__);
+require $root . '/vendor/autoload.php';
+
+$sourcePath = $root . '/resources/data/locale-aliases.json';
 $source = file_get_contents($sourcePath);
 if ($source === false) {
     fwrite(STDERR, "Unable to read the locale alias projection source.\n");
     exit(1);
 }
-$likelySubtagsSourcePath = $root.'/resources/data/likely-subtags.json';
+$likelySubtagsSourcePath = $root . '/resources/data/likely-subtags.json';
 $likelySubtagsSource = file_get_contents($likelySubtagsSourcePath);
 if ($likelySubtagsSource === false) {
     fwrite(STDERR, "Unable to read the likely-subtag projection source.\n");
@@ -66,11 +68,7 @@ foreach ([
     'KEY' => ['key', 'array<string, string>'],
     'TYPE' => ['type', 'array<string, array<string, string>>'],
 ] as $constant => [$field, $type]) {
-    $export = preg_replace(
-        '/[ \t]+$/m',
-        '',
-        Midnight\Intl\Tools\PhpExporter::export($data[$field]),
-    );
+    $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($data[$field]));
     if ($export === null) {
         throw new RuntimeException(sprintf('Unable to export the %s projection.', $field));
     }
@@ -92,65 +90,66 @@ $payloadSha256 = hash('sha256', json_encode([
     'type' => $data['type'],
 ], JSON_THROW_ON_ERROR));
 $generated = <<<PHP
-<?php
+    <?php
 
-declare(strict_types=1);
+    declare(strict_types=1);
 
-namespace Midnight\\Intl\\Internal\\Data;
+    namespace Midnight\\Intl\\Internal\\Data;
 
-enum LocaleAliases
-{
-    public const FORMAT = {$data['format']};
-
-    /** @var string */
-    public const CLDR_REVISION = '{$data['cldrRevision']}';
-
-    /** @var string */
-    public const CLDR_CORE_SHA512 = '{$data['upstreamSha512']}';
-
-    /** @var string */
-    public const SOURCE_SHA256 = '{$sourceSha256}';
-
-    private const PAYLOAD_SHA256 = '{$payloadSha256}';
-{$constants}
-    public static function assertIntegrity(): void
+    enum LocaleAliases
     {
-        /** @var bool|null \$verified */
-        static \$verified = null;
-        if (\$verified === true) {
-            return;
+        public const FORMAT = {$data['format']};
+
+        /** @var string */
+        public const CLDR_REVISION = '{$data['cldrRevision']}';
+
+        /** @var string */
+        public const CLDR_CORE_SHA512 = '{$data['upstreamSha512']}';
+
+        /** @var string */
+        public const SOURCE_SHA256 = '{$sourceSha256}';
+
+        private const PAYLOAD_SHA256 = '{$payloadSha256}';
+    {$constants}
+        public static function assertIntegrity(): void
+        {
+            /** @var bool|null \$verified */
+            static \$verified = null;
+            if (\$verified === true) {
+                return;
+            }
+
+            if (!self::supportsFormat(self::FORMAT)) {
+                throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+            }
+
+            \$actual = hash('sha256', json_encode([
+                'format' => self::FORMAT,
+                'language' => self::LANGUAGE,
+                'compoundLanguage' => self::COMPOUND_LANGUAGE,
+                'script' => self::SCRIPT,
+                'region' => self::REGION,
+                'regionAlternatives' => self::REGION_ALTERNATIVES,
+                'likelyRegion' => self::LIKELY_REGION,
+                'variant' => self::VARIANT,
+                'subdivision' => self::SUBDIVISION,
+                'key' => self::KEY,
+                'type' => self::TYPE,
+            ], JSON_THROW_ON_ERROR));
+            if (\$actual !== self::PAYLOAD_SHA256) {
+                throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+            }
+            \$verified = true;
         }
 
-        if (!self::supportsFormat(self::FORMAT)) {
-            throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
+        private static function supportsFormat(int \$format): bool
+        {
+            return \$format === 3;
         }
-
-        \$actual = hash('sha256', json_encode([
-            'format' => self::FORMAT,
-            'language' => self::LANGUAGE,
-            'compoundLanguage' => self::COMPOUND_LANGUAGE,
-            'script' => self::SCRIPT,
-            'region' => self::REGION,
-            'regionAlternatives' => self::REGION_ALTERNATIVES,
-            'likelyRegion' => self::LIKELY_REGION,
-            'variant' => self::VARIANT,
-            'subdivision' => self::SUBDIVISION,
-            'key' => self::KEY,
-            'type' => self::TYPE,
-        ], JSON_THROW_ON_ERROR));
-        if (\$actual !== self::PAYLOAD_SHA256) {
-            throw new \\UnexpectedValueException('The bundled locale data is corrupt or incompatible.');
-        }
-        \$verified = true;
     }
-
-    private static function supportsFormat(int \$format): bool
-    {
-        return \$format === 3;
-    }
-}
-PHP;
+    PHP;
 $generated .= "\n";
+$generated = MagoFormatter::format($root, 'src/Internal/Data/LocaleAliases.php', $generated);
 
 $likelySubtagsSourceSha256 = hash('sha256', $likelySubtagsSource);
 $likelySubtagsPayloadSha256 = hash('sha256', json_encode([
@@ -166,66 +165,71 @@ if ($likelySubtagsExport === null) {
     throw new RuntimeException('Unable to export the likely-subtag projection.');
 }
 $likelySubtagsGenerated = <<<PHP
-<?php
+    <?php
 
-declare(strict_types=1);
+    declare(strict_types=1);
 
-namespace Midnight\Intl\Internal\Data;
+    namespace Midnight\Intl\Internal\Data;
 
-enum LikelySubtags
-{
-    public const FORMAT = {$likelySubtagsData['format']};
-
-    /** @var string */
-    public const CLDR_REVISION = '{$likelySubtagsData['cldrRevision']}';
-
-    /** @var string */
-    public const CLDR_CORE_SHA512 = '{$likelySubtagsData['upstreamSha512']}';
-
-    /** @var string */
-    public const SOURCE_SHA256 = '{$likelySubtagsSourceSha256}';
-
-    private const PAYLOAD_SHA256 = '{$likelySubtagsPayloadSha256}';
-
-    /** @var array<string, string> */
-    public const MAP = {$likelySubtagsExport};
-
-    public static function assertIntegrity(): void
+    enum LikelySubtags
     {
-        /** @var bool|null \$verified */
-        static \$verified = null;
-        if (\$verified === true) {
-            return;
+        public const FORMAT = {$likelySubtagsData['format']};
+
+        /** @var string */
+        public const CLDR_REVISION = '{$likelySubtagsData['cldrRevision']}';
+
+        /** @var string */
+        public const CLDR_CORE_SHA512 = '{$likelySubtagsData['upstreamSha512']}';
+
+        /** @var string */
+        public const SOURCE_SHA256 = '{$likelySubtagsSourceSha256}';
+
+        private const PAYLOAD_SHA256 = '{$likelySubtagsPayloadSha256}';
+
+        /** @var array<string, string> */
+        public const MAP = {$likelySubtagsExport};
+
+        public static function assertIntegrity(): void
+        {
+            /** @var bool|null \$verified */
+            static \$verified = null;
+            if (\$verified === true) {
+                return;
+            }
+
+            \$actual = hash('sha256', json_encode([
+                'format' => self::FORMAT,
+                'likelySubtag' => self::MAP,
+            ], JSON_THROW_ON_ERROR));
+            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+                throw new \UnexpectedValueException('The bundled likely-subtag data is corrupt or incompatible.');
+            }
+            \$verified = true;
         }
 
-        \$actual = hash('sha256', json_encode([
-            'format' => self::FORMAT,
-            'likelySubtag' => self::MAP,
-        ], JSON_THROW_ON_ERROR));
-        if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
-            throw new \UnexpectedValueException('The bundled likely-subtag data is corrupt or incompatible.');
+        private static function supportsFormat(int \$format): bool
+        {
+            return \$format === 1;
         }
-        \$verified = true;
     }
-
-    private static function supportsFormat(int \$format): bool
-    {
-        return \$format === 1;
-    }
-}
-PHP;
+    PHP;
 $likelySubtagsGenerated .= "\n";
+$likelySubtagsGenerated = MagoFormatter::format($root, 'src/Internal/Data/LikelySubtags.php', $likelySubtagsGenerated);
 
-$target = $root.'/src/Internal/Data/LocaleAliases.php';
-$likelySubtagsTarget = $root.'/src/Internal/Data/LikelySubtags.php';
+$target = $root . '/src/Internal/Data/LocaleAliases.php';
+$likelySubtagsTarget = $root . '/src/Internal/Data/LikelySubtags.php';
 if (in_array('--check', $argv, true)) {
-    if (!is_file($target) || file_get_contents($target) !== $generated
-        || !is_file($likelySubtagsTarget) || file_get_contents($likelySubtagsTarget) !== $likelySubtagsGenerated) {
+    if (
+        !is_file($target)
+        || file_get_contents($target) !== $generated
+        || !is_file($likelySubtagsTarget)
+        || file_get_contents($likelySubtagsTarget) !== $likelySubtagsGenerated
+    ) {
         fwrite(STDERR, "The generated locale data is not reproducible.\n");
         exit(1);
     }
 
-    $manifestSource = file_get_contents($root.'/resources/data/manifest.json');
+    $manifestSource = file_get_contents($root . '/resources/data/manifest.json');
     if ($manifestSource === false) {
         fwrite(STDERR, "Unable to read the release data manifest.\n");
         exit(1);
@@ -241,18 +245,20 @@ if (in_array('--check', $argv, true)) {
         'localeAliasesProjection' => $sourceSha256,
         'likelySubtagsProjection' => $likelySubtagsSourceSha256,
     ], JSON_THROW_ON_ERROR));
-    if ($manifest['format'] !== 3
+    if (
+        $manifest['format'] !== 3
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
         || $manifest['projections']['likelySubtags']['sourceSha256'] !== $likelySubtagsSourceSha256
-        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)) {
+        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)
+    ) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
     }
     foreach ($manifest['generators'] as $path => $expectedHash) {
-        if (!is_file($root.'/'.$path) || hash_file('sha256', $root.'/'.$path) !== $expectedHash) {
+        if (!is_file($root . '/' . $path) || hash_file('sha256', $root . '/' . $path) !== $expectedHash) {
             fwrite(STDERR, sprintf("The release data generator fingerprint does not match for %s.\n", $path));
             exit(1);
         }

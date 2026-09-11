@@ -19,15 +19,15 @@ final class IdentifierCanonicalizationTest extends TestCase
     public static function cases(): iterable
     {
         foreach (array(
-  'da-u-ca-gregory-ca-buddhist' => 'da-u-ca-gregory',
-  'zh-u-nu-hans-ca-chinese' => 'zh-u-ca-chinese-nu-hans',
-  'zh-u-ca-chinese-nu-hans' => 'zh-u-ca-chinese-nu-hans',
-  'de-u-cu-eur-nu-latn' => 'de-u-cu-eur-nu-latn',
-  'de-u-nu-latn-cu-eur' => 'de-u-cu-eur-nu-latn',
-  'pt-u-attr-ca-gregory' => 'pt-u-attr-ca-gregory',
-  'pt-u-attr1-attr2-ca-gregory' => 'pt-u-attr1-attr2-ca-gregory',
-  'pt-u-attr2-attr1-ca-gregory' => 'pt-u-attr1-attr2-ca-gregory',
-) as $tag => $expected) {
+            'da-u-ca-gregory-ca-buddhist' => 'da-u-ca-gregory',
+            'zh-u-nu-hans-ca-chinese' => 'zh-u-ca-chinese-nu-hans',
+            'zh-u-ca-chinese-nu-hans' => 'zh-u-ca-chinese-nu-hans',
+            'de-u-cu-eur-nu-latn' => 'de-u-cu-eur-nu-latn',
+            'de-u-nu-latn-cu-eur' => 'de-u-cu-eur-nu-latn',
+            'pt-u-attr-ca-gregory' => 'pt-u-attr-ca-gregory',
+            'pt-u-attr1-attr2-ca-gregory' => 'pt-u-attr1-attr2-ca-gregory',
+            'pt-u-attr2-attr1-ca-gregory' => 'pt-u-attr1-attr2-ca-gregory',
+        ) as $tag => $expected) {
             yield $tag => [$tag, $expected];
         }
     }

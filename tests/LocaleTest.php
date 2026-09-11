@@ -50,12 +50,7 @@ final class LocaleTest extends TestCase
 
     public function testItExposesCompleteCanonicalIdentifiersThroughThePorcelainLayer(): void
     {
-        $locale = new Locale(
-            'EN-fonipa-u-ca-gregory-x-private',
-            calendar: 'islamicc',
-            numeric: true,
-            variants: '1901',
-        );
+        $locale = new Locale('EN-fonipa-u-ca-gregory-x-private', calendar: 'islamicc', numeric: true, variants: '1901');
 
         self::assertSame('en-1901-u-ca-islamic-civil-kn-x-private', $locale->toString());
         self::assertSame('en-1901', $locale->baseName);

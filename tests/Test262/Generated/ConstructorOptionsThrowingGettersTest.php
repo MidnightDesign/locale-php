@@ -17,51 +17,40 @@ final class ConstructorOptionsThrowingGettersTest extends TestCase
     public static function options(): array
     {
         return array(
-  0 =>
-  array(
-    0 => 'language',
-  ),
-  1 =>
-  array(
-    0 => 'script',
-  ),
-  2 =>
-  array(
-    0 => 'region',
-  ),
-  3 =>
-  array(
-    0 => 'variants',
-  ),
-  4 =>
-  array(
-    0 => 'calendar',
-  ),
-  5 =>
-  array(
-    0 => 'collation',
-  ),
-  6 =>
-  array(
-    0 => 'firstDayOfWeek',
-  ),
-  7 =>
-  array(
-    0 => 'hourCycle',
-  ),
-  8 =>
-  array(
-    0 => 'caseFirst',
-  ),
-  9 =>
-  array(
-    0 => 'numeric',
-  ),
-  10 =>
-  array(
-    0 => 'numberingSystem',
-  ),
-);
+            0 => array(
+                0 => 'language',
+            ),
+            1 => array(
+                0 => 'script',
+            ),
+            2 => array(
+                0 => 'region',
+            ),
+            3 => array(
+                0 => 'variants',
+            ),
+            4 => array(
+                0 => 'calendar',
+            ),
+            5 => array(
+                0 => 'collation',
+            ),
+            6 => array(
+                0 => 'firstDayOfWeek',
+            ),
+            7 => array(
+                0 => 'hourCycle',
+            ),
+            8 => array(
+                0 => 'caseFirst',
+            ),
+            9 => array(
+                0 => 'numeric',
+            ),
+            10 => array(
+                0 => 'numberingSystem',
+            ),
+        );
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('options')]

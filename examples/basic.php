@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 use Midnight\Intl\Locale;
 
-$locale = new Locale(
-    'EN-latn-us-fonipa-u-ca-gregory-x-shop',
-    region: 'GB',
-    numeric: true,
-);
+$locale = new Locale('EN-latn-us-fonipa-u-ca-gregory-x-shop', region: 'GB', numeric: true);
 
 echo $locale->toString(), PHP_EOL;
 echo $locale->baseName, PHP_EOL;

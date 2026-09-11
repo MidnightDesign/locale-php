@@ -13,17 +13,20 @@ final class RemoveLikelySubtagsPipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $identities = $this->assertionIdentities->extract($source, $fixturePath);
         $cases = JavaScriptDataExtractor::objectMap($source, 'testDataMinimal');
         if (count($identities) !== 2 || $cases === []) {
-            return FixtureResult::translationGap($fixturePath, $source, ['direct'], $identities, new TranslationGap(
-                'Expected one minimal map and two parameterized assertions.',
-            ));
+            return FixtureResult::translationGap(
+                $fixturePath,
+                $source,
+                ['direct'],
+                $identities,
+                new TranslationGap('Expected one minimal map and two parameterized assertions.'),
+            );
         }
 
         $failures = 0;
@@ -38,7 +41,7 @@ final class RemoveLikelySubtagsPipeline implements FixturePipeline
             hash('sha256', $source),
             $status,
             ['direct'],
-            array_map(static fn (array $identity): array => [
+            array_map(static fn(array $identity): array => [
                 ...$identity,
                 'status' => $status,
                 'adaptations' => ['JavaScript object iteration is expanded into named PHPUnit data sets.'],
@@ -52,42 +55,43 @@ final class RemoveLikelySubtagsPipeline implements FixturePipeline
     /** @param array<string, string> $cases */
     private function render(array $cases, string $fixturePath): string
     {
-        $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($cases))
-            ?? throw new \RuntimeException('Unable to format remove-likely-subtag cases.');
+        $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($cases)) ?? throw new \RuntimeException(
+            'Unable to format remove-likely-subtag cases.',
+        );
 
         return <<<PHP
-<?php
+            <?php
 
-declare(strict_types=1);
+            declare(strict_types=1);
 
-// Copyright 2020 André Bargull. All rights reserved.
-// This generated translation is governed by tests/Test262/upstream/LICENSE.
-// Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
-// Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
+            // Copyright 2020 André Bargull. All rights reserved.
+            // This generated translation is governed by tests/Test262/upstream/LICENSE.
+            // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
+            // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-namespace Midnight\Intl\Tests\Test262\Generated;
+            namespace Midnight\Intl\Tests\Test262\Generated;
 
-use Midnight\Intl\Spec\Locale;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+            use Midnight\Intl\Spec\Locale;
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
 
-final class RemoveLikelySubtagsTest extends TestCase
-{
-    /** @return iterable<string, array{string, string}> */
-    public static function cases(): iterable
-    {
-        foreach ({$export} as \$tag => \$minimal) {
-            yield \$tag.' fixed point' => [\$minimal, \$minimal];
-            yield \$tag => [\$tag, \$minimal];
-        }
-    }
+            final class RemoveLikelySubtagsTest extends TestCase
+            {
+                /** @return iterable<string, array{string, string}> */
+                public static function cases(): iterable
+                {
+                    foreach ({$export} as \$tag => \$minimal) {
+                        yield \$tag.' fixed point' => [\$minimal, \$minimal];
+                        yield \$tag => [\$tag, \$minimal];
+                    }
+                }
 
-    #[DataProvider('cases')]
-    public function testTranslatedRemoveLikelySubtagsAssertions(string \$tag, string \$expected): void
-    {
-        self::assertSame(\$expected, (new Locale(\$tag))->minimize()->toString());
-    }
-}
-PHP."\n";
+                #[DataProvider('cases')]
+                public function testTranslatedRemoveLikelySubtagsAssertions(string \$tag, string \$expected): void
+                {
+                    self::assertSame(\$expected, (new Locale(\$tag))->minimize()->toString());
+                }
+            }
+            PHP . "\n";
     }
 }

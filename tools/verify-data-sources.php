@@ -11,7 +11,7 @@ if ($argc !== 5) {
     exit(1);
 }
 
-$manifestSource = file_get_contents($root.'/resources/data/manifest.json');
+$manifestSource = file_get_contents($root . '/resources/data/manifest.json');
 if ($manifestSource === false) {
     fwrite(STDERR, "Unable to read the release data manifest.\n");
     exit(1);
@@ -35,7 +35,7 @@ foreach ($checks as [$name, $algorithm, $path, $expected]) {
 
 $registry = file_get_contents($argv[3]);
 $fileDate = $manifest['inputs']['languageRegistry']['fileDate'];
-if ($registry === false || !str_starts_with($registry, 'File-Date: '.$fileDate."\n")) {
+if ($registry === false || !str_starts_with($registry, 'File-Date: ' . $fileDate . "\n")) {
     fwrite(STDERR, "The IANA language subtag registry has the wrong File-Date.\n");
     exit(1);
 }

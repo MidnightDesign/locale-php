@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 const CLDR_REVISION = '11299982335beb974c1c63c45265184e759c0f41';
+
 const CLDR_CORE_SHA512 = 'de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62';
 
 if ($argc !== 2) {
@@ -23,18 +24,18 @@ if ($archive->open($archivePath) !== true) {
 }
 
 $metadata = readArchiveEntry($archive, 'common/supplemental/supplementalMetadata.xml');
-$metadataWithoutComments = preg_replace('/<!--.*?-->/s', '', $metadata)
-    ?? throw new RuntimeException('Unable to remove CLDR XML comments.');
+$metadataWithoutComments = preg_replace('/<!--.*?-->/s', '', $metadata) ?? throw new RuntimeException(
+    'Unable to remove CLDR XML comments.',
+);
 
 $languageAliases = aliases(
     $metadataWithoutComments,
     'languageAlias',
-    static fn (string $value): bool => preg_match(
-        '/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:_(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/D',
-        $value,
-    ) === 1,
-    static fn (string $value): string => str_replace('_', '-', strtolower($value)),
-    static fn (string $value): string => str_replace('_', '-', $value),
+    static fn(string $value): bool => (
+        preg_match('/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:_(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/D', $value) === 1
+    ),
+    static fn(string $value): string => str_replace('_', '-', strtolower($value)),
+    static fn(string $value): string => str_replace('_', '-', $value),
 );
 $language = [];
 $compoundLanguage = [];
@@ -53,16 +54,16 @@ unset($aliasesByLanguage);
 $script = aliases(
     $metadataWithoutComments,
     'scriptAlias',
-    static fn (string $value): bool => preg_match('/^[A-Za-z]{4}$/D', $value) === 1,
-    static fn (string $value): string => ucfirst(strtolower($value)),
-    static fn (string $value): string => ucfirst(strtolower(explode(' ', $value)[0])),
+    static fn(string $value): bool => preg_match('/^[A-Za-z]{4}$/D', $value) === 1,
+    static fn(string $value): string => ucfirst(strtolower($value)),
+    static fn(string $value): string => ucfirst(strtolower(explode(' ', $value)[0])),
 );
 $region = aliases(
     $metadataWithoutComments,
     'territoryAlias',
-    static fn (string $value): bool => preg_match('/^(?:[A-Za-z]{2}|[0-9]{3})$/D', $value) === 1,
-    static fn (string $value): string => strtoupper($value),
-    static fn (string $value): string => strtoupper(explode(' ', $value)[0]),
+    static fn(string $value): bool => preg_match('/^(?:[A-Za-z]{2}|[0-9]{3})$/D', $value) === 1,
+    static fn(string $value): string => strtoupper($value),
+    static fn(string $value): string => strtoupper(explode(' ', $value)[0]),
 );
 $regionAlternatives = [];
 preg_match_all('/<territoryAlias\s+([^>]+?)\/>/', $metadataWithoutComments, $territoryMatches, PREG_SET_ORDER);
@@ -97,7 +98,7 @@ foreach ($likelyMatches as $likelyMatch) {
     if (!isset($candidateRegions[$regionPart])) {
         continue;
     }
-    if (count($from) === 1 || (count($from) === 2 && strlen($from[1]) === 4)) {
+    if (count($from) === 1 || count($from) === 2 && strlen($from[1]) === 4) {
         $likelyRegion[strtolower(implode('-', $from))] = $regionPart;
     }
 }
@@ -106,16 +107,16 @@ ksort($likelyRegion, SORT_STRING);
 $variant = aliases(
     $metadataWithoutComments,
     'variantAlias',
-    static fn (string $value): bool => preg_match('/^(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3})$/D', $value) === 1,
-    static fn (string $value): string => strtolower($value),
-    static fn (string $value): string => strtolower(str_replace('_', '-', explode(' ', $value)[0])),
+    static fn(string $value): bool => preg_match('/^(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3})$/D', $value) === 1,
+    static fn(string $value): string => strtolower($value),
+    static fn(string $value): string => strtolower(str_replace('_', '-', explode(' ', $value)[0])),
 );
 $subdivision = aliases(
     $metadataWithoutComments,
     'subdivisionAlias',
-    static fn (string $value): bool => preg_match('/^[A-Za-z0-9]{3,8}$/D', $value) === 1,
-    static fn (string $value): string => strtolower($value),
-    static fn (string $value): string => strtolower(explode(' ', $value)[0]),
+    static fn(string $value): bool => preg_match('/^[A-Za-z0-9]{3,8}$/D', $value) === 1,
+    static fn(string $value): string => strtolower($value),
+    static fn(string $value): string => strtolower(explode(' ', $value)[0]),
 );
 
 $key = [];
@@ -125,8 +126,10 @@ for ($index = 0; $index < $archive->numFiles; ++$index) {
     if ($name === false || preg_match('#^common/bcp47/[^/]+\.xml$#D', $name) !== 1) {
         continue;
     }
-    $xml = preg_replace('/<!--.*?-->/s', '', readArchiveEntry($archive, $name))
-        ?? throw new RuntimeException(sprintf('Unable to remove comments from %s.', $name));
+    $xml = preg_replace('/<!--.*?-->/s', '', readArchiveEntry($archive, $name)) ?? throw new RuntimeException(sprintf(
+        'Unable to remove comments from %s.',
+        $name,
+    ));
     preg_match_all('/<key\s+([^>]+)>/', $xml, $keyMatches, PREG_SET_ORDER);
     foreach ($keyMatches as $keyMatch) {
         $attributes = xmlAttributes($keyMatch[1]);
@@ -206,12 +209,12 @@ $likelySubtagsProjection = [
 ];
 
 file_put_contents(
-    dirname(__DIR__).'/resources/data/locale-aliases.json',
-    json_encode($projection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+    dirname(__DIR__) . '/resources/data/locale-aliases.json',
+    json_encode($projection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
 );
 file_put_contents(
-    dirname(__DIR__).'/resources/data/likely-subtags.json',
-    json_encode($likelySubtagsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+    dirname(__DIR__) . '/resources/data/likely-subtags.json',
+    json_encode($likelySubtagsProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
 );
 
 function readArchiveEntry(ZipArchive $archive, string $name): string

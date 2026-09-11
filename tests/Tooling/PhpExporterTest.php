@@ -13,9 +13,9 @@ final class PhpExporterTest extends TestCase
 {
     public function testItFormatsSyntaxWithoutChangingStringValues(): void
     {
-        self::assertSame(
-            "array(\n  'value' => null,\n  'literal' => 'array (NULL)',\n)",
-            PhpExporter::export(['value' => null, 'literal' => 'array (NULL)']),
-        );
+        self::assertSame("array(\n  'value' => null,\n  'literal' => 'array (NULL)',\n)", PhpExporter::export([
+            'value' => null,
+            'literal' => 'array (NULL)',
+        ]));
     }
 }

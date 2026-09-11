@@ -19,19 +19,19 @@ final class RemoveLikelySubtagsTest extends TestCase
     public static function cases(): iterable
     {
         foreach (array(
-  'und' => 'en',
-  'und-Thai' => 'th',
-  'und-419' => 'es-419',
-  'und-150' => 'en-150',
-  'und-AT' => 'de-AT',
-  'aae-Latn-IT' => 'aae',
-  'aae-Thai-CO' => 'aae-Thai-CO',
-  'und-CW' => 'pap',
-  'und-US' => 'en',
-  'zh-Hant' => 'zh-TW',
-  'zh-Hani' => 'zh-Hani',
-) as $tag => $minimal) {
-            yield $tag.' fixed point' => [$minimal, $minimal];
+            'und' => 'en',
+            'und-Thai' => 'th',
+            'und-419' => 'es-419',
+            'und-150' => 'en-150',
+            'und-AT' => 'de-AT',
+            'aae-Latn-IT' => 'aae',
+            'aae-Thai-CO' => 'aae-Thai-CO',
+            'und-CW' => 'pap',
+            'und-US' => 'en',
+            'zh-Hant' => 'zh-TW',
+            'zh-Hani' => 'zh-Hani',
+        ) as $tag => $minimal) {
+            yield $tag . ' fixed point' => [$minimal, $minimal];
             yield $tag => [$tag, $minimal];
         }
     }

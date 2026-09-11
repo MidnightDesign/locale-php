@@ -139,7 +139,7 @@ final class MatrixMutationScore
         }
         unset($mutation);
         /** @var list<array{id: string, campaign: string, source: string, line: int, mutator: string, original: string, mutated: string, diff: string, applicableModes: list<string>, modes: array<string, string>}> $mutations */
-        $score = $obligations === 0 ? 0.0 : round($killed / $obligations * 100, 4);
+        $score = $obligations === 0 ? 0.0 : round(($killed / $obligations) * 100, 4);
 
         return [
             'format' => 2,
@@ -203,7 +203,7 @@ final class MatrixMutationScore
         }
 
         $total = self::stat($stats, 'totalMutantsCount');
-        if ($reported + $skipped !== $total) {
+        if (($reported + $skipped) !== $total) {
             throw new \RuntimeException(sprintf(
                 '%s/%s stats.totalMutantsCount is %d but %d mutants were reported.',
                 $campaign,
@@ -213,7 +213,11 @@ final class MatrixMutationScore
             ));
         }
         if ($skipped !== 0) {
-            throw new \RuntimeException(sprintf('%s/%s contains unattributable skipped obligations.', $campaign, $mode));
+            throw new \RuntimeException(sprintf(
+                '%s/%s contains unattributable skipped obligations.',
+                $campaign,
+                $mode,
+            ));
         }
 
         return ['mutations' => $mutations];

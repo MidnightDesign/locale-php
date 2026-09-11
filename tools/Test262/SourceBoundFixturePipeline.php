@@ -12,8 +12,7 @@ final class SourceBoundFixturePipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly array $representations,
         private readonly string $sourceSha256,
-    ) {
-    }
+    ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
     {

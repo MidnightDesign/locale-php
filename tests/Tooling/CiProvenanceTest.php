@@ -48,16 +48,10 @@ final class CiProvenanceTest extends TestCase
         } else {
             self::assertNull($evidence['extension']['icuVersion']);
         }
-        self::assertSame(hash_file('sha256', $root.'/composer.lock'), $evidence['dependencies']['lockSha256']);
+        self::assertSame(hash_file('sha256', $root . '/composer.lock'), $evidence['dependencies']['lockSha256']);
         self::assertSame('11d5960a326750d5838078e36cf38b85af677262', $evidence['actions']['checkout']);
-        self::assertSame(
-            'b1c961988b9a07894b1dc3dc2b5626ea48387d61',
-            $evidence['conformanceBaseline']['ecma402'],
-        );
-        self::assertSame(
-            '419d3e0a2273ba01a3bfcbec423f2801425b8e93',
-            $evidence['conformanceBaseline']['test262'],
-        );
+        self::assertSame('b1c961988b9a07894b1dc3dc2b5626ea48387d61', $evidence['conformanceBaseline']['ecma402']);
+        self::assertSame('419d3e0a2273ba01a3bfcbec423f2801425b8e93', $evidence['conformanceBaseline']['test262']);
         self::assertMatchesRegularExpression('/^[a-f0-9]{64}$/', $evidence['releaseDataSnapshot']['fingerprint']);
         self::assertSame('no-native-path-implemented', $evidence['extension']['branchTrace']['fallbackReason']);
     }
