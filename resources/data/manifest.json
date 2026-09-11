@@ -1,7 +1,7 @@
 {
-    "format": 2,
-    "scope": "unicode-locale-identifier-canonicalization",
-    "releaseDataFingerprint": "3d96e29d0c470f3d838cc753736ed65e367723db7f9e4322084792912f8b8362",
+    "format": 3,
+    "scope": "unicode-locale-identifier-canonicalization-and-likely-subtags",
+    "releaseDataFingerprint": "43810eafcb2671997f34f0f96492e2e1b76ee7d97f315c0b7de9f723900cfb40",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -32,14 +32,14 @@
     "projections": {
         "localeAliases": {
             "source": "resources/data/locale-aliases.json",
-            "sourceSha256": "5ea7e202fb639c3b80b6db9142e04f0411423ed7e159a0defcdde9ca46aa26b8",
+            "sourceSha256": "3f043a152cd30076c69621e50032e2e182c3d19dafdf0eb21fdcb71d001f2a00",
             "generated": "src/Internal/Data/LocaleAliases.php",
-            "generatedSha256": "e171d123cceead5dbebc2631e76a9ab2172712d4bb1cfebefd8dd0fafcb1ed96"
+            "generatedSha256": "161c303ae33a3abc9235d0c9de0bd2134831ced85fc2cb51945d8c788ee7dfc4"
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "e69f4527e1792952496e31848c3c018d36bacd59a33b03617a5387c5e22ea226",
-        "tools/generate-data.php": "7680559cb06f5c136aff7aa3c128ad4b1afaedf25961b2816adcdb17ce407fb2",
+        "tools/import-cldr-aliases.php": "87f0ce128206dd2723b0cca7bf18e63eafb9f060368292ec54c28c59b2f5bf8d",
+        "tools/generate-data.php": "3a67b13e5ee2c20703ef5141fe031f1ace93d07dab678d90931e878e7fbab1f9",
         "tools/verify-data-sources.php": "8b79879da1ae9742390fbd9bf02f722ba7a2ea91f8aab92ece81c285cc980f64"
     },
     "conformanceBaseline": {

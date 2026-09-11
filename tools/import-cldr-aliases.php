@@ -29,8 +29,11 @@ $metadataWithoutComments = preg_replace('/<!--.*?-->/s', '', $metadata)
 $language = aliases(
     $metadataWithoutComments,
     'languageAlias',
-    static fn (string $value): bool => preg_match('/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})$/D', $value) === 1,
-    static fn (string $value): string => strtolower($value),
+    static fn (string $value): bool => preg_match(
+        '/^(?:[A-Za-z]{2,3}|[A-Za-z]{5,8})(?:_(?:[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/D',
+        $value,
+    ) === 1,
+    static fn (string $value): string => str_replace('_', '-', strtolower($value)),
     static fn (string $value): string => str_replace('_', '-', $value),
 );
 $script = aliases(
@@ -60,10 +63,20 @@ foreach ($territoryMatches as $territoryMatch) {
 ksort($regionAlternatives, SORT_STRING);
 
 $likelySubtags = readArchiveEntry($archive, 'common/supplemental/likelySubtags.xml');
+$likelySubtag = [];
 $candidateRegions = array_fill_keys(array_merge(...array_values($regionAlternatives)), true);
 $likelyRegion = [];
 preg_match_all('/<likelySubtag\s+from="([^"]+)"\s+to="([^"]+)"/', $likelySubtags, $likelyMatches, PREG_SET_ORDER);
 foreach ($likelyMatches as $likelyMatch) {
+    $target = explode('_', $likelyMatch[2]);
+    $target[0] = strtolower($target[0]);
+    if (isset($target[1])) {
+        $target[1] = ucfirst(strtolower($target[1]));
+    }
+    if (isset($target[2])) {
+        $target[2] = strtoupper($target[2]);
+    }
+    $likelySubtag[str_replace('_', '-', strtolower($likelyMatch[1]))] = implode('-', $target);
     $from = explode('_', $likelyMatch[1]);
     $to = explode('_', $likelyMatch[2]);
     $regionPart = end($to);
@@ -74,6 +87,7 @@ foreach ($likelyMatches as $likelyMatch) {
         $likelyRegion[strtolower(implode('-', $from))] = $regionPart;
     }
 }
+ksort($likelySubtag, SORT_STRING);
 ksort($likelyRegion, SORT_STRING);
 $variant = aliases(
     $metadataWithoutComments,
@@ -149,7 +163,7 @@ foreach ($type as &$aliasesByKey) {
 unset($aliasesByKey);
 
 $projection = [
-    'format' => 2,
+    'format' => 3,
     'cldrRevision' => CLDR_REVISION,
     'upstreamSha512' => CLDR_CORE_SHA512,
     'sourceEntries' => [
@@ -160,6 +174,7 @@ $projection = [
     'script' => $script,
     'region' => $region,
     'regionAlternatives' => $regionAlternatives,
+    'likelySubtag' => $likelySubtag,
     'likelyRegion' => $likelyRegion,
     'variant' => $variant,
     'subdivision' => $subdivision,

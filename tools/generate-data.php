@@ -21,6 +21,7 @@ if ($source === false) {
  *     script: array<string, string>,
  *     region: array<string, string>,
  *     regionAlternatives: array<string, list<string>>,
+ *     likelySubtag: array<string, string>,
  *     likelyRegion: array<string, string>,
  *     variant: array<string, string>,
  *     subdivision: array<string, string>,
@@ -28,7 +29,7 @@ if ($source === false) {
  *     type: array<string, array<string, string>>
  * } $data */
 $data = json_decode($source, true, flags: JSON_THROW_ON_ERROR);
-if ($data['format'] !== 2) {
+if ($data['format'] !== 3) {
     fwrite(STDERR, "The locale alias projection format is incompatible.\n");
     exit(1);
 }
@@ -39,6 +40,7 @@ foreach ([
     'SCRIPT' => ['script', 'array<string, string>'],
     'REGION' => ['region', 'array<int|string, string>'],
     'REGION_ALTERNATIVES' => ['regionAlternatives', 'array<int|string, list<string>>'],
+    'LIKELY_SUBTAG' => ['likelySubtag', 'array<string, string>'],
     'LIKELY_REGION' => ['likelyRegion', 'array<string, string>'],
     'VARIANT' => ['variant', 'array<string, string>'],
     'SUBDIVISION' => ['subdivision', 'array<string, string>'],
@@ -63,6 +65,7 @@ $payloadSha256 = hash('sha256', json_encode([
     'script' => $data['script'],
     'region' => $data['region'],
     'regionAlternatives' => $data['regionAlternatives'],
+    'likelySubtag' => $data['likelySubtag'],
     'likelyRegion' => $data['likelyRegion'],
     'variant' => $data['variant'],
     'subdivision' => $data['subdivision'],
@@ -109,6 +112,7 @@ enum LocaleAliases
             'script' => self::SCRIPT,
             'region' => self::REGION,
             'regionAlternatives' => self::REGION_ALTERNATIVES,
+            'likelySubtag' => self::LIKELY_SUBTAG,
             'likelyRegion' => self::LIKELY_REGION,
             'variant' => self::VARIANT,
             'subdivision' => self::SUBDIVISION,
@@ -123,7 +127,7 @@ enum LocaleAliases
 
     private static function supportsFormat(int \$format): bool
     {
-        return \$format === 2;
+        return \$format === 3;
     }
 }
 PHP;
@@ -142,7 +146,7 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}}} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -151,13 +155,19 @@ if (in_array('--check', $argv, true)) {
         'tzdb' => $manifest['inputs']['tzdb']['sha512'],
         'projection' => $sourceSha256,
     ], JSON_THROW_ON_ERROR));
-    if ($manifest['format'] !== 2
+    if ($manifest['format'] !== 3
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
+    }
+    foreach ($manifest['generators'] as $path => $expectedHash) {
+        if (!is_file($root.'/'.$path) || hash_file('sha256', $root.'/'.$path) !== $expectedHash) {
+            fwrite(STDERR, sprintf("The release data generator fingerprint does not match for %s.\n", $path));
+            exit(1);
+        }
     }
 
     exit(0);

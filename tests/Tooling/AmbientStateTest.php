@@ -32,6 +32,8 @@ final class AmbientStateTest extends TestCase
                 'script' => 'cyrl',
                 'region' => 'ca',
             ]))->toString());
+            self::assertSame('zh-Hant-TW', (new Locale('zh-Hant'))->maximize()->toString());
+            self::assertSame('zh-TW', (new SpecLocale('zh-Hant'))->minimize()->toString());
         } finally {
             date_default_timezone_set($timezone);
             if ($processLocale !== false) {

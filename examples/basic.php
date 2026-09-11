@@ -16,3 +16,5 @@ echo $locale->toString(), PHP_EOL;
 echo $locale->baseName, PHP_EOL;
 echo $locale->calendar, PHP_EOL;
 echo json_encode($locale, JSON_THROW_ON_ERROR), PHP_EOL;
+echo $locale->maximize(), PHP_EOL;
+echo $locale->maximize()->minimize(), PHP_EOL;

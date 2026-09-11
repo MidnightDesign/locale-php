@@ -93,6 +93,16 @@ final class Locale implements \Stringable, \JsonSerializable
         return $this->toSpec()->toString();
     }
 
+    public function maximize(): self
+    {
+        return self::fromSpec($this->toSpec()->maximize());
+    }
+
+    public function minimize(): self
+    {
+        return self::fromSpec($this->toSpec()->minimize());
+    }
+
     #[\Override]
     public function __toString(): string
     {

@@ -151,6 +151,75 @@ final class LocaleIdentifier
         return implode('-', $parts);
     }
 
+    public function maximize(): self
+    {
+        $sourceScript = $this->script === 'Zzzz' ? null : $this->script;
+        $sourceRegion = $this->region === 'ZZ' ? null : $this->region;
+        if ($this->language !== 'und' && $sourceScript !== null && $sourceRegion !== null) {
+            return clone $this;
+        }
+
+        $language = strtolower($this->language);
+        $script = $sourceScript === null ? null : strtolower($sourceScript);
+        $region = $sourceRegion === null ? null : strtolower($sourceRegion);
+        $candidates = array_values(array_unique(array_filter([
+            $script !== null && $region !== null ? $language.'-'.$script.'-'.$region : null,
+            $script !== null ? $language.'-'.$script : null,
+            $region !== null ? $language.'-'.$region : null,
+            $language,
+            $language === 'und' && $script !== null ? 'und-'.$script : null,
+            $language === 'und' && $region !== null ? 'und-'.$region : null,
+            $language === 'und' ? 'und' : null,
+        ])));
+
+        foreach ($candidates as $candidate) {
+            $match = LocaleAliases::LIKELY_SUBTAG[$candidate] ?? null;
+            if ($match === null) {
+                continue;
+            }
+
+            [$likelyLanguage, $likelyScript, $likelyRegion] = explode('-', $match);
+            $maximal = clone $this;
+            $maximal->script = $sourceScript;
+            $maximal->region = $sourceRegion;
+            if ($maximal->language === 'und') {
+                $maximal->language = $likelyLanguage;
+            }
+            $maximal->script ??= $likelyScript;
+            $maximal->region ??= $likelyRegion;
+
+            return $maximal;
+        }
+
+        return clone $this;
+    }
+
+    public function minimize(): self
+    {
+        $maximal = $this->maximize();
+        $language = $maximal->language;
+        $candidates = [
+            [$language, null, null],
+            [$language, null, $maximal->region],
+            [$language, $maximal->script, null],
+        ];
+
+        foreach ($candidates as [$candidateLanguage, $candidateScript, $candidateRegion]) {
+            $candidate = clone $this;
+            $candidate->language = $candidateLanguage;
+            $candidate->script = $candidateScript;
+            $candidate->region = $candidateRegion;
+            $candidateMaximal = $candidate->maximize();
+            if ($candidateMaximal->language === $maximal->language
+                && $candidateMaximal->script === $maximal->script
+                && $candidateMaximal->region === $maximal->region) {
+                return $candidate;
+            }
+        }
+
+        return $maximal;
+    }
+
     /**
      * @param list<string> $subtags
      * @return array{string, ?string, ?string, list<string>}
@@ -283,7 +352,19 @@ final class LocaleIdentifier
 
     private function canonicalizeLanguageId(): void
     {
-        $replacement = LocaleAliases::LANGUAGE[$this->language] ?? null;
+        $replacement = null;
+        foreach (LocaleAliases::LANGUAGE as $source => $compound) {
+            $sourceParts = explode('-', $source);
+            if (array_shift($sourceParts) !== $this->language || $sourceParts === []) {
+                continue;
+            }
+            if (array_diff($sourceParts, $this->variants) === []) {
+                $replacement = $compound;
+                $this->variants = array_values(array_diff($this->variants, $sourceParts));
+                break;
+            }
+        }
+        $replacement ??= LocaleAliases::LANGUAGE[$this->language] ?? null;
         if ($replacement !== null) {
             $parts = explode('-', $replacement);
             $this->language = strtolower(array_shift($parts));
