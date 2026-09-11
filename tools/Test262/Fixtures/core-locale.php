@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\Fixtures\FixtureCases;
 use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
@@ -52,67 +53,67 @@ return static function (FixtureCatalog $catalog): array {
         ),
         'test/intl402/Locale/prototype/baseName/branding.js' => $catalog->branding(
             'baseName',
-            true,
+            BrandingFixtureMode::Property,
             'e77d449e07710c79221e7daa3769eb0af42a212d18350b625d16aa6a0a9dea0c',
         ),
         'test/intl402/Locale/prototype/calendar/branding.js' => $catalog->branding(
             'calendar',
-            true,
+            BrandingFixtureMode::Property,
             'fe4fcde843ab870405a626a591fd2e641f19d4b87109401b93c19c748724078a',
         ),
         'test/intl402/Locale/prototype/caseFirst/branding.js' => $catalog->branding(
             'caseFirst',
-            true,
+            BrandingFixtureMode::Property,
             'e7b17d1bcfd0ccbb8a5f8cce2e6ae06871ee50524fdf0302959ccff61326e169',
         ),
         'test/intl402/Locale/prototype/collation/branding.js' => $catalog->branding(
             'collation',
-            true,
+            BrandingFixtureMode::Property,
             'a922140186f8dd2c2083b535be457314af44b0adff6db510672ad132430b34f7',
         ),
         'test/intl402/Locale/prototype/firstDayOfWeek/branding.js' => $catalog->branding(
             'firstDayOfWeek',
-            true,
+            BrandingFixtureMode::Property,
             'df407d245b499cb9e41a26efc3cf5affe300e25f30ff665b3574f3282dc86a01',
         ),
         'test/intl402/Locale/prototype/hourCycle/branding.js' => $catalog->branding(
             'hourCycle',
-            true,
+            BrandingFixtureMode::Property,
             '558ee53f12491e11955a871e69d4cb2a2aebb1fa49a307bec79478a2829ac7bf',
         ),
         'test/intl402/Locale/prototype/language/branding.js' => $catalog->branding(
             'language',
-            true,
+            BrandingFixtureMode::Property,
             'dc7174a08ec37437fd7a25f22655f46d5d91d01ccaa29a7a24242ee8971c3f43',
         ),
         'test/intl402/Locale/prototype/numberingSystem/branding.js' => $catalog->branding(
             'numberingSystem',
-            true,
+            BrandingFixtureMode::Property,
             '28a8285ee0f7a43a48c8afc28d404af0102327891ba7a9bc5b5ba5177e0c3c36',
         ),
         'test/intl402/Locale/prototype/numeric/branding.js' => $catalog->branding(
             'numeric',
-            true,
+            BrandingFixtureMode::Property,
             '1b565a5c7e01e243ce9c73f8f93aefe45b1cb8638f8d30d2191877d9a2c080a8',
         ),
         'test/intl402/Locale/prototype/region/branding.js' => $catalog->branding(
             'region',
-            true,
+            BrandingFixtureMode::Property,
             '89b0784d414af4f7f09b61011b5ef1c19e40bf6fbb27b7d4db9387dc460f9133',
         ),
         'test/intl402/Locale/prototype/script/branding.js' => $catalog->branding(
             'script',
-            true,
+            BrandingFixtureMode::Property,
             'eb81e453c7075ea07187759eb5955d2f4b84f66cf1019446836ef5862658117c',
         ),
         'test/intl402/Locale/prototype/variants/branding.js' => $catalog->branding(
             'variants',
-            true,
+            BrandingFixtureMode::Property,
             '3f347bb8f318041fff4d390ed4cf2e7b04e8cc68c346305bd8da0096984636c7',
         ),
         'test/intl402/Locale/prototype/toString/branding.js' => $catalog->branding(
             'toString',
-            false,
+            BrandingFixtureMode::Method,
             '228d4eefecb2f1bb83db0c16271abd7428fd56331f2763e6a8768edf4d09a6bd',
         ),
         'test/intl402/Locale/likely-subtags-grandfathered.js' => $catalog->grandfatheredLikelySubtags(),
@@ -123,15 +124,27 @@ return static function (FixtureCatalog $catalog): array {
         'test/intl402/Locale/reject-duplicate-variants.js' => $catalog->identifierRejection(),
         'test/intl402/Locale/reject-duplicate-variants-in-tlang.js' => $catalog->identifierRejection(),
         'test/intl402/Locale/constructor-options-script-valid.js' => $catalog->scriptConstructor(),
-        'test/intl402/Locale/prototype/maximize/branding.js' => $catalog->localeMethod('maximize', 'branding'),
+        'test/intl402/Locale/prototype/maximize/branding.js' => $catalog->branding(
+            'maximize',
+            BrandingFixtureMode::Method,
+            'e9516a0e068476037eab9c56807559605b3d7a675f942f427c403fa604190fdf',
+        ),
         'test/intl402/Locale/prototype/maximize/length.js' => $catalog->localeMethod('maximize', 'length'),
         'test/intl402/Locale/prototype/maximize/name.js' => $catalog->localeMethod('maximize', 'name'),
         'test/intl402/Locale/prototype/maximize/prop-desc.js' => $catalog->localeMethod('maximize', 'property'),
-        'test/intl402/Locale/prototype/minimize/branding.js' => $catalog->localeMethod('minimize', 'branding'),
+        'test/intl402/Locale/prototype/minimize/branding.js' => $catalog->branding(
+            'minimize',
+            BrandingFixtureMode::Method,
+            '197a765ae83ab747f9a72aaeea4b7eb57d8b8084963409e123dfd3aa5180dd0e',
+        ),
         'test/intl402/Locale/prototype/minimize/length.js' => $catalog->localeMethod('minimize', 'length'),
         'test/intl402/Locale/prototype/minimize/name.js' => $catalog->localeMethod('minimize', 'name'),
         'test/intl402/Locale/prototype/minimize/prop-desc.js' => $catalog->localeMethod('minimize', 'property'),
-        'test/intl402/Locale/prototype/getTextInfo/branding.js' => $catalog->localeMethod('getTextInfo', 'branding'),
+        'test/intl402/Locale/prototype/getTextInfo/branding.js' => $catalog->branding(
+            'getTextInfo',
+            BrandingFixtureMode::IndividualMethodIncludingConstructor,
+            '5b76fa0e574ab358d146c89a0c0231612b656f42a01aaf9bbcb8a8f9c91bf844',
+        ),
         'test/intl402/Locale/prototype/getTextInfo/name.js' => $catalog->localeMethod('getTextInfo', 'name'),
         'test/intl402/Locale/prototype/getTextInfo/output-object-keys.js' => $catalog->textInfo('keys'),
         'test/intl402/Locale/prototype/getTextInfo/output-object.js' => $catalog->textInfo('record'),

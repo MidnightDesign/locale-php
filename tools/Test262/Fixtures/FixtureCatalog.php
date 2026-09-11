@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tools\Test262\Fixtures;
 
 use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\BrandingFixturePipeline;
 use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
 use Midnight\Intl\Tools\Test262\ConstructorInvocationPipeline;
@@ -190,19 +191,17 @@ final readonly class FixtureCatalog
         );
     }
 
-    public function branding(string $member, bool $propertyAccessor, string $sourceSha256): FixturePipeline
+    public function branding(string $member, BrandingFixtureMode $mode, string $sourceSha256): FixturePipeline
     {
-        return $this->sourceBound(
-            new BrandingFixturePipeline(
-                $this->assertionIdentities,
-                $member,
-                $propertyAccessor,
-                $this->test262Revision,
-                $this->ecma402Revision,
-            ),
-            ['native_receiver_binding', 'uninitialized_locale'],
-            $sourceSha256,
+        $pipeline = new BrandingFixturePipeline(
+            $this->assertionIdentities,
+            $member,
+            $mode,
+            $this->test262Revision,
+            $this->ecma402Revision,
         );
+
+        return $this->sourceBound($pipeline, $pipeline->representations(), $sourceSha256);
     }
 
     public function objectModel(string $mode, string $sourceSha256): FixturePipeline

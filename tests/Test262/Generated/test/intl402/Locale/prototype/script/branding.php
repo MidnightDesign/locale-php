@@ -9,4 +9,4 @@ declare(strict_types=1);
 use Midnight\Intl\Tests\Test262\Harness\ReceiverBranding;
 use PHPUnit\Framework\Assert;
 
-Assert::assertNotContains(false, ReceiverBranding::property('script'));
+Assert::assertNotContains(false, array_column(ReceiverBranding::property('script'), 'passing'));

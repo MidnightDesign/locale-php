@@ -9,4 +9,6 @@ declare(strict_types=1);
 use Midnight\Intl\Tests\Test262\Harness\ReceiverBranding;
 use PHPUnit\Framework\Assert;
 
-Assert::assertNotContains(false, ReceiverBranding::method('toString'));
+Assert::assertTrue(ReceiverBranding::methodIsAvailable('toString'));
+
+Assert::assertNotContains(false, array_column(ReceiverBranding::method('toString', false), 'passing'));

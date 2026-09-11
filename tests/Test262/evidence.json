@@ -7273,49 +7273,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/baseName/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7357,49 +7357,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/calendar/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7441,49 +7441,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/caseFirst/branding.js:L30:C5:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7525,49 +7525,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/collation/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7609,49 +7609,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7693,49 +7693,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/hourCycle/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7777,49 +7777,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/language/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7861,49 +7861,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/numberingSystem/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -7945,49 +7945,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/numeric/branding.js:L30:C5:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -8029,49 +8029,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/region/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -8113,49 +8113,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/script/branding.js:L29:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -8197,49 +8197,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/variants/branding.js:L27:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -8264,6 +8264,7 @@
             "executionCount": 9,
             "executionFailures": 0,
             "phpRepresentations": [
+                "reflection",
                 "native_receiver_binding",
                 "uninitialized_locale"
             ],
@@ -8300,49 +8301,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/toString/branding.js:L32:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -9308,7 +9309,7 @@
             "executionCount": 9,
             "executionFailures": 0,
             "phpRepresentations": [
-                "php_reflection",
+                "reflection",
                 "native_receiver_binding",
                 "uninitialized_locale"
             ],
@@ -9321,7 +9322,15 @@
                     "sha256": "f3fcb295decdb62c288b77715feb1879447abf884b44444ba905fab405565a95",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP reflection verifies that the public instance method exists."
+                    ],
+                    "executions": [
+                        {
+                            "id": "public-method",
+                            "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L18:C1:assert.sameValue",
+                            "representation": "reflection",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -9332,53 +9341,54 @@
                     "sha256": "cad15e0b94cadcf4713763fdaac40f526797b32d3e6aea330e5f82d3a1e2d069",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/maximize/branding.js:L32:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -9510,7 +9520,7 @@
             "executionCount": 9,
             "executionFailures": 0,
             "phpRepresentations": [
-                "php_reflection",
+                "reflection",
                 "native_receiver_binding",
                 "uninitialized_locale"
             ],
@@ -9523,7 +9533,15 @@
                     "sha256": "0d5d9b791e61e89799d0f0bc526eba1e47af56883f43980b4820e8677b356c28",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP reflection verifies that the public instance method exists."
+                    ],
+                    "executions": [
+                        {
+                            "id": "public-method",
+                            "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L18:C1:assert.sameValue",
+                            "representation": "reflection",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -9534,53 +9552,54 @@
                     "sha256": "36a4c75efd5b5a79644566052376f1404558ddae4962ec9dc5b847dbab89bd97",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
                         },
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/minimize/branding.js:L32:C3:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"
@@ -9712,7 +9731,7 @@
             "executionCount": 10,
             "executionFailures": 0,
             "phpRepresentations": [
-                "php_reflection",
+                "reflection",
                 "native_receiver_binding",
                 "uninitialized_locale"
             ],
@@ -9725,7 +9744,15 @@
                     "sha256": "bcddcc39ff45f9a0de4fd595ede28cf18504ce51fae97da824df4518177891e3",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP reflection verifies that the public instance method exists."
+                    ],
+                    "executions": [
+                        {
+                            "id": "public-method",
+                            "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L17:C1:assert.sameValue",
+                            "representation": "reflection",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -9736,11 +9763,12 @@
                     "sha256": "bedf05f14b9ac4ec93393a8eea1ba064f518b12c296be23096526465391c3054",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-1",
+                            "id": "undefined",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L19:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9755,11 +9783,12 @@
                     "sha256": "f3b203a602171158fc9ac0dbc65c9a41fe5cdbe5ae6319f1b45c0a438ee5f3bd",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-2",
+                            "id": "null",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L20:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9774,11 +9803,12 @@
                     "sha256": "e880d5418b929d71a7ae677836c2272e6eff7755566aeef3c255fc3b541c3bc2",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-3",
+                            "id": "true",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L21:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9793,11 +9823,12 @@
                     "sha256": "bf31ad2825b57b2b6c8cd830eddf94dac5ded26d25d5e7cbdfd099b818d6b018",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-4",
+                            "id": "empty-string",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L22:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9812,11 +9843,12 @@
                     "sha256": "04feb98caad79a13ecdc9c0a8676be21914dd08cde25c62d59dccbe1541645fc",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-5",
+                            "id": "symbol",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L23:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9831,11 +9863,12 @@
                     "sha256": "7195803f679969f4e09b2613463ab24b0e41a1506ab7b5fcc88d88a46d9f36b9",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-6",
+                            "id": "number",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L24:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9850,11 +9883,12 @@
                     "sha256": "425495fb6bce642f4a19794a02273b4d41f30217353f36087c95ccbf67c293c6",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-7",
+                            "id": "plain-object",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L25:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9869,11 +9903,12 @@
                     "sha256": "2f9d3fe8a1b296ae9497b8b48a1ca1558e68bab14fda599f33c1d53daee8adda",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-8",
+                            "id": "constructor",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L26:C1:assert.throws",
                             "representation": "native_receiver_binding",
                             "status": "passing"
@@ -9888,11 +9923,12 @@
                     "sha256": "42f80707e81a866642f8984dae885832401a1cc8cf55d1818a2827c697e46385",
                     "status": "passing",
                     "adaptations": [
-                        "PHP native binding rejects arbitrary receivers; an uninitialized Locale exercises the private brand check."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
                     ],
                     "executions": [
                         {
-                            "id": "invalid-receiver-9",
+                            "id": "uninitialized-locale",
                             "assertionId": "test/intl402/Locale/prototype/getTextInfo/branding.js:L27:C1:assert.throws",
                             "representation": "uninitialized_locale",
                             "status": "passing"

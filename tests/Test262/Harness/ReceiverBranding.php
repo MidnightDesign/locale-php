@@ -11,57 +11,89 @@ use Midnight\Intl\Spec\Locale;
 
 final class ReceiverBranding
 {
-    /** @return list<bool> */
+    /** @return list<array{id: string, representation: string, passing: bool}> */
     public static function property(string $property): array
     {
         return self::evaluate('__get', [$property]);
     }
 
-    /** @return list<bool> */
-    public static function method(string $method): array
+    /** @return list<array{id: string, representation: string, passing: bool}> */
+    public static function method(string $method, bool $includeConstructor = false): array
     {
-        return self::evaluate($method, []);
+        return self::evaluate($method, [], $includeConstructor);
     }
 
-    /** @return list<bool> */
-    public static function methodIncludingConstructor(string $method): array
+    public static function methodIsAvailable(string $method): bool
     {
-        return self::evaluate($method, [], true);
+        try {
+            $reflection = new \ReflectionMethod(Locale::class, $method);
+        } catch (\ReflectionException) {
+            return false;
+        }
+
+        return (
+            $reflection->isPublic()
+            && $reflection->getName() === $method
+            && $reflection->getNumberOfRequiredParameters() === 0
+        );
     }
 
-    /** @param list<mixed> $arguments
-     * @return list<bool>
+    /**
+     * @param list<mixed> $arguments
+     * @return list<array{id: string, representation: string, passing: bool}>
      */
     private static function evaluate(string $method, array $arguments, bool $includeConstructor = false): array
     {
-        $reflection = new \ReflectionMethod(Locale::class, $method);
         $uninitialized = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
         $receivers = [
-            UndefinedValue::Value,
-            null,
-            true,
-            '',
-            new SymbolValue(),
-            1,
-            new \stdClass(),
+            ['id' => 'undefined', 'value' => UndefinedValue::Value, 'representation' => 'native_receiver_binding'],
+            ['id' => 'null', 'value' => null, 'representation' => 'native_receiver_binding'],
+            ['id' => 'true', 'value' => true, 'representation' => 'native_receiver_binding'],
+            ['id' => 'empty-string', 'value' => '', 'representation' => 'native_receiver_binding'],
+            ['id' => 'symbol', 'value' => new SymbolValue(), 'representation' => 'native_receiver_binding'],
+            ['id' => 'number', 'value' => 1, 'representation' => 'native_receiver_binding'],
+            ['id' => 'plain-object', 'value' => new \stdClass(), 'representation' => 'native_receiver_binding'],
         ];
         if ($includeConstructor) {
-            $receivers[] = Locale::class;
+            $receivers[] = [
+                'id' => 'constructor',
+                'value' => Locale::class,
+                'representation' => 'native_receiver_binding',
+            ];
         }
-        $receivers[] = $uninitialized;
+        $receivers[] = [
+            'id' => 'uninitialized-locale',
+            'value' => $uninitialized,
+            'representation' => 'uninitialized_locale',
+        ];
 
-        return array_map(static function (mixed $receiver) use ($reflection, $arguments, $uninitialized): bool {
+        try {
+            $reflection = new \ReflectionMethod(Locale::class, $method);
+        } catch (\ReflectionException) {
+            return array_map(static fn(array $receiver): array => [
+                'id' => $receiver['id'],
+                'representation' => $receiver['representation'],
+                'passing' => false,
+            ], $receivers);
+        }
+
+        return array_map(static function (array $receiver) use ($reflection, $arguments, $uninitialized): array {
+            $passing = false;
             try {
-                $reflection->invoke(is_object($receiver) ? $receiver : null, ...$arguments);
+                $reflection->invoke(is_object($receiver['value']) ? $receiver['value'] : null, ...$arguments);
             } catch (\Throwable $error) {
-                if ($receiver === $uninitialized) {
-                    return $error instanceof TypeError && $error->getMessage() === 'Locale is not initialized.';
+                if ($receiver['value'] === $uninitialized) {
+                    $passing = $error instanceof TypeError && $error->getMessage() === 'Locale is not initialized.';
+                } else {
+                    $passing = $error instanceof \ReflectionException || $error instanceof \TypeError;
                 }
-
-                return $error instanceof \ReflectionException || $error instanceof \TypeError;
             }
 
-            return false;
+            return [
+                'id' => $receiver['id'],
+                'representation' => $receiver['representation'],
+                'passing' => $passing,
+            ];
         }, $receivers);
     }
 }
