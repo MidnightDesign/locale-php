@@ -79,12 +79,15 @@ $firstDayOfWeekCatalog = require __DIR__ . '/Test262/Fixtures/first-day-of-week.
 $unicodeKeywordOptionsCatalog = require __DIR__ . '/Test262/Fixtures/unicode-keyword-options.php';
 /** @var Closure(FixtureCatalog): array<string, FixturePipeline> $coreLocaleCatalog */
 $coreLocaleCatalog = require __DIR__ . '/Test262/Fixtures/core-locale.php';
+/** @var Closure(FixtureCatalog): array<string, FixturePipeline> $timeZonesCatalog */
+$timeZonesCatalog = require __DIR__ . '/Test262/Fixtures/time-zones.php';
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
     ...$localeStateAndOpenKeywordCatalog($catalog),
     ...$firstDayOfWeekCatalog($catalog),
     ...$unicodeKeywordOptionsCatalog($catalog),
     ...$coreLocaleCatalog($catalog),
+    ...$timeZonesCatalog($catalog),
 ];
 
 $fixtureSources = [];

@@ -20,6 +20,7 @@ use Midnight\Intl\Tools\Test262\MappedLocaleStatePipeline;
 use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
 use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
+use Midnight\Intl\Tools\Test262\TimeZonesFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
 
 final readonly class FixtureCatalog
@@ -169,6 +170,15 @@ final readonly class FixtureCatalog
         return $this->sourceBound(
             new LocaleObjectPipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
             $this->representations,
+            $sourceSha256,
+        );
+    }
+
+    public function timeZones(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new TimeZonesFixturePipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
+            ['direct'],
             $sourceSha256,
         );
     }

@@ -46,7 +46,7 @@ if ($actualPhp !== $argv[5]) {
     throw new RuntimeException(sprintf('Expected PHP %s; got %s.', $argv[5], PHP_VERSION));
 }
 
-$expectedIcu = $argv[6] ?? null;
+$expectedIcu = ($argv[6] ?? '') !== '' ? $argv[6] : null;
 if ($expectedIcu !== null) {
     if (!extension_loaded('intl') || !defined('INTL_ICU_VERSION')) {
         throw new RuntimeException('The ICU lane did not load ext-intl.');

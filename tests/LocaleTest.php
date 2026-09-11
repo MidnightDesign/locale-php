@@ -152,6 +152,18 @@ final class LocaleTest extends TestCase
         $locale->__set('language', 'fr');
     }
 
+    public function testItReturnsAFreshPrimaryTimeZoneList(): void
+    {
+        $locale = new Locale('en-US');
+        $first = $locale->getTimeZones();
+        self::assertNotNull($first);
+        $first[] = 'Injected/Mutation';
+
+        $second = $locale->getTimeZones();
+        self::assertNotNull($second);
+        self::assertNotContains('Injected/Mutation', $second);
+    }
+
     public function testItReturnsFreshPorcelainLikelySubtagValues(): void
     {
         $locale = new Locale('zh-Hant');

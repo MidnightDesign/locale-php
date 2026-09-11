@@ -105,6 +105,12 @@ final class Locale implements \Stringable, \JsonSerializable
         return $this->toSpec()->toString();
     }
 
+    /** @return list<string>|null */
+    public function getTimeZones(): ?array
+    {
+        return $this->toSpec()->getTimeZones();
+    }
+
     public function maximize(): self
     {
         return self::fromSpec($this->toSpec()->maximize());

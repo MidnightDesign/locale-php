@@ -8,6 +8,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class WorkflowContract
 {
+    private const NATIVE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
+
     /** @return list<string> */
     public static function validate(string $root): array
     {
@@ -40,6 +42,9 @@ final class WorkflowContract
             return $failures;
         }
 
+        foreach (['runtime' => 'matrix', 'quality' => 'install-matrix', 'scheduled' => 'matrix'] as $name => $job) {
+            self::validateMatrixBootstrap($workflows[$name], $job, $failures);
+        }
         self::validateActions($root, $workflows, $failures);
         self::validateMutationCampaigns($root, $failures);
         self::validateRuntime($workflows['runtime'], $workflows['runtime-lane'], $failures);
@@ -55,9 +60,29 @@ final class WorkflowContract
     }
 
     /** @param list<string> $failures */
+    private static function validateMatrixBootstrap(Workflow $workflow, string $jobName, array &$failures): void
+    {
+        $job = $workflow->jobs()[$jobName] ?? [];
+        $steps = is_array($job['steps'] ?? null) ? $job['steps'] : [];
+        foreach ($steps as $step) {
+            if (!is_array($step)) {
+                continue;
+            }
+            $run = $step['run'] ?? '';
+            $uses = $step['uses'] ?? '';
+            if (
+                is_string($run) && str_contains($run, 'composer install')
+                || is_string($uses) && str_starts_with($uses, 'shivammathur/setup-php@')
+            ) {
+                $failures[] = 'Matrix generation must use runner PHP without provisioning or Composer installation.';
+            }
+        }
+    }
+
+    /** @param list<string> $failures */
     private static function validateRuntime(Workflow $runtime, Workflow $lane, array &$failures): void
     {
-        self::requireRuns($runtime, ['php tools/ci-matrix.php runtime'], 'runtime workflow', $failures);
+        self::requireRuns($runtime, ['php tools/ci-matrix.php runtime-jobs'], 'runtime workflow', $failures);
         self::requireUses($runtime, ['./.github/workflows/ci-runtime-lane.yml'], 'runtime workflow', $failures);
         self::requireScalars(
             $runtime,
@@ -80,7 +105,93 @@ final class WorkflowContract
             $failures,
         );
         self::requireScalars($lane, ["inputs.thread-safe && 'ts' || 'nts'"], 'runtime lane workflow', $failures);
-        self::requireSettings($runtime, ['update' => true, 'thread-safe' => false], 'runtime workflow', $failures);
+        self::requireSettings(
+            $runtime,
+            [
+                'thread-safe' => false,
+                'run-native' => '${{ matrix.runNative }}',
+                'test-package' => '${{ matrix.testPackage }}',
+            ],
+            'runtime workflow',
+            $failures,
+        );
+        self::requireNamedStep(
+            $lane,
+            'evidence',
+            'Reject invalid grouped follow-up configuration',
+            [
+                'if' => "\${{ inputs.test-package && !inputs.run-native || (inputs.run-native || inputs.test-package) && (inputs.os-family != 'Darwin' || inputs.extension-mode != 'disabled') }}",
+                'run' => "echo \"Grouped follow-ups require a native run on a disabled macOS primary lane.\"\nexit 1\n",
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
+        self::requireNamedStep(
+            $lane,
+            'evidence',
+            'Assert runtime identity',
+            [
+                'id' => 'runtime_ready',
+                'run' => 'php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}" "${{ inputs.expected-icu }}"',
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
+        self::requireNamedStep(
+            $lane,
+            'evidence',
+            'Test native mode',
+            [
+                'if' => self::NATIVE_FOLLOW_UP_GUARD,
+                'env' => [
+                    'INTL_LOCALE_EXTENSION_MODE' => 'native',
+                    'INTL_LOCALE_BRANCH_TRACE' => 'build/ci-native/branch-trace.json',
+                ],
+                'run' => 'vendor/bin/phpunit --log-junit build/ci-native/junit.xml',
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
+        self::requireNamedStep(
+            $lane,
+            'evidence',
+            'Record native provenance',
+            [
+                'if' => self::NATIVE_FOLLOW_UP_GUARD,
+                'env' => ['INTL_LOCALE_BRANCH_TRACE' => 'build/ci-native/branch-trace.json'],
+                'run' => 'php tools/record-ci-provenance.php build/ci-native/provenance.json "${{ inputs.php }}" "${{ inputs.runner }}" native',
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
+        self::requireNamedStep(
+            $lane,
+            'evidence',
+            'Upload native evidence',
+            [
+                'if' => self::NATIVE_FOLLOW_UP_GUARD,
+                'uses' => 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
+                'with' => [
+                    'name' => 'runtime-${{ inputs.runner }}-php-${{ inputs.php }}-intl-native',
+                    'path' => 'build/ci-native',
+                    'if-no-files-found' => 'error',
+                    'retention-days' => 30,
+                ],
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
+        self::requireNamedStep(
+            $lane,
+            'evidence',
+            'Test package installation',
+            [
+                'if' => "\${{ !cancelled() && inputs.test-package && steps.runtime_ready.outcome == 'success' }}",
+                'run' => 'composer test:package',
+            ],
+            'runtime lane workflow',
+            $failures,
+        );
         self::requireSettings($lane, ['update' => true], 'runtime lane workflow', $failures);
     }
 
@@ -263,7 +374,6 @@ final class WorkflowContract
             $failures,
         );
         self::requireUses($workflow, ['./.github/workflows/ci-runtime-lane.yml'], 'scheduled workflow', $failures);
-        self::requireSettings($workflow, ['update' => true], 'scheduled workflow', $failures);
 
         $windowsX86 = $workflow->jobs()['windows-x86'] ?? null;
         $expectedCadence = "\${{ inputs.profile == 'weekly' || inputs.profile == 'release' }}";
@@ -609,6 +719,53 @@ final class WorkflowContract
                 $failures[] = sprintf('%s is missing workflow reference %s.', $subject, $reference);
             }
         }
+    }
+
+    /**
+     * @param array<string, mixed> $required
+     * @param list<string> $failures
+     */
+    private static function requireNamedStep(
+        Workflow $workflow,
+        string $jobName,
+        string $stepName,
+        array $required,
+        string $subject,
+        array &$failures,
+    ): void {
+        $job = $workflow->jobs()[$jobName] ?? null;
+        $steps = is_array($job) && is_array($job['steps'] ?? null) ? $job['steps'] : [];
+        foreach ($steps as $step) {
+            if (is_array($step) && ($step['name'] ?? null) === $stepName && self::containsSettings($step, $required)) {
+                return;
+            }
+        }
+
+        $failures[] = sprintf('%s has an invalid %s step.', $subject, $stepName);
+    }
+
+    /** @param array<mixed> $actual
+     * @param array<mixed> $required
+     */
+    private static function containsSettings(array $actual, array $required): bool
+    {
+        foreach ($required as $key => $value) {
+            if (!array_key_exists($key, $actual)) {
+                return false;
+            }
+            if (is_array($value)) {
+                if (!is_array($actual[$key]) || !self::containsSettings($actual[$key], $value)) {
+                    return false;
+                }
+
+                continue;
+            }
+            if ($actual[$key] !== $value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
