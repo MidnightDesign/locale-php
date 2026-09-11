@@ -1,7 +1,7 @@
 {
-    "format": 4,
-    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-and-primary-time-zones",
-    "releaseDataFingerprint": "8ac1dead95a58b23982e3a7509762ed66e2b385cc2ab751aebb8a74fdd10c0ee",
+    "format": 5,
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-primary-time-zones-and-numbering-systems",
+    "releaseDataFingerprint": "f11d9a22703feb5fd7d5347a984376ca417b9ca0ff144f115f5cb1e86974baf8",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -53,11 +53,20 @@
             "sourceSha256": "282aba05517c6a88023f18ff16770757a336b2697c1c5c9ce79756c70104b08e",
             "generated": "src/Internal/Data/PrimaryTimeZones.php",
             "generatedSha256": "162f7b0b9fb566d01940b85b265bbf82a6d802f14f212523bbb3dc97dd243def"
+        },
+        "numberingSystems": {
+            "source": "resources/data/numbering-systems.json",
+            "sourceSha256": "73bda7d0396a805c5e38b248d8fdf6fc6a82c83708525fff5aa2de8e2be781d2",
+            "generated": "src/Internal/Data/NumberingSystems.php",
+            "generatedSha256": "573539c7409676df99743fbc5c2b480be1d8e371ad598d8030c6de07f948859f"
         }
     },
     "generators": {
         "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
-        "tools/generate-data.php": "b7b3c6236782a61ab62aad57c680ee70a6b9464336abf465c1c9933b1fd8710b",
+        "tools/generate-data.php": "221d82ae4f6f2eac528aa71440bacbb73f88471b0bc2c62a8cf8f87c12eab305",
+        "tools/import-numbering-systems.php": "be68d7d42b70a808fad8f2c4964aa732f56322f4730006d1b0b6a60c1fcb77de",
+        "tools/NumberingSystemDataImporter.php": "38ea37b33139fc3209d82c0ae9a2ae14c65c0153b84221a0a0b0f6b36f2116cd",
+        "tools/NumberingSystemsProjectionGenerator.php": "006ba05cee09ab017a7ef7b8496ca574072b9814b74f1405b4c3a3896085685a",
         "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",
         "tools/TimeZoneDataImporter.php": "e8a38fd4ba20461edb794a3a5976aac6864938a1822f9bd1e308a4de086fc26b",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",
