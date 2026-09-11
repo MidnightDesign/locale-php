@@ -2,7 +2,6 @@
     "format": 3,
     "campaign": "spec",
     "mutations": {
-        "015d4c0e4418eb61cafe411cd432db7fe6abc9bf0d20f6a94d4ac226b6145a1b:1": "uncovered",
         "039a00bfadfc1392a98596a02f381cd23a5b95d9992b4f1639eea1abcb29baff:1": "escaped",
         "03e664a1962b744c8c1898e7a08839f290858d2934705d18409e593d5b355344:1": "escaped",
         "04227a2d1817a97a221d257d1df19c33ef62fc2660bdbe654730827f574f408c:1": "escaped",
