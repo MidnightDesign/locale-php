@@ -7,11 +7,17 @@ namespace Midnight\Intl\Tests\Tooling;
 use Midnight\Intl\Tools\Ci\PackageSmoke;
 use Midnight\Intl\Tools\Ci\WorkflowContract;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(WorkflowContract::class)]
 final class CiWorkflowContractTest extends TestCase
 {
+    private const NATIVE_FOLLOW_UP_GUARD =
+        "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
+    private const PACKAGE_FOLLOW_UP_GUARD =
+        "\${{ !cancelled() && inputs.test-package && steps.runtime_ready.outcome == 'success' }}";
+
     public function testPullRequestCiIsActiveAndPreservesTheCiPolicy(): void
     {
         self::assertSame([], WorkflowContract::validate(dirname(__DIR__, 2)));
@@ -314,6 +320,74 @@ final class CiWorkflowContractTest extends TestCase
         } finally {
             PackageSmoke::removeDirectory($root);
         }
+    }
+
+    #[DataProvider('followUpGuardMutations')]
+    public function testItRejectsWeakeningAFollowUpGuard(
+        string $stepName,
+        string $originalGuard,
+        string $weakenedGuard,
+    ): void
+    {
+        $root = $this->fixtureRoot();
+        try {
+            $path = $root . '/.github/workflows/ci-runtime-lane.yml';
+            $contents = (string) file_get_contents($path);
+            file_put_contents($path, str_replace(
+                "      - name: {$stepName}\n        if: {$originalGuard}",
+                "      - name: {$stepName}\n        if: {$weakenedGuard}",
+                $contents,
+            ));
+            self::assertContains(
+                sprintf('runtime lane workflow has an invalid %s step.', $stepName),
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    /** @return iterable<string, array{string, string, string}> */
+    public static function followUpGuardMutations(): iterable
+    {
+        yield 'native test' => ['Test native mode', self::NATIVE_FOLLOW_UP_GUARD, '${{ inputs.run-native }}'];
+        yield 'native provenance' => [
+            'Record native provenance',
+            self::NATIVE_FOLLOW_UP_GUARD,
+            'always()',
+        ];
+        yield 'native upload' => ['Upload native evidence', self::NATIVE_FOLLOW_UP_GUARD, 'always()'];
+        yield 'package test' => [
+            'Test package installation',
+            self::PACKAGE_FOLLOW_UP_GUARD,
+            '${{ inputs.test-package }}',
+        ];
+    }
+
+    public function testTheNativeArtifactNameIsDerivedFromTheRuntimeIdentity(): void
+    {
+        $contents = (string) file_get_contents(
+            dirname(__DIR__, 2) . '/.github/workflows/ci-runtime-lane.yml',
+        );
+
+        self::assertStringNotContainsString('native-artifact-name:', $contents);
+        self::assertStringContainsString(
+            'name: runtime-${{ inputs.runner }}-php-${{ inputs.php }}-intl-native',
+            $contents,
+        );
+    }
+
+    public function testTheRuntimeLaneRejectsAnInvalidNativeFollowUpPairing(): void
+    {
+        $contents = (string) file_get_contents(
+            dirname(__DIR__, 2) . '/.github/workflows/ci-runtime-lane.yml',
+        );
+
+        self::assertStringContainsString(
+            "(inputs.run-native || inputs.test-package) && (inputs.os-family != 'Darwin'",
+            $contents,
+        );
+        self::assertStringContainsString('inputs.test-package && !inputs.run-native', $contents);
     }
 
     public function testItRejectsInstallingDependenciesBeforeMatrixGeneration(): void

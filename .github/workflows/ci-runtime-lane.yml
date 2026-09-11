@@ -9,9 +9,6 @@ on:
       test-package:
         type: boolean
         default: false
-      native-artifact-name:
-        type: string
-        default: ''
       runner:
         type: string
         required: true
@@ -70,6 +67,11 @@ jobs:
       INTL_LOCALE_EXTENSION_MODE: ${{ inputs.extension-mode }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Reject invalid grouped follow-up configuration
+        if: ${{ inputs.test-package && !inputs.run-native || (inputs.run-native || inputs.test-package) && (inputs.os-family != 'Darwin' || inputs.extension-mode != 'disabled') }}
+        run: |
+          echo "Grouped follow-ups require a native run on a disabled macOS primary lane."
+          exit 1
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ inputs.php }}
@@ -85,10 +87,8 @@ jobs:
         run: composer install --no-interaction --no-progress --prefer-dist
       - if: ${{ inputs.advisory }}
         run: composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php+
-      - id: runtime_ready
-        if: ${{ inputs.expected-icu == '' }}
-        run: php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}"
-      - if: ${{ inputs.expected-icu != '' }}
+      - name: Assert runtime identity
+        id: runtime_ready
         run: php tools/assert-ci-runtime.php "${{ inputs.integer-size }}" "${{ inputs.thread-safe }}" "${{ inputs.os-family }}" "${{ inputs.architecture }}" "${{ inputs.expected-version }}" "${{ inputs.expected-icu }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
       - if: always()
@@ -114,10 +114,11 @@ jobs:
         env:
           INTL_LOCALE_BRANCH_TRACE: build/ci-native/branch-trace.json
         run: php tools/record-ci-provenance.php build/ci-native/provenance.json "${{ inputs.php }}" "${{ inputs.runner }}" native
-      - if: ${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}
+      - name: Upload native evidence
+        if: ${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ${{ inputs.native-artifact-name }}
+          name: runtime-${{ inputs.runner }}-php-${{ inputs.php }}-intl-native
           path: build/ci-native
           if-no-files-found: error
           retention-days: 30

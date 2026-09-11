@@ -40,7 +40,6 @@ jobs:
       extension-mode: ${{ matrix.extensionMode }}
       run-native: ${{ matrix.runNative }}
       test-package: ${{ matrix.testPackage }}
-      native-artifact-name: runtime-${{ matrix.runner }}-php-${{ matrix.php }}-intl-native
       setup-extension: ${{ matrix.extensionMode == 'absent' && ':intl, zip' || 'intl, zip' }}
       thread-safe: false
       integer-size: ${{ matrix.integerSize }}
