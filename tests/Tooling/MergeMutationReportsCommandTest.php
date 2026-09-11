@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests\Tooling;
 
+use Midnight\Intl\Tools\Ci\MatrixMutationScore;
 use Midnight\Intl\Tools\Ci\PackageSmoke;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
@@ -20,7 +21,15 @@ final class MergeMutationReportsCommandTest extends TestCase
         try {
             $this->writeCampaign($reports, 'spec', 'src/Spec/Locale.php', 'escaped');
             $this->writeCampaign($reports, 'porcelain', 'src/Locale.php', 'killed');
-            $this->writeBaseline($baseline);
+            $strict = $this->runMerge($output, $reports);
+            self::assertSame(1, $strict->getExitCode());
+            $strictEvidence = json_decode((string) file_get_contents($output), true, flags: JSON_THROW_ON_ERROR);
+            self::assertIsArray($strictEvidence);
+            /** @var array{mutations: list<array{id: string, campaign: string, modes: array<string, string>}>} $strictEvidence */
+            file_put_contents(
+                $baseline,
+                json_encode(MatrixMutationScore::expectedFailureBaseline($strictEvidence, 'spec'), JSON_THROW_ON_ERROR),
+            );
             $process = $this->runMerge($output, $reports, '--expect-failing='.$baseline);
 
             self::assertSame(0, $process->getExitCode());
@@ -148,27 +157,4 @@ final class MergeMutationReportsCommandTest extends TestCase
         }
     }
 
-    private function writeBaseline(string $path): void
-    {
-        $baseline = [
-            'format' => 1,
-            'campaign' => 'spec',
-            'modes' => [
-                'absent' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
-                'disabled' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
-                'native' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
-            ],
-            'failures' => [
-                'escaped' => 3,
-                'uncovered' => 0,
-                'errored' => 0,
-                'syntaxErrors' => 0,
-                'skipped' => 0,
-                'ignored' => 0,
-                'timedOut' => 0,
-                'staticAnalysis' => 0,
-            ],
-        ];
-        file_put_contents($path, json_encode($baseline, JSON_THROW_ON_ERROR));
-    }
 }

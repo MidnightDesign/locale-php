@@ -83,7 +83,7 @@ final class MatrixMutationScoreTest extends TestCase
             'porcelain' => $this->campaign('src/Locale.php'),
         ]);
 
-        $baseline = $this->expectedFailureBaseline();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
         self::assertTrue(MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline));
         $porcelainBaseline = $baseline;
         $porcelainBaseline['campaign'] = 'porcelain';
@@ -102,6 +102,14 @@ final class MatrixMutationScoreTest extends TestCase
             'porcelain' => $porcelain,
         ]);
         self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($multipleFailures, $baseline));
+
+        $newSpecFailure = $this->campaign('src/Spec/Locale.php');
+        $newSpecFailure['absent'] = $this->report('src/Spec/Locale.php', 'escaped');
+        $regressed = MatrixMutationScore::aggregate([
+            'spec' => $newSpecFailure,
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+        self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($regressed, $baseline));
     }
 
     public function testItRejectsAMissingProjectCampaign(): void
@@ -167,29 +175,6 @@ final class MatrixMutationScoreTest extends TestCase
             'absent' => $this->report($file),
             'disabled' => $this->report($file),
             'native' => $this->report($file),
-        ];
-    }
-
-    /** @return array<string, mixed> */
-    private function expectedFailureBaseline(): array
-    {
-        return [
-            'campaign' => 'spec',
-            'modes' => [
-                'absent' => ['obligations' => 1, 'killed' => 1, 'failures' => 0],
-                'disabled' => ['obligations' => 1, 'killed' => 0, 'failures' => 1],
-                'native' => ['obligations' => 1, 'killed' => 1, 'failures' => 0],
-            ],
-            'failures' => [
-                'escaped' => 1,
-                'uncovered' => 0,
-                'errored' => 0,
-                'syntaxErrors' => 0,
-                'skipped' => 0,
-                'ignored' => 0,
-                'timedOut' => 0,
-                'staticAnalysis' => 0,
-            ],
         ];
     }
 

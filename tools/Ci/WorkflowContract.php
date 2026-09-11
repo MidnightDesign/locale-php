@@ -92,7 +92,6 @@ final class WorkflowContract
             'xdebug-3.5.3',
             'infection.${{ matrix.campaign }}.json5',
             'register_argc_argv=On',
-            'steps.mutation_campaign.outcome',
         ], 'quality workflow', $failures);
 
         $jobs = $workflow->jobs();
@@ -108,7 +107,6 @@ final class WorkflowContract
         self::requireJobRuns($mutation, [
             'composer "mutation:${{ matrix.campaign }}"',
             'cp "infection.${{ matrix.campaign }}.json5" "build/infection/${{ matrix.campaign }}/configuration.json5"',
-            'The spec mutation campaign no longer fails; remove its temporary expected-failure handling.',
         ], 'mutation job', $failures);
         $mutationSteps = is_array($mutation) && is_array($mutation['steps'] ?? null) ? $mutation['steps'] : [];
         $uploadsBuildRoot = false;

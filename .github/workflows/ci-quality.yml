@@ -242,15 +242,6 @@ jobs:
       - id: mutation_campaign
         continue-on-error: ${{ matrix.campaign == 'spec' }}
         run: composer "mutation:${{ matrix.campaign }}" -- --coverage="build/infection/${{ matrix.campaign }}" --skip-initial-tests
-      - name: Require the temporary spec mutation failure
-        if: always() && matrix.campaign == 'spec'
-        env:
-          MUTATION_OUTCOME: ${{ steps.mutation_campaign.outcome }}
-        run: |
-          if [[ "$MUTATION_OUTCOME" != "failure" ]]; then
-            echo '::error::The spec mutation campaign no longer fails; remove its temporary expected-failure handling.'
-            exit 1
-          fi
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json '8.5' ubuntu-24.04 "${{ matrix.extensionMode }}"
       - if: always()
