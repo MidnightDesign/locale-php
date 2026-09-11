@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tests\Test262\Harness;
 
 use Midnight\Intl\Exception\RangeError;
-use Midnight\Intl\Internal\Test262\PrimitiveValue;
 use Midnight\Intl\Internal\UndefinedValue;
 use Midnight\Intl\Spec\Locale;
 
@@ -92,7 +91,16 @@ final class ConstructorOptionAssertion
             'bool' => $optionValue['value'],
             'string' => $optionValue['value'],
             'object' => new \stdClass(),
-            'primitive' => new PrimitiveValue(self::primitivePayload($optionValue)),
+            'primitive' => new class(self::primitiveStringPayload($optionValue)) implements \Stringable {
+                public function __construct(
+                    private readonly string $value,
+                ) {}
+
+                public function __toString(): string
+                {
+                    return $this->value;
+                }
+            },
             'stringable' => new class(self::stringPayload($optionValue)) implements \Stringable {
                 public function __construct(
                     private readonly string $value,
@@ -119,13 +127,16 @@ final class ConstructorOptionAssertion
     }
 
     /** @param array<string, mixed> $optionValue */
-    private static function primitivePayload(array $optionValue): string|bool|int|float|null
+    private static function primitiveStringPayload(array $optionValue): string
     {
         $value = $optionValue['value'] ?? null;
-        if (!is_string($value) && !is_bool($value) && !is_int($value) && !is_float($value) && $value !== null) {
-            throw new \InvalidArgumentException('Unsupported primitive option value.');
-        }
 
-        return $value;
+        return match (true) {
+            is_string($value) => $value,
+            is_bool($value) => $value ? 'true' : 'false',
+            is_int($value), is_float($value) => (string) $value,
+            $value === null => 'null',
+            default => throw new \InvalidArgumentException('Unsupported primitive option value.'),
+        };
     }
 }

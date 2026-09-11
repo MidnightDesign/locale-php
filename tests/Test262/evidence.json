@@ -1420,7 +1420,6 @@
             "executionCount": 4,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct",
                 "associative_array",
                 "plain_object"
             ],
@@ -1501,9 +1500,7 @@
             "executionCount": 7,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct",
-                "associative_array",
-                "plain_object"
+                "direct"
             ],
             "assertions": [
                 {
@@ -1588,7 +1585,6 @@
             "executionCount": 92,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct",
                 "associative_array",
                 "plain_object"
             ],

@@ -21,6 +21,19 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         private readonly array $scenarios,
     ) {}
 
+    /** @return list<string> */
+    public function phpRepresentations(): array
+    {
+        $representations = [];
+        foreach ($this->scenarios as $scenario) {
+            foreach (self::scenarioRepresentations($scenario) as $representation) {
+                $representations[$representation] = true;
+            }
+        }
+
+        return array_keys($representations);
+    }
+
     public function run(string $source, string $fixturePath): FixtureResult
     {
         $assertions = $this->assertionIdentities->extract($source, $fixturePath);
@@ -30,14 +43,14 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         $executionNumber = 0;
 
         foreach ($this->scenarios as $scenario) {
-            $representations = isset($scenario['options']) ? ['associative_array', 'plain_object'] : ['direct'];
+            $representations = self::scenarioRepresentations($scenario);
             foreach ($scenario['expectations'] as $expectation) {
                 $identity = $assertions[$expectation['assertion']] ?? null;
                 if ($identity === null) {
                     return FixtureResult::translationGap(
                         $fixturePath,
                         $source,
-                        ['direct'],
+                        $this->phpRepresentations(),
                         $assertions,
                         new TranslationGap('Mapped assertion index is absent.'),
                     );
@@ -74,7 +87,7 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             return FixtureResult::translationGap(
                 $fixturePath,
                 $source,
-                ['direct'],
+                $this->phpRepresentations(),
                 $assertions,
                 new TranslationGap('Every source assertion must have at least one mapped execution.'),
             );
@@ -108,12 +121,21 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             $fixturePath,
             hash('sha256', $source),
             $failureCount === 0 ? 'passing' : 'failing',
-            ['direct', 'associative_array', 'plain_object'],
+            $this->phpRepresentations(),
             $evidenceAssertions,
             count($executions),
             $failureCount,
             [GeneratedScript::primary($fixturePath, $this->render($generated, $fixturePath))],
         );
+    }
+
+    /**
+     * @param Scenario $scenario
+     * @return list<string>
+     */
+    private static function scenarioRepresentations(array $scenario): array
+    {
+        return isset($scenario['options']) ? ['associative_array', 'plain_object'] : ['direct'];
     }
 
     /**

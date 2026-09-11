@@ -9,7 +9,6 @@ use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
-use Midnight\Intl\Internal\Test262\PrimitiveValue;
 use Midnight\Intl\Internal\UndefinedValue;
 
 /**
@@ -226,10 +225,6 @@ class Locale
 
     private static function toStringValue(mixed $value): string
     {
-        if ($value instanceof PrimitiveValue) {
-            $value = $value->value;
-        }
-
         if (is_string($value) || is_int($value) || is_float($value)) {
             if ($value === -0.0) {
                 return '0';
