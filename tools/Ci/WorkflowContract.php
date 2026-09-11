@@ -619,6 +619,38 @@ final class WorkflowContract
             }
         }
 
+        $pullRequest = $workflows['.github/workflows/pull-request.yml'] ?? null;
+        $gate = $pullRequest?->jobs()['gate'] ?? null;
+        if (
+            !is_array($gate)
+            || ($gate['name'] ?? null) !== 'CI gate'
+            || ($gate['if'] ?? null) !== '${{ always() }}'
+            || ($gate['needs'] ?? null) !== ['runtime', 'quality']
+            || ($gate['runs-on'] ?? null) !== 'ubuntu-24.04'
+        ) {
+            $failures[] = 'The pull-request workflow must expose the stable CI gate.';
+        }
+        if ($pullRequest !== null) {
+            self::requireNamedStep(
+                $pullRequest,
+                'gate',
+                'Require successful evidence',
+                [
+                    'env' => [
+                        'RUNTIME_RESULT' => '${{ needs.runtime.result }}',
+                        'QUALITY_RESULT' => '${{ needs.quality.result }}',
+                    ],
+                    'run' =>
+                        "if [[ \"\$RUNTIME_RESULT\" != \"success\" || \"\$QUALITY_RESULT\" != \"success\" ]]; then\n"
+                            . "  echo \"Runtime or quality evidence failed.\"\n"
+                            . "  exit 1\n"
+                            . "fi\n",
+                ],
+                'pull-request workflow',
+                $failures,
+            );
+        }
+
         $nightly = $workflows['.github/ci/public-nightly.yml'] ?? null;
         $nightlyJobs = $nightly?->jobs() ?? [];
         $nightlyJob = $nightlyJobs['nightly'] ?? null;
