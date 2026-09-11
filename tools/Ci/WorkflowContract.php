@@ -8,8 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 final class WorkflowContract
 {
-    private const NATIVE_FOLLOW_UP_GUARD =
-        "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
+    private const NATIVE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
 
     /** @return list<string> */
     public static function validate(string $root): array

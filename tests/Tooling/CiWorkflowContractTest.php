@@ -13,10 +13,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(WorkflowContract::class)]
 final class CiWorkflowContractTest extends TestCase
 {
-    private const NATIVE_FOLLOW_UP_GUARD =
-        "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
-    private const PACKAGE_FOLLOW_UP_GUARD =
-        "\${{ !cancelled() && inputs.test-package && steps.runtime_ready.outcome == 'success' }}";
+    private const NATIVE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
+    private const PACKAGE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.test-package && steps.runtime_ready.outcome == 'success' }}";
 
     public function testPullRequestCiIsActiveAndPreservesTheCiPolicy(): void
     {
@@ -327,8 +325,7 @@ final class CiWorkflowContractTest extends TestCase
         string $stepName,
         string $originalGuard,
         string $weakenedGuard,
-    ): void
-    {
+    ): void {
         $root = $this->fixtureRoot();
         try {
             $path = $root . '/.github/workflows/ci-runtime-lane.yml';
@@ -366,9 +363,7 @@ final class CiWorkflowContractTest extends TestCase
 
     public function testTheNativeArtifactNameIsDerivedFromTheRuntimeIdentity(): void
     {
-        $contents = (string) file_get_contents(
-            dirname(__DIR__, 2) . '/.github/workflows/ci-runtime-lane.yml',
-        );
+        $contents = (string) file_get_contents(dirname(__DIR__, 2) . '/.github/workflows/ci-runtime-lane.yml');
 
         self::assertStringNotContainsString('native-artifact-name:', $contents);
         self::assertStringContainsString(
@@ -379,9 +374,7 @@ final class CiWorkflowContractTest extends TestCase
 
     public function testTheRuntimeLaneRejectsAnInvalidNativeFollowUpPairing(): void
     {
-        $contents = (string) file_get_contents(
-            dirname(__DIR__, 2) . '/.github/workflows/ci-runtime-lane.yml',
-        );
+        $contents = (string) file_get_contents(dirname(__DIR__, 2) . '/.github/workflows/ci-runtime-lane.yml');
 
         self::assertStringContainsString(
             "(inputs.run-native || inputs.test-package) && (inputs.os-family != 'Darwin'",
