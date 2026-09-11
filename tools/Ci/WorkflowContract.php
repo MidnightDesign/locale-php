@@ -62,7 +62,7 @@ final class WorkflowContract
         self::requireScalars(
             $runtime,
             [
-                "matrix.extensionMode == 'absent' && ':intl' || 'intl'",
+                "matrix.extensionMode == 'absent' && ':intl, zip' || 'intl, zip'",
                 'matrix.integerSize',
                 'matrix.osFamily',
                 'matrix.architecture',

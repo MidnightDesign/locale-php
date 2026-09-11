@@ -47,7 +47,7 @@ jobs:
       runner: ${{ matrix.runner }}
       php: ${{ matrix.php }}
       extension-mode: ${{ matrix.extensionMode }}
-      setup-extension: ${{ matrix.extensionMode == 'absent' && ':intl' || 'intl' }}
+      setup-extension: ${{ matrix.extensionMode == 'absent' && ':intl, zip' || 'intl, zip' }}
       thread-safe: false
       integer-size: ${{ matrix.integerSize }}
       os-family: ${{ matrix.osFamily }}
