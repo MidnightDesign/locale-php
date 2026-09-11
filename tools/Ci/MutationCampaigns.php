@@ -13,7 +13,7 @@ final class MutationCampaigns
                 '/^Locale\\.php$/',
                 '/^CaseFirst\\.php$/',
                 '/^HourCycle\\.php$/',
-                '/^Internal\\/Data\\/LocaleAliases\\.php$/',
+                '/^Internal\\/Data\\//',
             ],
         ],
         'porcelain' => [
@@ -49,7 +49,7 @@ final class MutationCampaigns
 
     public static function forSource(string $source): ?string
     {
-        if ($source === 'src/Internal/Data/LocaleAliases.php') {
+        if (str_starts_with($source, 'src/Internal/Data/')) {
             return null;
         }
         if (in_array($source, ['src/Locale.php', 'src/CaseFirst.php', 'src/HourCycle.php'], true)) {

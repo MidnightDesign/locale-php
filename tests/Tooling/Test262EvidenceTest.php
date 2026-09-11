@@ -27,9 +27,9 @@ final class Test262EvidenceTest extends TestCase
      *         path: string,
      *         status: string,
      *         generatedScripts: list<array{path: string, identity: string, variant: string|null}>,
-     *         sourceAssertionCount?: int,
-     *         executionCount?: int,
-     *         executionFailures?: int,
+     *         sourceAssertionCount: int,
+     *         executionCount: int,
+     *         executionFailures: int,
      *         phpRepresentations?: list<string>,
      *         assertions: list<array{id: string, adaptations?: list<string>, status: string}>
      *     }>
@@ -58,9 +58,9 @@ final class Test262EvidenceTest extends TestCase
          *         path: string,
          *         status: string,
          *         generatedScripts: list<array{path: string, identity: string, variant: string|null}>,
-         *         sourceAssertionCount?: int,
-         *         executionCount?: int,
-         *         executionFailures?: int,
+         *         sourceAssertionCount: int,
+         *         executionCount: int,
+         *         executionFailures: int,
          *         phpRepresentations?: list<string>,
          *         assertions: list<array{id: string, adaptations?: list<string>, status: string}>
          *     }>
@@ -146,12 +146,60 @@ final class Test262EvidenceTest extends TestCase
             $passing += $fixture['status'] === 'passing' ? 1 : 0;
             $partiallyTranslated += $fixture['status'] === 'partially_translated' ? 1 : 0;
             $translated += $fixture['status'] !== 'translation_gap' ? 1 : 0;
-            $executionFailures += $fixture['executionFailures'] ?? 0;
+            $executionFailures += $fixture['executionFailures'];
         }
 
         self::assertSame($passing, $evidence['summary']['passingFixtures']);
         self::assertSame($partiallyTranslated, $evidence['summary']['partiallyTranslatedFixtures']);
         self::assertSame($translated, $evidence['summary']['translatedFixtures']);
         self::assertSame($executionFailures, $evidence['summary']['executionFailures']);
+    }
+
+    public function testLikelySubtagFixturesRetainCompleteSourceEvidence(): void
+    {
+        $evidence = self::evidence();
+        $fixtures = [];
+        foreach ($evidence['fixtures'] as $fixture) {
+            $fixtures[$fixture['path']] = $fixture;
+        }
+
+        foreach ([
+            'test/intl402/Locale/likely-subtags-grandfathered.js',
+            'test/intl402/Locale/likely-subtags.js',
+            'test/intl402/Locale/prototype/maximize/branding.js',
+            'test/intl402/Locale/prototype/maximize/length.js',
+            'test/intl402/Locale/prototype/maximize/name.js',
+            'test/intl402/Locale/prototype/maximize/prop-desc.js',
+            'test/intl402/Locale/prototype/minimize/branding.js',
+            'test/intl402/Locale/prototype/minimize/length.js',
+            'test/intl402/Locale/prototype/minimize/name.js',
+            'test/intl402/Locale/prototype/minimize/prop-desc.js',
+            'test/intl402/Locale/prototype/minimize/removing-likely-subtags-first-adds-likely-subtags.js',
+        ] as $path) {
+            self::assertArrayHasKey($path, $fixtures);
+            self::assertNotSame('translation_gap', $fixtures[$path]['status']);
+            self::assertGreaterThan(0, $fixtures[$path]['sourceAssertionCount']);
+            self::assertGreaterThan(0, $fixtures[$path]['executionCount']);
+            self::assertSame(0, $fixtures[$path]['executionFailures']);
+            foreach ($fixtures[$path]['assertions'] as $assertion) {
+                self::assertContains($assertion['status'], ['passing', 'partially_translated', 'inapplicable']);
+                self::assertNotEmpty($assertion['adaptations'] ?? []);
+            }
+        }
+
+        foreach (['maximize', 'minimize'] as $method) {
+            self::assertSame(
+                ['partially_translated'],
+                array_column($fixtures["test/intl402/Locale/prototype/{$method}/length.js"]['assertions'], 'status'),
+            );
+            self::assertSame(
+                ['partially_translated'],
+                array_column($fixtures["test/intl402/Locale/prototype/{$method}/name.js"]['assertions'], 'status'),
+            );
+            self::assertSame(
+                ['passing', 'inapplicable'],
+                array_column($fixtures["test/intl402/Locale/prototype/{$method}/prop-desc.js"]['assertions'], 'status'),
+            );
+        }
     }
 }

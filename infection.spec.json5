@@ -6,7 +6,7 @@
             "/^Locale\\.php$/",
             "/^CaseFirst\\.php$/",
             "/^HourCycle\\.php$/",
-            "/^Internal\\/Data\\/LocaleAliases\\.php$/"
+            "/^Internal\\/Data\\//"
         ]
     },
     "testFrameworkOptions": "--testsuite=test262-upstream",
