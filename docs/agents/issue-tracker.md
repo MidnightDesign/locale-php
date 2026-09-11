@@ -11,6 +11,14 @@ Issues and planning artifacts for this repository live in the private GitHub rep
 - Apply or remove labels with `gh issue edit`.
 - Close resolved issues with `gh issue close`.
 
+### Missing upstream tests
+
+When a repository issue is created to add missing spec coverage to TC39 Test262:
+
+- apply the `upstream-test` label;
+- include a small draft JavaScript/Test262 snippet that illustrates the intended assertions (it need not be exhaustive or ready to submit);
+- identify the uncovered observable behavior and track the upstream pull request through acceptance, the pinned-baseline update, and translation into this repository.
+
 GitHub shares one number space across issues and pull requests. Resolve an ambiguous number with `gh pr view <number>` and fall back to `gh issue view <number>`.
 
 ## Pull requests as a triage surface
