@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use Midnight\Intl\Tools\Ci\MatrixMutationScore;
+use Midnight\Intl\Tools\Ci\MutationCampaigns;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-if ($argc !== 8) {
-    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <spec-absent.json> <spec-disabled.json> <spec-native.json> <porcelain-absent.json> <porcelain-disabled.json> <porcelain-native.json>\n");
+if ($argc !== 3) {
+    fwrite(STDERR, "Usage: php tools/merge-mutation-reports.php <output> <reports-directory>\n");
     exit(2);
 }
 
@@ -19,9 +20,10 @@ if (!is_dir($directory) && !mkdir($directory, 0777, true) && !is_dir($directory)
 
 try {
     $reports = [];
-    foreach (['spec', 'porcelain'] as $campaignIndex => $campaign) {
-        foreach (['absent', 'disabled', 'native'] as $modeIndex => $mode) {
-            $path = $argv[2 + $campaignIndex * 3 + $modeIndex];
+    $reportsDirectory = rtrim($argv[2], '/\\');
+    foreach (MutationCampaigns::names() as $campaign) {
+        foreach (MutationCampaigns::extensionModes() as $mode) {
+            $path = sprintf('%s/%s/%s.json', $reportsDirectory, $campaign, $mode);
             $contents = @file_get_contents($path);
             if ($contents === false) {
                 throw new RuntimeException(sprintf('Unable to read %s/%s mutation report at %s.', $campaign, $mode, $path));

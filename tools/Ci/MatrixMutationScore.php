@@ -193,11 +193,11 @@ final class MatrixMutationScore
                     throw new \RuntimeException(sprintf('%s/%s contains an invalid mutant.', $campaign, $mode));
                 }
                 /** @var array<string, mixed> $row */
-                $definition = self::definition($campaign, $row);
-                $fingerprint = hash('sha256', json_encode($definition, JSON_THROW_ON_ERROR));
+                $mutantDefinition = self::parseMutantDefinition($campaign, $row);
+                $fingerprint = hash('sha256', json_encode($mutantDefinition, JSON_THROW_ON_ERROR));
                 $occurrences[$fingerprint] = ($occurrences[$fingerprint] ?? 0) + 1;
                 $identity = sprintf('%s:%d', $fingerprint, $occurrences[$fingerprint]);
-                $mutations[$identity] = ['definition' => $definition, 'result' => $result];
+                $mutations[$identity] = ['definition' => $mutantDefinition, 'result' => $result];
                 ++$reported;
             }
         }
@@ -223,7 +223,7 @@ final class MatrixMutationScore
      * @param array<string, mixed> $row
      * @return array{source: string, line: int, mutator: string, original: string, mutated: string, diff: string}
      */
-    private static function definition(string $campaign, array $row): array
+    private static function parseMutantDefinition(string $campaign, array $row): array
     {
         $mutator = $row['mutator'] ?? null;
         if (!is_array($mutator)) {

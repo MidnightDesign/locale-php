@@ -275,7 +275,7 @@ jobs:
           pattern: mutation-*
           path: build/downloaded
           merge-multiple: true
-      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix/spec/absent.json build/downloaded/matrix/spec/disabled.json build/downloaded/matrix/spec/native.json build/downloaded/matrix/porcelain/absent.json build/downloaded/matrix/porcelain/disabled.json build/downloaded/matrix/porcelain/native.json
+      - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:

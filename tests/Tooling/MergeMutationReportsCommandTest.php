@@ -20,12 +20,7 @@ final class MergeMutationReportsCommandTest extends TestCase
                 PHP_BINARY,
                 dirname(__DIR__, 2).'/tools/merge-mutation-reports.php',
                 $output,
-                $directory.'/missing-spec-absent.json',
-                $directory.'/spec-disabled.json',
-                $directory.'/spec-native.json',
-                $directory.'/porcelain-absent.json',
-                $directory.'/porcelain-disabled.json',
-                $directory.'/porcelain-native.json',
+                $directory.'/reports',
             ]);
             $process->run();
 
