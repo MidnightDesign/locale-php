@@ -15,6 +15,7 @@ $locale->script;   // Latn
 $locale->region;   // DE
 $locale->calendar; // gregory
 $locale->getTimeZones(); // ['Europe/Berlin', 'Europe/Busingen']
+$locale->getNumberingSystems(); // ['latn']
 
 $overridden = new Locale(
     $locale->toString(),
@@ -41,6 +42,13 @@ The constructor accepts named `language`, `script`, `region`, `variants`, `calen
 Identifiers may contain variants, transformed extensions, Unicode attributes and keywords, other singleton extensions, and private-use subtags. Parsing is strict ASCII and structural: syntactically valid unregistered subtags are accepted, while duplicate variants, duplicate extension singletons, and malformed extension sequences are rejected.
 
 `getTimeZones()` returns the pinned release data snapshot's canonical primary identifiers for an explicitly present region. It returns `null` when the locale has no region and never infers one from likely subtags or `rg`/`sd` keywords. Each call returns a fresh, unique, code-unit-sorted list; a present region with no known entries returns an empty list.
+
+`getNumberingSystems()` returns a fresh, one-element list. An explicit `nu` keyword is returned as-is; otherwise the element is the matched NumberFormat locale's default from the pinned CLDR projection, falling back to `latn` when no projected locale matches.
+
+```php
+(new Locale('fa'))->getNumberingSystems(); // ['arabext']
+(new Locale('en-u-nu-thai'))->getNumberingSystems(); // ['thai']
+```
 
 `maximize()` adds the language, script, and region implied by the pinned release data snapshot. `minimize()` removes only the subtags that can be recovered from that same snapshot. Both return fresh immutable values and preserve variants, extensions, and private use.
 

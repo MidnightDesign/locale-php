@@ -315,6 +315,121 @@ $timeZoneGenerated .= "\n";
 $timeZoneGenerated = MagoFormatter::format($root, 'src/Internal/Data/PrimaryTimeZones.php', $timeZoneGenerated);
 $timeZoneTarget = $root . '/src/Internal/Data/PrimaryTimeZones.php';
 
+$numberingSystemSourcePath = $root . '/resources/data/numbering-systems.json';
+$numberingSystemSource = file_get_contents($numberingSystemSourcePath);
+if ($numberingSystemSource === false) {
+    fwrite(STDERR, "Unable to read the numbering-system projection source.\n");
+    exit(1);
+}
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, defaults: array<string, string>, aliases: array<string, string>} $numberingSystemData */
+$numberingSystemData = json_decode($numberingSystemSource, true, flags: JSON_THROW_ON_ERROR);
+if ($numberingSystemData['format'] !== 1) {
+    fwrite(STDERR, "The numbering-system projection format is incompatible.\n");
+    exit(1);
+}
+$numberingSystemDefaults = preg_replace(
+    '/[ \t]+$/m',
+    '',
+    Midnight\Intl\Tools\PhpExporter::export($numberingSystemData['defaults']),
+);
+$numberingSystemAliases = preg_replace(
+    '/[ \t]+$/m',
+    '',
+    Midnight\Intl\Tools\PhpExporter::export($numberingSystemData['aliases']),
+);
+if ($numberingSystemDefaults === null || $numberingSystemAliases === null) {
+    throw new RuntimeException('Unable to export the numbering-system projection.');
+}
+$numberingSystemSourceSha256 = hash('sha256', $numberingSystemSource);
+$numberingSystemPayloadSha256 = hash('sha256', json_encode([
+    'format' => $numberingSystemData['format'],
+    'defaults' => $numberingSystemData['defaults'],
+    'aliases' => $numberingSystemData['aliases'],
+], JSON_THROW_ON_ERROR));
+$numberingSystemGenerated = <<<PHP
+    <?php
+
+    declare(strict_types=1);
+
+    namespace Midnight\Intl\Internal\Data;
+
+    enum NumberingSystems
+    {
+        public const FORMAT = {$numberingSystemData['format']};
+
+        /** @var string */
+        public const CLDR_REVISION = '{$numberingSystemData['cldrRevision']}';
+
+        /** @var string */
+        public const CLDR_CORE_SHA512 = '{$numberingSystemData['upstreamSha512']}';
+
+        /** @var string */
+        public const SOURCE_SHA256 = '{$numberingSystemSourceSha256}';
+
+        private const PAYLOAD_SHA256 = '{$numberingSystemPayloadSha256}';
+
+        /** @var array<string, string> */
+        public const DEFAULTS = {$numberingSystemDefaults};
+
+        /** @var array<string, string> */
+        public const ALIASES = {$numberingSystemAliases};
+
+        public static function defaultFor(string \$locale): string
+        {
+            self::assertIntegrity();
+
+            while (\$locale !== '') {
+                if (isset(self::DEFAULTS[\$locale])) {
+                    return self::DEFAULTS[\$locale];
+                }
+                if (isset(self::ALIASES[\$locale])) {
+                    return self::DEFAULTS[self::ALIASES[\$locale]];
+                }
+                \$position = strrpos(\$locale, '-');
+                \$locale = \$position === false ? '' : substr(\$locale, 0, \$position);
+            }
+
+            return 'latn';
+        }
+
+        public static function assertIntegrity(): void
+        {
+            /** @var bool|null \$verified */
+            static \$verified = null;
+            if (\$verified === true) {
+                return;
+            }
+
+            \$actual = hash('sha256', json_encode([
+                'format' => self::FORMAT,
+                'defaults' => self::DEFAULTS,
+                'aliases' => self::ALIASES,
+            ], JSON_THROW_ON_ERROR));
+            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+                throw new \UnexpectedValueException('The bundled numbering-system data is corrupt or incompatible.');
+            }
+            foreach (self::ALIASES as \$target) {
+                if (!isset(self::DEFAULTS[\$target])) {
+                    throw new \UnexpectedValueException('The bundled numbering-system aliases are corrupt.');
+                }
+            }
+            \$verified = true;
+        }
+
+        private static function supportsFormat(int \$format): bool
+        {
+            return \$format === 1;
+        }
+    }
+    PHP;
+$numberingSystemGenerated .= "\n";
+$numberingSystemGenerated = MagoFormatter::format(
+    $root,
+    'src/Internal/Data/NumberingSystems.php',
+    $numberingSystemGenerated,
+);
+$numberingSystemTarget = $root . '/src/Internal/Data/NumberingSystems.php';
+
 if (in_array('--check', $argv, true)) {
     if (
         !is_file($target)
@@ -329,6 +444,10 @@ if (in_array('--check', $argv, true)) {
         fwrite(STDERR, "src/Internal/Data/PrimaryTimeZones.php is not reproducible.\n");
         exit(1);
     }
+    if (!is_file($numberingSystemTarget) || file_get_contents($numberingSystemTarget) !== $numberingSystemGenerated) {
+        fwrite(STDERR, "src/Internal/Data/NumberingSystems.php is not reproducible.\n");
+        exit(1);
+    }
 
     $manifestSource = file_get_contents($root . '/resources/data/manifest.json');
     if ($manifestSource === false) {
@@ -336,7 +455,7 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -346,10 +465,12 @@ if (in_array('--check', $argv, true)) {
         'localeAliasesProjection' => $sourceSha256,
         'likelySubtagsProjection' => $likelySubtagsSourceSha256,
         'primaryTimeZonesProjection' => $timeZoneSourceSha256,
+        'numberingSystemsProjection' => $numberingSystemSourceSha256,
     ], JSON_THROW_ON_ERROR));
     if (
-        $manifest['format'] !== 4
+        $manifest['format'] !== 5
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
+        || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemData['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
@@ -357,6 +478,8 @@ if (in_array('--check', $argv, true)) {
         || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)
         || $manifest['projections']['primaryTimeZones']['sourceSha256'] !== $timeZoneSourceSha256
         || $manifest['projections']['primaryTimeZones']['generatedSha256'] !== hash('sha256', $timeZoneGenerated)
+        || $manifest['projections']['numberingSystems']['sourceSha256'] !== $numberingSystemSourceSha256
+        || $manifest['projections']['numberingSystems']['generatedSha256'] !== hash('sha256', $numberingSystemGenerated)
     ) {
         fwrite(STDERR, "The release data manifest fingerprints do not match.\n");
         exit(1);
@@ -381,5 +504,9 @@ if (file_put_contents($likelySubtagsTarget, $likelySubtagsGenerated) === false) 
 }
 if (file_put_contents($timeZoneTarget, $timeZoneGenerated) === false) {
     fwrite(STDERR, "Unable to write the primary time-zone projection.\n");
+    exit(1);
+}
+if (file_put_contents($numberingSystemTarget, $numberingSystemGenerated) === false) {
+    fwrite(STDERR, "Unable to write the numbering-system projection.\n");
     exit(1);
 }

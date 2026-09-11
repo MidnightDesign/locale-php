@@ -349,4 +349,20 @@ class Locale
 
         return true;
     }
+
+    /** @return list<string> */
+    public function getNumberingSystems(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        $numberingSystem = $this->identifier->keyword('nu');
+
+        return [
+            $numberingSystem ?? \Midnight\Intl\Internal\Data\NumberingSystems::defaultFor(
+                $this->identifier->baseName(),
+            ),
+        ];
+    }
 }

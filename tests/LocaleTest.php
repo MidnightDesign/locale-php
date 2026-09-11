@@ -164,6 +164,15 @@ final class LocaleTest extends TestCase
         self::assertNotContains('Injected/Mutation', $second);
     }
 
+    public function testItReturnsAFreshNumberingSystemList(): void
+    {
+        $locale = new Locale('fa');
+        $first = $locale->getNumberingSystems();
+        $first[] = 'injected';
+
+        self::assertNotContains('injected', $locale->getNumberingSystems());
+    }
+
     public function testItReturnsFreshPorcelainLikelySubtagValues(): void
     {
         $locale = new Locale('zh-Hant');
