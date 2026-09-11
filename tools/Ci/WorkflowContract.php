@@ -84,7 +84,7 @@ final class WorkflowContract
             'vendor/bin/php-cs-fixer',
             'composer data:check',
             'composer test262:check',
-            'php tools/test-package-install.php',
+            'composer test:package',
             'php tools/assert-extension-version.php xdebug 3.5.3',
             'php tools/record-ci-provenance.php',
         ], 'quality workflow', $failures);

@@ -8,7 +8,7 @@ namespace Midnight\Intl\Tools\Ci;
  * @phpstan-type RuntimeLane array{runner: string, php: string, extensionMode: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type RuntimeBaseLane array{runner: string, php: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string}
  * @phpstan-type InstallLane array{runner: string, php: string}
- * @phpstan-type StableRunner array{runner: string, osFamily: string, architecture: string, integerSize: int}
+ * @phpstan-type StableRunner array{runner: string, osFamily: string, architecture: string, integerSize: int, extensionModes: list<string>}
  * @phpstan-type ArmLane array{runner: string, php: string, architecture: string}
  * @phpstan-type WindowsX86Lane array{runner: string, php: string, architecture: string, threadSafe: bool, runtimeVersion: string, runtimeUrl: string, runtimeSha256: string}
  * @phpstan-type WindowsThreadSafeLane array{runner: string, php: string, architecture: string, threadSafe: bool}
@@ -83,8 +83,13 @@ final class Matrix
             }
         }
 
-        /** @phpstan-var list<RuntimeLane> $result */
-        $result = self::withExtensionModes($lanes, $this->extensionModes);
+        $result = [];
+        foreach ($lanes as $lane) {
+            $runner = $this->stableRunner($lane['runner']);
+            foreach ($runner['extensionModes'] as $mode) {
+                $result[] = [...$lane, 'extensionMode' => $mode];
+            }
+        }
 
         return $result;
     }
@@ -205,14 +210,17 @@ final class Matrix
                 || !is_string($record['runner'] ?? null)
                 || !is_string($record['osFamily'] ?? null)
                 || !is_string($record['architecture'] ?? null)
-                || !is_int($record['integerSize'] ?? null)) {
+                || !is_int($record['integerSize'] ?? null)
+                || !is_array($record['extensionModes'] ?? null)) {
                 throw new \RuntimeException('CI matrix stable runner is invalid.');
             }
+            $extensionModes = self::stringList($record, 'extensionModes');
             $result[] = [
                 'runner' => $record['runner'],
                 'osFamily' => $record['osFamily'],
                 'architecture' => $record['architecture'],
                 'integerSize' => $record['integerSize'],
+                'extensionModes' => $extensionModes,
             ];
         }
 

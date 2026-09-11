@@ -17,6 +17,13 @@ final class CiWorkflowContractTest extends TestCase
         self::assertSame([], WorkflowContract::validate(dirname(__DIR__, 2)));
     }
 
+    public function testRepositoryTextIsCheckedOutWithDeterministicLineEndings(): void
+    {
+        $contents = (string) file_get_contents(dirname(__DIR__, 2).'/.gitattributes');
+
+        self::assertStringContainsString('* text=auto eol=lf', $contents);
+    }
+
     public function testItBindsEachActionNameToItsOwnPin(): void
     {
         $root = $this->fixtureRoot();

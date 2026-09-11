@@ -16,7 +16,7 @@ final class CiMatrixTest extends TestCase
         $matrix = Matrix::fromFile(dirname(__DIR__, 2).'/.ci/matrix.json');
         $lanes = $matrix->runtimeLanes();
 
-        self::assertCount(36, $lanes);
+        self::assertCount(32, $lanes);
         $runtimes = [
             'ubuntu-24.04' => ['Linux', 'x64'],
             'windows-2022' => ['Windows', 'x64'],
@@ -24,7 +24,10 @@ final class CiMatrixTest extends TestCase
         ];
         foreach ($runtimes as $runner => [$osFamily, $architecture]) {
             foreach (['8.2', '8.3', '8.4', '8.5'] as $php) {
-                foreach (['absent', 'disabled', 'native'] as $mode) {
+                $extensionModes = $runner === 'macos-15'
+                    ? ['disabled', 'native']
+                    : ['absent', 'disabled', 'native'];
+                foreach ($extensionModes as $mode) {
                     self::assertContains([
                         'runner' => $runner,
                         'php' => $php,
@@ -37,6 +40,15 @@ final class CiMatrixTest extends TestCase
                 }
             }
         }
+        self::assertNotContains([
+            'runner' => 'macos-15',
+            'php' => '8.5',
+            'threadSafe' => false,
+            'integerSize' => 8,
+            'osFamily' => 'Darwin',
+            'architecture' => 'arm64',
+            'extensionMode' => 'absent',
+        ], $lanes);
     }
 
     public function testItKeepsEndpointAndSpecializedCoverageExplicit(): void

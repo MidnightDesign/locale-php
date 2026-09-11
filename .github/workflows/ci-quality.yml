@@ -207,7 +207,7 @@ jobs:
           phpts: nts
           update: true
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: php tools/test-package-install.php
+      - run: composer test:package
 
   mutation:
     name: Mutation / ${{ matrix.campaign }} / intl ${{ matrix.extensionMode }}
