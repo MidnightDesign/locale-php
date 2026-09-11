@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tests\Tooling;
 
 use Midnight\Intl\Tools\Ci\Matrix;
+use Midnight\Intl\Tools\Ci\PackageSmoke;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -74,5 +75,32 @@ final class CiMatrixTest extends TestCase
         $advisory = $matrix->advisoryRuntimeLanes();
         self::assertCount(3, $advisory);
         self::assertSame(['8.6'], array_values(array_unique(array_column($advisory, 'php'))));
+    }
+
+    public function testItRejectsAnUnknownRunnerExtensionModeExclusion(): void
+    {
+        $directory = PackageSmoke::temporaryDirectory('intl-locale-matrix');
+
+        try {
+            $data = json_decode(
+                (string) file_get_contents(dirname(__DIR__, 2).'/.ci/matrix.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            );
+            self::assertIsArray($data);
+            self::assertIsArray($data['stableRunners']);
+            self::assertIsArray($data['stableRunners'][0]);
+            unset($data['stableRunners'][0]['extensionModes']);
+            $data['stableRunners'][0]['excludedExtensionModes'] = ['surprise'];
+            $path = $directory.'/matrix.json';
+            file_put_contents($path, json_encode($data, JSON_THROW_ON_ERROR));
+
+            $this->expectException(\RuntimeException::class);
+            $this->expectExceptionMessage('unknown extension mode exclusion');
+
+            Matrix::fromFile($path);
+        } finally {
+            PackageSmoke::removeDirectory($directory);
+        }
     }
 }

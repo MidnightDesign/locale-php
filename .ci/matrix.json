@@ -2,9 +2,9 @@
     "stablePhp": ["8.2", "8.3", "8.4", "8.5"],
     "advisoryPhp": ["8.6"],
     "stableRunners": [
-        {"runner": "ubuntu-24.04", "osFamily": "Linux", "architecture": "x64", "integerSize": 8, "extensionModes": ["absent", "disabled", "native"]},
-        {"runner": "windows-2022", "osFamily": "Windows", "architecture": "x64", "integerSize": 8, "extensionModes": ["absent", "disabled", "native"]},
-        {"runner": "macos-15", "osFamily": "Darwin", "architecture": "arm64", "integerSize": 8, "extensionModes": ["disabled", "native"]}
+        {"runner": "ubuntu-24.04", "osFamily": "Linux", "architecture": "x64", "integerSize": 8},
+        {"runner": "windows-2022", "osFamily": "Windows", "architecture": "x64", "integerSize": 8},
+        {"runner": "macos-15", "osFamily": "Darwin", "architecture": "arm64", "integerSize": 8, "excludedExtensionModes": ["absent"]}
     ],
     "extensionModes": ["absent", "disabled", "native"],
     "specialized": {

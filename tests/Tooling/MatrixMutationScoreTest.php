@@ -84,10 +84,17 @@ final class MatrixMutationScoreTest extends TestCase
         ]);
 
         $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        self::assertSame(3, $baseline['format']);
+        self::assertSame([['disabled' => 'escaped']], array_values($baseline['mutations']));
         self::assertTrue(MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline));
         $porcelainBaseline = $baseline;
         $porcelainBaseline['campaign'] = 'porcelain';
-        self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($evidence, $porcelainBaseline));
+        try {
+            MatrixMutationScore::acceptsExpectedFailure($evidence, $porcelainBaseline);
+            self::fail('A baseline cannot reassign mutant identities to another campaign.');
+        } catch (\RuntimeException $error) {
+            self::assertStringContainsString('contains an unknown mutant identity', $error->getMessage());
+        }
 
         $passing = MatrixMutationScore::aggregate([
             'spec' => $this->campaign('src/Spec/Locale.php'),
@@ -110,6 +117,114 @@ final class MatrixMutationScoreTest extends TestCase
             'porcelain' => $this->campaign('src/Locale.php'),
         ]);
         self::assertFalse(MatrixMutationScore::acceptsExpectedFailure($regressed, $baseline));
+    }
+
+    public function testItCollapsesAnIdenticalFailureAcrossEveryMode(): void
+    {
+        $spec = $this->campaign('src/Spec/Locale.php', 'escaped');
+        $evidence = MatrixMutationScore::aggregate([
+            'spec' => $spec,
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+
+        self::assertSame(['escaped'], array_values($baseline['mutations']));
+        self::assertTrue(MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline));
+    }
+
+    public function testItRejectsAnUnknownExpectedFailureBaselineFormat(): void
+    {
+        $evidence = $this->expectedFailureEvidence();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        $baseline['format'] = 999;
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('format must be 3');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
+    }
+
+    public function testItRejectsUnknownExpectedFailureBaselineFields(): void
+    {
+        $evidence = $this->expectedFailureEvidence();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        $baseline['surprise'] = true;
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('contains unknown fields');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
+    }
+
+    public function testItRejectsAnUnknownExpectedFailureCampaign(): void
+    {
+        $evidence = $this->expectedFailureEvidence();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        $baseline['campaign'] = 'surprise';
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('names an unknown campaign');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
+    }
+
+    public function testItRejectsAnUnknownModeInTheExpectedFailureBaseline(): void
+    {
+        $evidence = $this->expectedFailureEvidence();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        $identity = array_key_first($baseline['mutations']);
+        self::assertIsString($identity);
+        $baseline['mutations'][$identity] = ['surprise' => 'escaped'];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('contains an unknown extension mode');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
+    }
+
+    public function testItRejectsAnUnknownResultInTheExpectedFailureBaseline(): void
+    {
+        $evidence = $this->expectedFailureEvidence();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        $identity = array_key_first($baseline['mutations']);
+        self::assertIsString($identity);
+        $baseline['mutations'][$identity] = 'unexpected-result';
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('contains an unknown result');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
+    }
+
+    public function testItValidatesBaselineEntriesEvenWhenTheEvidencePasses(): void
+    {
+        $evidence = MatrixMutationScore::aggregate([
+            'spec' => $this->campaign('src/Spec/Locale.php'),
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+        $baseline = [
+            'format' => 3,
+            'campaign' => 'spec',
+            'mutations' => [str_repeat('a', 64).':1' => 'unexpected-result'],
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('contains an unknown result');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
+    }
+
+    public function testItRejectsAStaleExpectedFailureMutantIdentity(): void
+    {
+        $evidence = $this->expectedFailureEvidence();
+        $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
+        $baseline['mutations'][str_repeat('a', 64).':1'] = 'escaped';
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('contains an unknown mutant identity');
+
+        MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
     }
 
     public function testItRejectsAMissingProjectCampaign(): void
@@ -169,13 +284,28 @@ final class MatrixMutationScoreTest extends TestCase
     }
 
     /** @return array<string, array<string, mixed>> */
-    private function campaign(string $file): array
+    private function campaign(string $file, string $result = 'killed'): array
     {
         return [
-            'absent' => $this->report($file),
-            'disabled' => $this->report($file),
-            'native' => $this->report($file),
+            'absent' => $this->report($file, $result),
+            'disabled' => $this->report($file, $result),
+            'native' => $this->report($file, $result),
         ];
+    }
+
+    /**
+     * @return array{
+     *     passing: bool,
+     *     campaigns: array<string, array{modes: array<string, array{obligations: int, killed: int, failures: int}>}>,
+     *     mutations: list<array{id: string, campaign: string, modes: array<string, string>}>
+     * }
+     */
+    private function expectedFailureEvidence(): array
+    {
+        return MatrixMutationScore::aggregate([
+            'spec' => $this->campaign('src/Spec/Locale.php', 'escaped'),
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
     }
 
     /** @return array<string, mixed> */
