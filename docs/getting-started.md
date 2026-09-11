@@ -16,6 +16,7 @@ $locale->region;   // DE
 $locale->calendar; // gregory
 $locale->getCalendars(); // ['gregory']
 $locale->getHourCycles(); // [HourCycle::H23, HourCycle::H12]
+$locale->getCollations(); // ['emoji', 'eor', 'phonebk']
 $locale->getTimeZones(); // ['Europe/Berlin', 'Europe/Busingen']
 $locale->getNumberingSystems(); // ['latn']
 
@@ -53,6 +54,8 @@ Identifiers may contain variants, transformed extensions, Unicode attributes and
 (new Locale('fa'))->getNumberingSystems(); // ['arabext']
 (new Locale('en-u-nu-thai'))->getNumberingSystems(); // ['thai']
 ```
+
+`getCollations()` returns the pinned release data snapshot's canonical collation identifiers for the matched locale, excluding the `standard` and `search` defaults. An explicit `co` keyword or constructor option produces a singleton list even when the value is unavailable for that locale. Unmatched locales return `['emoji', 'eor']`. Each call returns a fresh, code-unit-sorted list and does not consult host ICU or ambient locale defaults.
 
 `maximize()` adds the language, script, and region implied by the pinned release data snapshot. `minimize()` removes only the subtags that can be recovered from that same snapshot. Both return fresh immutable values and preserve variants, extensions, and private use.
 

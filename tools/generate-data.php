@@ -26,6 +26,12 @@ if ($scriptDirectionsSource === false) {
     fwrite(STDERR, "Unable to read the script-direction projection source.\n");
     exit(1);
 }
+$collationSourcePath = $root . '/resources/data/collations.json';
+$collationSource = file_get_contents($collationSourcePath);
+if ($collationSource === false) {
+    fwrite(STDERR, "Unable to read the collation availability projection source.\n");
+    exit(1);
+}
 
 /** @var array{
  *     format: int,
@@ -223,6 +229,20 @@ $hourCycleGenerated = generatePreferenceClass(
         'value' => $hourCycleData['preferences'],
     ]],
 );
+
+/** @var array{
+ *     format: int,
+ *     cldrVersion: string,
+ *     cldrRevision: string,
+ *     cldrCoreSha512: string,
+ *     root: list<string>,
+ *     locales: array<string, list<string>>
+ * } $collationData */
+$collationData = json_decode($collationSource, true, flags: JSON_THROW_ON_ERROR);
+if ($collationData['format'] !== 1) {
+    fwrite(STDERR, "The collation availability projection format is incompatible.\n");
+    exit(1);
+}
 $constants = '';
 foreach ([
     'LANGUAGE' => ['language', 'array<string, string>'],
@@ -343,7 +363,93 @@ foreach ([
     $mapArtifacts[$name] = generateMapProjection($root, $definition);
 }
 
+$collationRoot = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($collationData['root']));
+$collationLocales = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($collationData['locales']));
+if ($collationRoot === null || $collationLocales === null) {
+    throw new RuntimeException('Unable to export the collation availability projection.');
+}
+$collationSourceSha256 = hash('sha256', $collationSource);
+$collationPayloadSha256 = hash('sha256', json_encode([
+    'format' => $collationData['format'],
+    'root' => $collationData['root'],
+    'locales' => $collationData['locales'],
+], JSON_THROW_ON_ERROR));
+$collationGenerated = <<<PHP
+    <?php
+
+    declare(strict_types=1);
+
+    namespace Midnight\Intl\Internal\Data;
+
+    enum CollationAvailability
+    {
+        public const FORMAT = {$collationData['format']};
+
+        /** @var string */
+        public const CLDR_VERSION = '{$collationData['cldrVersion']}';
+
+        /** @var string */
+        public const CLDR_REVISION = '{$collationData['cldrRevision']}';
+
+        /** @var string */
+        public const CLDR_CORE_SHA512 = '{$collationData['cldrCoreSha512']}';
+
+        /** @var string */
+        public const SOURCE_SHA256 = '{$collationSourceSha256}';
+
+        private const PAYLOAD_SHA256 = '{$collationPayloadSha256}';
+
+        /** @var list<string> */
+        public const ROOT = {$collationRoot};
+
+        /** @var array<string, list<string>> */
+        public const LOCALES = {$collationLocales};
+
+        /** @return list<string> */
+        public static function forLocale(string \$locale): array
+        {
+            self::assertIntegrity();
+            while (\$locale !== '') {
+                if (isset(self::LOCALES[\$locale])) {
+                    return self::LOCALES[\$locale];
+                }
+                \$separator = strrpos(\$locale, '-');
+                \$locale = \$separator === false ? '' : substr(\$locale, 0, \$separator);
+            }
+
+            return self::ROOT;
+        }
+
+        public static function assertIntegrity(): void
+        {
+            /** @var bool|null \$verified */
+            static \$verified = null;
+            if (\$verified === true) {
+                return;
+            }
+
+            \$actual = hash('sha256', json_encode([
+                'format' => self::FORMAT,
+                'root' => self::ROOT,
+                'locales' => self::LOCALES,
+            ], JSON_THROW_ON_ERROR));
+            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+                throw new \UnexpectedValueException('The bundled collation data is corrupt or incompatible.');
+            }
+            \$verified = true;
+        }
+
+        private static function supportsFormat(int \$format): bool
+        {
+            return \$format === 1;
+        }
+    }
+    PHP;
+$collationGenerated .= "\n";
+$collationGenerated = MagoFormatter::format($root, 'src/Internal/Data/CollationAvailability.php', $collationGenerated);
+
 $target = $root . '/src/Internal/Data/LocaleAliases.php';
+$collationTarget = $root . '/src/Internal/Data/CollationAvailability.php';
 $timeZoneSourcePath = $root . '/resources/data/primary-time-zones.json';
 $timeZoneSource = file_get_contents($timeZoneSourcePath);
 if ($timeZoneSource === false) {
@@ -475,6 +581,12 @@ $generatedArtifacts = [
         'label' => 'hour-cycle preference',
         'target' => 'src/Internal/Data/HourCyclePreferences.php',
     ],
+    [
+        'sourceSha256' => $collationSourceSha256,
+        'generated' => $collationGenerated,
+        'label' => 'collation availability',
+        'target' => 'src/Internal/Data/CollationAvailability.php',
+    ],
     $numberingSystemArtifact,
 ];
 if (in_array('--check', $argv, true)) {
@@ -491,7 +603,7 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, collations: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -503,6 +615,7 @@ if (in_array('--check', $argv, true)) {
         'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']['sourceSha256'],
         'calendarPreferencesProjection' => hash('sha256', $calendarSource),
         'hourCyclePreferencesProjection' => hash('sha256', $hourCycleSource),
+        'collationsProjection' => $collationSourceSha256,
         'primaryTimeZonesProjection' => $timeZoneSourceSha256,
         'numberingSystemsProjection' => $numberingSystemSourceSha256,
     ], JSON_THROW_ON_ERROR));
@@ -528,6 +641,8 @@ if (in_array('--check', $argv, true)) {
         || $manifest['projections']['calendarPreferences']['generatedSha256'] !== hash('sha256', $calendarGenerated)
         || $manifest['projections']['hourCyclePreferences']['sourceSha256'] !== hash('sha256', $hourCycleSource)
         || $manifest['projections']['hourCyclePreferences']['generatedSha256'] !== hash('sha256', $hourCycleGenerated)
+        || $manifest['projections']['collations']['sourceSha256'] !== $collationSourceSha256
+        || $manifest['projections']['collations']['generatedSha256'] !== hash('sha256', $collationGenerated)
         || $manifest['projections']['primaryTimeZones']['sourceSha256'] !== $timeZoneSourceSha256
         || $manifest['projections']['primaryTimeZones']['generatedSha256'] !== hash('sha256', $timeZoneGenerated)
         || $manifest['projections']['numberingSystems']['sourceSha256'] !== $numberingSystemSourceSha256
@@ -551,6 +666,10 @@ foreach ($generatedArtifacts as $artifact) {
         fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact['label']));
         exit(1);
     }
+}
+if (file_put_contents($collationTarget, $collationGenerated) === false) {
+    fwrite(STDERR, "Unable to write the collation availability projection.\n");
+    exit(1);
 }
 
 /**
