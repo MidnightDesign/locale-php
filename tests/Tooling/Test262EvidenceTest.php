@@ -26,6 +26,7 @@ final class Test262EvidenceTest extends TestCase
      *     fixtures: list<array{
      *         path: string,
      *         status: string,
+     *         generatedScripts: list<array{path: string, identity: string, variant: string|null}>,
      *         sourceAssertionCount?: int,
      *         executionCount?: int,
      *         executionFailures?: int,
@@ -56,6 +57,7 @@ final class Test262EvidenceTest extends TestCase
          *     fixtures: list<array{
          *         path: string,
          *         status: string,
+         *         generatedScripts: list<array{path: string, identity: string, variant: string|null}>,
          *         sourceAssertionCount?: int,
          *         executionCount?: int,
          *         executionFailures?: int,
@@ -99,7 +101,8 @@ final class Test262EvidenceTest extends TestCase
          *     sourceAssertionCount: int,
          *     executionCount: int,
          *     phpRepresentations: list<string>,
-         *     assertions: list<array{id: string, adaptations: list<string>, status: string}>
+         *     assertions: list<array{id: string, adaptations: list<string>, status: string}>,
+         *     generatedScripts: list<array{path: string, identity: string, variant: string|null}>
          * } $fixture
          */
 
@@ -113,6 +116,15 @@ final class Test262EvidenceTest extends TestCase
             self::assertNotEmpty($assertion['adaptations']);
             self::assertSame('passing', $assertion['status']);
         }
+
+        self::assertSame(
+            [[
+                'path' => 'tests/Test262/Generated/test/intl402/Locale/constructor-options-script-valid.php',
+                'identity' => 'test/intl402/Locale/constructor-options-script-valid.js',
+                'variant' => null,
+            ]],
+            $fixture['generatedScripts'],
+        );
     }
 
     public function testIncompleteTranslationsPreventAConformanceClaim(): void

@@ -14,8 +14,6 @@ final class OptionObservationPipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-        private readonly string $generatedPath,
-        private readonly string $className,
         private readonly string $mode,
         private readonly array $options = [],
     ) {
@@ -108,13 +106,12 @@ final class OptionObservationPipeline implements FixturePipeline
             $evidence,
             count($results),
             $failureCount,
-            [$this->generatedPath => $this->render($fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($fixturePath))],
         );
     }
 
     private function render(string $fixturePath): string
     {
-        $className = $this->className;
         $provider = preg_replace(
             '/[ \t]+$/m',
             '',
@@ -124,28 +121,17 @@ final class OptionObservationPipeline implements FixturePipeline
             throw new \RuntimeException('Unable to export throwing getter options.');
         }
         $body = $this->mode === 'order' ? <<<'PHP'
-                    public function testTranslatedAssertion(): void
-                    {
-                        self::assertSame([
-                            'tag toString', 'get language', 'toString language', 'get script', 'toString script',
-                            'get region', 'toString region', 'get variants', 'toString variants',
-                            'get calendar', 'toString calendar', 'get collation', 'toString collation',
-                            'get hourCycle', 'toString hourCycle', 'get caseFirst', 'toString caseFirst',
-                            'get numeric', 'get numberingSystem', 'toString numberingSystem',
-                        ], OptionObservation::getterOrder());
-                    }
+                Assert::assertSame([
+                    'tag toString', 'get language', 'toString language', 'get script', 'toString script',
+                    'get region', 'toString region', 'get variants', 'toString variants',
+                    'get calendar', 'toString calendar', 'get collation', 'toString collation',
+                    'get hourCycle', 'toString hourCycle', 'get caseFirst', 'toString caseFirst',
+                    'get numeric', 'get numberingSystem', 'toString numberingSystem',
+                ], OptionObservation::getterOrder());
                 PHP : sprintf(<<<'PHP'
-                    /** @return list<array{string}> */
-                    public static function options(): array
-                    {
-                        return %s;
-                    }
-
-                    #[\PHPUnit\Framework\Attributes\DataProvider('options')]
-                    public function testTranslatedAssertion(string $option): void
-                    {
-                        self::assertTrue(OptionObservation::propagates($option));
-                    }
+                foreach (%s as [$option]) {
+                    Assert::assertTrue(OptionObservation::propagates($option));
+                }
                 PHP, $provider);
 
         return <<<PHP
@@ -157,15 +143,10 @@ final class OptionObservationPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Tests\Test262\Harness\OptionObservation;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class {$className} extends TestCase
-            {
             {$body}
-            }
             PHP . "\n";
     }
 }

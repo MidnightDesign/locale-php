@@ -17,8 +17,6 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
         private readonly string $optionName,
-        private readonly string $generatedPath,
-        private readonly string $className,
     ) {}
 
     public function run(string $source, string $fixturePath): FixtureResult
@@ -89,7 +87,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
             $evidenceAssertions,
             count($executionResults),
             $failureCount,
-            [$this->generatedPath => $this->render($generatedCases, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($generatedCases, $fixturePath))],
         );
     }
 
@@ -163,9 +161,7 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
         if ($caseExport === null) {
             throw new \RuntimeException('Unable to format the generated undefined option cases.');
         }
-        $className = $this->className;
-
-        return ltrim(<<<PHP
+        return <<<PHP
             <?php
 
             declare(strict_types=1);
@@ -174,36 +170,17 @@ final class UndefinedConstructorOptionPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Exception\RangeError;
             use Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class {$className} extends TestCase
-            {
-                /** @return array<string, array{string, string, string, string, string}> */
-                public static function cases(): array
-                {
-                    return {$caseExport};
-                }
+            foreach ({$caseExport} as [\$assertionId, \$tag, \$optionName, \$representation, \$expected]) {
+                \$result = \$expected === RangeError::class
+                    ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, ['type' => 'undefined'], \$representation)
+                    : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, ['type' => 'undefined'], \$representation, \$expected);
 
-                #[DataProvider('cases')]
-                public function testTranslatedAssertions(
-                    string \$assertionId,
-                    string \$tag,
-                    string \$optionName,
-                    string \$representation,
-                    string \$expected,
-                ): void {
-                    \$result = \$expected === RangeError::class
-                        ? ConstructorOptionAssertion::evaluateRangeError(\$tag, \$optionName, ['type' => 'undefined'], \$representation)
-                        : ConstructorOptionAssertion::evaluate(\$tag, \$optionName, ['type' => 'undefined'], \$representation, \$expected);
-
-                    self::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
-                }
+                Assert::assertSame('passing', \$result['status'], \$assertionId.': '.(\$result['failure'] ?? 'unknown failure'));
             }
-            PHP . "\n");
+            PHP . "\n";
     }
 }

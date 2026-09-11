@@ -9,6 +9,8 @@ use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
 use Midnight\Intl\Tools\Test262\EvidenceBuilder;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\FixtureResult;
+use Midnight\Intl\Tools\Test262\GeneratedOutputPublisher;
+use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
 use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
@@ -110,8 +112,6 @@ $mappedOptionPipeline = static function (
             $test262Revision,
             $ecma402Revision,
             $optionName,
-            'tests/Test262/Generated/' . $className . '.php',
-            $className,
             $cases,
         ),
         $representations,
@@ -201,148 +201,124 @@ $stateExpectations = static function (int $firstAssertion, array $values): array
 };
 
 /** @param list<array{tag: string, options?: array<string, mixed>, expectations: list<array{assertion: int, property: string, expected: string|bool|null}>}> $scenarios */
-$mappedStatePipeline = static function (
-    string $sourceSha256,
-    string $generatedPath,
-    string $className,
-    array $scenarios,
-) use ($assertionIdentities, $test262Revision, $ecma402Revision, $sourceBoundPipeline): SourceBoundFixturePipeline {
+$mappedStatePipeline = static function (string $sourceSha256, array $scenarios) use (
+    $assertionIdentities,
+    $test262Revision,
+    $ecma402Revision,
+    $sourceBoundPipeline,
+): SourceBoundFixturePipeline {
     /** @var list<array{tag: string, options?: array<string, mixed>, expectations: list<array{assertion: int, property: string, expected: string|bool|null}>}> $scenarios */
     return $sourceBoundPipeline(
-        new MappedLocaleStatePipeline(
-            $assertionIdentities,
-            $test262Revision,
-            $ecma402Revision,
-            $generatedPath,
-            $className,
-            $scenarios,
-        ),
+        new MappedLocaleStatePipeline($assertionIdentities, $test262Revision, $ecma402Revision, $scenarios),
         ['direct', 'associative_array', 'plain_object'],
         $sourceSha256,
     );
 };
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
-    'test/intl402/Locale/getters.js' => $mappedStatePipeline(
-        '8e0b947b19c9ba9b376341462d97391acd7d570dd7143c4c9fcb9b2a2646a615',
-        'tests/Test262/Generated/GettersTest.php',
-        'GettersTest',
+    'test/intl402/Locale/getters.js' => $mappedStatePipeline('8e0b947b19c9ba9b376341462d97391acd7d570dd7143c4c9fcb9b2a2646a615', [
         [
-            [
-                'tag' => 'de-latn-de-fonipa-1996-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn',
-                'expectations' => $stateExpectations(0, [
-                    ['toString',        'de-Latn-DE-1996-fonipa-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn'],
-                    ['baseName',        'de-Latn-DE-1996-fonipa'],
-                    ['language',        'de'],
-                    ['script',          'Latn'],
-                    ['region',          'DE'],
-                    ['variants',        '1996-fonipa'],
-                    ['calendar',        'gregory'],
-                    ['collation',       'phonebk'],
-                    ['hourCycle',       'h23'],
-                    ['caseFirst',       ''],
-                    ['numeric',         false],
-                    ['numberingSystem', 'latn'],
-                ]),
-            ],
-            [
-                'tag' => 'de-latn-de-fonipa-1996-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn',
-                'options' => [
-                    'language' => 'ja',
-                    'script' => 'jpan',
-                    'region' => 'jp',
-                    'variants' => 'Hepburn',
-                    'calendar' => 'japanese',
-                    'collation' => 'search',
-                    'hourCycle' => 'h24',
-                    'caseFirst' => 'false',
-                    'numeric' => 'true',
-                    'numberingSystem' => 'jpanfin',
-                ],
-                'expectations' => $stateExpectations(12, [
-                    ['toString',        'ja-Jpan-JP-hepburn-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin'],
-                    ['baseName',        'ja-Jpan-JP-hepburn'],
-                    ['language',        'ja'],
-                    ['script',          'Jpan'],
-                    ['region',          'JP'],
-                    ['variants',        'hepburn'],
-                    ['calendar',        'japanese'],
-                    ['collation',       'search'],
-                    ['hourCycle',       'h24'],
-                    ['caseFirst',       'false'],
-                    ['numeric',         true],
-                    ['numberingSystem', 'jpanfin'],
-                ]),
-            ],
-            [
-                'tag' => 'de-latn-de-fonipa-1996-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn',
-                'options' => ['language' => 'fr', 'region' => 'ca', 'collation' => 'standard', 'hourCycle' => 'h11'],
-                'expectations' => $stateExpectations(24, [
-                    ['toString',        'fr-Latn-CA-1996-fonipa-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn'],
-                    ['baseName',        'fr-Latn-CA-1996-fonipa'],
-                    ['language',        'fr'],
-                    ['script',          'Latn'],
-                    ['region',          'CA'],
-                    ['variants',        '1996-fonipa'],
-                    ['calendar',        'gregory'],
-                    ['collation',       'standard'],
-                    ['hourCycle',       'h11'],
-                    ['caseFirst',       ''],
-                    ['numeric',         false],
-                    ['numberingSystem', 'latn'],
-                ]),
-            ],
-            [
-                'tag' => 'und',
-                'expectations' => $stateExpectations(36, [
-                    ['toString', 'und'],
-                    ['baseName', 'und'],
-                    ['language', 'und'],
-                    ['script', null],
-                    ['region', null],
-                    ['variants', null],
-                ]),
-            ],
-            [
-                'tag' => 'und-US-u-co-emoji',
-                'expectations' => $stateExpectations(42, [
-                    ['toString',  'und-US-u-co-emoji'],
-                    ['baseName',  'und-US'],
-                    ['language',  'und'],
-                    ['script',    null],
-                    ['region',    'US'],
-                    ['variants',  null],
-                    ['collation', 'emoji'],
-                ]),
-            ],
-        ],
-    ),
-    'test/intl402/Locale/prototype/calendar/canonicalize.js' => $mappedStatePipeline(
-        'f822a4c333493c03b953eabab70fd3cb65fdd35c2052175041f382c1d630fce1',
-        'tests/Test262/Generated/CalendarCanonicalizeTest.php',
-        'CalendarCanonicalizeTest',
-        [[
-            'tag' => 'en',
-            'options' => ['calendar' => 'islamicc'],
+            'tag' => 'de-latn-de-fonipa-1996-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn',
             'expectations' => $stateExpectations(0, [
-                ['toString', 'en-u-ca-islamic-civil'],
-                ['calendar', 'islamic-civil'],
+                ['toString',        'de-Latn-DE-1996-fonipa-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn'],
+                ['baseName',        'de-Latn-DE-1996-fonipa'],
+                ['language',        'de'],
+                ['script',          'Latn'],
+                ['region',          'DE'],
+                ['variants',        '1996-fonipa'],
+                ['calendar',        'gregory'],
+                ['collation',       'phonebk'],
+                ['hourCycle',       'h23'],
+                ['caseFirst',       ''],
+                ['numeric',         false],
+                ['numberingSystem', 'latn'],
             ]),
-        ]],
-    ),
-    'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js' => $mappedStatePipeline(
-        '07f9babd1527066e864efb8b6b2d102a753a87c0b3324ffc1e9c17782d763c51',
-        'tests/Test262/Generated/FirstDayOfWeekValidIdentifierTest.php',
-        'FirstDayOfWeekValidIdentifierTest',
-        array_map(static fn(string $day): array => [
-            'tag' => 'en-u-fw-' . $day,
-            'expectations' => [['assertion' => 0, 'property' => 'firstDayOfWeek', 'expected' => $day]],
-        ], ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
-    ),
+        ],
+        [
+            'tag' => 'de-latn-de-fonipa-1996-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn',
+            'options' => [
+                'language' => 'ja',
+                'script' => 'jpan',
+                'region' => 'jp',
+                'variants' => 'Hepburn',
+                'calendar' => 'japanese',
+                'collation' => 'search',
+                'hourCycle' => 'h24',
+                'caseFirst' => 'false',
+                'numeric' => 'true',
+                'numberingSystem' => 'jpanfin',
+            ],
+            'expectations' => $stateExpectations(12, [
+                ['toString',        'ja-Jpan-JP-hepburn-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin'],
+                ['baseName',        'ja-Jpan-JP-hepburn'],
+                ['language',        'ja'],
+                ['script',          'Jpan'],
+                ['region',          'JP'],
+                ['variants',        'hepburn'],
+                ['calendar',        'japanese'],
+                ['collation',       'search'],
+                ['hourCycle',       'h24'],
+                ['caseFirst',       'false'],
+                ['numeric',         true],
+                ['numberingSystem', 'jpanfin'],
+            ]),
+        ],
+        [
+            'tag' => 'de-latn-de-fonipa-1996-u-ca-gregory-co-phonebk-hc-h23-kf-true-kn-false-nu-latn',
+            'options' => ['language' => 'fr', 'region' => 'ca', 'collation' => 'standard', 'hourCycle' => 'h11'],
+            'expectations' => $stateExpectations(24, [
+                ['toString',        'fr-Latn-CA-1996-fonipa-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn'],
+                ['baseName',        'fr-Latn-CA-1996-fonipa'],
+                ['language',        'fr'],
+                ['script',          'Latn'],
+                ['region',          'CA'],
+                ['variants',        '1996-fonipa'],
+                ['calendar',        'gregory'],
+                ['collation',       'standard'],
+                ['hourCycle',       'h11'],
+                ['caseFirst',       ''],
+                ['numeric',         false],
+                ['numberingSystem', 'latn'],
+            ]),
+        ],
+        [
+            'tag' => 'und',
+            'expectations' => $stateExpectations(36, [
+                ['toString', 'und'],
+                ['baseName', 'und'],
+                ['language', 'und'],
+                ['script', null],
+                ['region', null],
+                ['variants', null],
+            ]),
+        ],
+        [
+            'tag' => 'und-US-u-co-emoji',
+            'expectations' => $stateExpectations(42, [
+                ['toString',  'und-US-u-co-emoji'],
+                ['baseName',  'und-US'],
+                ['language',  'und'],
+                ['script',    null],
+                ['region',    'US'],
+                ['variants',  null],
+                ['collation', 'emoji'],
+            ]),
+        ],
+    ]),
+    'test/intl402/Locale/prototype/calendar/canonicalize.js' => $mappedStatePipeline('f822a4c333493c03b953eabab70fd3cb65fdd35c2052175041f382c1d630fce1', [[
+        'tag' => 'en',
+        'options' => ['calendar' => 'islamicc'],
+        'expectations' => $stateExpectations(0, [
+            ['toString', 'en-u-ca-islamic-civil'],
+            ['calendar', 'islamic-civil'],
+        ]),
+    ]]),
+    'test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js' => $mappedStatePipeline('07f9babd1527066e864efb8b6b2d102a753a87c0b3324ffc1e9c17782d763c51', array_map(static fn(string $day): array => [
+        'tag' => 'en-u-fw-' . $day,
+        'expectations' => [['assertion' => 0, 'property' => 'firstDayOfWeek', 'expected' => $day]],
+    ], ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'])),
     'test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js' => $mappedStatePipeline(
         '7cc86612c8c41133e3e17649c65b96f923604de8d02ff578398a1433b0dcc878',
-        'tests/Test262/Generated/FirstDayOfWeekValidOptionsTest.php',
-        'FirstDayOfWeekValidOptionsTest',
         array_merge(...array_map(static fn(array $row): array => [
             [
                 'tag' => 'en',
@@ -382,8 +358,6 @@ $fixturePipelines = [
     ),
     'test/intl402/Locale/constructor-options-canonicalized.js' => $mappedStatePipeline(
         '5e978ad0e8df3b258dbec4af646532a712c0a28ac906a245f7c28450211d0613',
-        'tests/Test262/Generated/ConstructorOptionsCanonicalizedTest.php',
-        'ConstructorOptionsCanonicalizedTest',
         array_merge(...array_map(static fn(array $row): array => [
             [
                 'tag' => 'en-u-ca-' . $row[1],
@@ -675,8 +649,6 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/ConstructorUnicodeExtensionInvalidTest.php',
-        'ConstructorUnicodeExtensionInvalidTest',
     ),
     'test/intl402/Locale/constructor-unicode-ext-valid.js' => new IdentifierCanonicalizationPipeline(
         $assertionIdentities,
@@ -692,15 +664,11 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/RejectDuplicateVariantsTest.php',
-        'RejectDuplicateVariantsTest',
     ),
     'test/intl402/Locale/reject-duplicate-variants-in-tlang.js' => new IdentifierRejectionPipeline(
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/RejectDuplicateVariantsInTlangTest.php',
-        'RejectDuplicateVariantsInTlangTest',
     ),
     'test/intl402/Locale/constructor-options-script-valid.js' => new ConstructorFixturePipeline(
         new ConstructorOptionsScriptTranslator($assertionIdentities),
@@ -715,8 +683,6 @@ $fixturePipelines = [
         $test262Revision,
         $ecma402Revision,
         'script',
-        'tests/Test262/Generated/ConstructorOptionsScriptValidUndefinedTest.php',
-        'ConstructorOptionsScriptValidUndefinedTest',
     ),
     'test/intl402/Locale/constructor-options-language-grandfathered.js' => $mappedOptionPipeline(
         'language',
@@ -1008,39 +974,24 @@ $fixturePipelines = [
         ],
     ),
     'test/intl402/Locale/constructor-getter-order.js' => $sourceBoundPipeline(
-        new OptionObservationPipeline(
-            $assertionIdentities,
-            $test262Revision,
-            $ecma402Revision,
-            'tests/Test262/Generated/ConstructorGetterOrderTest.php',
-            'ConstructorGetterOrderTest',
-            'order',
-        ),
+        new OptionObservationPipeline($assertionIdentities, $test262Revision, $ecma402Revision, 'order'),
         ['behavioral_object'],
         'ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044',
     ),
     'test/intl402/Locale/constructor-options-throwing-getters.js' => $sourceBoundPipeline(
-        new OptionObservationPipeline(
-            $assertionIdentities,
-            $test262Revision,
-            $ecma402Revision,
-            'tests/Test262/Generated/ConstructorOptionsThrowingGettersTest.php',
-            'ConstructorOptionsThrowingGettersTest',
-            'throws',
-            [
-                'language',
-                'script',
-                'region',
-                'variants',
-                'calendar',
-                'collation',
-                'firstDayOfWeek',
-                'hourCycle',
-                'caseFirst',
-                'numeric',
-                'numberingSystem',
-            ],
-        ),
+        new OptionObservationPipeline($assertionIdentities, $test262Revision, $ecma402Revision, 'throws', [
+            'language',
+            'script',
+            'region',
+            'variants',
+            'calendar',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'caseFirst',
+            'numeric',
+            'numberingSystem',
+        ]),
         ['behavioral_object'],
         'c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882',
     ),
@@ -1123,11 +1074,12 @@ if ($blockingResults !== []) {
 
 $generatedFiles = [];
 foreach ($fixtureResults as $result) {
-    foreach ($result->generatedFiles() as $path => $contents) {
+    foreach ($result->generatedScripts() as $script) {
+        $path = $script->path();
         if ($path === 'tests/Test262/evidence.json' || isset($generatedFiles[$path])) {
             throw new RuntimeException('Multiple fixture pipelines generated ' . $path . '.');
         }
-        $generatedFiles[$path] = $contents;
+        $generatedFiles[$path] = $script->contents();
     }
 }
 $outputs = [
@@ -1136,15 +1088,31 @@ $outputs = [
 ];
 
 $check = in_array('--check', $argv, true);
-foreach ($outputs as $path => $contents) {
-    $absolutePath = $root . '/' . $path;
-    if ($check) {
+$expectedGeneratedFiles = array_values(array_filter(
+    array_keys($outputs),
+    static fn(string $path): bool => str_starts_with($path, 'tests/Test262/Generated/'),
+));
+sort($expectedGeneratedFiles);
+$staleGeneratedFiles = array_values(array_diff(
+    GeneratedScriptCatalog::generatedPhpFiles($root),
+    $expectedGeneratedFiles,
+));
+if ($check) {
+    if ($staleGeneratedFiles !== []) {
+        foreach ($staleGeneratedFiles as $path) {
+            fwrite(STDERR, $path . " is stale.\n");
+        }
+        exit(1);
+    }
+    foreach ($outputs as $path => $contents) {
+        $absolutePath = $root . '/' . $path;
         if (!is_file($absolutePath) || file_get_contents($absolutePath) !== $contents) {
             fwrite(STDERR, $path . " is not reproducible.\n");
             exit(1);
         }
-        continue;
     }
 
-    writeRequiredFile($absolutePath, $contents);
+    exit(0);
 }
+
+(new GeneratedOutputPublisher($root))->publish($outputs);

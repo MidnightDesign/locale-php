@@ -18,8 +18,6 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         private readonly AssertionIdentityExtractor $assertionIdentities,
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
-        private readonly string $generatedPath,
-        private readonly string $className,
         private readonly array $scenarios,
     ) {}
 
@@ -114,7 +112,7 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             $evidenceAssertions,
             count($executions),
             $failureCount,
-            [$this->generatedPath => $this->render($generated, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($generated, $fixturePath))],
         );
     }
 
@@ -163,8 +161,6 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         if ($export === null) {
             throw new \RuntimeException('Unable to export mapped locale-state cases.');
         }
-        $className = $this->className;
-
         return <<<PHP
             <?php
 
@@ -174,34 +170,19 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Spec\Locale;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class {$className} extends TestCase
-            {
-                /** @return array<string, array{string, string, ?array<string, mixed>, string, string, string|bool|null}> */
-                public static function cases(): array
-                {
-                    return {$export};
-                }
+            foreach ({$export} as [\$assertionId, \$tag, \$options, \$representation, \$property, \$expected]) {
+                \$locale = match (\$representation) {
+                    'direct' => new Locale(\$tag),
+                    'associative_array' => new Locale(\$tag, \$options),
+                    'plain_object' => new Locale(\$tag, (object) \$options),
+                    default => throw new \InvalidArgumentException('Unsupported representation.'),
+                };
+                \$actual = \$property === 'toString' ? \$locale->toString() : \$locale->{\$property};
 
-                /** @param array<string, mixed>|null \$options */
-                #[DataProvider('cases')]
-                public function testTranslatedAssertions(string \$assertionId, string \$tag, ?array \$options, string \$representation, string \$property, string|bool|null \$expected): void
-                {
-                    \$locale = match (\$representation) {
-                        'direct' => new Locale(\$tag),
-                        'associative_array' => new Locale(\$tag, \$options),
-                        'plain_object' => new Locale(\$tag, (object) \$options),
-                        default => throw new \InvalidArgumentException('Unsupported representation.'),
-                    };
-                    \$actual = \$property === 'toString' ? \$locale->toString() : \$locale->{\$property};
-
-                    self::assertSame(\$expected, \$actual, \$assertionId);
-                }
+                Assert::assertSame(\$expected, \$actual, \$assertionId);
             }
             PHP . "\n";
     }
