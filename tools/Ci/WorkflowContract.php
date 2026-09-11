@@ -8,8 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 final class WorkflowContract
 {
-    private const NATIVE_FOLLOW_UP_GUARD =
-        "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
+    private const NATIVE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
 
     /** @return list<string> */
     public static function validate(string $root): array
@@ -586,6 +585,38 @@ final class WorkflowContract
             if ($workflow->triggers() !== $expectedTriggers) {
                 $failures[] = sprintf('%s has invalid activation triggers.', $path);
             }
+        }
+
+        $pullRequest = $workflows['.github/workflows/pull-request.yml'] ?? null;
+        $gate = $pullRequest?->jobs()['gate'] ?? null;
+        if (
+            !is_array($gate)
+            || ($gate['name'] ?? null) !== 'CI gate'
+            || ($gate['if'] ?? null) !== '${{ always() }}'
+            || ($gate['needs'] ?? null) !== ['runtime', 'quality']
+            || ($gate['runs-on'] ?? null) !== 'ubuntu-24.04'
+        ) {
+            $failures[] = 'The pull-request workflow must expose the stable CI gate.';
+        }
+        if ($pullRequest !== null) {
+            self::requireNamedStep(
+                $pullRequest,
+                'gate',
+                'Require successful evidence',
+                [
+                    'env' => [
+                        'RUNTIME_RESULT' => '${{ needs.runtime.result }}',
+                        'QUALITY_RESULT' => '${{ needs.quality.result }}',
+                    ],
+                    'run' =>
+                        "if [[ \"\$RUNTIME_RESULT\" != \"success\" || \"\$QUALITY_RESULT\" != \"success\" ]]; then\n"
+                            . "  echo \"Runtime or quality evidence failed.\"\n"
+                            . "  exit 1\n"
+                            . "fi\n",
+                ],
+                'pull-request workflow',
+                $failures,
+            );
         }
 
         $nightly = $workflows['.github/ci/public-nightly.yml'] ?? null;
