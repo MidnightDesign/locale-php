@@ -141,6 +141,10 @@
                 "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js": "051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60",
                 "test/intl402/Locale/prototype/getTimeZones/output-array.js": "86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f",
                 "test/intl402/Locale/prototype/getTimeZones/prop-desc.js": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
+                "test/intl402/Locale/prototype/getNumberingSystems/branding.js": "530307c9dbee32509652923d38e224bfe1d4afb43858be32ddc7f6bcf54bb303",
+                "test/intl402/Locale/prototype/getNumberingSystems/name.js": "f3591c1be5c56bbcbc1acafb179d67dbfac6ce93d7629839df198ae90bd0b02c",
+                "test/intl402/Locale/prototype/getNumberingSystems/output-array.js": "76789a13dba8b82b03e2a0aefc963111042aa5f8c8e4656899a707a73570b534",
+                "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js": "0cd175aae9f0a27c10544c4577ff32e750b1563f63144b9b0bf11d35d7b21120",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
             },
@@ -165,8 +169,8 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 84,
-        "passingFixtures": 74,
+        "translatedFixtures": 88,
+        "passingFixtures": 78,
         "partiallyTranslatedFixtures": 10,
         "translationGaps": 465,
         "executionFailures": 0
@@ -13137,6 +13141,266 @@
                 {
                     "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/prop-desc.php",
                     "identity": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/branding.js",
+            "sha256": "530307c9dbee32509652923d38e224bfe1d4afb43858be32ddc7f6bcf54bb303",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 10,
+            "executionCount": 10,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "f7baf4e354707ac20041e7d24bda86d85708633ecc7cc3063e1c4ad0ffa124c9",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript function branding is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L19:C1:assert.throws",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "4b29f400cc40f6784334033bcf6473aea6bc6be087261f99c4bbe08c0791cfb1",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L20:C1:assert.throws",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "f03302e74df8f44c8ce799e16c017b0e59f571d8bb0554db6313fada67f1b62c",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L21:C1:assert.throws",
+                    "line": 21,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "2323f4f07ed2974615370c008a8e514cd487455ab98d29702c00490bfcb95c3e",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L22:C1:assert.throws",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "3e41e0cdf86841bb9ba46119242583921621ae8d0ab50a58b26aabba0fcdc793",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L23:C1:assert.throws",
+                    "line": 23,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "74a412a6d65d178962b9581e13ace690cf4454e7363e715e6821e5072d7c9119",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L24:C1:assert.throws",
+                    "line": 24,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "258d3eb657e0fc0c0b13eea8dd29173ed0a89ef1d7113d236c04d89156a9cff9",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L25:C1:assert.throws",
+                    "line": 25,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "790d5dc85c17d11f29cb5ea4115dad3fa9246148772cac87be443f2dc5b36ae0",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L26:C1:assert.throws",
+                    "line": 26,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "202cccb1d886ba581e94762ebaa81d391275591ed8fb6c8c0d0256bb4ffec12c",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/branding.js:L27:C1:assert.throws",
+                    "line": 27,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "11a18752e590d80dad8ea037a67d1b3f690f9aebebb3b41b752c4f6ad479d1c7",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order; a PHP receiver adapter represents call-with-receiver semantics.",
+                        "ECMAScript undefined and Symbol use the nearest PHP representations because PHP has no corresponding values."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getNumberingSystems/branding.php",
+                    "identity": "test/intl402/Locale/prototype/getNumberingSystems/branding.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/name.js",
+            "sha256": "f3591c1be5c56bbcbc1acafb179d67dbfac6ce93d7629839df198ae90bd0b02c",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/name.js:L15:C1:verifyProperty",
+                    "line": 15,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "68238b441d542c78ffb12167ffcc5ad4bfee0b87c8c5507ab9d993da952d0a25",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript name value is represented by ReflectionMethod::getName().",
+                        "ECMAScript name-property descriptor flags have no PHP method-metadata counterpart."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getNumberingSystems/name.php",
+                    "identity": "test/intl402/Locale/prototype/getNumberingSystems/name.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/output-array.js",
+            "sha256": "76789a13dba8b82b03e2a0aefc963111042aa5f8c8e4656899a707a73570b534",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/output-array.js:L15:C1:assert",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "4b9a55667b57eea154cfcc68bf94c8429ffdc9eebd044f9c95e4bddc4d5a57c4",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/output-array.js:L16:C1:assert",
+                    "line": 16,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "8a09acba610eccd216bb398721de16d1a3b3040bd2d2868b602d95e2e74c5546",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript Array is represented by a PHP list array."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getNumberingSystems/output-array.php",
+                    "identity": "test/intl402/Locale/prototype/getNumberingSystems/output-array.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js",
+            "sha256": "0cd175aae9f0a27c10544c4577ff32e750b1563f63144b9b0bf11d35d7b21120",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "69f6dbf6d4b4718f40fdb0c262a3ab1f96f0454b18875f96bc29aa713c0b980f",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "2ea8e4d27ac6173e8d810a9c741c17999fc3b85e2e0f71149f0b2d39809e8836",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript prototype data property is represented by a public, non-static PHP method.",
+                        "ECMAScript writable, enumerable, and configurable flags have no PHP method-metadata counterparts."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getNumberingSystems/prop-desc.php",
+                    "identity": "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js",
                     "variant": null
                 }
             ]

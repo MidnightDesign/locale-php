@@ -81,6 +81,8 @@ $unicodeKeywordOptionsCatalog = require __DIR__ . '/Test262/Fixtures/unicode-key
 $coreLocaleCatalog = require __DIR__ . '/Test262/Fixtures/core-locale.php';
 /** @var Closure(FixtureCatalog): array<string, FixturePipeline> $timeZonesCatalog */
 $timeZonesCatalog = require __DIR__ . '/Test262/Fixtures/time-zones.php';
+/** @var Closure(FixtureCatalog): array<string, FixturePipeline> $numberingSystemsCatalog */
+$numberingSystemsCatalog = require __DIR__ . '/Test262/Fixtures/numbering-systems.php';
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
     ...$localeStateAndOpenKeywordCatalog($catalog),
@@ -88,6 +90,7 @@ $fixturePipelines = [
     ...$unicodeKeywordOptionsCatalog($catalog),
     ...$coreLocaleCatalog($catalog),
     ...$timeZonesCatalog($catalog),
+    ...$numberingSystemsCatalog($catalog),
 ];
 
 $fixtureSources = [];
