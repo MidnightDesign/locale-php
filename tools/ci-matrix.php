@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 use Midnight\Intl\Tools\Ci\Matrix;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require __DIR__ . '/Ci/Matrix.php';
 
 $matrix = Matrix::fromFile(dirname(__DIR__) . '/.ci/matrix.json');
 $selection = $argv[1] ?? null;
 $lanes = match ($selection) {
     'runtime' => $matrix->runtimeLanes(),
-    'install' => $matrix->installLanes(),
+    'runtime-jobs' => $matrix->runtimeJobs(),
+    'install' => $matrix->installLanes(($argv[2] ?? '') !== '--without-macos'),
     'arm-runtime' => $matrix->armRuntimeLanes(),
     'windows-x86-runtime' => $matrix->windowsX86RuntimeLanes(),
     'windows-ts-runtime' => $matrix->windowsThreadSafeRuntimeLanes(),

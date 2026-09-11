@@ -3,6 +3,10 @@ name: Reusable quality evidence
 on:
   workflow_call:
     inputs:
+      separate-macos-install:
+        description: Keep standalone macOS package checks when stable runtime evidence is not called.
+        type: boolean
+        default: true
       timeout-minutes:
         type: number
         default: 30
@@ -170,17 +174,9 @@ jobs:
       install: ${{ steps.matrix.outputs.install }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
-        with:
-          php-version: '8.5'
-          tools: composer:2.10.3
-          coverage: none
-        env:
-          fail-fast: true
-      - run: composer install --no-interaction --no-progress --prefer-dist
       - id: matrix
         shell: bash
-        run: echo "install=$(php tools/ci-matrix.php install)" >> "$GITHUB_OUTPUT"
+        run: echo "install=$(php tools/ci-matrix.php install ${{ !inputs.separate-macos-install && '--without-macos' || '' }})" >> "$GITHUB_OUTPUT"
 
   install:
     name: Install / PHP ${{ matrix.php }} / ${{ matrix.runner }}

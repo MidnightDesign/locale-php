@@ -97,18 +97,47 @@ final class Matrix
     }
 
     /** @return list<InstallLane> */
-    public function installLanes(): array
+    public function installLanes(bool $includeMacos = true): array
     {
         $minimumPhp = $this->stablePhp[0] ?? throw new \LogicException('Stable PHP matrix is empty.');
         $maximumPhp = end($this->stablePhp);
 
         $lanes = [];
         foreach ($this->stableRunners as $runner) {
+            if (!$includeMacos && $runner['osFamily'] === 'Darwin') {
+                continue;
+            }
             $lanes[] = ['runner' => $runner['runner'], 'php' => $minimumPhp];
             $lanes[] = ['runner' => $runner['runner'], 'php' => $maximumPhp];
         }
 
         return $lanes;
+    }
+
+    /** @return list<array{runner: string, php: string, extensionMode: string, threadSafe: bool, integerSize: int, osFamily: string, architecture: string, runNative: bool, testPackage: bool}> */
+    public function runtimeJobs(): array
+    {
+        $lanes = $this->runtimeLanes();
+        $installLanes = $this->installLanes();
+        $jobs = [];
+        foreach ($lanes as $lane) {
+            $macos = $lane['osFamily'] === 'Darwin';
+            $paired =
+                $macos
+                && in_array([...$lane, 'extensionMode' => 'disabled'], $lanes, true)
+                && in_array([...$lane, 'extensionMode' => 'native'], $lanes, true);
+            if ($paired && $lane['extensionMode'] === 'native') {
+                continue;
+            }
+            $jobs[] = [
+                ...$lane,
+                'runNative' => $paired && $lane['extensionMode'] === 'disabled',
+                'testPackage' =>
+                    $macos && in_array(['runner' => $lane['runner'], 'php' => $lane['php']], $installLanes, true),
+            ];
+        }
+
+        return $jobs;
     }
 
     /** @return list<ArmRuntimeLane> */
