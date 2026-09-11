@@ -207,6 +207,16 @@ class Locale
         return new self($this->identifier->minimize()->toString());
     }
 
+    /** @return array{direction: 'ltr'|'rtl'|null} */
+    public function getTextInfo(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return ['direction' => $this->identifier->textDirection()];
+    }
+
     /**
      * @param array<array-key, mixed>|object $options
      */

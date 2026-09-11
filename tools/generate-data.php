@@ -19,6 +19,12 @@ if ($likelySubtagsSource === false) {
     fwrite(STDERR, "Unable to read the likely-subtag projection source.\n");
     exit(1);
 }
+$scriptDirectionsSourcePath = $root . '/resources/data/script-directions.json';
+$scriptDirectionsSource = file_get_contents($scriptDirectionsSourcePath);
+if ($scriptDirectionsSource === false) {
+    fwrite(STDERR, "Unable to read the script-direction projection source.\n");
+    exit(1);
+}
 
 /** @var array{
  *     format: int,
@@ -52,6 +58,19 @@ if ($data['format'] !== 3) {
 $likelySubtagsData = json_decode($likelySubtagsSource, true, flags: JSON_THROW_ON_ERROR);
 if ($likelySubtagsData['format'] !== 1) {
     fwrite(STDERR, "The likely-subtag projection format is incompatible.\n");
+    exit(1);
+}
+
+/** @var array{
+ *     format: int,
+ *     cldrRevision: string,
+ *     upstreamSha512: string,
+ *     sourceEntries: array<string, string>,
+ *     scriptDirection: array<string, 'ltr'|'rtl'|null>
+ * } $scriptDirectionsData */
+$scriptDirectionsData = json_decode($scriptDirectionsSource, true, flags: JSON_THROW_ON_ERROR);
+if ($scriptDirectionsData['format'] !== 1) {
+    fwrite(STDERR, "The script-direction projection format is incompatible.\n");
     exit(1);
 }
 
@@ -151,73 +170,31 @@ $generated = <<<PHP
 $generated .= "\n";
 $generated = MagoFormatter::format($root, 'src/Internal/Data/LocaleAliases.php', $generated);
 
-$likelySubtagsSourceSha256 = hash('sha256', $likelySubtagsSource);
-$likelySubtagsPayloadSha256 = hash('sha256', json_encode([
-    'format' => $likelySubtagsData['format'],
-    'likelySubtag' => $likelySubtagsData['likelySubtag'],
-], JSON_THROW_ON_ERROR));
-$likelySubtagsExport = preg_replace(
-    '/[ \t]+$/m',
-    '',
-    Midnight\Intl\Tools\PhpExporter::export($likelySubtagsData['likelySubtag']),
-);
-if ($likelySubtagsExport === null) {
-    throw new RuntimeException('Unable to export the likely-subtag projection.');
+$mapArtifacts = [];
+foreach ([
+    'likelySubtags' => [
+        'source' => $likelySubtagsSource,
+        'data' => $likelySubtagsData,
+        'field' => 'likelySubtag',
+        'class' => 'LikelySubtags',
+        'type' => 'string',
+        'label' => 'likely-subtag',
+        'target' => 'src/Internal/Data/LikelySubtags.php',
+    ],
+    'scriptDirections' => [
+        'source' => $scriptDirectionsSource,
+        'data' => $scriptDirectionsData,
+        'field' => 'scriptDirection',
+        'class' => 'ScriptDirections',
+        'type' => "'ltr'|'rtl'|null",
+        'label' => 'script-direction',
+        'target' => 'src/Internal/Data/ScriptDirections.php',
+    ],
+] as $name => $definition) {
+    $mapArtifacts[$name] = generateMapProjection($root, $definition);
 }
-$likelySubtagsGenerated = <<<PHP
-    <?php
-
-    declare(strict_types=1);
-
-    namespace Midnight\Intl\Internal\Data;
-
-    enum LikelySubtags
-    {
-        public const FORMAT = {$likelySubtagsData['format']};
-
-        /** @var string */
-        public const CLDR_REVISION = '{$likelySubtagsData['cldrRevision']}';
-
-        /** @var string */
-        public const CLDR_CORE_SHA512 = '{$likelySubtagsData['upstreamSha512']}';
-
-        /** @var string */
-        public const SOURCE_SHA256 = '{$likelySubtagsSourceSha256}';
-
-        private const PAYLOAD_SHA256 = '{$likelySubtagsPayloadSha256}';
-
-        /** @var array<string, string> */
-        public const MAP = {$likelySubtagsExport};
-
-        public static function assertIntegrity(): void
-        {
-            /** @var bool|null \$verified */
-            static \$verified = null;
-            if (\$verified === true) {
-                return;
-            }
-
-            \$actual = hash('sha256', json_encode([
-                'format' => self::FORMAT,
-                'likelySubtag' => self::MAP,
-            ], JSON_THROW_ON_ERROR));
-            if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
-                throw new \UnexpectedValueException('The bundled likely-subtag data is corrupt or incompatible.');
-            }
-            \$verified = true;
-        }
-
-        private static function supportsFormat(int \$format): bool
-        {
-            return \$format === 1;
-        }
-    }
-    PHP;
-$likelySubtagsGenerated .= "\n";
-$likelySubtagsGenerated = MagoFormatter::format($root, 'src/Internal/Data/LikelySubtags.php', $likelySubtagsGenerated);
 
 $target = $root . '/src/Internal/Data/LocaleAliases.php';
-$likelySubtagsTarget = $root . '/src/Internal/Data/LikelySubtags.php';
 $timeZoneSourcePath = $root . '/resources/data/primary-time-zones.json';
 $timeZoneSource = file_get_contents($timeZoneSourcePath);
 if ($timeZoneSource === false) {
@@ -314,7 +291,6 @@ $timeZoneGenerated = <<<PHP
 $timeZoneGenerated .= "\n";
 $timeZoneGenerated = MagoFormatter::format($root, 'src/Internal/Data/PrimaryTimeZones.php', $timeZoneGenerated);
 $timeZoneTarget = $root . '/src/Internal/Data/PrimaryTimeZones.php';
-
 $numberingSystemSourcePath = $root . '/resources/data/numbering-systems.json';
 $numberingSystemSource = file_get_contents($numberingSystemSourcePath);
 if ($numberingSystemSource === false) {
@@ -429,14 +405,15 @@ $numberingSystemGenerated = MagoFormatter::format(
     $numberingSystemGenerated,
 );
 $numberingSystemTarget = $root . '/src/Internal/Data/NumberingSystems.php';
-
 if (in_array('--check', $argv, true)) {
-    if (
-        !is_file($target)
-        || file_get_contents($target) !== $generated
-        || !is_file($likelySubtagsTarget)
-        || file_get_contents($likelySubtagsTarget) !== $likelySubtagsGenerated
-    ) {
+    $generatedFilesMatch = is_file($target) && file_get_contents($target) === $generated;
+    foreach ($mapArtifacts as $artifact) {
+        $generatedFilesMatch =
+            $generatedFilesMatch
+            && is_file($root . '/' . $artifact['target'])
+            && file_get_contents($root . '/' . $artifact['target']) === $artifact['generated'];
+    }
+    if (!$generatedFilesMatch) {
         fwrite(STDERR, "The generated locale data is not reproducible.\n");
         exit(1);
     }
@@ -455,7 +432,7 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -463,7 +440,8 @@ if (in_array('--check', $argv, true)) {
         'ianaLanguage' => $manifest['inputs']['languageRegistry']['sha256'],
         'tzdb' => $manifest['inputs']['tzdb']['sha512'],
         'localeAliasesProjection' => $sourceSha256,
-        'likelySubtagsProjection' => $likelySubtagsSourceSha256,
+        'likelySubtagsProjection' => $mapArtifacts['likelySubtags']['sourceSha256'],
+        'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']['sourceSha256'],
         'primaryTimeZonesProjection' => $timeZoneSourceSha256,
         'numberingSystemsProjection' => $numberingSystemSourceSha256,
     ], JSON_THROW_ON_ERROR));
@@ -474,8 +452,17 @@ if (in_array('--check', $argv, true)) {
         || $manifest['releaseDataFingerprint'] !== $fingerprint
         || $manifest['projections']['localeAliases']['sourceSha256'] !== $sourceSha256
         || $manifest['projections']['localeAliases']['generatedSha256'] !== hash('sha256', $generated)
-        || $manifest['projections']['likelySubtags']['sourceSha256'] !== $likelySubtagsSourceSha256
-        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash('sha256', $likelySubtagsGenerated)
+        || $manifest['projections']['likelySubtags']['sourceSha256'] !== $mapArtifacts['likelySubtags']['sourceSha256']
+        || $manifest['projections']['likelySubtags']['generatedSha256'] !== hash(
+            'sha256',
+            $mapArtifacts['likelySubtags']['generated'],
+        )
+        || $manifest['projections']['scriptDirections']['sourceSha256']
+            !== $mapArtifacts['scriptDirections']['sourceSha256']
+        || $manifest['projections']['scriptDirections']['generatedSha256'] !== hash(
+            'sha256',
+            $mapArtifacts['scriptDirections']['generated'],
+        )
         || $manifest['projections']['primaryTimeZones']['sourceSha256'] !== $timeZoneSourceSha256
         || $manifest['projections']['primaryTimeZones']['generatedSha256'] !== hash('sha256', $timeZoneGenerated)
         || $manifest['projections']['numberingSystems']['sourceSha256'] !== $numberingSystemSourceSha256
@@ -498,10 +485,108 @@ if (file_put_contents($target, $generated) === false) {
     fwrite(STDERR, "Unable to write the locale alias projection.\n");
     exit(1);
 }
-if (file_put_contents($likelySubtagsTarget, $likelySubtagsGenerated) === false) {
-    fwrite(STDERR, "Unable to write the likely-subtag projection.\n");
-    exit(1);
+foreach ($mapArtifacts as $artifact) {
+    if (file_put_contents($root . '/' . $artifact['target'], $artifact['generated']) === false) {
+        fwrite(STDERR, sprintf("Unable to write the %s projection.\n", $artifact['label']));
+        exit(1);
+    }
 }
+
+/**
+ * @param array{
+ *     source: string,
+ *     data: array<string, mixed>,
+ *     field: string,
+ *     class: string,
+ *     type: string,
+ *     label: string,
+ *     target: string
+ * } $definition
+ * @return array{sourceSha256: string, generated: string, label: string, target: string}
+ */
+function generateMapProjection(string $root, array $definition): array
+{
+    $data = $definition['data'];
+    $field = $definition['field'];
+    $format = $data['format'] ?? null;
+    $cldrRevision = $data['cldrRevision'] ?? null;
+    $upstreamSha512 = $data['upstreamSha512'] ?? null;
+    $map = $data[$field] ?? null;
+    if (!is_int($format) || !is_string($cldrRevision) || !is_string($upstreamSha512) || !is_array($map)) {
+        throw new RuntimeException(sprintf('The %s projection has an invalid data shape.', $definition['label']));
+    }
+
+    $sourceSha256 = hash('sha256', $definition['source']);
+    $payloadSha256 = hash('sha256', json_encode([
+        'format' => $format,
+        $field => $map,
+    ], JSON_THROW_ON_ERROR));
+    $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($map));
+    if ($export === null) {
+        throw new RuntimeException(sprintf('Unable to export the %s projection.', $definition['label']));
+    }
+    $class = $definition['class'];
+    $type = $definition['type'];
+    $label = $definition['label'];
+    $generated = <<<PHP
+        <?php
+
+        declare(strict_types=1);
+
+        namespace Midnight\Intl\Internal\Data;
+
+        enum {$class}
+        {
+            public const FORMAT = {$format};
+
+            /** @var string */
+            public const CLDR_REVISION = '{$cldrRevision}';
+
+            /** @var string */
+            public const CLDR_CORE_SHA512 = '{$upstreamSha512}';
+
+            /** @var string */
+            public const SOURCE_SHA256 = '{$sourceSha256}';
+
+            private const PAYLOAD_SHA256 = '{$payloadSha256}';
+
+            /** @var array<string, {$type}> */
+            public const MAP = {$export};
+
+            public static function assertIntegrity(): void
+            {
+                /** @var bool|null \$verified */
+                static \$verified = null;
+                if (\$verified === true) {
+                    return;
+                }
+
+                \$actual = hash('sha256', json_encode([
+                    'format' => self::FORMAT,
+                    '{$field}' => self::MAP,
+                ], JSON_THROW_ON_ERROR));
+                if (!self::supportsFormat(self::FORMAT) || \$actual !== self::PAYLOAD_SHA256) {
+                    throw new \UnexpectedValueException('The bundled {$label} data is corrupt or incompatible.');
+                }
+                \$verified = true;
+            }
+
+            private static function supportsFormat(int \$format): bool
+            {
+                return \$format === 1;
+            }
+        }
+        PHP;
+    $generated = MagoFormatter::format($root, $definition['target'], $generated . "\n");
+
+    return [
+        'sourceSha256' => $sourceSha256,
+        'generated' => $generated,
+        'label' => $label,
+        'target' => $definition['target'],
+    ];
+}
+
 if (file_put_contents($timeZoneTarget, $timeZoneGenerated) === false) {
     fwrite(STDERR, "Unable to write the primary time-zone projection.\n");
     exit(1);

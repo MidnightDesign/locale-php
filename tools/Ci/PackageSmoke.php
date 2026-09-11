@@ -41,7 +41,7 @@ final class PackageSmoke
             self::run([
                 PHP_BINARY,
                 '-r',
-                'require "vendor/autoload.php"; $locale = new Midnight\\Intl\\Locale("EN-latn-at"); if ($locale->toString() !== "en-Latn-AT" || $locale->getTimeZones() !== ["Europe/Vienna"] || (new Midnight\\Intl\\Locale("en"))->getTimeZones() !== null) { exit(1); } $locale->getNumberingSystems();',
+                'require "vendor/autoload.php"; $locale = new Midnight\\Intl\\Locale("AR-arab-at"); if ($locale->toString() !== "ar-Arab-AT" || $locale->getTextInfo()->direction !== Midnight\\Intl\\TextDirection::RightToLeft || $locale->getTimeZones() !== ["Europe/Vienna"] || (new Midnight\\Intl\\Locale("en"))->getTimeZones() !== null || $locale->getNumberingSystems() !== ["latn"]) { exit(1); }',
             ], $consumerDirectory);
         } finally {
             self::removeDirectory($workDirectory);

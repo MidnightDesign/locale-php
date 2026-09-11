@@ -165,8 +165,8 @@ final class MatrixMutationScore
         if ($fields !== ['campaign', 'format', 'mutations']) {
             throw new \RuntimeException('The expected mutation failure baseline contains unknown fields.');
         }
-        if (($baseline['format'] ?? null) !== 3) {
-            throw new \RuntimeException('The expected mutation failure baseline format must be 3.');
+        if (($baseline['format'] ?? null) !== 4) {
+            throw new \RuntimeException('The expected mutation failure baseline format must be 4.');
         }
         $expectedCampaign = $baseline['campaign'] ?? null;
         $baselineMutations = $baseline['mutations'] ?? null;
@@ -290,7 +290,7 @@ final class MatrixMutationScore
         ksort($mutations);
 
         return [
-            'format' => 3,
+            'format' => 4,
             'campaign' => $campaign,
             'mutations' => $mutations,
         ];
@@ -311,6 +311,7 @@ final class MatrixMutationScore
 
         $skipped = self::stat($stats, 'skippedCount');
         $mutations = [];
+        $reportedMutations = [];
         $occurrences = [];
         $reported = 0;
         foreach (self::RESULT_FIELDS as $result => $metadata) {
@@ -336,12 +337,18 @@ final class MatrixMutationScore
                 }
                 /** @var array<string, mixed> $row */
                 $mutantDefinition = self::parseMutantDefinition($campaign, $row);
-                $fingerprint = hash('sha256', json_encode($mutantDefinition, JSON_THROW_ON_ERROR));
-                $occurrences[$fingerprint] = ($occurrences[$fingerprint] ?? 0) + 1;
-                $identity = sprintf('%s:%d', $fingerprint, $occurrences[$fingerprint]);
-                $mutations[$identity] = ['definition' => $mutantDefinition, 'result' => $result];
+                $reportedMutations[] = ['definition' => $mutantDefinition, 'result' => $result];
                 ++$reported;
             }
+        }
+
+        usort(
+            $reportedMutations,
+            static fn(array $left, array $right): int => $left['definition']['line'] <=> $right['definition']['line'],
+        );
+        foreach ($reportedMutations as $mutation) {
+            $identity = self::mutantIdentity($mutation['definition'], $occurrences);
+            $mutations[$identity] = $mutation;
         }
 
         $total = self::stat($stats, 'totalMutantsCount');
@@ -363,6 +370,39 @@ final class MatrixMutationScore
         }
 
         return ['mutations' => $mutations];
+    }
+
+    /**
+     * @param array{source: string, mutator: string, diff: string} $mutation
+     * @param array<string, int> $occurrences
+     */
+    private static function mutantIdentity(array $mutation, array &$occurrences): string
+    {
+        $fingerprint = self::mutantFingerprint($mutation);
+        $occurrences[$fingerprint] = ($occurrences[$fingerprint] ?? 0) + 1;
+
+        return sprintf('%s:%d', $fingerprint, $occurrences[$fingerprint]);
+    }
+
+    /** @param array{source: string, mutator: string, diff: string} $mutation */
+    private static function mutantFingerprint(array $mutation): string
+    {
+        $removed = [];
+        $added = [];
+        foreach (preg_split('/\R/', $mutation['diff']) ?: [] as $line) {
+            if (str_starts_with($line, '-') && !str_starts_with($line, '---')) {
+                $removed[] = substr($line, 1);
+            } elseif (str_starts_with($line, '+') && !str_starts_with($line, '+++')) {
+                $added[] = substr($line, 1);
+            }
+        }
+
+        return hash('sha256', json_encode([
+            'source' => $mutation['source'],
+            'mutator' => $mutation['mutator'],
+            'removed' => $removed,
+            'added' => $added,
+        ], JSON_THROW_ON_ERROR));
     }
 
     /**

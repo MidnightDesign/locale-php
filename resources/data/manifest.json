@@ -1,7 +1,7 @@
 {
     "format": 5,
-    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-primary-time-zones-and-numbering-systems",
-    "releaseDataFingerprint": "42119f31e877f541b43a666f6b832329af83a2410efcd91295150bc9292b7bb8",
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-primary-time-zones-and-numbering-systems",
+    "releaseDataFingerprint": "ae798188defe302c64a89430fc89819dc5835a03d37fb0ee2b7befacf4d748d0",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -42,6 +42,12 @@
             "generated": "src/Internal/Data/LikelySubtags.php",
             "generatedSha256": "d81b7276de01c64b033ab24f83c9e6c87b6b3c8e19b3e10c180482ff2d383c02"
         },
+        "scriptDirections": {
+            "source": "resources/data/script-directions.json",
+            "sourceSha256": "e71dc41671b2a3d15807e4dcda0bd38735000bc947fcf8bfbe6f7754d1e27215",
+            "generated": "src/Internal/Data/ScriptDirections.php",
+            "generatedSha256": "714daa2337ae2d4dc68d2d831d11973e5d773cff7f90fea8df40c0004bac037e"
+        },
         "primaryTimeZones": {
             "source": "resources/data/primary-time-zones.json",
             "sourceSha256": "282aba05517c6a88023f18ff16770757a336b2697c1c5c9ce79756c70104b08e",
@@ -56,8 +62,8 @@
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "6aca694b92cdae1615545b9a8c51c6c48988da5cf179c98e92d0702ef1474484",
-        "tools/generate-data.php": "966a3c92731b67c89c8e636a1affd98128eab3510f118d4aa492597fae44a2aa",
+        "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
+        "tools/generate-data.php": "6c6966daf2723a5872f3de3df22263154b064591d141e622568e6d8df70dade7",
         "tools/import-numbering-systems.php": "be68d7d42b70a808fad8f2c4964aa732f56322f4730006d1b0b6a60c1fcb77de",
         "tools/NumberingSystemDataImporter.php": "50f2c5e00b5be4094f96ace48373ebb3c5fa4f264638b0b138190ae7bfac69cc",
         "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",

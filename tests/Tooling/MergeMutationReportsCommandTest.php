@@ -25,7 +25,7 @@ final class MergeMutationReportsCommandTest extends TestCase
             self::assertSame(1, $strict->getExitCode());
             $strictEvidence = json_decode((string) file_get_contents($output), true, flags: JSON_THROW_ON_ERROR);
             self::assertIsArray($strictEvidence);
-            /** @var array{mutations: list<array{id: string, campaign: string, modes: array<string, string>}>} $strictEvidence */
+            /** @var array{mutations: list<array{id: string, campaign: string, source: string, mutator: string, diff: string, modes: array<string, string>}>} $strictEvidence */
             file_put_contents($baseline, json_encode(
                 MatrixMutationScore::expectedFailureBaseline($strictEvidence, 'spec'),
                 JSON_THROW_ON_ERROR,

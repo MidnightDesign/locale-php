@@ -74,6 +74,48 @@ final class MatrixMutationScoreTest extends TestCase
         ]);
     }
 
+    public function testMutantIdentityIgnoresLineNumbersAndWholeFileSource(): void
+    {
+        $first = MatrixMutationScore::aggregate([
+            'spec' => $this->campaign('src/Spec/Locale.php'),
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+        $shiftedSpec = $this->campaign(
+            'src/Spec/Locale.php',
+            line: 200,
+            originalSourceCode: "<?php\n// unrelated insertion\nreturn true;",
+            mutatedSourceCode: "<?php\n// unrelated insertion\nreturn false;",
+            diff: "@@ @@\n  changed nearby context\n- return true;\n+ return false;",
+        );
+        $shifted = MatrixMutationScore::aggregate([
+            'spec' => $shiftedSpec,
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+
+        self::assertSame($first['mutations'][1]['id'], $shifted['mutations'][1]['id']);
+    }
+
+    public function testDuplicateMutantOccurrencesStayAttachedToSourceOrderAcrossResultBuckets(): void
+    {
+        $spec = $this->campaign('src/Spec/Locale.php');
+        $spec['absent'] = $this->reportWithDuplicateMutations('src/Spec/Locale.php', 'escaped', 'killed');
+        $spec['disabled'] = $this->reportWithDuplicateMutations('src/Spec/Locale.php', 'killed', 'escaped');
+        $spec['native'] = $this->reportWithDuplicateMutations('src/Spec/Locale.php', 'escaped', 'killed');
+
+        $evidence = MatrixMutationScore::aggregate([
+            'spec' => $spec,
+            'porcelain' => $this->campaign('src/Locale.php'),
+        ]);
+
+        self::assertSame(
+            [
+                ['absent' => 'escaped', 'disabled' => 'killed', 'native' => 'escaped'],
+                ['absent' => 'killed', 'disabled' => 'escaped', 'native' => 'killed'],
+            ],
+            array_column(array_slice($evidence['mutations'], 1), 'modes'),
+        );
+    }
+
     public function testItAcceptsOnlyTheDeclaredFailingCampaignAsATemporaryExpectedFailure(): void
     {
         $spec = $this->campaign('src/Spec/Locale.php');
@@ -84,7 +126,7 @@ final class MatrixMutationScoreTest extends TestCase
         ]);
 
         $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, 'spec');
-        self::assertSame(3, $baseline['format']);
+        self::assertSame(4, $baseline['format']);
         self::assertSame([['disabled' => 'escaped']], array_values($baseline['mutations']));
         self::assertTrue(MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline));
         $porcelainBaseline = $baseline;
@@ -140,7 +182,7 @@ final class MatrixMutationScoreTest extends TestCase
         $baseline['format'] = 999;
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('format must be 3');
+        $this->expectExceptionMessage('format must be 4');
 
         MatrixMutationScore::acceptsExpectedFailure($evidence, $baseline);
     }
@@ -204,7 +246,7 @@ final class MatrixMutationScoreTest extends TestCase
             'porcelain' => $this->campaign('src/Locale.php'),
         ]);
         $baseline = [
-            'format' => 3,
+            'format' => 4,
             'campaign' => 'spec',
             'mutations' => [str_repeat('a', 64) . ':1' => 'unexpected-result'],
         ];
@@ -284,12 +326,43 @@ final class MatrixMutationScoreTest extends TestCase
     }
 
     /** @return array<string, array<string, mixed>> */
-    private function campaign(string $file, string $result = 'killed'): array
-    {
+    private function campaign(
+        string $file,
+        string $result = 'killed',
+        int $line = 12,
+        string $originalSourceCode = 'return true;',
+        string $mutatedCode = 'return false;',
+        ?string $mutatedSourceCode = null,
+        ?string $diff = null,
+    ): array {
         return [
-            'absent' => $this->report($file, $result),
-            'disabled' => $this->report($file, $result),
-            'native' => $this->report($file, $result),
+            'absent' => $this->report(
+                $file,
+                $result,
+                $mutatedCode,
+                $line,
+                $originalSourceCode,
+                $mutatedSourceCode,
+                $diff,
+            ),
+            'disabled' => $this->report(
+                $file,
+                $result,
+                $mutatedCode,
+                $line,
+                $originalSourceCode,
+                $mutatedSourceCode,
+                $diff,
+            ),
+            'native' => $this->report(
+                $file,
+                $result,
+                $mutatedCode,
+                $line,
+                $originalSourceCode,
+                $mutatedSourceCode,
+                $diff,
+            ),
         ];
     }
 
@@ -297,7 +370,7 @@ final class MatrixMutationScoreTest extends TestCase
      * @return array{
      *     passing: bool,
      *     campaigns: array<string, array{modes: array<string, array{obligations: int, killed: int, failures: int}>}>,
-     *     mutations: list<array{id: string, campaign: string, modes: array<string, string>}>
+     *     mutations: list<array{id: string, campaign: string, source: string, line: int, mutator: string, original: string, mutated: string, diff: string, applicableModes: list<string>, modes: array<string, string>}>
      * }
      */
     private function expectedFailureEvidence(): array
@@ -309,8 +382,15 @@ final class MatrixMutationScoreTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function report(string $file, string $result = 'killed', string $mutatedCode = 'return false;'): array
-    {
+    private function report(
+        string $file,
+        string $result = 'killed',
+        string $mutatedCode = 'return false;',
+        int $line = 12,
+        string $originalSourceCode = 'return true;',
+        ?string $mutatedSourceCode = null,
+        ?string $diff = null,
+    ): array {
         $resultToStat = [
             'killed' => 'killedCount',
             'killedByStaticAnalysis' => 'killedByStaticAnalysisCount',
@@ -348,14 +428,49 @@ final class MatrixMutationScoreTest extends TestCase
             $result => [[
                 'mutator' => [
                     'mutatorName' => 'FalseValue',
-                    'originalSourceCode' => 'return true;',
-                    'mutatedSourceCode' => $mutatedCode,
+                    'originalSourceCode' => $originalSourceCode,
+                    'mutatedSourceCode' => $mutatedSourceCode ?? $mutatedCode,
                     'originalFilePath' => 'C:\\project\\' . $file,
-                    'originalStartLine' => 12,
+                    'originalStartLine' => $line,
                 ],
-                'diff' => "- return true;\n+ {$mutatedCode}",
+                'diff' => $diff ?? "- return true;\n+ {$mutatedCode}",
                 'processOutput' => '',
             ]],
         ];
+    }
+
+    /** @return array<string, mixed> */
+    private function reportWithDuplicateMutations(string $file, string $firstResult, string $secondResult): array
+    {
+        $report = $this->report($file, $firstResult);
+        $rows = $report[$secondResult] ?? null;
+        self::assertIsArray($rows);
+        $rows[] = [
+            'mutator' => [
+                'mutatorName' => 'FalseValue',
+                'originalSourceCode' => 'return true;',
+                'mutatedSourceCode' => 'return false;',
+                'originalFilePath' => 'C:\\project\\' . $file,
+                'originalStartLine' => 24,
+            ],
+            'diff' => "- return true;\n+ return false;",
+            'processOutput' => '',
+        ];
+        $report[$secondResult] = $rows;
+        $stats = $report['stats'] ?? null;
+        self::assertIsArray($stats);
+        self::assertIsInt($stats['totalMutantsCount']);
+        ++$stats['totalMutantsCount'];
+        $resultToStat = [
+            'killed' => 'killedCount',
+            'escaped' => 'escapedCount',
+        ];
+        $stat = $resultToStat[$secondResult] ?? null;
+        self::assertIsString($stat);
+        self::assertIsInt($stats[$stat]);
+        ++$stats[$stat];
+        $report['stats'] = $stats;
+
+        return $report;
     }
 }
