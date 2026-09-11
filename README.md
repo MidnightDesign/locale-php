@@ -2,7 +2,7 @@
 
 A pure-PHP implementation of ECMAScript `Intl.Locale`. It requires PHP 8.2 or newer and does not require `ext-intl`.
 
-The package is not yet ECMA-402 conformant. Locale identifier construction is complete: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, and expose the canonical identifier properties. Locale-information and likely-subtag methods remain unfinished.
+The package is not yet ECMA-402 conformant. Locale identifier construction is complete, and both public layers provide pinned, deterministic primary time-zone identifiers for explicit regions through `getTimeZones()`. Other locale-information and likely-subtag methods remain unfinished.
 
 ## Install
 
@@ -24,6 +24,7 @@ echo $locale->language;    // en
 echo $locale->calendar;    // gregory
 echo $locale->numeric;     // 1
 echo json_encode($locale); // "en-Latn-GB-u-ca-gregory-kn"
+$locale->getTimeZones();   // ['Europe/London']
 ```
 
 The porcelain layer is the normal application API. See [Getting started](docs/getting-started.md), [the spec layer](docs/spec-layer.md), [conformance and release data](docs/conformance.md), and [migration guidance](docs/migration.md).

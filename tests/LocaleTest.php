@@ -93,4 +93,25 @@ final class LocaleTest extends TestCase
         $this->expectException(\TypeError::class);
         $locale->__set('language', 'fr');
     }
+
+    public function testItReturnsFreshPrimaryTimeZoneListsOnlyForAnExplicitRegion(): void
+    {
+        self::assertNull((new Locale('en'))->getTimeZones());
+        self::assertNull((new Locale('en-u-rg-uszzzz'))->getTimeZones());
+        self::assertSame([], (new Locale('en-ZZ'))->getTimeZones());
+        self::assertSame(['Europe/Vienna'], (new Locale('de-AT-u-rg-uszzzz'))->getTimeZones());
+
+        $locale = new Locale('en-US');
+        $first = $locale->getTimeZones();
+        self::assertNotNull($first);
+        $first[] = 'Injected/Mutation';
+
+        $second = $locale->getTimeZones();
+        self::assertNotNull($second);
+        self::assertNotContains('Injected/Mutation', $second);
+        self::assertSame(array_values(array_unique($second)), $second);
+        $sorted = $second;
+        sort($sorted, SORT_STRING);
+        self::assertSame($sorted, $second);
+    }
 }

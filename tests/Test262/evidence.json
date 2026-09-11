@@ -77,6 +77,12 @@
                 "test/intl402/Locale/constructor-getter-order.js": "ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044",
                 "test/intl402/Locale/constructor-options-throwing-getters.js": "c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882",
                 "test/intl402/Locale/constructor-locale-object.js": "c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d",
+                "test/intl402/Locale/prototype/getTimeZones/branding.js": "0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf",
+                "test/intl402/Locale/prototype/getTimeZones/name.js": "661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260",
+                "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js": "9da185ea867c9b003be4a2186151186e07d1a60a68d200a5640a3eeca3176616",
+                "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js": "051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60",
+                "test/intl402/Locale/prototype/getTimeZones/output-array.js": "86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f",
+                "test/intl402/Locale/prototype/getTimeZones/prop-desc.js": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
             },
@@ -101,8 +107,8 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 20,
-        "passingFixtures": 20,
+        "translatedFixtures": 26,
+        "passingFixtures": 26,
         "partiallyTranslatedFixtures": 0,
         "translationGaps": 628,
         "executionFailures": 0
@@ -3485,6 +3491,336 @@
                 {
                     "path": "tests/Test262/Generated/test/intl402/Locale/constructor-locale-object.php",
                     "identity": "test/intl402/Locale/constructor-locale-object.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/branding.js",
+            "sha256": "0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 10,
+            "executionCount": 10,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "68a70615327909c723a990441701d2e57ad0d4ce0d41a9e47863f5136c444224",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L19:C1:assert.throws",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "65e5f11e11b28b59afda782c93d020d883f0cefc30e7775d90c7df45c334b875",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L20:C1:assert.throws",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "e7dca696e9267ab7a8c518527d4786aa32f56eb762fcf0f08b6a341c99a3a7c3",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L21:C1:assert.throws",
+                    "line": 21,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "9dc58e5a0c54e7c2fbe35ab220ad077e5f3b13ecad0bc757eaeb127c0fd0249b",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L22:C1:assert.throws",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "86643223033e956eb2be1b0247bbb1076d7fea753a14763387724d46f2fde892",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L23:C1:assert.throws",
+                    "line": 23,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "879f19a38cfef5d58bb37b79881d46d5203303c2f4280e635f26278e97375846",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L24:C1:assert.throws",
+                    "line": 24,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "35b8d3fc237e28f1a928361df5dd82724fe7784dee453e6fca39610894ac6dba",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L25:C1:assert.throws",
+                    "line": 25,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "c6b4c257383002c389f66de9c02908adafebae3fea1da865c46dec97e68bb5a4",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L26:C1:assert.throws",
+                    "line": 26,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "7c108a7230db47bd68c2eeca0f8f9bbc3e13c7a417ebb17ba8e395f23f1ec06b",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/branding.js:L27:C1:assert.throws",
+                    "line": 27,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "941dba802071329c3e4079f8da45759452aa96a6b658dad4f5f5db67306f02b7",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/branding.php",
+                    "identity": "test/intl402/Locale/prototype/getTimeZones/branding.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/name.js",
+            "sha256": "661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/name.js:L15:C1:verifyProperty",
+                    "line": 15,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "24bec785fbd12b000ff2ed1b46cb4e671715caaec663c3bc5c0dc7ceb7027ab7",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/name.php",
+                    "identity": "test/intl402/Locale/prototype/getTimeZones/name.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js",
+            "sha256": "9da185ea867c9b003be4a2186151186e07d1a60a68d200a5640a3eeca3176616",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js:L22:C1:assert.compareArray",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "36994d97dea25cec3296ba2589df1dbfcce6e5e0c0df03f7e0151159d4de7a73",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/output-array-sorted.php",
+                    "identity": "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js",
+            "sha256": "051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "17185427bb60406f0c4db6e98424a91aaa82151f527ca4e145462f622650741a",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/output-array-undefined.php",
+                    "identity": "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/output-array.js",
+            "sha256": "86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/output-array.js:L16:C1:assert",
+                    "line": 16,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "372f06ebacf0eaed155350e68b780419e753f2759853999772f319f593cde4d5",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/output-array.js:L17:C1:assert",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "44ee4baeb3bec3127c76d194c860681a43b88c4c62148699ae02735e5fae3fdf",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/output-array.php",
+                    "identity": "test/intl402/Locale/prototype/getTimeZones/output-array.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js",
+            "sha256": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "f1beb9d650403dd4b1406c81aa5b3bea5345203bce460e7ed8a31d00461ea452",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "09d5bf7714b954304e2fbb0abcac4cc85e3aa542080dd513736d42cfd337e47c",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript undefined is represented by PHP null.",
+                        "ECMAScript built-in branding and descriptors are represented by the public PHP method and its initialized-receiver check."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getTimeZones/prop-desc.php",
+                    "identity": "test/intl402/Locale/prototype/getTimeZones/prop-desc.js",
                     "variant": null
                 }
             ]

@@ -6,6 +6,7 @@ namespace Midnight\Intl\Spec;
 
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
+use Midnight\Intl\Internal\Data\PrimaryTimeZones;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\OptionValue;
 use Midnight\Intl\Internal\Test262\OptionBag;
@@ -176,6 +177,16 @@ class Locale
         }
 
         return $this->identifier->toString();
+    }
+
+    /** @return list<string>|null */
+    public function getTimeZones(): ?array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return PrimaryTimeZones::forRegion($this->identifier->region);
     }
 
     /**

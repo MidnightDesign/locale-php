@@ -208,8 +208,8 @@ final class CiWorkflowContractTest extends TestCase
             $path = $root . '/infection.spec.json5';
             $contents = (string) file_get_contents($path);
             $contents = str_replace(
-                '["/^Locale\\\\.php$/", "/^Internal\\\\/Data\\\\/LocaleAliases\\\\.php$/"]',
-                '["/^Locale\\\\.php$/", "Internal", "/^Internal\\\\/Data\\\\/LocaleAliases\\\\.php$/"]',
+                '["/^Locale\\\\.php$/", "/^Internal\\\\/Data\\\\/(?:LocaleAliases|PrimaryTimeZones)\\\\.php$/"]',
+                '["/^Locale\\\\.php$/", "Internal", "/^Internal\\\\/Data\\\\/(?:LocaleAliases|PrimaryTimeZones)\\\\.php$/"]',
                 $contents,
             );
             file_put_contents($path, $contents);

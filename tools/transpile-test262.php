@@ -19,6 +19,7 @@ use Midnight\Intl\Tools\Test262\LocaleObjectPipeline;
 use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
 use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
 use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
+use Midnight\Intl\Tools\Test262\TimeZonesFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
 
 $root = dirname(__DIR__);
@@ -487,6 +488,36 @@ $fixturePipelines = [
         new LocaleObjectPipeline($assertionIdentities, $test262Revision, $ecma402Revision),
         $representations,
         'c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d',
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/branding.js' => new TimeZonesFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/name.js' => new TimeZonesFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js' => new TimeZonesFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js' => new TimeZonesFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/output-array.js' => new TimeZonesFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
+    ),
+    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => new TimeZonesFixturePipeline(
+        $assertionIdentities,
+        $test262Revision,
+        $ecma402Revision,
     ),
 ];
 

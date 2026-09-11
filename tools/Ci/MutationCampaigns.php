@@ -9,7 +9,7 @@ final class MutationCampaigns
     private const CAMPAIGNS = [
         'spec' => [
             'suite' => 'test262-upstream',
-            'excludes' => ['/^Locale\\.php$/', '/^Internal\\/Data\\/LocaleAliases\\.php$/'],
+            'excludes' => ['/^Locale\\.php$/', '/^Internal\\/Data\\/(?:LocaleAliases|PrimaryTimeZones)\\.php$/'],
         ],
         'porcelain' => [
             'suite' => 'porcelain',
@@ -44,7 +44,11 @@ final class MutationCampaigns
 
     public static function forSource(string $source): ?string
     {
-        if ($source === 'src/Internal/Data/LocaleAliases.php') {
+        if (in_array(
+            $source,
+            ['src/Internal/Data/LocaleAliases.php', 'src/Internal/Data/PrimaryTimeZones.php'],
+            true,
+        )) {
             return null;
         }
         if ($source === 'src/Locale.php') {
