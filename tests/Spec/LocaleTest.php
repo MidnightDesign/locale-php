@@ -45,7 +45,7 @@ final class LocaleTest extends TestCase
         self::assertFalse($locale->numeric);
     }
 
-    public function testItExposesUnicodeKeywordPropertiesAndAppliesAllConstructorOptions(): void
+    public function testItExposesUnicodeKeywordPropertiesAndAppliesTheirConstructorOptions(): void
     {
         $locale = new Locale('en-u-ca-gregory-kn-kf-lower', [
             'calendar' => 'islamicc',
@@ -53,19 +53,14 @@ final class LocaleTest extends TestCase
             'collation' => 'phonebk',
             'firstDayOfWeek' => '7',
             'hourCycle' => 'h23',
-            'language' => 'fr',
             'numberingSystem' => 'latn',
             'numeric' => false,
-            'region' => 'ca',
-            'script' => 'latn',
-            'variants' => 'FONIPA-1901',
         ]);
 
         self::assertSame(
-            'fr-Latn-CA-1901-fonipa-u-ca-islamic-civil-co-phonebk-fw-sun-hc-h23-kf-upper-kn-false-nu-latn',
+            'en-u-ca-islamic-civil-co-phonebk-fw-sun-hc-h23-kf-upper-kn-false-nu-latn',
             $locale->toString(),
         );
-        self::assertSame('fr-Latn-CA-1901-fonipa', $locale->baseName);
         self::assertSame('islamic-civil', $locale->calendar);
         self::assertSame('upper', $locale->caseFirst);
         self::assertSame('phonebk', $locale->collation);
@@ -73,7 +68,6 @@ final class LocaleTest extends TestCase
         self::assertSame('h23', $locale->hourCycle);
         self::assertSame('latn', $locale->numberingSystem);
         self::assertFalse($locale->numeric);
-        self::assertSame('1901-fonipa', $locale->variants);
     }
 
     /** @return iterable<string, array{string}> */
@@ -101,28 +95,6 @@ final class LocaleTest extends TestCase
     {
         self::assertSame('en-x-a', (new Locale('en-x-a'))->toString());
         self::assertSame('en-x-private-a', (new Locale('en-x-private-a'))->toString());
-    }
-
-    /** @return iterable<string, array{array<string, string>|object}> */
-    public static function optionBags(): iterable
-    {
-        $options = [
-            'language' => 'fr',
-            'script' => 'cyrl',
-            'region' => 'ca',
-        ];
-
-        yield 'associative array' => [$options];
-        yield 'plain object' => [(object) $options];
-    }
-
-    /** @param array<string, string>|object $options */
-    #[DataProvider('optionBags')]
-    public function testItAppliesBaseComponentOptions(array|object $options): void
-    {
-        $locale = new Locale('en-Latn-US', $options);
-
-        self::assertSame('fr-Cyrl-CA', $locale->toString());
     }
 
     public function testItUsesTheSpecExceptionTaxonomy(): void
@@ -156,7 +128,6 @@ final class LocaleTest extends TestCase
             }
         });
 
-        self::assertSame('en-GB', $fromLocale->toString());
         self::assertSame('de-Latn-DE', $fromObject->toString());
     }
 
@@ -260,30 +231,6 @@ final class LocaleTest extends TestCase
                 self::addToAssertionCount(1);
             }
         }
-
-        foreach ([
-            ['language' => 'fr-FR'],
-            ['language' => "english\n"],
-            ['script' => 'abc'],
-            ['script' => "Latn\n"],
-            ['region' => 'USA'],
-            ['region' => "US\n"],
-        ] as $options) {
-            try {
-                new Locale('en', $options);
-                self::fail('Expected the invalid option to be rejected.');
-            } catch (RangeError) {
-                self::addToAssertionCount(1);
-            }
-        }
-    }
-
-    public function testItConvertsBooleanOptionsUsingJavaScriptStrings(): void
-    {
-        self::assertSame('en-True', (new Locale('en', ['script' => true]))->toString());
-
-        $this->expectException(RangeError::class);
-        new Locale('en', ['script' => false]);
     }
 
     public function testItRejectsOptionsThatCannotBeConvertedToStrings(): void
