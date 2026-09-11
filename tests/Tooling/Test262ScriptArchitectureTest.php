@@ -23,7 +23,7 @@ final class Test262ScriptArchitectureTest extends TestCase
 
         $expected = [];
         foreach ($evidence['fixtures'] as $fixture) {
-            if (!in_array($fixture['status'], ['passing', 'partially_translated'], true)) {
+            if (!in_array($fixture['status'], ['passing', 'failing', 'partially_translated'], true)) {
                 continue;
             }
 

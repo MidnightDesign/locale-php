@@ -68,7 +68,7 @@ final class Test262RunnerContractTest extends TestCase
 
     public function testStaleGeneratedScriptFailsDiscovery(): void
     {
-        $path = dirname(__DIR__).'/Test262/Generated/zz-stale.php';
+        $path = dirname(__DIR__).'/Test262/Generated/test/intl402/Locale/zz-stale.php';
         file_put_contents($path, <<<'PHP'
 <?php
 
@@ -105,20 +105,84 @@ PHP);
         }
     }
 
-    public function testMalformedGeneratedPhpRemainsAVisibleFailure(): void
+    public function testMisplacedGeneratedScriptFailsDiscovery(): void
     {
-        $path = tempnam(sys_get_temp_dir(), 'locale-test262-malformed-');
-        self::assertIsString($path);
-        file_put_contents($path, '<?php this is not valid PHP');
+        $generated = dirname(__DIR__).'/Test262/Generated';
+        $source = $generated.'/test/intl402/Locale/reject-duplicate-variants.php';
+        $misplaced = $generated.'/zz-misplaced.php';
+        self::assertTrue(rename($source, $misplaced));
 
         try {
-            (new RunnerTest('testScript'))->testScript($path);
-            self::fail('Expected malformed generated PHP to fail.');
-        } catch (\ParseError $error) {
-            self::assertNotSame('', $error->getMessage());
+            iterator_to_array(RunnerTest::scripts());
+            self::fail('Expected misplaced generated script discovery to fail.');
+        } catch (\RuntimeException $error) {
+            self::assertStringContainsString('is misplaced', $error->getMessage());
         } finally {
-            @unlink($path);
+            @rename($misplaced, $source);
         }
+    }
+
+    public function testFailingTranslatedFixtureRetainsItsCliAndJunitIdentity(): void
+    {
+        $fixturePath = 'test/intl402/Locale/constructor-unicode-ext-invalid.js';
+        self::withInjectedFixture(
+            $fixturePath,
+            <<<'PHP'
+<?php
+
+// Source: test/intl402/Locale/constructor-unicode-ext-invalid.js at Test262 injected.
+
+PHPUnit\Framework\Assert::fail('Injected assertion failure.');
+PHP,
+            static function () use ($fixturePath): void {
+                self::assertSelectedFixtureFails($fixturePath, 'Injected assertion failure.');
+            },
+            'failing',
+        );
+    }
+
+    public function testRepresentationFailureRetainsItsCliAndJunitIdentity(): void
+    {
+        $fixturePath = 'test/intl402/Locale/constructor-options-script-valid.js';
+        self::withInjectedFixture(
+            $fixturePath,
+            <<<'PHP'
+<?php
+
+// Source: test/intl402/Locale/constructor-options-script-valid.js at Test262 injected.
+
+$result = Midnight\Intl\Tests\Test262\Harness\ConstructorOptionAssertion::evaluate(
+    'en',
+    'script',
+    ['type' => 'string', 'value' => 'Latn'],
+    'unsupported-representation',
+    'en-Latn',
+);
+PHPUnit\Framework\Assert::assertSame('passing', $result['status'], $result['failure'] ?? 'unknown failure');
+PHP,
+            static function () use ($fixturePath): void {
+                self::assertSelectedFixtureFails($fixturePath, 'Unsupported PHP representation');
+            },
+            'failing',
+        );
+    }
+
+    public function testMalformedGeneratedPhpRetainsItsCliAndJunitIdentity(): void
+    {
+        $fixturePath = 'test/intl402/Locale/getters-missing.js';
+        self::withInjectedFixture(
+            $fixturePath,
+            <<<'PHP'
+<?php
+
+// Source: test/intl402/Locale/getters-missing.js at Test262 injected.
+
+this is not valid PHP
+PHP,
+            static function () use ($fixturePath): void {
+                self::assertSelectedFixtureFails($fixturePath, 'ParseError');
+            },
+        );
     }
 
     /** @param list<string> $arguments
@@ -136,5 +200,71 @@ PHP);
         exec($command, $lines, $exitCode);
 
         return [$exitCode, implode("\n", $lines)];
+    }
+
+    private static function assertSelectedFixtureFails(string $fixturePath, string $failure): void
+    {
+        $junit = tempnam(sys_get_temp_dir(), 'locale-test262-failure-');
+        self::assertIsString($junit);
+
+        try {
+            [$exitCode, $output] = self::runPhpUnit([
+                '--testsuite',
+                'test262-upstream',
+                '--filter',
+                $fixturePath,
+                '--no-progress',
+                '--log-junit',
+                $junit,
+            ]);
+
+            self::assertNotSame(0, $exitCode, $output);
+            self::assertStringContainsString($fixturePath, $output);
+            self::assertStringContainsString($failure, $output);
+            $xml = (string) file_get_contents($junit);
+            self::assertSame(1, substr_count($xml, '<testcase '));
+            self::assertStringContainsString($fixturePath, $xml);
+            self::assertStringContainsString($failure, $xml);
+        } finally {
+            @unlink($junit);
+        }
+    }
+
+    /** @param callable(): void $assertion */
+    private static function withInjectedFixture(
+        string $fixturePath,
+        string $script,
+        callable $assertion,
+        ?string $evidenceStatus = null,
+    ): void {
+        $root = dirname(__DIR__, 2);
+        $scriptPath = $root.'/tests/Test262/Generated/'.preg_replace('/\.js$/D', '.php', $fixturePath);
+        $evidencePath = $root.'/tests/Test262/evidence.json';
+        $originalScript = (string) file_get_contents($scriptPath);
+        $originalEvidence = (string) file_get_contents($evidencePath);
+
+        try {
+            file_put_contents($scriptPath, $script."\n");
+            if ($evidenceStatus !== null) {
+                /** @var array{fixtures: list<array{path: string, status: string}>} $evidence */
+                $evidence = json_decode($originalEvidence, true, flags: JSON_THROW_ON_ERROR);
+                foreach ($evidence['fixtures'] as &$fixture) {
+                    if ($fixture['path'] === $fixturePath) {
+                        $fixture['status'] = $evidenceStatus;
+                        break;
+                    }
+                }
+                unset($fixture);
+                file_put_contents(
+                    $evidencePath,
+                    json_encode($evidence, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n",
+                );
+            }
+
+            $assertion();
+        } finally {
+            file_put_contents($scriptPath, $originalScript);
+            file_put_contents($evidencePath, $originalEvidence);
+        }
     }
 }

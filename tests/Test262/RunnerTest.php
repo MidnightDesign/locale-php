@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests\Test262;
 
+use Midnight\Intl\Tools\Test262\GeneratedScript;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
@@ -37,6 +38,16 @@ final class RunnerTest extends TestCase
             $fixturePath = $match['path'];
             if (isset($discovered[$fixturePath])) {
                 throw new \RuntimeException('Multiple generated scripts claim Test262 fixture '.$fixturePath.'.');
+            }
+            $relativePath = str_replace('\\', '/', substr($file->getPathname(), strlen(dirname(__DIR__, 2)) + 1));
+            $expectedPath = GeneratedScript::pathFor($fixturePath);
+            if ($relativePath !== $expectedPath) {
+                throw new \RuntimeException(sprintf(
+                    'Generated script for %s is misplaced at %s; expected %s.',
+                    $fixturePath,
+                    $relativePath,
+                    $expectedPath,
+                ));
             }
             $discovered[$fixturePath] = $file->getPathname();
         }
@@ -75,7 +86,7 @@ final class RunnerTest extends TestCase
         /** @var array<string, true> $paths */
         $paths = [];
         foreach ($evidence['fixtures'] as $fixture) {
-            if (in_array($fixture['status'], ['passing', 'partially_translated'], true)) {
+            if (in_array($fixture['status'], ['passing', 'failing', 'partially_translated'], true)) {
                 $paths[$fixture['path']] = true;
             }
         }
