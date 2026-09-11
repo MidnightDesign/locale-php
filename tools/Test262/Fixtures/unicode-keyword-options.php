@@ -2,57 +2,22 @@
 
 declare(strict_types=1);
 
-use Midnight\Intl\Tools\MagoFormatter;
-use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
-use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
-use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
-use Midnight\Intl\Tools\Test262\EvidenceBuilder;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
-use Midnight\Intl\Tools\Test262\FixtureResult;
-use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalogContext;
-use Midnight\Intl\Tools\Test262\GeneratedOutputPublisher;
-use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
-use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
-use Midnight\Intl\Tools\Test262\GrandfatheredLikelySubtagsPipeline;
-use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
-use Midnight\Intl\Tools\Test262\IdentifierRejectionPipeline;
-use Midnight\Intl\Tools\Test262\InventoryAudit;
-use Midnight\Intl\Tools\Test262\LikelySubtagsPipeline;
-use Midnight\Intl\Tools\Test262\LocaleMethodFixturePipeline;
-use Midnight\Intl\Tools\Test262\LocaleObjectPipeline;
-use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
-use Midnight\Intl\Tools\Test262\MappedLocaleStatePipeline;
-use Midnight\Intl\Tools\Test262\OptionObservationPipeline;
-use Midnight\Intl\Tools\Test262\RemoveLikelySubtagsPipeline;
-use Midnight\Intl\Tools\Test262\SourceBoundFixturePipeline;
-use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
+use Midnight\Intl\Tools\Test262\Fixtures\FixtureCases;
+use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
 
 /** @return array<string, FixturePipeline> */
-return static function (FixtureCatalogContext $context): array {
-    $mappedOptionPipeline = $context->mappedOptionPipeline;
-    $invalidCases = $context->invalidCases;
-    /** @var Closure(string): array{type: 'string', value: string} $stringValue */
-    $stringValue = $context->stringValue;
-    /**
-     * @var Closure(
-     *     list<array{array<string, mixed>, string}>,
-     *     list<array{int, string, ?string}>
-     * ): list<array{assertion: int, tag: string, value: array<string, mixed>, expected: string|bool, property?: string}> $optionCases
-     */
-    $optionCases = $context->optionCases;
-    /** @var Closure(non-empty-string): list<array{array<string, mixed>, string}> $forKeyword */
-    $forKeyword = $context->forKeyword;
-    $assertionIdentities = $context->assertionIdentities;
-    $representations = $context->representations;
-    $test262Revision = $context->test262Revision;
-    $ecma402Revision = $context->ecma402Revision;
-    $sourceBoundPipeline = $context->sourceBoundPipeline;
+return static function (FixtureCatalog $catalog): array {
+    $mappedOptionPipeline = $catalog->mappedOption(...);
+    $invalidCases = FixtureCases::invalid(...);
+    $stringValue = FixtureCases::string(...);
+    $optionCases = FixtureCases::options(...);
+    $forKeyword = FixtureCases::forKeyword(...);
 
     return [
         'test/intl402/Locale/constructor-options-hourcycle-invalid.js' => $mappedOptionPipeline(
             'hourCycle',
             '5c72693abd40501d9911c66c0793e13f4dcc7fb32cd430e9f459feec8eaceade',
-            'ConstructorOptionsHourCycleInvalidTest',
             $invalidCases(array_map($stringValue, [
                 '',
                 'h',
@@ -72,7 +37,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-hourcycle-valid.js' => $mappedOptionPipeline(
             'hourCycle',
             'ab8ee2541c2e2cba74b8c38be7eea57f90cdbd58be1e3ac8c50a6f04851f19b0',
-            'ConstructorOptionsHourCycleValidTest',
             array_merge(
                 $optionCases([
                     [$stringValue('h11'), 'en-u-hc-h11'],
@@ -103,7 +67,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-casefirst-invalid.js' => $mappedOptionPipeline(
             'caseFirst',
             '9148cb991c017d5dad7eaf1736cca3322d137ab1f960ae3bfaa4a9ab65e88a06',
-            'ConstructorOptionsCaseFirstInvalidTest',
             $invalidCases([
                 ...array_map($stringValue, ['', 'u', 'Upper', "upper\0", 'uppercase', 'true']),
                 ['type' => 'primitive', 'value' => '[object Object]'],
@@ -112,7 +75,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-casefirst-valid.js' => $mappedOptionPipeline(
             'caseFirst',
             'abb926d4d19763f5a4bf6169b2d156714c8300aac95b73b185026a259eac4449',
-            'ConstructorOptionsCaseFirstValidTest',
             array_merge(
                 $optionCases([
                     [$stringValue('upper'), 'en-u-kf-upper'],
@@ -142,7 +104,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-numeric-undefined.js' => $mappedOptionPipeline(
             'numeric',
             'df2e3eeab1d34aae0cdd35e65e7495c9616b5d11aeb01d8ab0827fddd3a190d0',
-            'ConstructorOptionsNumericUndefinedTest',
             [
                 ['assertion' => 0, 'tag' => 'en', 'value' => ['type' => 'undefined'], 'expected' => 'en'],
                 [
@@ -163,7 +124,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-numeric-valid.js' => $mappedOptionPipeline(
             'numeric',
             '1b2f6279e7c2187178a129266f020cece44c1a4e0099c27ddeec46ed8cfb90e0',
-            'ConstructorOptionsNumericValidTest',
             array_merge(...array_map(static fn(array $row): array => [
                 [
                     'assertion' => 0,
@@ -198,7 +158,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-numberingsystem-invalid.js' => $mappedOptionPipeline(
             'numberingSystem',
             '43c781dde99d7843e82ff4daf0a48825d41301749bfcc3a6ebd4ee3abe3ceb6d',
-            'ConstructorOptionsNumberingSystemInvalidTest',
             $invalidCases(array_map($stringValue, [
                 '',
                 'a',
@@ -217,7 +176,6 @@ return static function (FixtureCatalogContext $context): array {
         'test/intl402/Locale/constructor-options-numberingsystem-valid.js' => $mappedOptionPipeline(
             'numberingSystem',
             'd95df8c7fa8189de5f3e51d109130f02845fb7ba7c3c4aa7a132acb716d38862',
-            'ConstructorOptionsNumberingSystemValidTest',
             $optionCases($forKeyword('nu'), [
                 [0, 'en',           null],
                 [1, 'en-u-nu-latn', null],

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tools\Test262;
 
-use Midnight\Intl\Spec\Locale;
+use Midnight\Intl\Tests\Test262\Harness\LocaleStateAssertion;
+use Midnight\Intl\Tests\Test262\Harness\LocaleStateExpectation;
 use Midnight\Intl\Tools\PhpExporter;
 
 /**
@@ -40,10 +41,9 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         $mapped = [];
         $generated = [];
         $executions = [];
-        $executionNumber = 0;
 
-        foreach ($this->scenarios as $scenario) {
-            $representations = self::scenarioRepresentations($scenario);
+        foreach ($this->scenarios as $scenarioIndex => $scenario) {
+            $expectations = [];
             foreach ($scenario['expectations'] as $expectation) {
                 $identity = $assertions[$expectation['assertion']] ?? null;
                 if ($identity === null) {
@@ -56,28 +56,33 @@ final class MappedLocaleStatePipeline implements FixturePipeline
                     );
                 }
                 $mapped[$expectation['assertion']] = true;
-                foreach ($representations as $representation) {
-                    $executionId = sprintf('case-%d-%s', ++$executionNumber, $representation);
-                    $options = $scenario['options'] ?? null;
-                    $generated[$executionId] = [
-                        $identity['id'],
-                        $scenario['tag'],
-                        $options,
-                        $representation,
-                        $expectation['property'],
-                        $expectation['expected'],
-                    ];
+                $expectations[] = new LocaleStateExpectation(
+                    $identity['id'],
+                    $expectation['property'],
+                    $expectation['expected'],
+                );
+            }
+
+            $options = $scenario['options'] ?? null;
+            foreach (self::scenarioRepresentations($scenario) as $representation) {
+                $caseId = sprintf('scenario-%d-%s', $scenarioIndex + 1, $representation);
+                $generated[$caseId] = [
+                    $scenario['tag'],
+                    $options,
+                    $representation,
+                    array_map(
+                        static fn(LocaleStateExpectation $expectation): array => $expectation->toTuple(),
+                        $expectations,
+                    ),
+                ];
+                $results = LocaleStateAssertion::evaluate($scenario['tag'], $options, $representation, $expectations);
+
+                foreach ($expectations as $expectationIndex => $expectation) {
                     $executions[] = [
-                        'id' => $executionId,
-                        'assertionId' => $identity['id'],
+                        'id' => sprintf('%s-expectation-%d', $caseId, $expectationIndex + 1),
+                        'assertionId' => $expectation->assertionId,
                         'representation' => $representation,
-                        ...self::evaluate(
-                            $scenario['tag'],
-                            $options,
-                            $representation,
-                            $expectation['property'],
-                            $expectation['expected'],
-                        ),
+                        ...$results[$expectationIndex],
                     ];
                 }
             }
@@ -138,45 +143,7 @@ final class MappedLocaleStatePipeline implements FixturePipeline
         return isset($scenario['options']) ? ['associative_array', 'plain_object'] : ['direct'];
     }
 
-    /**
-     * @param array<string, mixed>|null $options
-     * @return array{status: string, actual?: mixed, failure?: string}
-     */
-    private static function evaluate(
-        string $tag,
-        ?array $options,
-        string $representation,
-        string $property,
-        string|bool|null $expected,
-    ): array {
-        try {
-            $locale = match ($representation) {
-                'direct' => new Locale($tag),
-                'associative_array' => new Locale($tag, $options),
-                'plain_object' => new Locale($tag, (object) $options),
-                default => throw new \InvalidArgumentException('Unsupported representation.'),
-            };
-            $actual = $property === 'toString' ? $locale->toString() : $locale->{$property};
-        } catch (\Throwable $error) {
-            return ['status' => 'failing', 'failure' => sprintf('%s: %s', $error::class, $error->getMessage())];
-        }
-
-        return (
-            $actual === $expected
-                ? ['status' => 'passing', 'actual' => $actual]
-                : [
-                    'status' => 'failing',
-                    'actual' => $actual,
-                    'failure' => sprintf(
-                        'Expected %s but received %s.',
-                        var_export($expected, true),
-                        var_export($actual, true),
-                    ),
-                ]
-        );
-    }
-
-    /** @param array<string, array{string, string, ?array<string, mixed>, string, string, string|bool|null}> $cases */
+    /** @param array<string, array{string, ?array<string, mixed>, string, list<array{string, string, string|bool|null}>}> $cases */
     private function render(array $cases, string $fixturePath): string
     {
         $export = preg_replace('/[ \t]+$/m', '', PhpExporter::export($cases));
@@ -192,19 +159,21 @@ final class MappedLocaleStatePipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            use Midnight\Intl\Spec\Locale;
+            use Midnight\Intl\Tests\Test262\Harness\LocaleStateAssertion;
+            use Midnight\Intl\Tests\Test262\Harness\LocaleStateExpectation;
             use PHPUnit\Framework\Assert;
 
-            foreach ({$export} as [\$assertionId, \$tag, \$options, \$representation, \$property, \$expected]) {
-                \$locale = match (\$representation) {
-                    'direct' => new Locale(\$tag),
-                    'associative_array' => new Locale(\$tag, \$options),
-                    'plain_object' => new Locale(\$tag, (object) \$options),
-                    default => throw new \InvalidArgumentException('Unsupported representation.'),
-                };
-                \$actual = \$property === 'toString' ? \$locale->toString() : \$locale->{\$property};
-
-                Assert::assertSame(\$expected, \$actual, \$assertionId);
+            foreach ({$export} as [\$tag, \$options, \$representation, \$expectationTuples]) {
+                \$expectations = array_map(LocaleStateExpectation::fromTuple(...), \$expectationTuples);
+                \$results = LocaleStateAssertion::evaluate(\$tag, \$options, \$representation, \$expectations);
+                foreach (\$expectations as \$index => \$expectation) {
+                    \$result = \$results[\$index];
+                    Assert::assertSame(
+                        'passing',
+                        \$result['status'],
+                        \$expectation->assertionId.': '.(\$result['failure'] ?? 'unknown failure'),
+                    );
+                }
             }
             PHP . "\n";
     }

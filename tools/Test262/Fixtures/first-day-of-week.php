@@ -3,28 +3,22 @@
 declare(strict_types=1);
 
 use Midnight\Intl\Tools\Test262\FixturePipeline;
-use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalogContext;
+use Midnight\Intl\Tools\Test262\Fixtures\FixtureCases;
+use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
 
 /** @return array<string, FixturePipeline> */
-return static function (FixtureCatalogContext $context): array {
-    $mappedOptionPipeline = $context->mappedOptionPipeline;
-    $invalidCases = $context->invalidCases;
-    $stringValue = $context->stringValue;
-    $optionCases = $context->optionCases;
-
+return static function (FixtureCatalog $catalog): array {
     return [
-        'test/intl402/Locale/constructor-options-firstDayOfWeek-invalid.js' => $mappedOptionPipeline(
+        'test/intl402/Locale/constructor-options-firstDayOfWeek-invalid.js' => $catalog->mappedOption(
             'firstDayOfWeek',
             '43fb84564abe6ad4696abb989ba45da508622a19589b20bc166a076a54e88bd2',
-            'ConstructorOptionsFirstDayOfWeekInvalidTest',
-            $invalidCases(array_map($stringValue, ['', 'm', 'mo', 'longerThan8Chars'])),
+            FixtureCases::invalid(array_map(FixtureCases::string(...), ['', 'm', 'mo', 'longerThan8Chars'])),
         ),
-        'test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js' => $mappedOptionPipeline(
+        'test/intl402/Locale/constructor-options-firstDayOfWeek-valid.js' => $catalog->mappedOption(
             'firstDayOfWeek',
             'f08f24636a0f4c6446925f82f71c176128c208618ea899312bc37fc6862f1d3f',
-            'ConstructorOptionsFirstDayOfWeekValidTest',
-            $optionCases(
-                array_map(static fn(array $row): array => [
+            FixtureCases::options(
+                array_values(array_map(static fn(array $row): array => [
                     is_int($row[0])
                         ? ['type' => 'int', 'value' => $row[0]]
                         : (
@@ -75,7 +69,7 @@ return static function (FixtureCatalogContext $context): array {
                     ['yung-fong',            'en-u-fw-yung-fong'],
                     ['tang',                 'en-u-fw-tang'],
                     ['frank-yung-fong-tang', 'en-u-fw-frank-yung-fong-tang'],
-                ]),
+                ])),
                 [
                     [0, 'en',          null],
                     [1, 'en-u-fw-WED', null],

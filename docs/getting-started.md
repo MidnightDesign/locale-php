@@ -35,7 +35,7 @@ $overridden->hourCycle;  // HourCycle::H23
 $overridden->caseFirst;  // CaseFirst::Upper
 ```
 
-The constructor accepts named `language`, `script`, `region`, `variants`, `calendar`, `collation`, `firstDayOfWeek`, `hourCycle`, `caseFirst`, `numeric`, and `numberingSystem` options. `hourCycle` and `caseFirst` accept either their backed enums or backing strings. A non-null option replaces the corresponding input component or Unicode keyword. `toString()`, string conversion, and JSON serialization return the complete canonical identifier.
+The constructor accepts named `language`, `script`, `region`, `variants`, `calendar`, `collation`, `firstDayOfWeek`, `hourCycle`, `caseFirst`, `numeric`, and `numberingSystem` options. `hourCycle` and `caseFirst` accept either their backed enums or backing strings. Their getters return the corresponding enum for a recognized closed-vocabulary value. A syntactically valid identifier can still carry another keyword value; the getter preserves that value as a string so `toSpec()` and `fromSpec()` remain lossless. A non-null option replaces the corresponding input component or Unicode keyword. `toString()`, string conversion, and JSON serialization return the complete canonical identifier.
 
 Identifiers may contain variants, transformed extensions, Unicode attributes and keywords, other singleton extensions, and private-use subtags. Parsing is strict ASCII and structural: syntactically valid unregistered subtags are accepted, while duplicate variants, duplicate extension singletons, and malformed extension sequences are rejected.
 

@@ -26,6 +26,10 @@ final class Locale implements \Stringable, \JsonSerializable
 {
     private ?SpecLocale $spec = null;
 
+    /**
+     * @param HourCycle|value-of<HourCycle>|null $hourCycle
+     * @param CaseFirst|value-of<CaseFirst>|null   $caseFirst
+     */
     public function __construct(
         string $tag,
         ?string $language = null,

@@ -170,7 +170,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-1-direct",
+                            "id": "scenario-1-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L105:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -192,7 +192,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-2-direct",
+                            "id": "scenario-1-direct-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L106:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -214,7 +214,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-3-direct",
+                            "id": "scenario-1-direct-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L107:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -236,7 +236,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-4-direct",
+                            "id": "scenario-1-direct-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L108:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -258,7 +258,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-5-direct",
+                            "id": "scenario-1-direct-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L109:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -280,7 +280,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-6-direct",
+                            "id": "scenario-1-direct-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L110:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -302,7 +302,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-7-direct",
+                            "id": "scenario-1-direct-expectation-7",
                             "assertionId": "test/intl402/Locale/getters.js:L111:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -324,7 +324,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-8-direct",
+                            "id": "scenario-1-direct-expectation-8",
                             "assertionId": "test/intl402/Locale/getters.js:L112:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -346,7 +346,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-9-direct",
+                            "id": "scenario-1-direct-expectation-9",
                             "assertionId": "test/intl402/Locale/getters.js:L113:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -368,7 +368,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-10-direct",
+                            "id": "scenario-1-direct-expectation-10",
                             "assertionId": "test/intl402/Locale/getters.js:L115:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -390,7 +390,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-11-direct",
+                            "id": "scenario-1-direct-expectation-11",
                             "assertionId": "test/intl402/Locale/getters.js:L118:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -412,7 +412,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-12-direct",
+                            "id": "scenario-1-direct-expectation-12",
                             "assertionId": "test/intl402/Locale/getters.js:L120:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -434,14 +434,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-13-associative_array",
+                            "id": "scenario-2-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L137:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "ja-Jpan-JP-hepburn-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin"
                         },
                         {
-                            "id": "case-14-plain_object",
+                            "id": "scenario-2-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L137:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -463,14 +463,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-15-associative_array",
+                            "id": "scenario-2-associative_array-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L138:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "ja-Jpan-JP-hepburn"
                         },
                         {
-                            "id": "case-16-plain_object",
+                            "id": "scenario-2-plain_object-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L138:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -492,14 +492,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-17-associative_array",
+                            "id": "scenario-2-associative_array-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L139:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "ja"
                         },
                         {
-                            "id": "case-18-plain_object",
+                            "id": "scenario-2-plain_object-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L139:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -521,14 +521,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-19-associative_array",
+                            "id": "scenario-2-associative_array-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L140:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "Jpan"
                         },
                         {
-                            "id": "case-20-plain_object",
+                            "id": "scenario-2-plain_object-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L140:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -550,14 +550,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-21-associative_array",
+                            "id": "scenario-2-associative_array-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L141:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "JP"
                         },
                         {
-                            "id": "case-22-plain_object",
+                            "id": "scenario-2-plain_object-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L141:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -579,14 +579,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-23-associative_array",
+                            "id": "scenario-2-associative_array-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L142:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "hepburn"
                         },
                         {
-                            "id": "case-24-plain_object",
+                            "id": "scenario-2-plain_object-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L142:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -608,14 +608,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-25-associative_array",
+                            "id": "scenario-2-associative_array-expectation-7",
                             "assertionId": "test/intl402/Locale/getters.js:L143:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "japanese"
                         },
                         {
-                            "id": "case-26-plain_object",
+                            "id": "scenario-2-plain_object-expectation-7",
                             "assertionId": "test/intl402/Locale/getters.js:L143:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -637,14 +637,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-27-associative_array",
+                            "id": "scenario-2-associative_array-expectation-8",
                             "assertionId": "test/intl402/Locale/getters.js:L144:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "search"
                         },
                         {
-                            "id": "case-28-plain_object",
+                            "id": "scenario-2-plain_object-expectation-8",
                             "assertionId": "test/intl402/Locale/getters.js:L144:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -666,14 +666,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-29-associative_array",
+                            "id": "scenario-2-associative_array-expectation-9",
                             "assertionId": "test/intl402/Locale/getters.js:L145:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "h24"
                         },
                         {
-                            "id": "case-30-plain_object",
+                            "id": "scenario-2-plain_object-expectation-9",
                             "assertionId": "test/intl402/Locale/getters.js:L145:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -695,14 +695,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-31-associative_array",
+                            "id": "scenario-2-associative_array-expectation-10",
                             "assertionId": "test/intl402/Locale/getters.js:L147:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "false"
                         },
                         {
-                            "id": "case-32-plain_object",
+                            "id": "scenario-2-plain_object-expectation-10",
                             "assertionId": "test/intl402/Locale/getters.js:L147:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -724,14 +724,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-33-associative_array",
+                            "id": "scenario-2-associative_array-expectation-11",
                             "assertionId": "test/intl402/Locale/getters.js:L150:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": true
                         },
                         {
-                            "id": "case-34-plain_object",
+                            "id": "scenario-2-plain_object-expectation-11",
                             "assertionId": "test/intl402/Locale/getters.js:L150:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -753,14 +753,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-35-associative_array",
+                            "id": "scenario-2-associative_array-expectation-12",
                             "assertionId": "test/intl402/Locale/getters.js:L152:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "jpanfin"
                         },
                         {
-                            "id": "case-36-plain_object",
+                            "id": "scenario-2-plain_object-expectation-12",
                             "assertionId": "test/intl402/Locale/getters.js:L152:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -782,14 +782,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-37-associative_array",
+                            "id": "scenario-3-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L163:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fr-Latn-CA-1996-fonipa-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn"
                         },
                         {
-                            "id": "case-38-plain_object",
+                            "id": "scenario-3-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L163:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -811,14 +811,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-39-associative_array",
+                            "id": "scenario-3-associative_array-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L164:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fr-Latn-CA-1996-fonipa"
                         },
                         {
-                            "id": "case-40-plain_object",
+                            "id": "scenario-3-plain_object-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L164:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -840,14 +840,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-41-associative_array",
+                            "id": "scenario-3-associative_array-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L165:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fr"
                         },
                         {
-                            "id": "case-42-plain_object",
+                            "id": "scenario-3-plain_object-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L165:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -869,14 +869,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-43-associative_array",
+                            "id": "scenario-3-associative_array-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L166:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "Latn"
                         },
                         {
-                            "id": "case-44-plain_object",
+                            "id": "scenario-3-plain_object-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L166:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -898,14 +898,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-45-associative_array",
+                            "id": "scenario-3-associative_array-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L167:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "CA"
                         },
                         {
-                            "id": "case-46-plain_object",
+                            "id": "scenario-3-plain_object-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L167:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -927,14 +927,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-47-associative_array",
+                            "id": "scenario-3-associative_array-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L168:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "1996-fonipa"
                         },
                         {
-                            "id": "case-48-plain_object",
+                            "id": "scenario-3-plain_object-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L168:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -956,14 +956,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-49-associative_array",
+                            "id": "scenario-3-associative_array-expectation-7",
                             "assertionId": "test/intl402/Locale/getters.js:L169:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "gregory"
                         },
                         {
-                            "id": "case-50-plain_object",
+                            "id": "scenario-3-plain_object-expectation-7",
                             "assertionId": "test/intl402/Locale/getters.js:L169:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -985,14 +985,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-51-associative_array",
+                            "id": "scenario-3-associative_array-expectation-8",
                             "assertionId": "test/intl402/Locale/getters.js:L170:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "standard"
                         },
                         {
-                            "id": "case-52-plain_object",
+                            "id": "scenario-3-plain_object-expectation-8",
                             "assertionId": "test/intl402/Locale/getters.js:L170:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1014,14 +1014,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-53-associative_array",
+                            "id": "scenario-3-associative_array-expectation-9",
                             "assertionId": "test/intl402/Locale/getters.js:L171:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "h11"
                         },
                         {
-                            "id": "case-54-plain_object",
+                            "id": "scenario-3-plain_object-expectation-9",
                             "assertionId": "test/intl402/Locale/getters.js:L171:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1043,14 +1043,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-55-associative_array",
+                            "id": "scenario-3-associative_array-expectation-10",
                             "assertionId": "test/intl402/Locale/getters.js:L173:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": ""
                         },
                         {
-                            "id": "case-56-plain_object",
+                            "id": "scenario-3-plain_object-expectation-10",
                             "assertionId": "test/intl402/Locale/getters.js:L173:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1072,14 +1072,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-57-associative_array",
+                            "id": "scenario-3-associative_array-expectation-11",
                             "assertionId": "test/intl402/Locale/getters.js:L176:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": false
                         },
                         {
-                            "id": "case-58-plain_object",
+                            "id": "scenario-3-plain_object-expectation-11",
                             "assertionId": "test/intl402/Locale/getters.js:L176:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1101,14 +1101,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-59-associative_array",
+                            "id": "scenario-3-associative_array-expectation-12",
                             "assertionId": "test/intl402/Locale/getters.js:L178:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "latn"
                         },
                         {
-                            "id": "case-60-plain_object",
+                            "id": "scenario-3-plain_object-expectation-12",
                             "assertionId": "test/intl402/Locale/getters.js:L178:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1130,7 +1130,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-61-direct",
+                            "id": "scenario-4-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L183:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1152,7 +1152,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-62-direct",
+                            "id": "scenario-4-direct-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L184:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1174,7 +1174,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-63-direct",
+                            "id": "scenario-4-direct-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L185:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1196,7 +1196,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-64-direct",
+                            "id": "scenario-4-direct-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L186:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1218,7 +1218,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-65-direct",
+                            "id": "scenario-4-direct-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L187:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1240,7 +1240,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-66-direct",
+                            "id": "scenario-4-direct-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L188:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1262,7 +1262,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-67-direct",
+                            "id": "scenario-5-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/getters.js:L192:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1284,7 +1284,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-68-direct",
+                            "id": "scenario-5-direct-expectation-2",
                             "assertionId": "test/intl402/Locale/getters.js:L193:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1306,7 +1306,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-69-direct",
+                            "id": "scenario-5-direct-expectation-3",
                             "assertionId": "test/intl402/Locale/getters.js:L194:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1328,7 +1328,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-70-direct",
+                            "id": "scenario-5-direct-expectation-4",
                             "assertionId": "test/intl402/Locale/getters.js:L195:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1350,7 +1350,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-71-direct",
+                            "id": "scenario-5-direct-expectation-5",
                             "assertionId": "test/intl402/Locale/getters.js:L196:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1372,7 +1372,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-72-direct",
+                            "id": "scenario-5-direct-expectation-6",
                             "assertionId": "test/intl402/Locale/getters.js:L197:C1:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1394,7 +1394,7 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-73-direct",
+                            "id": "scenario-5-direct-expectation-7",
                             "assertionId": "test/intl402/Locale/getters.js:L199:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1438,14 +1438,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-1-associative_array",
+                            "id": "scenario-1-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "en-u-ca-islamic-civil"
                         },
                         {
-                            "id": "case-2-plain_object",
+                            "id": "scenario-1-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/calendar/canonicalize.js:L19:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1467,14 +1467,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-3-associative_array",
+                            "id": "scenario-1-associative_array-expectation-2",
                             "assertionId": "test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-4-plain_object",
+                            "id": "scenario-1-plain_object-expectation-2",
                             "assertionId": "test/intl402/Locale/prototype/calendar/canonicalize.js:L22:C1:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1517,49 +1517,49 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-1-direct",
+                            "id": "scenario-1-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-2-direct",
+                            "id": "scenario-2-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-3-direct",
+                            "id": "scenario-3-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-4-direct",
+                            "id": "scenario-4-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-5-direct",
+                            "id": "scenario-5-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-6-direct",
+                            "id": "scenario-6-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-7-direct",
+                            "id": "scenario-7-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-id.js:L25:C3:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -1603,322 +1603,322 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-1-associative_array",
+                            "id": "scenario-1-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-2-plain_object",
+                            "id": "scenario-1-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-5-associative_array",
+                            "id": "scenario-3-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-6-plain_object",
+                            "id": "scenario-3-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-9-associative_array",
+                            "id": "scenario-5-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-10-plain_object",
+                            "id": "scenario-5-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-13-associative_array",
+                            "id": "scenario-7-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-14-plain_object",
+                            "id": "scenario-7-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-17-associative_array",
+                            "id": "scenario-9-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-18-plain_object",
+                            "id": "scenario-9-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-21-associative_array",
+                            "id": "scenario-11-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-22-plain_object",
+                            "id": "scenario-11-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-25-associative_array",
+                            "id": "scenario-13-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-26-plain_object",
+                            "id": "scenario-13-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-29-associative_array",
+                            "id": "scenario-15-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-30-plain_object",
+                            "id": "scenario-15-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-33-associative_array",
+                            "id": "scenario-17-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-34-plain_object",
+                            "id": "scenario-17-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-37-associative_array",
+                            "id": "scenario-19-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-38-plain_object",
+                            "id": "scenario-19-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-41-associative_array",
+                            "id": "scenario-21-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-42-plain_object",
+                            "id": "scenario-21-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-45-associative_array",
+                            "id": "scenario-23-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-46-plain_object",
+                            "id": "scenario-23-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-49-associative_array",
+                            "id": "scenario-25-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-50-plain_object",
+                            "id": "scenario-25-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-53-associative_array",
+                            "id": "scenario-27-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-54-plain_object",
+                            "id": "scenario-27-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-57-associative_array",
+                            "id": "scenario-29-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-58-plain_object",
+                            "id": "scenario-29-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-61-associative_array",
+                            "id": "scenario-31-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-62-plain_object",
+                            "id": "scenario-31-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-65-associative_array",
+                            "id": "scenario-33-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-66-plain_object",
+                            "id": "scenario-33-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-69-associative_array",
+                            "id": "scenario-35-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-70-plain_object",
+                            "id": "scenario-35-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-73-associative_array",
+                            "id": "scenario-37-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-74-plain_object",
+                            "id": "scenario-37-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-77-associative_array",
+                            "id": "scenario-39-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-78-plain_object",
+                            "id": "scenario-39-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-81-associative_array",
+                            "id": "scenario-41-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-82-plain_object",
+                            "id": "scenario-41-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-85-associative_array",
+                            "id": "scenario-43-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-86-plain_object",
+                            "id": "scenario-43-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-89-associative_array",
+                            "id": "scenario-45-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-90-plain_object",
+                            "id": "scenario-45-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L41:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -1940,322 +1940,322 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-3-associative_array",
+                            "id": "scenario-2-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-4-plain_object",
+                            "id": "scenario-2-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-7-associative_array",
+                            "id": "scenario-4-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-8-plain_object",
+                            "id": "scenario-4-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-11-associative_array",
+                            "id": "scenario-6-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-12-plain_object",
+                            "id": "scenario-6-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-15-associative_array",
+                            "id": "scenario-8-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-16-plain_object",
+                            "id": "scenario-8-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-19-associative_array",
+                            "id": "scenario-10-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-20-plain_object",
+                            "id": "scenario-10-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-23-associative_array",
+                            "id": "scenario-12-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-24-plain_object",
+                            "id": "scenario-12-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-27-associative_array",
+                            "id": "scenario-14-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-28-plain_object",
+                            "id": "scenario-14-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-31-associative_array",
+                            "id": "scenario-16-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-32-plain_object",
+                            "id": "scenario-16-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-35-associative_array",
+                            "id": "scenario-18-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-36-plain_object",
+                            "id": "scenario-18-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-39-associative_array",
+                            "id": "scenario-20-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-40-plain_object",
+                            "id": "scenario-20-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-43-associative_array",
+                            "id": "scenario-22-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-44-plain_object",
+                            "id": "scenario-22-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-47-associative_array",
+                            "id": "scenario-24-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-48-plain_object",
+                            "id": "scenario-24-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-51-associative_array",
+                            "id": "scenario-26-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-52-plain_object",
+                            "id": "scenario-26-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-55-associative_array",
+                            "id": "scenario-28-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-56-plain_object",
+                            "id": "scenario-28-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-59-associative_array",
+                            "id": "scenario-30-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-60-plain_object",
+                            "id": "scenario-30-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-63-associative_array",
+                            "id": "scenario-32-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-64-plain_object",
+                            "id": "scenario-32-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "mon"
                         },
                         {
-                            "id": "case-67-associative_array",
+                            "id": "scenario-34-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-68-plain_object",
+                            "id": "scenario-34-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "tue"
                         },
                         {
-                            "id": "case-71-associative_array",
+                            "id": "scenario-36-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-72-plain_object",
+                            "id": "scenario-36-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "wed"
                         },
                         {
-                            "id": "case-75-associative_array",
+                            "id": "scenario-38-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-76-plain_object",
+                            "id": "scenario-38-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "thu"
                         },
                         {
-                            "id": "case-79-associative_array",
+                            "id": "scenario-40-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-80-plain_object",
+                            "id": "scenario-40-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "fri"
                         },
                         {
-                            "id": "case-83-associative_array",
+                            "id": "scenario-42-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-84-plain_object",
+                            "id": "scenario-42-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sat"
                         },
                         {
-                            "id": "case-87-associative_array",
+                            "id": "scenario-44-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-88-plain_object",
+                            "id": "scenario-44-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-91-associative_array",
+                            "id": "scenario-46-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "sun"
                         },
                         {
-                            "id": "case-92-plain_object",
+                            "id": "scenario-46-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/prototype/firstDayOfWeek/valid-options.js:L46:C3:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -2300,14 +2300,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-1-direct",
+                            "id": "scenario-1-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-7-direct",
+                            "id": "scenario-5-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L36:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -2329,28 +2329,28 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-2-associative_array",
+                            "id": "scenario-2-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-3-plain_object",
+                            "id": "scenario-2-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-8-associative_array",
+                            "id": "scenario-6-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "ethioaa"
                         },
                         {
-                            "id": "case-9-plain_object",
+                            "id": "scenario-6-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L45:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
@@ -2372,14 +2372,14 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-4-direct",
+                            "id": "scenario-3-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-10-direct",
+                            "id": "scenario-7-direct-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L54:C5:assert.sameValue",
                             "representation": "direct",
                             "status": "passing",
@@ -2401,28 +2401,28 @@
                     ],
                     "executions": [
                         {
-                            "id": "case-5-associative_array",
+                            "id": "scenario-4-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-6-plain_object",
+                            "id": "scenario-4-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
                             "actual": "islamic-civil"
                         },
                         {
-                            "id": "case-11-associative_array",
+                            "id": "scenario-8-associative_array-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
                             "representation": "associative_array",
                             "status": "passing",
                             "actual": "ethioaa"
                         },
                         {
-                            "id": "case-12-plain_object",
+                            "id": "scenario-8-plain_object-expectation-1",
                             "assertionId": "test/intl402/Locale/constructor-options-canonicalized.js:L63:C5:assert.sameValue",
                             "representation": "plain_object",
                             "status": "passing",
