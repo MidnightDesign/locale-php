@@ -9,6 +9,7 @@ use Midnight\Intl\Locale;
 
 $locale = new Locale('de-AT');
 $canonical = $locale->toString();
+$timeZones = $locale->getTimeZones(); // ['Europe/Vienna']
 ```
 
 Results come from the package's release data snapshot, not the host's ICU version or global default locale. Do not carry over assumptions about ICU fallback, global error state, or underscore-form identifiers.
