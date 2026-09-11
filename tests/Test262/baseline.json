@@ -88,6 +88,12 @@
                 "test/intl402/Locale/constructor-getter-order.js": "ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044",
                 "test/intl402/Locale/constructor-options-throwing-getters.js": "c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882",
                 "test/intl402/Locale/constructor-locale-object.js": "c4c6ac019b341d0660e8f3869943e39312b45e21e36f178abef600505aef243d",
+                "test/intl402/Locale/prototype/getTimeZones/branding.js": "0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf",
+                "test/intl402/Locale/prototype/getTimeZones/name.js": "661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260",
+                "test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js": "9da185ea867c9b003be4a2186151186e07d1a60a68d200a5640a3eeca3176616",
+                "test/intl402/Locale/prototype/getTimeZones/output-array-undefined.js": "051f651eaa1127afa99f0064d855e3f6be1b46acb3404a06abe4d3f4570a7d60",
+                "test/intl402/Locale/prototype/getTimeZones/output-array.js": "86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f",
+                "test/intl402/Locale/prototype/getTimeZones/prop-desc.js": "94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
             }

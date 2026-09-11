@@ -1,7 +1,7 @@
 {
     "format": 4,
-    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-and-script-directions",
-    "releaseDataFingerprint": "934c0e2dc88b9a90d34073d45a5ccc512972f612a96a4af5fcd035f05c6c7dbd",
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-and-primary-time-zones",
+    "releaseDataFingerprint": "8ac1dead95a58b23982e3a7509762ed66e2b385cc2ab751aebb8a74fdd10c0ee",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -47,11 +47,19 @@
             "sourceSha256": "e71dc41671b2a3d15807e4dcda0bd38735000bc947fcf8bfbe6f7754d1e27215",
             "generated": "src/Internal/Data/ScriptDirections.php",
             "generatedSha256": "714daa2337ae2d4dc68d2d831d11973e5d773cff7f90fea8df40c0004bac037e"
+        },
+        "primaryTimeZones": {
+            "source": "resources/data/primary-time-zones.json",
+            "sourceSha256": "282aba05517c6a88023f18ff16770757a336b2697c1c5c9ce79756c70104b08e",
+            "generated": "src/Internal/Data/PrimaryTimeZones.php",
+            "generatedSha256": "162f7b0b9fb566d01940b85b265bbf82a6d802f14f212523bbb3dc97dd243def"
         }
     },
     "generators": {
         "tools/import-cldr-aliases.php": "ca44219810274a024d1c9211d0150617ee03960f9facd0b42c85e3a0f5fae3a8",
-        "tools/generate-data.php": "c6d3c75599bedbd707e7763ea7d0e199fe063f5e779f803b4e9ad18c97144aa0",
+        "tools/generate-data.php": "b7b3c6236782a61ab62aad57c680ee70a6b9464336abf465c1c9933b1fd8710b",
+        "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",
+        "tools/TimeZoneDataImporter.php": "e8a38fd4ba20461edb794a3a5976aac6864938a1822f9bd1e308a4de086fc26b",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",
         "tools/verify-data-sources.php": "0c8d76e31fa3266e6980c919cb2353dbe6ac29574cc86fb8452ada8125fc379b"
     },

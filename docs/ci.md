@@ -6,6 +6,10 @@ The runtime matrix comes from `.ci/matrix.json`. It covers PHP 8.2–8.5 on `ubu
 
 The quality workflow also runs the upstream-derived spec suite with `ext-intl` absent after making the entire checkout read-only. PHPUnit result caching is disabled for that run, so passing evidence demonstrates that runtime behavior needs neither host ICU nor writable package storage.
 
+Stable macOS runtime jobs share PHP provisioning and Composer installation between disabled and native modes. Each mode runs in a separate PHP process and retains its original artifact name, JUnit report, branch trace, and provenance. The PHP 8.2 and 8.5 jobs also run the package-install smoke check. Native and package checks still execute after an earlier test failure once runtime setup has succeeded; any failed check fails the job. PR and release callers disable duplicate standalone macOS install jobs with `separate-macos-install: false`; quality-only callers such as nightly retain them by default. This reduces PR macOS jobs from ten to four without reducing runtime or install coverage.
+
+Matrix generation uses the PHP already present on the pinned Ubuntu runner and directly loads `tools/Ci/Matrix.php`, without installing Composer dependencies. `ci-matrix.php runtime` still lists all logical runtime lanes; `runtime-jobs` groups the macOS modes for execution.
+
 Each runtime lane fixes UTC, the `C` process locale, and the ICU default locale. It retains JSON provenance and a branch trace. The native mode records `no-native-path-implemented` until a native path exists. Adding a native path requires adding its eligibility and execution counters to the trace; the lane fails when an eligible path was not exercised.
 
 Mutation evidence is split by source ownership. `infection.spec.json5` mutates the spec implementation, its internal support, and shared exceptions using only the generated upstream Test262 suite. `infection.porcelain.json5` mutates the porcelain entry point using only porcelain contract tests. Generated release data is excluded from both campaigns. Each campaign retains its own coverage XML, JUnit report, Infection JSON, and text log.

@@ -79,6 +79,7 @@
         "ci:matrix": "php tools/ci-matrix.php",
         "ci:verify": "php tools/verify-ci.php",
         "data:generate": "php tools/generate-data.php",
+        "data:import-time-zones": "php tools/import-time-zones.php",
         "data:check": "php tools/generate-data.php --check",
         "data:verify-sources": "php tools/verify-data-sources.php",
         "test262:generate": "php tools/transpile-test262.php",

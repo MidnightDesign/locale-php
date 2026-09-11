@@ -12,3 +12,5 @@ jobs:
 
   quality:
     uses: ./.github/workflows/ci-quality.yml
+    with:
+      separate-macos-install: false
