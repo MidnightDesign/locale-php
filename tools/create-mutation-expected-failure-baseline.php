@@ -20,7 +20,7 @@ $evidence = json_decode($contents, true, flags: JSON_THROW_ON_ERROR);
 if (!is_array($evidence) || !is_array($evidence['mutations'] ?? null)) {
     throw new RuntimeException('Aggregate mutation evidence has an invalid shape.');
 }
-/** @var array{mutations: list<array{id: string, campaign: string, modes: array<string, string>}>} $evidence */
+/** @var array{mutations: list<array{id: string, campaign: string, source: string, mutator: string, diff: string, modes: array<string, string>}>} $evidence */
 $baseline = MatrixMutationScore::expectedFailureBaseline($evidence, $argv[3]);
 $encoded = json_encode($baseline, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR) . "\n";
 if (file_put_contents($argv[2], $encoded) === false) {

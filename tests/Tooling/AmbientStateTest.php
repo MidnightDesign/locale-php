@@ -6,6 +6,7 @@ namespace Midnight\Intl\Tests\Tooling;
 
 use Midnight\Intl\Locale;
 use Midnight\Intl\Spec\Locale as SpecLocale;
+use Midnight\Intl\TextDirection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,7 @@ final class AmbientStateTest extends TestCase
             );
             self::assertSame('zh-Hant-TW', (new Locale('zh-Hant'))->maximize()->toString());
             self::assertSame('zh-TW', (new SpecLocale('zh-Hant'))->minimize()->toString());
+            self::assertSame(TextDirection::RightToLeft, (new Locale('ar'))->getTextInfo()->direction);
         } finally {
             date_default_timezone_set($timezone);
             if ($processLocale !== false) {
