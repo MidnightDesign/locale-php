@@ -75,45 +75,37 @@ if ($scriptDirectionsData['format'] !== 1) {
 }
 
 /**
- * @return array{source: string, data: array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, preferences: array<array-key, list<string>>}&array<string, mixed>}
- */
-function readPreferenceProjection(string $root, string $name): array
-{
-    $source = file_get_contents($root . '/resources/data/' . $name . '.json');
-    if ($source === false) {
-        throw new RuntimeException(sprintf('Unable to read the %s projection source.', $name));
-    }
-    /** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, preferences: array<array-key, list<string>>}&array<string, mixed> $data */
-    $data = json_decode($source, true, flags: JSON_THROW_ON_ERROR);
-    if ($data['format'] !== 1) {
-        throw new RuntimeException(sprintf('The %s projection format is incompatible.', $name));
-    }
-
-    return ['source' => $source, 'data' => $data];
-}
-
-/**
- * @param array{format: int, cldrRevision: string, upstreamSha512: string}&array<string, mixed> $data
- * @param list<array{string, string}> $constants
+ * @param list<array{
+ *     constant: string,
+ *     payloadKey: string,
+ *     type: string,
+ *     value: list<string>|array<array-key, list<string>>
+ * }> $fields
  */
 function generatePreferenceClass(
     string $root,
     string $class,
     string $errorSubject,
-    array $data,
+    int $format,
+    string $cldrRevision,
+    string $upstreamSha512,
     string $source,
-    array $constants,
+    array $fields,
 ): string {
     $exports = '';
-    $payload = ['format' => $data['format']];
-    foreach ($constants as [$constant, $field]) {
-        $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($data[$field]));
+    $payload = ['format' => $format];
+    foreach ($fields as $field) {
+        $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($field['value']));
         if ($export === null) {
-            throw new RuntimeException(sprintf('Unable to export the %s projection.', $field));
+            throw new RuntimeException(sprintf('Unable to export the %s projection.', $field['payloadKey']));
         }
-        $type = $field === 'available' ? 'list<string>' : 'array<array-key, list<string>>';
-        $exports .= sprintf("\n    /** @var %s */\n    public const %s = %s;\n", $type, $constant, $export);
-        $payload[$field] = $data[$field];
+        $exports .= sprintf(
+            "\n    /** @var %s */\n    public const %s = %s;\n",
+            $field['type'],
+            $field['constant'],
+            $export,
+        );
+        $payload[$field['payloadKey']] = $field['value'];
     }
     $sourceSha256 = hash('sha256', $source);
     $payloadSha256 = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR));
@@ -126,13 +118,13 @@ function generatePreferenceClass(
 
         enum {$class}
         {
-            public const FORMAT = {$data['format']};
+            public const FORMAT = {$format};
 
             /** @var string */
-            public const CLDR_REVISION = '{$data['cldrRevision']}';
+            public const CLDR_REVISION = '{$cldrRevision}';
 
             /** @var string */
-            public const CLDR_CORE_SHA512 = '{$data['upstreamSha512']}';
+            public const CLDR_CORE_SHA512 = '{$upstreamSha512}';
 
             /** @var string */
             public const SOURCE_SHA256 = '{$sourceSha256}';
@@ -161,8 +153,8 @@ function generatePreferenceClass(
                 return [
                     'format' => self::FORMAT,
         PHP;
-    foreach ($constants as [$constant, $field]) {
-        $generated .= sprintf("            '%s' => self::%s,\n", $field, $constant);
+    foreach ($fields as $field) {
+        $generated .= sprintf("            '%s' => self::%s,\n", $field['payloadKey'], $field['constant']);
     }
     $generated .= <<<'PHP'
                 ];
@@ -174,32 +166,63 @@ function generatePreferenceClass(
     return MagoFormatter::format($root, 'src/Internal/Data/' . $class . '.php', $generated);
 }
 
-$calendarProjection = readPreferenceProjection($root, 'calendar-preferences');
-$calendarData = $calendarProjection['data'];
-$calendarSource = $calendarProjection['source'];
+$calendarSource = file_get_contents($root . '/resources/data/calendar-preferences.json');
+if ($calendarSource === false) {
+    throw new RuntimeException('Unable to read the calendar-preferences projection source.');
+}
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, available: list<string>, preferences: array<array-key, list<string>>} $calendarData */
+$calendarData = json_decode($calendarSource, true, flags: JSON_THROW_ON_ERROR);
+if ($calendarData['format'] !== 1) {
+    throw new RuntimeException('The calendar-preferences projection format is incompatible.');
+}
 $calendarGenerated = generatePreferenceClass(
     $root,
     'CalendarPreferences',
     'calendar preference',
-    $calendarData,
+    $calendarData['format'],
+    $calendarData['cldrRevision'],
+    $calendarData['upstreamSha512'],
     $calendarSource,
     [
-        ['AVAILABLE',   'available'],
-        ['PREFERENCES', 'preferences'],
+        [
+            'constant' => 'AVAILABLE',
+            'payloadKey' => 'available',
+            'type' => 'list<string>',
+            'value' => $calendarData['available'],
+        ],
+        [
+            'constant' => 'PREFERENCES',
+            'payloadKey' => 'preferences',
+            'type' => 'array<array-key, list<string>>',
+            'value' => $calendarData['preferences'],
+        ],
     ],
 );
 $calendarTarget = $root . '/src/Internal/Data/CalendarPreferences.php';
 
-$hourCycleProjection = readPreferenceProjection($root, 'hour-cycle-preferences');
-$hourCycleData = $hourCycleProjection['data'];
-$hourCycleSource = $hourCycleProjection['source'];
+$hourCycleSource = file_get_contents($root . '/resources/data/hour-cycle-preferences.json');
+if ($hourCycleSource === false) {
+    throw new RuntimeException('Unable to read the hour-cycle-preferences projection source.');
+}
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, preferences: array<array-key, list<string>>} $hourCycleData */
+$hourCycleData = json_decode($hourCycleSource, true, flags: JSON_THROW_ON_ERROR);
+if ($hourCycleData['format'] !== 1) {
+    throw new RuntimeException('The hour-cycle-preferences projection format is incompatible.');
+}
 $hourCycleGenerated = generatePreferenceClass(
     $root,
     'HourCyclePreferences',
     'hour-cycle preference',
-    $hourCycleData,
+    $hourCycleData['format'],
+    $hourCycleData['cldrRevision'],
+    $hourCycleData['upstreamSha512'],
     $hourCycleSource,
-    [['PREFERENCES', 'preferences']],
+    [[
+        'constant' => 'PREFERENCES',
+        'payloadKey' => 'preferences',
+        'type' => 'array<array-key, list<string>>',
+        'value' => $hourCycleData['preferences'],
+    ]],
 );
 $hourCycleTarget = $root . '/src/Internal/Data/HourCyclePreferences.php';
 

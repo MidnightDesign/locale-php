@@ -68,10 +68,12 @@
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "9eb061277cf88b40d4ec8b8a12e196bf036ad10ccbc892c1f5be486a0e2a1afb",
-        "tools/generate-data.php": "27c49d4dffef3db27677f6ea276a2879d3791c399394a6b4877ee7202e21baba",
+        "tools/import-cldr-aliases.php": "8029fdef7758eb7659b0caf77316ed3112b0dfa0160825e56c971af3eee47c52",
+        "tools/CldrLocalePreferenceProjector.php": "ef45ab70920801a9ff17c53b40de631ee1fd258080f93f68e67eb2cd8408fd9f",
+        "tools/CldrXml.php": "0162b6cc53a4199567cb597a3d69aa053ea1473d1c41377e68e900341fca0945",
+        "tools/generate-data.php": "dc3e4daf4ea3bbbc08e56f3943a4b1253bbf014461e3035040ad77d5d2ef6969",
         "tools/import-time-zones.php": "dd52f369bf325275c4fe499cfbe44bdb5cc2446345d4c914d7f61a01197a5200",
-        "tools/TimeZoneDataImporter.php": "e8a38fd4ba20461edb794a3a5976aac6864938a1822f9bd1e308a4de086fc26b",
+        "tools/TimeZoneDataImporter.php": "95cacf9e9636d11898a36f6b2c82b4853354fa33f608394decedbad8866ba780",
         "tools/MagoFormatter.php": "87465aa3f1631a5544642bafeee54a185f83506c1e03e8a42ccba40c7b0607e6",
         "tools/verify-data-sources.php": "0c8d76e31fa3266e6980c919cb2353dbe6ac29574cc86fb8452ada8125fc379b"
     },

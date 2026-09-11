@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\CldrLocalePreferenceProjector;
+use Midnight\Intl\Tools\CldrXml;
+
+require __DIR__ . '/CldrXml.php';
+require __DIR__ . '/CldrLocalePreferenceProjector.php';
+
 const CLDR_REVISION = '11299982335beb974c1c63c45265184e759c0f41';
 
 const CLDR_CORE_SHA512 = 'de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62';
@@ -68,7 +74,7 @@ $region = aliases(
 $regionAlternatives = [];
 preg_match_all('/<territoryAlias\s+([^>]+?)\/>/', $metadataWithoutComments, $territoryMatches, PREG_SET_ORDER);
 foreach ($territoryMatches as $territoryMatch) {
-    $attributes = xmlAttributes($territoryMatch[1]);
+    $attributes = CldrXml::attributes($territoryMatch[1]);
     $source = strtoupper($attributes['type'] ?? '');
     $replacements = preg_split('/\s+/', strtoupper($attributes['replacement'] ?? ''), flags: PREG_SPLIT_NO_EMPTY) ?: [];
     if (preg_match('/^(?:[A-Z]{2}|[0-9]{3})$/D', $source) === 1 && count($replacements) > 1) {
@@ -154,7 +160,7 @@ for ($index = 0; $index < $archive->numFiles; ++$index) {
     ));
     preg_match_all('/<key\s+([^>]+)>/', $xml, $keyMatches, PREG_SET_ORDER);
     foreach ($keyMatches as $keyMatch) {
-        $attributes = xmlAttributes($keyMatch[1]);
+        $attributes = CldrXml::attributes($keyMatch[1]);
         $canonicalKey = strtolower($attributes['name'] ?? '');
         if (preg_match('/^[a-z0-9][a-z]$/D', $canonicalKey) !== 1) {
             continue;
@@ -174,19 +180,19 @@ for ($index = 0; $index < $archive->numFiles; ++$index) {
         $keyBody = substr($xml, $keyStart + strlen($keyMatch[0]), $keyEnd - $keyStart - strlen($keyMatch[0]));
         preg_match_all('/<type\s+([^>]+?)(?:\/>|>)/', $keyBody, $typeMatches, PREG_SET_ORDER);
         foreach ($typeMatches as $typeMatch) {
-            $typeAttributes = xmlAttributes($typeMatch[1]);
+            $typeAttributes = CldrXml::attributes($typeMatch[1]);
             $canonicalType = strtolower($typeAttributes['preferred'] ?? $typeAttributes['name'] ?? '');
-            if (!isUnicodeType($canonicalType)) {
+            if (!CldrXml::isUnicodeType($canonicalType)) {
                 continue;
             }
             foreach (preg_split('/\s+/', $typeAttributes['alias'] ?? '', flags: PREG_SPLIT_NO_EMPTY) ?: [] as $alias) {
                 $alias = strtolower($alias);
-                if (isUnicodeType($alias)) {
+                if (CldrXml::isUnicodeType($alias)) {
                     $type[$canonicalKey][$alias] = $canonicalType;
                 }
             }
             $nameAlias = strtolower($typeAttributes['name'] ?? '');
-            if ($nameAlias !== $canonicalType && isUnicodeType($nameAlias)) {
+            if ($nameAlias !== $canonicalType && CldrXml::isUnicodeType($nameAlias)) {
                 $type[$canonicalKey][$nameAlias] = $canonicalType;
             }
         }
@@ -195,86 +201,10 @@ for ($index = 0; $index < $archive->numFiles; ++$index) {
 
 $supplementalData = readArchiveEntry($archive, 'common/supplemental/supplementalData.xml');
 $calendarBcp47 = readArchiveEntry($archive, 'common/bcp47/calendar.xml');
-$calendarBcp47WithoutComments = preg_replace('/<!--.*?-->/s', '', $calendarBcp47) ?? throw new RuntimeException(
-    'Unable to remove CLDR calendar XML comments.',
-);
-if (preg_match('#<key name="ca".*?</key>#s', $calendarBcp47WithoutComments, $calendarKeyMatch) !== 1) {
-    throw new RuntimeException('The CLDR archive is missing calendar BCP 47 data.');
-}
-$availableCalendars = [];
-$calendarAliases = [];
-preg_match_all('/<type\s+([^>]+?)\/>/', $calendarKeyMatch[0], $calendarTypeMatches, PREG_SET_ORDER);
-foreach ($calendarTypeMatches as $calendarTypeMatch) {
-    $attributes = xmlAttributes($calendarTypeMatch[1]);
-    $name = strtolower($attributes['name'] ?? '');
-    $calendar = strtolower($attributes['preferred'] ?? $name);
-    foreach (preg_split('/\s+/', $attributes['alias'] ?? '', flags: PREG_SPLIT_NO_EMPTY) ?: [] as $alias) {
-        $calendarAliases[strtolower($alias)] = $calendar;
-    }
-    if ($name !== $calendar) {
-        $calendarAliases[$name] = $calendar;
-    }
-    if (($attributes['deprecated'] ?? '') === 'true') {
-        continue;
-    }
-    if (isUnicodeType($calendar)) {
-        $availableCalendars[] = $calendar;
-    }
-}
-$availableCalendarSet = array_fill_keys($availableCalendars, true);
-
-$calendarPreferences = [];
-preg_match_all(
-    '/<calendarPreference\s+territories="([^"]+)"\s+ordering="([^"]+)"\s*\/>/',
-    $supplementalData,
-    $calendarPreferenceMatches,
-    PREG_SET_ORDER,
-);
-foreach ($calendarPreferenceMatches as $calendarPreferenceMatch) {
-    $calendars = [];
-    foreach (preg_split('/\s+/', $calendarPreferenceMatch[2], flags: PREG_SPLIT_NO_EMPTY) ?: [] as $calendar) {
-        $canonical = $calendarAliases[strtolower($calendar)] ?? strtolower($calendar);
-        if (isset($availableCalendarSet[$canonical]) && !in_array($canonical, $calendars, true)) {
-            $calendars[] = $canonical;
-        }
-    }
-    foreach (preg_split('/\s+/', $calendarPreferenceMatch[1], flags: PREG_SPLIT_NO_EMPTY) ?: [] as $territory) {
-        $calendarPreferences[strtoupper($territory)] = $calendars;
-    }
-}
-ksort($calendarPreferences, SORT_STRING);
-
-$hourCyclePreferences = [];
-preg_match_all('/<hours\s+([^>]+?)\/>/s', $supplementalData, $hoursMatches, PREG_SET_ORDER);
-foreach ($hoursMatches as $hoursMatch) {
-    $attributes = xmlAttributes($hoursMatch[1]);
-    if (!isset($attributes['allowed'], $attributes['regions'])) {
-        continue;
-    }
-    $hourCycles = [];
-    $patterns = array_merge(
-        preg_split('/\s+/', $attributes['preferred'] ?? '', flags: PREG_SPLIT_NO_EMPTY) ?: [],
-        preg_split('/\s+/', $attributes['allowed'], flags: PREG_SPLIT_NO_EMPTY) ?: [],
-    );
-    foreach ($patterns as $pattern) {
-        $hourCycle = match ($pattern[0]) {
-            'K' => 'h11',
-            'h' => 'h12',
-            'H' => 'h23',
-            'k' => 'h24',
-            default => throw new RuntimeException(sprintf('Unsupported CLDR hour pattern "%s".', $pattern)),
-        };
-        if (!in_array($hourCycle, $hourCycles, true)) {
-            $hourCycles[] = $hourCycle;
-        }
-    }
-    foreach (preg_split('/\s+/', $attributes['regions'], flags: PREG_SPLIT_NO_EMPTY) ?: [] as $locale) {
-        $parts = explode('_', $locale, 2);
-        $preferenceKey = isset($parts[1]) ? strtolower($parts[0]) . '-' . strtoupper($parts[1]) : strtoupper($parts[0]);
-        $hourCyclePreferences[$preferenceKey] = $hourCycles;
-    }
-}
-ksort($hourCyclePreferences, SORT_STRING);
+$calendarProjection = CldrLocalePreferenceProjector::calendars($calendarBcp47, $supplementalData);
+$availableCalendars = $calendarProjection['available'];
+$calendarPreferences = $calendarProjection['preferences'];
+$hourCyclePreferences = CldrLocalePreferenceProjector::hourCycles($supplementalData);
 
 $archive->close();
 
@@ -392,7 +322,7 @@ function aliases(
     preg_match_all(sprintf('/<%s\s+([^>]+?)\/>/', preg_quote($element, '/')), $xml, $matches, PREG_SET_ORDER);
     $aliases = [];
     foreach ($matches as $match) {
-        $attributes = xmlAttributes($match[1]);
+        $attributes = CldrXml::attributes($match[1]);
         $source = $attributes['type'] ?? '';
         $replacement = $attributes['replacement'] ?? '';
         if ($accept($source) && $replacement !== '') {
@@ -402,21 +332,4 @@ function aliases(
     ksort($aliases, SORT_STRING);
 
     return $aliases;
-}
-
-/** @return array<string, string> */
-function xmlAttributes(string $source): array
-{
-    preg_match_all('/([A-Za-z][A-Za-z0-9]*)="([^"]*)"/', $source, $matches, PREG_SET_ORDER);
-    $attributes = [];
-    foreach ($matches as $match) {
-        $attributes[$match[1]] = html_entity_decode($match[2], ENT_QUOTES | ENT_XML1);
-    }
-
-    return $attributes;
-}
-
-function isUnicodeType(string $value): bool
-{
-    return preg_match('/^[a-z0-9]{3,8}(?:-[a-z0-9]{3,8})*$/D', $value) === 1;
 }
