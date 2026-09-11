@@ -65,12 +65,7 @@ final class LikelySubtagsPipeline implements FixturePipeline
             ], $identities),
             (count($maximal) * (count($extras) + 1)) + (count($minimal) * (count($extras) + 1)) + 1,
             $failures,
-            ['tests/Test262/Generated/LikelySubtagsTest.php' => $this->render(
-                $maximal,
-                $minimal,
-                $extras,
-                $fixturePath,
-            )],
+            [GeneratedScript::primary($fixturePath, $this->render($maximal, $minimal, $extras, $fixturePath))],
         );
     }
 
@@ -95,55 +90,29 @@ final class LikelySubtagsPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Exception\RangeError;
             use Midnight\Intl\Spec\Locale;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class LikelySubtagsTest extends TestCase
-            {
-                /** @return iterable<string, array{string, string}> */
-                public static function maximalCases(): iterable
-                {
-                    foreach ({$maximalExport} as \$tag => \$maximal) {
-                        yield \$tag.' maximal fixed point' => [\$maximal, \$maximal];
-                        foreach ({$extrasExport} as \$extra) {
-                            yield \$tag.\$extra => [\$tag.\$extra, \$maximal.\$extra];
-                        }
-                    }
+            foreach ({$maximalExport} as \$tag => \$maximal) {
+                Assert::assertSame(\$maximal, (new Locale(\$maximal))->maximize()->toString());
+                foreach ({$extrasExport} as \$extra) {
+                    Assert::assertSame(\$maximal . \$extra, (new Locale(\$tag . \$extra))->maximize()->toString());
                 }
+            }
 
-                /** @return iterable<string, array{string, string}> */
-                public static function minimalCases(): iterable
-                {
-                    foreach ({$minimalExport} as \$tag => \$minimal) {
-                        yield \$tag.' minimal fixed point' => [\$minimal, \$minimal];
-                        foreach ({$extrasExport} as \$extra) {
-                            yield \$tag.\$extra => [\$tag.\$extra, \$minimal.\$extra];
-                        }
-                    }
+            foreach ({$minimalExport} as \$tag => \$minimal) {
+                Assert::assertSame(\$minimal, (new Locale(\$minimal))->minimize()->toString());
+                foreach ({$extrasExport} as \$extra) {
+                    Assert::assertSame(\$minimal . \$extra, (new Locale(\$tag . \$extra))->minimize()->toString());
                 }
+            }
 
-                #[DataProvider('maximalCases')]
-                public function testTranslatedMaximizeAssertions(string \$tag, string \$expected): void
-                {
-                    self::assertSame(\$expected, (new Locale(\$tag))->maximize()->toString());
-                }
-
-                #[DataProvider('minimalCases')]
-                public function testTranslatedMinimizeAssertions(string \$tag, string \$expected): void
-                {
-                    self::assertSame(\$expected, (new Locale(\$tag))->minimize()->toString());
-                }
-
-                public function testTranslatedPrivateUseRejectionAssertion(): void
-                {
-                    \$this->expectException(RangeError::class);
-
-                    new Locale('x-private');
-                }
+            try {
+                new Locale('x-private');
+                Assert::fail('Expected a private-use-only locale to be rejected.');
+            } catch (RangeError) {
+                Assert::assertTrue(true);
             }
             PHP . "\n";
     }

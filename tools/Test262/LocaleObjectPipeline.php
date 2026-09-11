@@ -55,7 +55,7 @@ final class LocaleObjectPipeline implements FixturePipeline
             $evidence,
             6,
             $failureCount,
-            ['tests/Test262/Generated/ConstructorLocaleObjectTest.php' => $this->render($fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($fixturePath))],
         );
     }
 
@@ -88,28 +88,20 @@ final class LocaleObjectPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Spec\Locale;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class ConstructorLocaleObjectTest extends TestCase
-            {
-                public function testTranslatedAssertions(): void
-                {
-                    \$enUS = new Locale('en-US');
-                    \$enGB = new Locale(\$enUS, ['region' => 'GB']);
-                    self::assertSame('en-US', \$enUS->toString());
-                    self::assertSame('en-GB', \$enGB->toString());
+            \$enUS = new Locale('en-US');
+            \$enGB = new Locale(\$enUS, ['region' => 'GB']);
+            Assert::assertSame('en-US', \$enUS->toString());
+            Assert::assertSame('en-GB', \$enGB->toString());
 
-                    \$zhUnihan = new Locale('zh-u-co-unihan');
-                    \$zhZhuyin = new Locale(\$zhUnihan, (object) ['collation' => 'zhuyin']);
-                    self::assertSame('zh-u-co-unihan', \$zhUnihan->toString());
-                    self::assertSame('zh-u-co-zhuyin', \$zhZhuyin->toString());
-                    self::assertSame('unihan', \$zhUnihan->collation);
-                    self::assertSame('zhuyin', \$zhZhuyin->collation);
-                }
-            }
+            \$zhUnihan = new Locale('zh-u-co-unihan');
+            \$zhZhuyin = new Locale(\$zhUnihan, (object) ['collation' => 'zhuyin']);
+            Assert::assertSame('zh-u-co-unihan', \$zhUnihan->toString());
+            Assert::assertSame('zh-u-co-zhuyin', \$zhZhuyin->toString());
+            Assert::assertSame('unihan', \$zhUnihan->collation);
+            Assert::assertSame('zhuyin', \$zhZhuyin->collation);
             PHP . "\n";
     }
 }

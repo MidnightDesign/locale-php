@@ -48,7 +48,7 @@ final class RemoveLikelySubtagsPipeline implements FixturePipeline
             ], $identities),
             count($cases) * 2,
             $failures,
-            ['tests/Test262/Generated/RemoveLikelySubtagsTest.php' => $this->render($cases, $fixturePath)],
+            [GeneratedScript::primary($fixturePath, $this->render($cases, $fixturePath))],
         );
     }
 
@@ -69,28 +69,12 @@ final class RemoveLikelySubtagsPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Spec\Locale;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class RemoveLikelySubtagsTest extends TestCase
-            {
-                /** @return iterable<string, array{string, string}> */
-                public static function cases(): iterable
-                {
-                    foreach ({$export} as \$tag => \$minimal) {
-                        yield \$tag.' fixed point' => [\$minimal, \$minimal];
-                        yield \$tag => [\$tag, \$minimal];
-                    }
-                }
-
-                #[DataProvider('cases')]
-                public function testTranslatedRemoveLikelySubtagsAssertions(string \$tag, string \$expected): void
-                {
-                    self::assertSame(\$expected, (new Locale(\$tag))->minimize()->toString());
-                }
+            foreach ({$export} as \$tag => \$minimal) {
+                Assert::assertSame(\$minimal, (new Locale(\$minimal))->minimize()->toString());
+                Assert::assertSame(\$minimal, (new Locale(\$tag))->minimize()->toString());
             }
             PHP . "\n";
     }

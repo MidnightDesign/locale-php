@@ -7,4 +7,7 @@ parameters:
         - src
         - tests
         - tools
+    excludePaths:
+        analyse:
+            - tests/Test262/Generated
     treatPhpDocTypesAsCertain: true

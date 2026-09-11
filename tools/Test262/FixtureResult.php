@@ -41,7 +41,7 @@ final class FixtureResult
      * @param 'passing'|'failing'|'partially_translated'|'translation_gap' $status
      * @param list<string>                                                $phpRepresentations
      * @param list<array<string, mixed>>                                  $assertions
-     * @param array<string, string>                                       $generatedFiles
+     * @param list<GeneratedScript>                                       $generatedScripts
      */
     public function __construct(
         private readonly string $path,
@@ -51,14 +51,14 @@ final class FixtureResult
         private readonly array $assertions,
         private readonly int $executionCount,
         private readonly int $executionFailures,
-        private readonly array $generatedFiles,
+        private readonly array $generatedScripts,
         private readonly ?string $reason = null,
     ) {}
 
-    /** @return array<string, string> */
-    public function generatedFiles(): array
+    /** @return list<GeneratedScript> */
+    public function generatedScripts(): array
     {
-        return $this->generatedFiles;
+        return $this->generatedScripts;
     }
 
     /** @return list<string> */
@@ -117,7 +117,8 @@ final class FixtureResult
      *     executionCount: int,
      *     executionFailures: int,
      *     phpRepresentations: list<string>,
-     *     assertions: list<array<string, mixed>>
+     *     assertions: list<array<string, mixed>>,
+     *     generatedScripts: list<array{path: string, identity: string, variant: string|null}>
      * }
      */
     public function evidence(): array
@@ -132,6 +133,10 @@ final class FixtureResult
             'executionFailures' => $this->executionFailures,
             'phpRepresentations' => $this->phpRepresentations,
             'assertions' => $this->assertions,
+            'generatedScripts' => array_map(
+                static fn(GeneratedScript $script): array => $script->evidence(),
+                $this->generatedScripts,
+            ),
         ];
     }
 }

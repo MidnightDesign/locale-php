@@ -9,6 +9,8 @@ use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
 use Midnight\Intl\Tools\Test262\EvidenceBuilder;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\FixtureResult;
+use Midnight\Intl\Tools\Test262\GeneratedOutputPublisher;
+use Midnight\Intl\Tools\Test262\GeneratedScriptCatalog;
 use Midnight\Intl\Tools\Test262\GetterFixturePipeline;
 use Midnight\Intl\Tools\Test262\GrandfatheredLikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\IdentifierCanonicalizationPipeline;
@@ -113,8 +115,6 @@ $mappedOptionPipeline = static function (
             $test262Revision,
             $ecma402Revision,
             $optionName,
-            'tests/Test262/Generated/' . $className . '.php',
-            $className,
             $cases,
         ),
         $representations,
@@ -151,8 +151,6 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/ConstructorUnicodeExtensionInvalidTest.php',
-        'ConstructorUnicodeExtensionInvalidTest',
     ),
     'test/intl402/Locale/constructor-unicode-ext-valid.js' => new IdentifierCanonicalizationPipeline(
         $assertionIdentities,
@@ -168,15 +166,11 @@ $fixturePipelines = [
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/RejectDuplicateVariantsTest.php',
-        'RejectDuplicateVariantsTest',
     ),
     'test/intl402/Locale/reject-duplicate-variants-in-tlang.js' => new IdentifierRejectionPipeline(
         $assertionIdentities,
         $test262Revision,
         $ecma402Revision,
-        'tests/Test262/Generated/RejectDuplicateVariantsInTlangTest.php',
-        'RejectDuplicateVariantsInTlangTest',
     ),
     'test/intl402/Locale/constructor-options-script-valid.js' => new ConstructorFixturePipeline(
         new ConstructorOptionsScriptTranslator($assertionIdentities),
@@ -249,8 +243,6 @@ $fixturePipelines = [
         $test262Revision,
         $ecma402Revision,
         'script',
-        'tests/Test262/Generated/ConstructorOptionsScriptValidUndefinedTest.php',
-        'ConstructorOptionsScriptValidUndefinedTest',
     ),
     'test/intl402/Locale/constructor-options-language-grandfathered.js' => $mappedOptionPipeline(
         'language',
@@ -542,39 +534,24 @@ $fixturePipelines = [
         ],
     ),
     'test/intl402/Locale/constructor-getter-order.js' => $sourceBoundPipeline(
-        new OptionObservationPipeline(
-            $assertionIdentities,
-            $test262Revision,
-            $ecma402Revision,
-            'tests/Test262/Generated/ConstructorGetterOrderTest.php',
-            'ConstructorGetterOrderTest',
-            'order',
-        ),
+        new OptionObservationPipeline($assertionIdentities, $test262Revision, $ecma402Revision, 'order'),
         ['behavioral_object'],
         'ee7935bd44614b4c2095766bfc328b02c28264e04ac036bc6d93223db32b8044',
     ),
     'test/intl402/Locale/constructor-options-throwing-getters.js' => $sourceBoundPipeline(
-        new OptionObservationPipeline(
-            $assertionIdentities,
-            $test262Revision,
-            $ecma402Revision,
-            'tests/Test262/Generated/ConstructorOptionsThrowingGettersTest.php',
-            'ConstructorOptionsThrowingGettersTest',
-            'throws',
-            [
-                'language',
-                'script',
-                'region',
-                'variants',
-                'calendar',
-                'collation',
-                'firstDayOfWeek',
-                'hourCycle',
-                'caseFirst',
-                'numeric',
-                'numberingSystem',
-            ],
-        ),
+        new OptionObservationPipeline($assertionIdentities, $test262Revision, $ecma402Revision, 'throws', [
+            'language',
+            'script',
+            'region',
+            'variants',
+            'calendar',
+            'collation',
+            'firstDayOfWeek',
+            'hourCycle',
+            'caseFirst',
+            'numeric',
+            'numberingSystem',
+        ]),
         ['behavioral_object'],
         'c2b93ea685d76e9d43a1dc4339b298323d1cf8809e1ddf66e2b9e20d07eab882',
     ),
@@ -657,11 +634,12 @@ if ($blockingResults !== []) {
 
 $generatedFiles = [];
 foreach ($fixtureResults as $result) {
-    foreach ($result->generatedFiles() as $path => $contents) {
+    foreach ($result->generatedScripts() as $script) {
+        $path = $script->path();
         if ($path === 'tests/Test262/evidence.json' || isset($generatedFiles[$path])) {
             throw new RuntimeException('Multiple fixture pipelines generated ' . $path . '.');
         }
-        $generatedFiles[$path] = $contents;
+        $generatedFiles[$path] = $script->contents();
     }
 }
 $outputs = [
@@ -670,15 +648,31 @@ $outputs = [
 ];
 
 $check = in_array('--check', $argv, true);
-foreach ($outputs as $path => $contents) {
-    $absolutePath = $root . '/' . $path;
-    if ($check) {
+$expectedGeneratedFiles = array_values(array_filter(
+    array_keys($outputs),
+    static fn(string $path): bool => str_starts_with($path, 'tests/Test262/Generated/'),
+));
+sort($expectedGeneratedFiles);
+$staleGeneratedFiles = array_values(array_diff(
+    GeneratedScriptCatalog::generatedPhpFiles($root),
+    $expectedGeneratedFiles,
+));
+if ($check) {
+    if ($staleGeneratedFiles !== []) {
+        foreach ($staleGeneratedFiles as $path) {
+            fwrite(STDERR, $path . " is stale.\n");
+        }
+        exit(1);
+    }
+    foreach ($outputs as $path => $contents) {
+        $absolutePath = $root . '/' . $path;
         if (!is_file($absolutePath) || file_get_contents($absolutePath) !== $contents) {
             fwrite(STDERR, $path . " is not reproducible.\n");
             exit(1);
         }
-        continue;
     }
 
-    writeRequiredFile($absolutePath, $contents);
+    exit(0);
 }
+
+(new GeneratedOutputPublisher($root))->publish($outputs);

@@ -72,12 +72,7 @@ final class GrandfatheredLikelySubtagsPipeline implements FixturePipeline
             ], $identities)),
             count($rejected) + (count($regular) * 7 * (count($extras) + 1)),
             $failures,
-            ['tests/Test262/Generated/LikelySubtagsGrandfatheredTest.php' => $this->render(
-                $rejected,
-                $regular,
-                $extras,
-                $fixturePath,
-            )],
+            [GeneratedScript::primary($fixturePath, $this->render($rejected, $regular, $extras, $fixturePath))],
         );
     }
 
@@ -148,69 +143,44 @@ final class GrandfatheredLikelySubtagsPipeline implements FixturePipeline
             // Source: {$fixturePath} at Test262 {$this->test262Revision}; notice: tests/Test262/upstream/LICENSE.
             // Spec baseline: ECMA-402 {$this->ecma402Revision}; notice: tests/Test262/upstream/ECMA-402-LICENSE.md.
 
-            namespace Midnight\Intl\Tests\Test262\Generated;
-
             use Midnight\Intl\Exception\RangeError;
             use Midnight\Intl\Spec\Locale;
-            use PHPUnit\Framework\Attributes\DataProvider;
-            use PHPUnit\Framework\TestCase;
+            use PHPUnit\Framework\Assert;
 
-            final class LikelySubtagsGrandfatheredTest extends TestCase
-            {
-                /** @return iterable<string, array{string}> */
-                public static function rejectedTags(): iterable
-                {
-                    foreach ({$rejectedExport} as \$tag) {
-                        yield \$tag => [\$tag];
-                    }
-                }
-
-                /** @return iterable<string, array{string, string, string, string}> */
-                public static function regularTags(): iterable
-                {
-                    foreach ({$regularExport} as \$case) {
-                        yield \$case[0] => \$case;
-                    }
-                }
-
-                /** @return iterable<string, array{string, string, string, string}> */
-                public static function regularTagsWithExtras(): iterable
-                {
-                    foreach ({$regularExport} as [\$tag, \$canonical, \$maximal, \$minimal]) {
-                        foreach ({$extrasExport} as \$extra) {
-                            yield \$tag.' '.\$extra => [
-                                \$tag.'-'.\$extra,
-                                \$canonical.'-'.\$extra,
-                                \$maximal.'-'.\$extra,
-                                \$minimal.'-'.\$extra,
-                            ];
-                        }
-                    }
-                }
-
-                #[DataProvider('rejectedTags')]
-                public function testTranslatedGrandfatheredRejectionAssertions(string \$tag): void
-                {
-                    \$this->expectException(RangeError::class);
+            foreach ({$rejectedExport} as \$tag) {
+                try {
                     new Locale(\$tag);
+                    Assert::fail('Expected grandfathered locale ' . \$tag . ' to be rejected.');
+                } catch (RangeError) {
+                    Assert::assertTrue(true);
                 }
+            }
 
-                #[DataProvider('regularTags')]
-                #[DataProvider('regularTagsWithExtras')]
-                public function testTranslatedGrandfatheredAssertions(
-                    string \$tag,
-                    string \$canonical,
-                    string \$maximal,
-                    string \$minimal,
-                ): void {
+            \$assertLocale = static function (
+                string \$tag,
+                string \$canonical,
+                string \$maximal,
+                string \$minimal,
+            ): void {
                     \$locale = new Locale(\$tag);
-                    self::assertSame(\$canonical, \$locale->toString());
-                    self::assertSame(\$maximal, \$locale->maximize()->toString());
-                    self::assertSame(\$maximal, \$locale->maximize()->maximize()->toString());
-                    self::assertSame(\$minimal, \$locale->minimize()->toString());
-                    self::assertSame(\$minimal, \$locale->minimize()->minimize()->toString());
-                    self::assertSame(\$minimal, \$locale->maximize()->minimize()->toString());
-                    self::assertSame(\$maximal, \$locale->minimize()->maximize()->toString());
+                    Assert::assertSame(\$canonical, \$locale->toString());
+                    Assert::assertSame(\$maximal, \$locale->maximize()->toString());
+                    Assert::assertSame(\$maximal, \$locale->maximize()->maximize()->toString());
+                    Assert::assertSame(\$minimal, \$locale->minimize()->toString());
+                    Assert::assertSame(\$minimal, \$locale->minimize()->minimize()->toString());
+                    Assert::assertSame(\$minimal, \$locale->maximize()->minimize()->toString());
+                    Assert::assertSame(\$maximal, \$locale->minimize()->maximize()->toString());
+            };
+
+            foreach ({$regularExport} as [\$tag, \$canonical, \$maximal, \$minimal]) {
+                \$assertLocale(\$tag, \$canonical, \$maximal, \$minimal);
+                foreach ({$extrasExport} as \$extra) {
+                    \$assertLocale(
+                        \$tag . '-' . \$extra,
+                        \$canonical . '-' . \$extra,
+                        \$maximal . '-' . \$extra,
+                        \$minimal . '-' . \$extra,
+                    );
                 }
             }
             PHP . "\n";
