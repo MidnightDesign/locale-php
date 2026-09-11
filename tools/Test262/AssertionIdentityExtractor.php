@@ -11,6 +11,17 @@ final class AssertionIdentityExtractor
      */
     public function extract(string $source, string $fixturePath): array
     {
+        return array_column($this->extractConstructs($source, $fixturePath), 'identity');
+    }
+
+    /**
+     * @return list<array{
+     *     identity: array{id: string, line: int, column: int, call: string, sha256: string},
+     *     source: string
+     * }>
+     */
+    public function extractConstructs(string $source, string $fixturePath): array
+    {
         $mask = $source;
         $offset = 0;
         $this->maskCode($source, $mask, $offset);
@@ -38,12 +49,16 @@ final class AssertionIdentityExtractor
                 throw new \RuntimeException('Unable to normalize an assertion call.');
             }
 
+            $assertionSource = substr($source, $callOffset, $closeParenthesis - $callOffset + 1);
             $assertions[] = [
-                'id' => sprintf('%s:L%d:C%d:%s', $fixturePath, $line, $column, $call),
-                'line' => $line,
-                'column' => $column,
-                'call' => $call,
-                'sha256' => hash('sha256', substr($source, $callOffset, $closeParenthesis - $callOffset + 1)),
+                'identity' => [
+                    'id' => sprintf('%s:L%d:C%d:%s', $fixturePath, $line, $column, $call),
+                    'line' => $line,
+                    'column' => $column,
+                    'call' => $call,
+                    'sha256' => hash('sha256', $assertionSource),
+                ],
+                'source' => $assertionSource,
             ];
         }
 

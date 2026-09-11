@@ -7,6 +7,7 @@ namespace Midnight\Intl\Internal;
 use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Internal\Data\LikelySubtags;
 use Midnight\Intl\Internal\Data\LocaleAliases;
+use Midnight\Intl\Internal\Data\ScriptDirections;
 
 final class LocaleIdentifier
 {
@@ -220,6 +221,16 @@ final class LocaleIdentifier
         }
 
         return $maximal;
+    }
+
+    /** @return 'ltr'|'rtl'|null */
+    public function textDirection(): ?string
+    {
+        ScriptDirections::assertIntegrity();
+
+        $script = $this->script ?? $this->maximize()->script;
+
+        return $script === null ? null : ScriptDirections::MAP[$script] ?? null;
     }
 
     /**
