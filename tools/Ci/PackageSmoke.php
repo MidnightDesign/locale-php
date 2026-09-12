@@ -41,7 +41,7 @@ final class PackageSmoke
             self::run([
                 PHP_BINARY,
                 '-r',
-                'require "vendor/autoload.php"; $locale = new Midnight\\Intl\\Locale("AR-arab-at"); if ($locale->toString() !== "ar-Arab-AT" || $locale->getTextInfo()->direction !== Midnight\\Intl\\TextDirection::RightToLeft || $locale->getTimeZones() !== ["Europe/Vienna"] || (new Midnight\\Intl\\Locale("en"))->getTimeZones() !== null || $locale->getNumberingSystems() !== ["latn"]) { exit(1); }',
+                'require "vendor/autoload.php"; $locale = new Midnight\\Intl\\Locale("AR-arab-at"); $week = (new Midnight\\Intl\\Locale("en-AE"))->getWeekInfo(); if ($locale->toString() !== "ar-Arab-AT" || $locale->getTextInfo()->direction !== Midnight\\Intl\\TextDirection::RightToLeft || $locale->getTimeZones() !== ["Europe/Vienna"] || (new Midnight\\Intl\\Locale("en"))->getTimeZones() !== null || $locale->getNumberingSystems() !== ["latn"] || !$week instanceof Midnight\\Intl\\WeekInfo || $week->firstDay !== 1 || $week->weekend !== [6, 7]) { exit(1); }',
             ], $consumerDirectory);
         } finally {
             self::removeDirectory($workDirectory);

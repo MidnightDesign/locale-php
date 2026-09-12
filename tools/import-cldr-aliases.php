@@ -205,6 +205,7 @@ $calendarProjection = CldrLocalePreferenceProjector::calendars($calendarBcp47, $
 $availableCalendars = $calendarProjection['available'];
 $calendarPreferences = $calendarProjection['preferences'];
 $hourCyclePreferences = CldrLocalePreferenceProjector::hourCycles($supplementalData);
+$weekInfo = CldrLocalePreferenceProjector::weekInfo($supplementalData);
 
 $archive->close();
 
@@ -272,6 +273,15 @@ $hourCyclePreferencesProjection = [
     ],
     'preferences' => $hourCyclePreferences,
 ];
+$weekInfoProjection = [
+    'format' => 1,
+    'cldrRevision' => CLDR_REVISION,
+    'upstreamSha512' => CLDR_CORE_SHA512,
+    'sourceEntries' => [
+        'common/supplemental/supplementalData.xml' => hash('sha256', $supplementalData),
+    ],
+    ...$weekInfo,
+];
 
 file_put_contents(
     dirname(__DIR__) . '/resources/data/locale-aliases.json',
@@ -294,6 +304,10 @@ file_put_contents(
     dirname(__DIR__) . '/resources/data/hour-cycle-preferences.json',
     json_encode($hourCyclePreferencesProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
         . "\n",
+);
+file_put_contents(
+    dirname(__DIR__) . '/resources/data/week-info.json',
+    json_encode($weekInfoProjection, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
 );
 
 function readArchiveEntry(ZipArchive $archive, string $name): string

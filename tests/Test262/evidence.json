@@ -140,6 +140,17 @@
                 "test/intl402/Locale/prototype/getNumberingSystems/name.js": "f3591c1be5c56bbcbc1acafb179d67dbfac6ce93d7629839df198ae90bd0b02c",
                 "test/intl402/Locale/prototype/getNumberingSystems/output-array.js": "76789a13dba8b82b03e2a0aefc963111042aa5f8c8e4656899a707a73570b534",
                 "test/intl402/Locale/prototype/getNumberingSystems/prop-desc.js": "0cd175aae9f0a27c10544c4577ff32e750b1563f63144b9b0bf11d35d7b21120",
+                "test/intl402/Locale/prototype/getWeekInfo/branding.js": "5bec916cc844b0ead0cb2b9035ff5d2af11509acee4305e8ace393da6945f4a0",
+                "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-id.js": "85d774a8f38c91516ba37cefd71cae6e01cfe7ebafaf1af6cb88781fc4f4445c",
+                "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.js": "7d645ee4ee6403998995240bf68780f5fac67863e3d1d87f70426fb15c0cf92e",
+                "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js": "d0303e17310c4527d01dc7857cc365f3d41ec6ab4f7e190f8d8aa61deabbc904",
+                "test/intl402/Locale/prototype/getWeekInfo/name.js": "8eed9bc0a8587fae825f09da850247e939bb2102949b597eed1e716fab911a69",
+                "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js": "d926a9441429d4dfac94b5ed1752079728f2bc9f041cc2566c880fa00a622089",
+                "test/intl402/Locale/prototype/getWeekInfo/output-object.js": "c18271e099360fe08290b6c9621813e4c970cad30945439a396557ecaf8164fb",
+                "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js": "1f3391f8a4f76254b7bdf7996f85e03ce3653078281a7fd570fc150656e6693e",
+                "test/intl402/Locale/prototype/getWeekInfo/region-override.js": "d21ce0426c6d0a975b41d3dab0617d25f3a339e148591426fb8e799b9ccbc4c8",
+                "test/intl402/Locale/prototype/getWeekInfo/region-priority.js": "f5012b67f0839c3c02b2aca2c8246cc14e275fa0b6aecf51317fe6b5d434f3fc",
+                "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js": "2aff1e816d23f82c2bf7147c565137fc8aa759d6d9e5de8e0684f8c136f527a4",
                 "LICENSE": "f2b29a7fc55042463caa0bb7032282113859aa3d3c0f427a8cc32997640a4477",
                 "ECMA-402-LICENSE.md": "484d4a9e3e4bab42e5e2f8703c34ed46e861fb62662e1818b4534d1e34584967"
             },
@@ -164,9 +175,9 @@
         "auditFailures": []
     },
     "summary": {
-        "translatedFixtures": 91,
-        "passingFixtures": 74,
-        "partiallyTranslatedFixtures": 17,
+        "translatedFixtures": 102,
+        "passingFixtures": 82,
+        "partiallyTranslatedFixtures": 20,
         "translationGaps": 465,
         "executionFailures": 0
     },
@@ -12679,6 +12690,622 @@
                 {
                     "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getCollations/und-language.php",
                     "identity": "test/intl402/Locale/prototype/getCollations/und-language.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/branding.js",
+            "sha256": "5bec916cc844b0ead0cb2b9035ff5d2af11509acee4305e8ace393da6945f4a0",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 10,
+            "executionCount": 10,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L17:C1:assert.sameValue",
+                    "line": 17,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "c6e8378639fa10e242446ddd9fca1c20b5333b325f14cdb1f4b95ff3e22b9749",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript function branding is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L19:C1:assert.throws",
+                    "line": 19,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "f14af7b4f1e9ba193bc53fd7c1d20983fc6c944f26ac0438e8c1edf661cb3385",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L20:C1:assert.throws",
+                    "line": 20,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "e654c586bf6da3f437a11d4ea20c7946e72ec51ebdafcf393b0f087006f26100",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L21:C1:assert.throws",
+                    "line": 21,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "55c7194a5c4fa8145cc8af3a072101900fcfdf1f6a926ed4e5d360767a7dfcfc",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L22:C1:assert.throws",
+                    "line": 22,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "e3f29716e794cd2bd8a68c4d6392de6b87681a5c2948e33a7e64a56326d489ee",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L23:C1:assert.throws",
+                    "line": 23,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "3eaaab71c7267bf63d9d093f013454fc4943bda450323c02c2e36eb51cb03061",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L24:C1:assert.throws",
+                    "line": 24,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "4a64cd38bdc1692b2fff591aaf46115f8421b00308518d0519abf2eb2ca14b85",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L25:C1:assert.throws",
+                    "line": 25,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "02cbb2b5e6dc1092f1acc175f058872866f224c661687e69e19d1ff1de8cc947",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L26:C1:assert.throws",
+                    "line": 26,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "149c194868503556e426a10170310be5f054cba006581a57fb76d997424ad78c",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L27:C1:assert.throws",
+                    "line": 27,
+                    "column": 1,
+                    "call": "assert.throws",
+                    "sha256": "f87afa56b4b4c06639ccdea3b2fbb436400dc89478986467ddd0602d6f64dfb2",
+                    "status": "passing",
+                    "adaptations": [
+                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/branding.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/branding.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-id.js",
+            "sha256": "85d774a8f38c91516ba37cefd71cae6e01cfe7ebafaf1af6cb88781fc4f4445c",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 7,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-id.js:L26:C3:assert.sameValue",
+                    "line": 26,
+                    "column": 3,
+                    "call": "assert.sameValue",
+                    "sha256": "9c76ed3169ebb1dfc8e4db030526f0fd3349967e5be7d105c8b6ccaa712cbabb",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/firstDay-by-id.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-id.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.js",
+            "sha256": "7d645ee4ee6403998995240bf68780f5fac67863e3d1d87f70426fb15c0cf92e",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 2,
+            "executionCount": 44,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.js:L42:C3:assert.sameValue",
+                    "line": 42,
+                    "column": 3,
+                    "call": "assert.sameValue",
+                    "sha256": "64a226faca0022bf3bbf190bf9e283aab27b81f98d2d6b5c366760efa1c7ba5f",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.js:L47:C3:assert.sameValue",
+                    "line": 47,
+                    "column": 3,
+                    "call": "assert.sameValue",
+                    "sha256": "3706dc43478989fb2b02af258894ecebf35a9c96dd905f742d3ab4064352c5a8",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/firstDay-by-option.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js",
+            "sha256": "d0303e17310c4527d01dc7857cc365f3d41ec6ab4f7e190f8d8aa61deabbc904",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 3,
+            "executionCount": 3,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js:L59:C3:assert",
+                    "line": 59,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js:L66:C1:assert.sameValue",
+                    "line": 66,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "25ba19c71e6f4a357a7a26f348e86cfffe97b55f21313edfdd2d1cbabcc3e709",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js:L71:C1:assert.compareArray",
+                    "line": 71,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "5fe1a18663a895b0a84668d72c0803f71ba302a94b2b7cc9ec322b7b4d85326b",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/likely-subtags-region.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/name.js",
+            "sha256": "8eed9bc0a8587fae825f09da850247e939bb2102949b597eed1e716fab911a69",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/name.js:L15:C1:verifyProperty",
+                    "line": 15,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "ba14cac40b1b72a42bdbaa28ed917f98d85ffcab5597df0e075c8f74757f5c85",
+                    "status": "passing",
+                    "adaptations": [
+                        "The ECMAScript name value is represented by ReflectionMethod::getName(); descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/name.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/name.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js",
+            "sha256": "d926a9441429d4dfac94b5ed1752079728f2bc9f041cc2566c880fa00a622089",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 6,
+            "executionCount": 6,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js:L29:C1:assert.compareArray",
+                    "line": 29,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "dfebf62955bc87491a620392a5cffc36defa7d5a61d8388d41a02a6b6c3e39ea",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js:L31:C1:verifyProperty",
+                    "line": 31,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "79df7b7fac65070c6ab5641ea0ac5191f619d7f44707873a90736d2d733f60fa",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "JavaScript data-property descriptor flags have no faithful associative-array equivalent and are inapplicable."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js:L36:C1:assert",
+                    "line": 36,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "662492591fb244b36fbf18e49eb79af731d5e00b89f4df209b126572f959c7f9",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js:L41:C1:verifyProperty",
+                    "line": 41,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "fb2abe453e1b032b03849d990d9dc64cb2c481caf6d0476a9ea7e59361a3af02",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "JavaScript data-property descriptor flags have no faithful associative-array equivalent and are inapplicable."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js:L46:C1:assert",
+                    "line": 46,
+                    "column": 1,
+                    "call": "assert",
+                    "sha256": "92521e36c93349f77ff714867f3dd34ef0841574916d522bff107fbb86e3b7df",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js:L53:C1:assert.compareArray",
+                    "line": 53,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "ca96a2658fab61dca4d36a095b259b1c4f42f5c43fb52a642b39354e7bc851ff",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/output-object-keys.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/output-object-keys.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/output-object.js",
+            "sha256": "c18271e099360fe08290b6c9621813e4c970cad30945439a396557ecaf8164fb",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 1,
+            "executionCount": 1,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/output-object.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "40bf5173b88dd1c0340e43822f5762dfeb5276f904e40ef5f4612f5537026835",
+                    "status": "passing",
+                    "adaptations": [
+                        "An ordinary ECMAScript Object is represented by an associative PHP array."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/output-object.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/output-object.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js",
+            "sha256": "1f3391f8a4f76254b7bdf7996f85e03ce3653078281a7fd570fc150656e6693e",
+            "status": "partially_translated",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "sourceAssertionCount": 2,
+            "executionCount": 2,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js:L15:C1:assert.sameValue",
+                    "line": 15,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "ce9c0f5a420700bf0e1d2ead124c6d317ce08a602536c6236c1c5951405dadcd",
+                    "status": "passing",
+                    "adaptations": [
+                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js:L21:C1:verifyProperty",
+                    "line": 21,
+                    "column": 1,
+                    "call": "verifyProperty",
+                    "sha256": "42500509493c35aee3902a00d538d7259af9519fb88f5291663639cf3d6ce7af",
+                    "status": "inapplicable",
+                    "adaptations": [
+                        "The public PHP method represents method availability; JavaScript descriptor flags are inapplicable."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/prop-desc.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/region-override.js",
+            "sha256": "d21ce0426c6d0a975b41d3dab0617d25f3a339e148591426fb8e799b9ccbc4c8",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 3,
+            "executionCount": 3,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/region-override.js:L63:C3:assert",
+                    "line": 63,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/region-override.js:L70:C1:assert.sameValue",
+                    "line": 70,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "8646a9fe8a4a532874e8fb3813774e3c9aef28d00288d24c79ba7e8da77e0fa5",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/region-override.js:L75:C1:assert.compareArray",
+                    "line": 75,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "add49f88716a31fafdfded541caf4a1c68548568b05f4f9cb0a0ed8547f4c04b",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/region-override.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/region-override.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/region-priority.js",
+            "sha256": "f5012b67f0839c3c02b2aca2c8246cc14e275fa0b6aecf51317fe6b5d434f3fc",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 3,
+            "executionCount": 14,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/region-priority.js:L77:C3:assert",
+                    "line": 77,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "6bf2daba1e500c9ccc53973dfc3aaeda3fc9e88be96a38053c3984e03bbab031",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/region-priority.js:L87:C3:assert.sameValue",
+                    "line": 87,
+                    "column": 3,
+                    "call": "assert.sameValue",
+                    "sha256": "fbdd1c81c78748b8a0455a716c9b17a3225152838053cf950281046b53df3a58",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/region-priority.js:L92:C3:assert.compareArray",
+                    "line": 92,
+                    "column": 3,
+                    "call": "assert.compareArray",
+                    "sha256": "53e2f41195448cd9a8cc8845b5a67e8215b284d667372b2fd62a50a0d850dfe2",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/region-priority.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/region-priority.js",
+                    "variant": null
+                }
+            ]
+        },
+        {
+            "path": "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js",
+            "sha256": "2aff1e816d23f82c2bf7147c565137fc8aa759d6d9e5de8e0684f8c136f527a4",
+            "status": "passing",
+            "reason": null,
+            "sourceAssertionCount": 3,
+            "executionCount": 3,
+            "executionFailures": 0,
+            "phpRepresentations": [
+                "direct"
+            ],
+            "assertions": [
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js:L56:C3:assert",
+                    "line": 56,
+                    "column": 3,
+                    "call": "assert",
+                    "sha256": "c9de1f5126c1e65a5bdf5aca046d786a662fc2ee43874184ce164b4c9957ce7d",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js:L63:C1:assert.sameValue",
+                    "line": 63,
+                    "column": 1,
+                    "call": "assert.sameValue",
+                    "sha256": "05e98f78a4db8c8dd7cd29be1393b4062c352259544fa24bd92ad4549ab263f8",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                },
+                {
+                    "id": "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js:L68:C1:assert.compareArray",
+                    "line": 68,
+                    "column": 1,
+                    "call": "assert.compareArray",
+                    "sha256": "8d0f2f04efcfb0b9461b814404256d6618c67dcca8a1260f1ac866026737f3f8",
+                    "status": "passing",
+                    "adaptations": [
+                        "The upstream data search, loop, result shape, and ISO weekday assertions are preserved directly in PHP."
+                    ]
+                }
+            ],
+            "generatedScripts": [
+                {
+                    "path": "tests/Test262/Generated/test/intl402/Locale/prototype/getWeekInfo/subdivision-region.php",
+                    "identity": "test/intl402/Locale/prototype/getWeekInfo/subdivision-region.js",
                     "variant": null
                 }
             ]

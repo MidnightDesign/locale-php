@@ -37,3 +37,5 @@ echo json_encode($locale, JSON_THROW_ON_ERROR), PHP_EOL;
 echo $locale->maximize(), PHP_EOL;
 echo $locale->maximize()->minimize(), PHP_EOL;
 echo $locale->getTextInfo()->direction?->value ?? 'unknown', PHP_EOL;
+$weekInfo = (new Locale('en-AE'))->getWeekInfo();
+echo sprintf('First day: %d; weekend: %s', $weekInfo->firstDay, implode(', ', $weekInfo->weekend)), PHP_EOL;

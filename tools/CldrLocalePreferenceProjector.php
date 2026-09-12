@@ -108,6 +108,49 @@ final class CldrLocalePreferenceProjector
         return $preferences;
     }
 
+    /**
+     * @return array{
+     *     firstDay: array<string, int<1, 7>>,
+     *     weekendStart: array<string, int<1, 7>>,
+     *     weekendEnd: array<string, int<1, 7>>
+     * }
+     */
+    public static function weekInfo(string $supplementalData): array
+    {
+        $days = [
+            'mon' => 1,
+            'tue' => 2,
+            'wed' => 3,
+            'thu' => 4,
+            'fri' => 5,
+            'sat' => 6,
+            'sun' => 7,
+        ];
+        $projection = ['firstDay' => [], 'weekendStart' => [], 'weekendEnd' => []];
+        foreach (array_keys($projection) as $field) {
+            preg_match_all(sprintf('/<%s\s+([^>]+?)\/>/s', $field), $supplementalData, $matches, PREG_SET_ORDER);
+            foreach ($matches as $match) {
+                $attributes = CldrXml::attributes($match[1]);
+                if (isset($attributes['alt'])) {
+                    continue;
+                }
+                $day = $days[$attributes['day'] ?? ''] ?? null;
+                if ($day === null || !isset($attributes['territories'])) {
+                    throw new \RuntimeException(sprintf(
+                        'A CLDR %s row is missing a valid day or territories.',
+                        $field,
+                    ));
+                }
+                foreach (self::words($attributes['territories']) as $territory) {
+                    $projection[$field][strtoupper($territory)] = $day;
+                }
+            }
+            ksort($projection[$field], SORT_STRING);
+        }
+
+        return $projection;
+    }
+
     /** @return list<string> */
     private static function words(string $value): array
     {

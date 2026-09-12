@@ -19,6 +19,7 @@ $locale->getHourCycles(); // [HourCycle::H23, HourCycle::H12]
 $locale->getCollations(); // ['emoji', 'eor', 'phonebk']
 $locale->getTimeZones(); // ['Europe/Berlin', 'Europe/Busingen']
 $locale->getNumberingSystems(); // ['latn']
+$locale->getWeekInfo(); // WeekInfo(firstDay: 1, weekend: [6, 7])
 
 $overridden = new Locale(
     $locale->toString(),
@@ -53,6 +54,15 @@ Identifiers may contain variants, transformed extensions, Unicode attributes and
 ```php
 (new Locale('fa'))->getNumberingSystems(); // ['arabext']
 (new Locale('en-u-nu-thai'))->getNumberingSystems(); // ['thai']
+```
+
+`getWeekInfo()` returns a fresh immutable `WeekInfo` value with an ISO `firstDay` (`1` for Monday through `7` for Sunday) and a non-empty ascending `weekend` list. The `rg` region override, explicit region, `sd` subdivision, likely-subtag region, and world fallback use the shared region preference order; `fw` overrides only `firstDay`. Results come from the pinned CLDR projection and intentionally omit the obsolete `minimalDays` field.
+
+```php
+$week = (new Locale('en-AE'))->getWeekInfo();
+
+$week->firstDay; // 1
+$week->weekend;  // [6, 7]
 ```
 
 `getCollations()` returns the pinned release data snapshot's canonical collation identifiers for the matched locale, excluding the `standard` and `search` defaults. An explicit `co` keyword or constructor option produces a singleton list even when the value is unavailable for that locale. Unmatched locales return `['emoji', 'eor']`. Each call returns a fresh, code-unit-sorted list and does not consult host ICU or ambient locale defaults.
