@@ -15,9 +15,9 @@ enum WeekInfoData
     public const CLDR_CORE_SHA512 = 'de8660f5371e0fcfd03a42e3b4fc4c686ec6cd602b402f1e3d227844005a54eb7952873894443523837d5828c42874a1a267a19f91ded207a2d166144791fa62';
 
     /** @var string */
-    public const SOURCE_SHA256 = 'b61801b78d6d5a675118ce422d6ea6ab7f3b8d427524b02f92a026680061a0c5';
+    public const SOURCE_SHA256 = 'cb9feb247e37bfa475a0cdb1320e0f3be6cd0d4d911d72bf19564fe416889e9b';
 
-    private const PAYLOAD_SHA256 = 'c75be2015f0b65d9b3f764286c6d352baca953070c9d885bda03ace45852a216';
+    private const PAYLOAD_SHA256 = '7f97c8e1e1c0ca6f167dd5c0beee136e219f14d2986ddb2fb10cc3e7e0e526e9';
 
     /** @var array<string, int<1, 7>> */
     public const FIRST_DAY = array(
@@ -173,48 +173,81 @@ enum WeekInfoData
         'ZW' => 7,
     );
 
-    /** @var array<string, int<1, 7>> */
-    public const WEEKEND_START = array(
-        '001' => 6,
-        'AF' => 4,
-        'BH' => 5,
-        'DZ' => 5,
-        'EG' => 5,
-        'IL' => 5,
-        'IN' => 7,
-        'IQ' => 5,
-        'IR' => 5,
-        'JO' => 5,
-        'KW' => 5,
-        'LY' => 5,
-        'OM' => 5,
-        'QA' => 5,
-        'SA' => 5,
-        'SD' => 5,
-        'SY' => 5,
-        'UG' => 7,
-        'YE' => 5,
-    );
-
-    /** @var array<string, int<1, 7>> */
-    public const WEEKEND_END = array(
-        '001' => 7,
-        'AF' => 5,
-        'BH' => 6,
-        'DZ' => 6,
-        'EG' => 6,
-        'IL' => 6,
-        'IQ' => 6,
-        'IR' => 5,
-        'JO' => 6,
-        'KW' => 6,
-        'LY' => 6,
-        'OM' => 6,
-        'QA' => 6,
-        'SA' => 6,
-        'SD' => 6,
-        'SY' => 6,
-        'YE' => 6,
+    /** @var array<string, non-empty-list<int<1, 7>>> */
+    public const WEEKEND = array(
+        '001' => array(
+            0 => 6,
+            1 => 7,
+        ),
+        'AF' => array(
+            0 => 4,
+            1 => 5,
+        ),
+        'BH' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'DZ' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'EG' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'IL' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'IN' => array(
+            0 => 7,
+        ),
+        'IQ' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'IR' => array(
+            0 => 5,
+        ),
+        'JO' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'KW' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'LY' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'OM' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'QA' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'SA' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'SD' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'SY' => array(
+            0 => 5,
+            1 => 6,
+        ),
+        'UG' => array(
+            0 => 7,
+        ),
+        'YE' => array(
+            0 => 5,
+            1 => 6,
+        ),
     );
 
     /** @psalm-api */
@@ -239,8 +272,7 @@ enum WeekInfoData
         return [
             'format' => self::FORMAT,
             'firstDay' => self::FIRST_DAY,
-            'weekendStart' => self::WEEKEND_START,
-            'weekendEnd' => self::WEEKEND_END,
+            'weekend' => self::WEEKEND,
         ];
     }
 }

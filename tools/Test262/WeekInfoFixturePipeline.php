@@ -33,7 +33,7 @@ final readonly class WeekInfoFixturePipeline implements FixturePipeline
             ];
         }
         $failures = count(array_filter($results, static fn(array $result): bool => $result['status'] === 'failing'));
-        $partial = in_array($fixture, ['name.js', 'output-object-keys.js', 'prop-desc.js'], true);
+        $partial = $fixture === 'output-object-keys.js';
 
         return new FixtureResult(
             $fixturePath,
@@ -51,25 +51,6 @@ final readonly class WeekInfoFixturePipeline implements FixturePipeline
     /** @return list<string> */
     private function adaptations(string $fixture, int $index): array
     {
-        if ($fixture === 'branding.js') {
-            return [
-                $index === 0
-                    ? 'ECMAScript function branding is represented by an existing PHP instance method.'
-                    : 'Each JavaScript receiver case is preserved in source order through a PHP receiver adapter.',
-            ];
-        }
-        if ($fixture === 'name.js') {
-            return [
-                'The ECMAScript name value is represented by ReflectionMethod::getName(); descriptor flags are inapplicable.',
-            ];
-        }
-        if ($fixture === 'prop-desc.js') {
-            return [
-                $index === 0
-                    ? 'ECMAScript typeof function is represented by an existing PHP instance method.'
-                    : 'The public PHP method represents method availability; JavaScript descriptor flags are inapplicable.',
-            ];
-        }
         if ($fixture === 'output-object.js') {
             return ['An ordinary ECMAScript Object is represented by an associative PHP array.'];
         }

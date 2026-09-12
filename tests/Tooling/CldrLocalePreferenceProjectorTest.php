@@ -66,8 +66,11 @@ final class CldrLocalePreferenceProjectorTest extends TestCase
         self::assertSame(
             [
                 'firstDay' => ['001' => 1, 'AE' => 1],
-                'weekendStart' => ['001' => 6, 'AE' => 6, 'IR' => 5],
-                'weekendEnd' => ['001' => 7, 'AE' => 7, 'IR' => 5],
+                'weekend' => [
+                    '001' => [6, 7],
+                    'AE' => [6, 7],
+                    'IR' => [5],
+                ],
             ],
             CldrLocalePreferenceProjector::weekInfo($supplementalData),
         );

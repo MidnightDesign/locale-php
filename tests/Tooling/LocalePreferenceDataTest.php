@@ -58,14 +58,12 @@ final class LocalePreferenceDataTest extends TestCase
 
         self::assertSame('11299982335beb974c1c63c45265184e759c0f41', WeekInfoData::CLDR_REVISION);
         self::assertCount(150, WeekInfoData::FIRST_DAY);
-        self::assertCount(19, WeekInfoData::WEEKEND_START);
-        self::assertCount(17, WeekInfoData::WEEKEND_END);
+        self::assertCount(19, WeekInfoData::WEEKEND);
         self::assertSame(1, WeekInfoData::FIRST_DAY['001']);
         self::assertSame(1, WeekInfoData::FIRST_DAY['AE']);
-        self::assertSame(4, WeekInfoData::WEEKEND_START['AF']);
-        self::assertSame(5, WeekInfoData::WEEKEND_START['IR']);
-        self::assertSame(5, WeekInfoData::WEEKEND_END['IR']);
-        self::assertSame(7, WeekInfoData::WEEKEND_START['UG']);
+        self::assertSame([4, 5], WeekInfoData::WEEKEND['AF']);
+        self::assertSame([5], WeekInfoData::WEEKEND['IR']);
+        self::assertSame([7], WeekInfoData::WEEKEND['UG']);
 
         $root = dirname(__DIR__, 2);
         $source = file_get_contents($root . '/resources/data/week-info.json');

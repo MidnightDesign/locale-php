@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests\Test262\Harness;
 
-use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Spec\Locale;
 use PHPUnit\Framework\Assert;
 
@@ -19,26 +18,14 @@ final class WeekInfoAssertion
     public static function evaluate(string $fixture): array
     {
         return match ($fixture) {
-            'branding.js' => ['results' => self::branding(), 'executionCount' => 10],
             'firstDay-by-id.js' => ['results' => self::firstDayById(), 'executionCount' => 7],
-            'firstDay-by-option.js' => ['results' => self::firstDayByOption(), 'executionCount' => 44],
+            'firstDay-by-option.js' => ['results' => self::firstDayByOption(), 'executionCount' => 46],
             'likely-subtags-region.js' => ['results' => self::likelySubtagsRegion(), 'executionCount' => 3],
-            'name.js' => [
-                'results' => [self::result(
-                    (new \ReflectionMethod(Locale::class, 'getWeekInfo'))->getName() === 'getWeekInfo',
-                )],
-                'executionCount' => 1,
-            ],
             'output-object-keys.js' => ['results' => self::outputObjectKeys(), 'executionCount' => 6],
             'output-object.js' => [
                 // @phpstan-ignore function.alreadyNarrowedType (faithful upstream runtime assertion)
                 'results' => [self::result(is_array((new Locale('en'))->getWeekInfo()))],
                 'executionCount' => 1,
-            ],
-            'prop-desc.js' => [
-                // @phpstan-ignore function.alreadyNarrowedType (faithful upstream runtime assertion)
-                'results' => [self::result(method_exists(Locale::class, 'getWeekInfo')), ['status' => 'inapplicable']],
-                'executionCount' => 2,
             ],
             'region-override.js' => ['results' => self::regionOverride(), 'executionCount' => 3],
             'region-priority.js' => ['results' => self::regionPriority(), 'executionCount' => 14],
@@ -55,27 +42,6 @@ final class WeekInfoAssertion
     }
 
     /** @return list<array{status: 'passing'|'failing', failure?: string}> */
-    private static function branding(): array
-    {
-        // @phpstan-ignore function.alreadyNarrowedType (faithful upstream runtime assertion)
-        $results = [self::result(method_exists(Locale::class, 'getWeekInfo'))];
-        $uninitialized = (new \ReflectionClass(Locale::class))->newInstanceWithoutConstructor();
-        foreach ([null, null, true, '', 'Symbol()', 1, new \stdClass(), Locale::class, $uninitialized] as $receiver) {
-            try {
-                if (!$receiver instanceof Locale) {
-                    throw new TypeError('Locale receiver is not initialized.');
-                }
-                $receiver->getWeekInfo();
-                $results[] = self::result(false, 'Expected the receiver to fail its Locale brand check.');
-            } catch (TypeError) {
-                $results[] = self::result(true);
-            }
-        }
-
-        return $results;
-    }
-
-    /** @return list<array{status: 'passing'|'failing', failure?: string}> */
     private static function firstDayById(): array
     {
         $passing = true;
@@ -88,7 +54,8 @@ final class WeekInfoAssertion
             'sat' => 6,
             'sun' => 7,
         ] as $day => $expected) {
-            $passing = $passing && (new Locale('en-u-fw-' . $day))->getWeekInfo()['firstDay'] === $expected;
+            $actual = (new Locale('en-u-fw-' . $day))->getWeekInfo()['firstDay'];
+            $passing = $actual === $expected && $passing;
         }
 
         return [self::result($passing, 'A first-day Unicode keyword did not determine firstDay.')];
@@ -125,9 +92,10 @@ final class WeekInfoAssertion
             [0, 7],
         ] as [$option, $expected]) {
             $options = ['firstDayOfWeek' => $option];
-            $withoutKeyword = $withoutKeyword && (new Locale('en', $options))->getWeekInfo()['firstDay'] === $expected;
-            $withKeyword =
-                $withKeyword && (new Locale('en-u-fw-WED', $options))->getWeekInfo()['firstDay'] === $expected;
+            $withoutKeywordActual = (new Locale('en', $options))->getWeekInfo()['firstDay'];
+            $withKeywordActual = (new Locale('en-u-fw-WED', $options))->getWeekInfo()['firstDay'];
+            $withoutKeyword = $withoutKeywordActual === $expected && $withoutKeyword;
+            $withKeyword = $withKeywordActual === $expected && $withKeyword;
         }
 
         return [
@@ -228,11 +196,11 @@ final class WeekInfoAssertion
         foreach ($levels as $index => [$tag, $regionTag]) {
             $expected = (new Locale($regionTag))->getWeekInfo();
             $actual = (new Locale($tag))->getWeekInfo();
-            $firstDays = $firstDays && $actual['firstDay'] === $expected['firstDay'];
-            $weekends = $weekends && $actual['weekend'] === $expected['weekend'];
+            $firstDays = $actual['firstDay'] === $expected['firstDay'] && $firstDays;
+            $weekends = $actual['weekend'] === $expected['weekend'] && $weekends;
             if (isset($levels[$index + 1])) {
                 $next = (new Locale($levels[$index + 1][1]))->getWeekInfo();
-                $distinct = $distinct && !self::equal($expected, $next);
+                $distinct = !self::equal($expected, $next) && $distinct;
             }
         }
 

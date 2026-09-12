@@ -20,28 +20,14 @@ final class WeekInformation
 
         $firstDay =
             self::firstDayOverride($locale) ?? WeekInfoData::FIRST_DAY[$region] ?? WeekInfoData::FIRST_DAY['001'];
-        $weekendStart = WeekInfoData::WEEKEND_START[$region] ?? WeekInfoData::WEEKEND_START['001'];
-        $weekendEnd = WeekInfoData::WEEKEND_END[$region] ?? WeekInfoData::WEEKEND_END['001'];
-        $weekend = [];
-        for ($day = $weekendStart;; $day = ($day % 7) + 1) {
-            $weekend[] = $day;
-            if ($day === $weekendEnd) {
-                break;
-            }
-        }
-        sort($weekend, SORT_NUMERIC);
-        /** @var non-empty-list<int<1, 7>> $weekend */
+        $weekend = WeekInfoData::WEEKEND[$region] ?? WeekInfoData::WEEKEND['001'];
 
         return ['firstDay' => $firstDay, 'weekend' => $weekend];
     }
 
     private static function hasData(string $region): bool
     {
-        return (
-            isset(WeekInfoData::FIRST_DAY[$region])
-            || isset(WeekInfoData::WEEKEND_START[$region])
-            || isset(WeekInfoData::WEEKEND_END[$region])
-        );
+        return isset(WeekInfoData::FIRST_DAY[$region]) || isset(WeekInfoData::WEEKEND[$region]);
     }
 
     /** @return int<1, 7>|null */

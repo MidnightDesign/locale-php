@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
 
@@ -21,7 +22,16 @@ return static function (FixtureCatalog $catalog): array {
         'subdivision-region.js' => '2aff1e816d23f82c2bf7147c565137fc8aa759d6d9e5de8e0684f8c136f527a4',
     ] as $fixture => $sha256) {
         $path = 'test/intl402/Locale/prototype/getWeekInfo/' . $fixture;
-        $pipelines[$path] = $catalog->weekInfo($sha256);
+        $pipelines[$path] = match ($fixture) {
+            'branding.js' => $catalog->branding(
+                'getWeekInfo',
+                BrandingFixtureMode::IndividualMethodIncludingConstructor,
+                $sha256,
+            ),
+            'name.js' => $catalog->sourceBoundLocaleMethod('getWeekInfo', 'name', $sha256),
+            'prop-desc.js' => $catalog->sourceBoundLocaleMethod('getWeekInfo', 'property', $sha256),
+            default => $catalog->weekInfo($sha256),
+        };
     }
 
     /** @var array<string, FixturePipeline> $pipelines */

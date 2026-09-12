@@ -15148,7 +15148,9 @@
             "executionCount": 10,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "reflection",
+                "native_receiver_binding",
+                "uninitialized_locale"
             ],
             "assertions": [
                 {
@@ -15159,7 +15161,15 @@
                     "sha256": "c6e8378639fa10e242446ddd9fca1c20b5333b325f14cdb1f4b95ff3e22b9749",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript function branding is represented by an existing PHP instance method."
+                        "PHP reflection verifies that the public instance method exists."
+                    ],
+                    "executions": [
+                        {
+                            "id": "public-method",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L17:C1:assert.sameValue",
+                            "representation": "reflection",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15170,7 +15180,16 @@
                     "sha256": "f14af7b4f1e9ba193bc53fd7c1d20983fc6c944f26ac0438e8c1edf661cb3385",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "undefined",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L19:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15181,7 +15200,16 @@
                     "sha256": "e654c586bf6da3f437a11d4ea20c7946e72ec51ebdafcf393b0f087006f26100",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "null",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L20:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15192,7 +15220,16 @@
                     "sha256": "55c7194a5c4fa8145cc8af3a072101900fcfdf1f6a926ed4e5d360767a7dfcfc",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "true",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L21:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15203,7 +15240,16 @@
                     "sha256": "e3f29716e794cd2bd8a68c4d6392de6b87681a5c2948e33a7e64a56326d489ee",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "empty-string",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L22:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15214,7 +15260,16 @@
                     "sha256": "3eaaab71c7267bf63d9d093f013454fc4943bda450323c02c2e36eb51cb03061",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "symbol",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L23:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15225,7 +15280,16 @@
                     "sha256": "4a64cd38bdc1692b2fff591aaf46115f8421b00308518d0519abf2eb2ca14b85",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "number",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L24:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15236,7 +15300,16 @@
                     "sha256": "02cbb2b5e6dc1092f1acc175f058872866f224c661687e69e19d1ff1de8cc947",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "plain-object",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L25:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15247,7 +15320,16 @@
                     "sha256": "149c194868503556e426a10170310be5f054cba006581a57fb76d997424ad78c",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "constructor",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L26:C1:assert.throws",
+                            "representation": "native_receiver_binding",
+                            "status": "passing"
+                        }
                     ]
                 },
                 {
@@ -15258,7 +15340,16 @@
                     "sha256": "f87afa56b4b4c06639ccdea3b2fbb436400dc89478986467ddd0602d6f64dfb2",
                     "status": "passing",
                     "adaptations": [
-                        "Each JavaScript receiver case is preserved in source order through a PHP receiver adapter."
+                        "PHP native method binding rejects arbitrary non-Locale receivers before the method body runs.",
+                        "A reflection-created uninitialized Locale represents the prototype or forged receiver and exercises the private brand check."
+                    ],
+                    "executions": [
+                        {
+                            "id": "uninitialized-locale",
+                            "assertionId": "test/intl402/Locale/prototype/getWeekInfo/branding.js:L27:C1:assert.throws",
+                            "representation": "uninitialized_locale",
+                            "status": "passing"
+                        }
                     ]
                 }
             ],
@@ -15308,7 +15399,7 @@
             "status": "passing",
             "reason": null,
             "sourceAssertionCount": 2,
-            "executionCount": 44,
+            "executionCount": 46,
             "executionFailures": 0,
             "phpRepresentations": [
                 "direct"
@@ -15403,12 +15494,12 @@
             "path": "test/intl402/Locale/prototype/getWeekInfo/name.js",
             "sha256": "8eed9bc0a8587fae825f09da850247e939bb2102949b597eed1e716fab911a69",
             "status": "partially_translated",
-            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
             "sourceAssertionCount": 1,
             "executionCount": 1,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -15417,9 +15508,9 @@
                     "column": 1,
                     "call": "verifyProperty",
                     "sha256": "ba14cac40b1b72a42bdbaa28ed917f98d85ffcab5597df0e075c8f74757f5c85",
-                    "status": "passing",
+                    "status": "partially_translated",
                     "adaptations": [
-                        "The ECMAScript name value is represented by ReflectionMethod::getName(); descriptor flags are inapplicable."
+                        "The JavaScript function name is represented by the PHP reflection method name; descriptor flags are inapplicable."
                     ]
                 }
             ],
@@ -15554,12 +15645,12 @@
             "path": "test/intl402/Locale/prototype/getWeekInfo/prop-desc.js",
             "sha256": "1f3391f8a4f76254b7bdf7996f85e03ce3653078281a7fd570fc150656e6693e",
             "status": "partially_translated",
-            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent.",
+            "reason": "JavaScript property descriptor flags have no faithful ordinary PHP equivalent; the method name, visibility, and arity assertions run.",
             "sourceAssertionCount": 2,
             "executionCount": 2,
             "executionFailures": 0,
             "phpRepresentations": [
-                "direct"
+                "php_reflection"
             ],
             "assertions": [
                 {
@@ -15570,7 +15661,7 @@
                     "sha256": "ce9c0f5a420700bf0e1d2ead124c6d317ce08a602536c6236c1c5951405dadcd",
                     "status": "passing",
                     "adaptations": [
-                        "ECMAScript typeof function is represented by an existing PHP instance method."
+                        "Public PHP method visibility represents the applicable method-availability assertion."
                     ]
                 },
                 {
@@ -15581,7 +15672,7 @@
                     "sha256": "42500509493c35aee3902a00d538d7259af9519fb88f5291663639cf3d6ce7af",
                     "status": "inapplicable",
                     "adaptations": [
-                        "The public PHP method represents method availability; JavaScript descriptor flags are inapplicable."
+                        "JavaScript writability, enumerability, and configurability have no faithful ordinary PHP equivalent and are inapplicable."
                     ]
                 }
             ],

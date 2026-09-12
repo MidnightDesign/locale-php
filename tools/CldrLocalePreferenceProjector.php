@@ -111,8 +111,7 @@ final class CldrLocalePreferenceProjector
     /**
      * @return array{
      *     firstDay: array<string, int<1, 7>>,
-     *     weekendStart: array<string, int<1, 7>>,
-     *     weekendEnd: array<string, int<1, 7>>
+     *     weekend: array<string, non-empty-list<int<1, 7>>>
      * }
      */
     public static function weekInfo(string $supplementalData): array
@@ -148,7 +147,40 @@ final class CldrLocalePreferenceProjector
             ksort($projection[$field], SORT_STRING);
         }
 
-        return $projection;
+        $weekend = [];
+        $regions = array_unique([
+            ...array_keys($projection['weekendStart']),
+            ...array_keys($projection['weekendEnd']),
+        ]);
+        sort($regions, SORT_STRING);
+        foreach ($regions as $region) {
+            $start = $projection['weekendStart'][$region] ?? $projection['weekendStart']['001'] ?? null;
+            $end = $projection['weekendEnd'][$region] ?? $projection['weekendEnd']['001'] ?? null;
+            if ($start === null || $end === null) {
+                throw new \RuntimeException('CLDR week data is missing the world weekend boundary.');
+            }
+            $weekend[$region] = self::weekend($start, $end);
+        }
+
+        return ['firstDay' => $projection['firstDay'], 'weekend' => $weekend];
+    }
+
+    /** @return non-empty-list<int<1, 7>> */
+    private static function weekend(int $start, int $end): array
+    {
+        $weekend = [];
+        for ($offset = 0; $offset < 7; ++$offset) {
+            $day = (($start - 1 + $offset) % 7) + 1;
+            $weekend[] = $day;
+            if ($day === $end) {
+                sort($weekend, SORT_NUMERIC);
+
+                /** @var non-empty-list<int<1, 7>> */
+                return $weekend;
+            }
+        }
+
+        throw new \RuntimeException('A CLDR weekend boundary is outside the ISO weekday range.');
     }
 
     /** @return list<string> */

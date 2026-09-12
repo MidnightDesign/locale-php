@@ -234,7 +234,7 @@ $weekInfoSource = file_get_contents($root . '/resources/data/week-info.json');
 if ($weekInfoSource === false) {
     throw new RuntimeException('Unable to read the week-info projection source.');
 }
-/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, firstDay: array<string, int>, weekendStart: array<string, int>, weekendEnd: array<string, int>} $weekInfoData */
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, firstDay: array<string, int>, weekend: array<string, non-empty-list<int>>} $weekInfoData */
 $weekInfoData = json_decode($weekInfoSource, true, flags: JSON_THROW_ON_ERROR);
 if ($weekInfoData['format'] !== 1) {
     throw new RuntimeException('The week-info projection format is incompatible.');
@@ -255,16 +255,10 @@ $weekInfoGenerated = generatePreferenceClass(
             'value' => $weekInfoData['firstDay'],
         ],
         [
-            'constant' => 'WEEKEND_START',
-            'payloadKey' => 'weekendStart',
-            'type' => 'array<string, int<1, 7>>',
-            'value' => $weekInfoData['weekendStart'],
-        ],
-        [
-            'constant' => 'WEEKEND_END',
-            'payloadKey' => 'weekendEnd',
-            'type' => 'array<string, int<1, 7>>',
-            'value' => $weekInfoData['weekendEnd'],
+            'constant' => 'WEEKEND',
+            'payloadKey' => 'weekend',
+            'type' => 'array<string, non-empty-list<int<1, 7>>>',
+            'value' => $weekInfoData['weekend'],
         ],
     ],
 );
