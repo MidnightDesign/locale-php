@@ -85,6 +85,8 @@ $timeZonesCatalog = require __DIR__ . '/Test262/Fixtures/time-zones.php';
 $localePreferencesCatalog = require __DIR__ . '/Test262/Fixtures/locale-preferences.php';
 /** @var Closure(FixtureCatalog): array<string, FixturePipeline> $numberingSystemsCatalog */
 $numberingSystemsCatalog = require __DIR__ . '/Test262/Fixtures/numbering-systems.php';
+/** @var Closure(FixtureCatalog): array<string, FixturePipeline> $collationsCatalog */
+$collationsCatalog = require __DIR__ . '/Test262/Fixtures/collations.php';
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
     ...$localeStateAndOpenKeywordCatalog($catalog),
@@ -94,6 +96,7 @@ $fixturePipelines = [
     ...$timeZonesCatalog($catalog),
     ...$localePreferencesCatalog($catalog),
     ...$numberingSystemsCatalog($catalog),
+    ...$collationsCatalog($catalog),
 ];
 
 $fixtureSources = [];

@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
 
 /** @return array<string, FixturePipeline> */
 return static fn(FixtureCatalog $catalog): array => [
-    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $catalog->timeZones(
+    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $catalog->branding(
+        'getTimeZones',
+        BrandingFixtureMode::IndividualMethodIncludingConstructor,
         '0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf',
     ),
-    'test/intl402/Locale/prototype/getTimeZones/name.js' => $catalog->timeZones(
+    'test/intl402/Locale/prototype/getTimeZones/name.js' => $catalog->sourceBoundLocaleMethod(
+        'getTimeZones',
+        'name',
         '661bb136b4d3e252c6ef29f65e6ca7e9fb9be08a5bc34e435c58e3d6fc913260',
     ),
     'test/intl402/Locale/prototype/getTimeZones/output-array-sorted.js' => $catalog->timeZones(
@@ -22,7 +27,9 @@ return static fn(FixtureCatalog $catalog): array => [
     'test/intl402/Locale/prototype/getTimeZones/output-array.js' => $catalog->timeZones(
         '86873684eed707e05dea5090fcfc661d1edc77a79d120b96370383682377755f',
     ),
-    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => $catalog->timeZones(
+    'test/intl402/Locale/prototype/getTimeZones/prop-desc.js' => $catalog->sourceBoundLocaleMethod(
+        'getTimeZones',
+        'property',
         '94d0dad6fac17c3daca60bd971de27e0424cb5ffd7c6c8b1cb84fb801063de86',
     ),
 ];
