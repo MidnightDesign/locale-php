@@ -65,6 +65,7 @@
     "scripts": {
         "test": "phpunit",
         "test:package": "php tools/test-package-install.php",
+        "docs:check": "php tools/check-documentation-examples.php",
         "test:unit": "phpunit --testsuite unit",
         "test:state": "phpunit tests/Tooling/AmbientStateTest.php",
         "analyse": "phpstan analyse --no-progress --memory-limit=512M",

@@ -2,7 +2,18 @@
 
 This package is not yet ECMA-402 conformant. Locale identifier construction, canonical properties, likely-subtag methods, numbering-system defaults, text direction, calendar and hour-cycle preferences, week information, and primary time-zone lookup are implemented; other conformance work remains incomplete.
 
-The current conformance baseline pins ECMA-402 at `b1c961988b9a07894b1dc3dc2b5626ea48387d61` and Test262 at `419d3e0a2273ba01a3bfcbec423f2801425b8e93`. [The Test262 baseline manifest](../tests/Test262/baseline.json) separates these immutable initial revisions from the active tracked inputs. Advancing the active inputs compares them with [the immutable initial inventory](../tests/Test262/initial-inventory.json) and generates a stable record of added, changed, and removed fixtures and assertion identities; repeated generation does not erase that comparison. [The release data manifest](../resources/data/manifest.json) records the exact Unicode 17.0.0, CLDR 48.2, IANA registry dated 2026-08-08, and tzdb 2026c inputs with complete hashes, notices, generator fingerprints, and the release data fingerprint.
+The exact current evidence is directly inspectable:
+
+| Evidence | Current identity | Machine-readable source |
+| --- | --- | --- |
+| ECMA-402 baseline | `b1c961988b9a07894b1dc3dc2b5626ea48387d61` | [Baseline manifest](../tests/Test262/baseline.json) |
+| Test262 baseline | `419d3e0a2273ba01a3bfcbec423f2801425b8e93` | [Baseline manifest](../tests/Test262/baseline.json) |
+| Release data snapshot | `4b5073f20699258c41315c9c28f76feb5ecbe46b313c54c27304111afc3834c7` | [Release data manifest](../resources/data/manifest.json) |
+| Conformance result | Ineligible | [Translated evidence](../tests/Test262/evidence.json) |
+
+The evidence reports applicable passes, PHP adaptations, inapplicable JavaScript-only assertions, translation gaps, and execution failures as distinct classifications. A translation gap is unfinished applicable work, not an inapplicable or passing test. No coverage percentage is published because a percentage could conceal those categories, and no conformance claim is made for the deliberately stricter porcelain tier.
+
+[The Test262 baseline manifest](../tests/Test262/baseline.json) separates immutable initial revisions from active tracked inputs. Advancing the active inputs compares them with [the immutable initial inventory](../tests/Test262/initial-inventory.json) and generates a stable record of added, changed, and removed fixtures and assertion identities; repeated generation does not erase that comparison. [The release data manifest](../resources/data/manifest.json) records the exact Unicode 17.0.0, CLDR 48.2, IANA registry dated 2026-08-08, and tzdb 2026c inputs with complete hashes, notices, generator fingerprints, and the release data fingerprint.
 
 Pinned Test262 originals used by generated scripts live under `tests/Test262/upstream`. The directory also preserves the pinned Test262 and ECMA-402 license notices. Each translated fixture produces one plain PHP script under `tests/Test262/Generated`, preserving its upstream-relative path. Generated PHP translations retain both source revisions and paths, and `composer test262:check` proves byte-for-byte regeneration.
 

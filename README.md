@@ -2,7 +2,7 @@
 
 A pure-PHP implementation of ECMAScript `Intl.Locale`. It requires PHP 8.2 or newer and does not require `ext-intl`.
 
-The package is not yet ECMA-402 conformant. Locale identifier construction, likely-subtag operations, numbering-system defaults, text direction, calendar and hour-cycle preferences, collation availability, and primary time-zone lookup are implemented: the public layers validate the full Unicode locale-identifier grammar, apply all eleven constructor options, preserve extensions, expose the canonical identifier properties, provide deterministic `maximize()`, `minimize()`, and `getTextInfo()` results, return pinned collation availability through `getCollations()`, return the pinned default or explicit numbering system through `getNumberingSystems()`, return ordered calendar and hour-cycle preferences, and return pinned primary time-zone identifiers for explicit regions through `getTimeZones()`. Other locale-information methods remain unfinished.
+The package is not yet ECMA-402 conformant. The current implementation covers locale construction and properties, likely-subtag operations, and all locale-information methods; upstream-only conformance work remains incomplete. See [conformance and release data](docs/conformance.md) for the exact evidence and open gaps.
 
 ## Install
 
@@ -19,22 +19,25 @@ use Midnight\Intl\Locale;
 
 $locale = new Locale('EN-latn-us-u-ca-gregory', region: 'GB', numeric: true);
 
-echo $locale;              // en-Latn-GB-u-ca-gregory-kn
-echo $locale->language;    // en
-echo $locale->calendar;    // gregory
-echo $locale->numeric;     // 1
-echo $locale->maximize();  // en-Latn-GB-u-ca-gregory-kn
-echo $locale->minimize();  // en-GB-u-ca-gregory-kn
-echo $locale->getTextInfo()->direction?->value; // ltr
-echo json_encode($locale); // "en-Latn-GB-u-ca-gregory-kn"
-$locale->getCollations();  // ['emoji', 'eor']
-$locale->getTimeZones();   // ['Europe/London']
-$locale->getCalendars();   // ['gregory']
-$locale->getHourCycles();  // [HourCycle::H23, HourCycle::H12]
-$locale->getNumberingSystems(); // ['latn']
+assert((string) $locale === 'en-Latn-GB-u-ca-gregory-kn');
+assert($locale->language === 'en');
+assert($locale->calendar === 'gregory');
+assert($locale->numeric === true);
+assert($locale->maximize()->toString() === 'en-Latn-GB-u-ca-gregory-kn');
+assert($locale->minimize()->toString() === 'en-GB-u-ca-gregory-kn');
+assert($locale->getTextInfo()->direction?->value === 'ltr');
+assert(json_encode($locale) === '"en-Latn-GB-u-ca-gregory-kn"');
+assert($locale->getCollations() === ['emoji', 'eor']);
+assert($locale->getTimeZones() === ['Europe/London']);
+assert($locale->getCalendars() === ['gregory']);
+assert(array_map(static fn($cycle): string => $cycle->value, $locale->getHourCycles()) === ['h23', 'h12']);
+assert($locale->getNumberingSystems() === ['latn']);
+assert($locale->getWeekInfo()->firstDay === 1);
 ```
 
-The porcelain layer is the normal application API. See [Getting started](docs/getting-started.md), [the spec layer](docs/spec-layer.md), [conformance and release data](docs/conformance.md), and [migration guidance](docs/migration.md).
+The porcelain layer is the normal application API. PHP 8.2 and newer are supported on Linux, macOS, and Windows. `ext-intl` is optional: results do not depend on whether it is installed, the host ICU version, or process locale defaults.
+
+See [Getting started](docs/getting-started.md), [the complete API reference](docs/api-reference.md), [the spec layer](docs/spec-layer.md), [conformance and release data](docs/conformance.md), and [migration guidance](docs/migration.md).
 
 ## Develop
 
@@ -43,6 +46,7 @@ docker compose build php
 docker compose run --rm php composer install
 docker compose run --rm php composer test
 docker compose run --rm php composer analyse
+docker compose run --rm php composer docs:check
 docker compose run --rm php composer data:check
 docker compose run --rm php composer test262:check
 docker compose run --rm php composer test:package
