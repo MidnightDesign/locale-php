@@ -43,13 +43,11 @@ final class OptionObservation
                 private array $values,
             ) {}
 
-            public function has(string $name): bool
-            {
-                return array_key_exists($name, $this->values);
-            }
-
             public function get(string $name): mixed
             {
+                if (!array_key_exists($name, $this->values)) {
+                    return \Midnight\Intl\Internal\UndefinedValue::Value;
+                }
                 $this->log->entries[] = 'get ' . $name;
                 if ($name === 'numeric') {
                     return false;
@@ -84,13 +82,11 @@ final class OptionObservation
                 private OptionObservationError $failure,
             ) {}
 
-            public function has(string $name): bool
-            {
-                return $name === $this->option;
-            }
-
             public function get(string $name): mixed
             {
+                if ($name !== $this->option) {
+                    return \Midnight\Intl\Internal\UndefinedValue::Value;
+                }
                 throw $this->failure;
             }
         };

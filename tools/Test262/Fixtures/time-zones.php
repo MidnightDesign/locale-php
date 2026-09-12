@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
 
 /** @return array<string, FixturePipeline> */
 return static fn(FixtureCatalog $catalog): array => [
-    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $catalog->sourceBoundLocaleMethod(
+    'test/intl402/Locale/prototype/getTimeZones/branding.js' => $catalog->branding(
         'getTimeZones',
-        'branding',
+        BrandingFixtureMode::IndividualMethodIncludingConstructor,
         '0760c5c934c886e66f1ad7960f5e568e0883e8da562adbf0f700ba934798bccf',
     ),
     'test/intl402/Locale/prototype/getTimeZones/name.js' => $catalog->sourceBoundLocaleMethod(

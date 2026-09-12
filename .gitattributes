@@ -1,1 +1,2 @@
 * text=auto eol=lf
+tests/Test262/upstream/** whitespace=-blank-at-eof

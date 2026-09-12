@@ -8,10 +8,10 @@ use Midnight\Intl\Exception\RangeError;
 use Midnight\Intl\Exception\TypeError;
 use Midnight\Intl\Internal\Data\CollationAvailability;
 use Midnight\Intl\Internal\Data\PrimaryTimeZones;
+use Midnight\Intl\Internal\EcmaValue;
 use Midnight\Intl\Internal\LocaleIdentifier;
+use Midnight\Intl\Internal\LocaleOptions;
 use Midnight\Intl\Internal\LocalePreferences;
-use Midnight\Intl\Internal\OptionValue;
-use Midnight\Intl\Internal\Test262\OptionBag;
 use Midnight\Intl\Internal\UndefinedValue;
 
 /**
@@ -38,7 +38,7 @@ class Locale
     /** @var array<string, mixed> */
     private array $consumerProperties = [];
 
-    public function __construct(mixed $tag, mixed $options = null)
+    public function __construct(mixed $tag, mixed $options = UndefinedValue::Value)
     {
         if ($this->initialized) {
             throw new TypeError('Locale is already initialized.');
@@ -46,46 +46,65 @@ class Locale
 
         $tag = match (true) {
             is_string($tag) => $tag,
-            $tag instanceof self => $tag->toString(),
-            $tag instanceof \Stringable => (string) $tag,
-            default => throw new TypeError('The locale tag must be a string or an object.'),
+            $tag instanceof self => self::initializedTag($tag),
+            default => EcmaValue::toLocaleTag($tag),
         };
-
-        if (func_num_args() > 1 && $options === null) {
-            throw new TypeError('The locale options must not be null.');
-        }
+        $options = LocaleOptions::from($options);
 
         $this->identifier = LocaleIdentifier::parse($tag);
 
-        if (is_array($options) || is_object($options)) {
-            $languageOption = self::readOption($options, 'language');
-            $language = $languageOption->present
-                ? self::toStringValue($languageOption->value)
-                : $this->identifier->language;
-            $scriptOption = self::readOption($options, 'script');
-            $script = $scriptOption->present ? self::toStringValue($scriptOption->value) : $this->identifier->script;
-            $regionOption = self::readOption($options, 'region');
-            $region = $regionOption->present ? self::toStringValue($regionOption->value) : $this->identifier->region;
-            $variantsOption = self::readOption($options, 'variants');
-            $variants = $variantsOption->present
-                ? self::toStringValue($variantsOption->value)
-                : ($this->identifier->variants === [] ? null : implode('-', $this->identifier->variants));
-
-            $this->identifier->replaceLanguageId($language, $script, $region, $variants);
-
-            self::applyStringKeywordOption($this->identifier, $options, 'calendar', 'ca');
-            self::applyStringKeywordOption($this->identifier, $options, 'collation', 'co');
-            self::applyFirstDayOfWeekOption($this->identifier, $options);
-            self::applyClosedKeywordOption($this->identifier, $options, 'hourCycle', 'hc', [
-                'h11',
-                'h12',
-                'h23',
-                'h24',
-            ]);
-            self::applyClosedKeywordOption($this->identifier, $options, 'caseFirst', 'kf', ['upper', 'lower', 'false']);
-            self::applyNumericOption($this->identifier, $options);
-            self::applyStringKeywordOption($this->identifier, $options, 'numberingSystem', 'nu');
+        $languageOption = $options->read('language');
+        if ($languageOption->present) {
+            $this->identifier->replaceLanguageId(
+                EcmaValue::toString($languageOption->value),
+                $this->identifier->script,
+                $this->identifier->region,
+                $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+            );
         }
+
+        $scriptOption = $options->read('script');
+        if ($scriptOption->present) {
+            $this->identifier->replaceLanguageId(
+                $this->identifier->language,
+                EcmaValue::toString($scriptOption->value),
+                $this->identifier->region,
+                $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+            );
+        }
+
+        $regionOption = $options->read('region');
+        if ($regionOption->present) {
+            $this->identifier->replaceLanguageId(
+                $this->identifier->language,
+                $this->identifier->script,
+                EcmaValue::toString($regionOption->value),
+                $this->identifier->variants === [] ? null : implode('-', $this->identifier->variants),
+            );
+        }
+
+        $variantsOption = $options->read('variants');
+        if ($variantsOption->present) {
+            $this->identifier->replaceLanguageId(
+                $this->identifier->language,
+                $this->identifier->script,
+                $this->identifier->region,
+                EcmaValue::toString($variantsOption->value),
+            );
+        }
+
+        self::applyStringKeywordOption($this->identifier, $options, 'calendar', 'ca');
+        self::applyStringKeywordOption($this->identifier, $options, 'collation', 'co');
+        self::applyFirstDayOfWeekOption($this->identifier, $options);
+        self::applyClosedKeywordOption($this->identifier, $options, 'hourCycle', 'hc', [
+            'h11',
+            'h12',
+            'h23',
+            'h24',
+        ]);
+        self::applyClosedKeywordOption($this->identifier, $options, 'caseFirst', 'kf', ['upper', 'lower', 'false']);
+        self::applyNumericOption($this->identifier, $options);
+        self::applyStringKeywordOption($this->identifier, $options, 'numberingSystem', 'nu');
         $this->initialized = true;
     }
 
@@ -231,71 +250,27 @@ class Locale
         return ['direction' => $this->identifier->textDirection()];
     }
 
-    /**
-     * @param array<array-key, mixed>|object $options
-     */
-    private static function readOption(array|object $options, string $name): OptionValue
+    private static function initializedTag(self $locale): string
     {
-        if ($options instanceof OptionBag) {
-            if (!$options->has($name)) {
-                return OptionValue::missing();
-            }
-
-            return self::optionValue($options->get($name));
+        if (!$locale->initialized) {
+            throw new TypeError('Locale is not initialized.');
         }
 
-        if (is_array($options)) {
-            return array_key_exists($name, $options) ? self::optionValue($options[$name]) : OptionValue::missing();
-        }
-
-        $properties = get_object_vars($options);
-
-        return array_key_exists($name, $properties) ? self::optionValue($properties[$name]) : OptionValue::missing();
+        return $locale->identifier->toString();
     }
 
-    private static function optionValue(mixed $value): OptionValue
-    {
-        return $value === UndefinedValue::Value ? OptionValue::missing() : OptionValue::present($value);
-    }
-
-    private static function toStringValue(mixed $value): string
-    {
-        if (is_string($value) || is_int($value) || is_float($value)) {
-            if ($value === -0.0) {
-                return '0';
-            }
-
-            return (string) $value;
-        }
-
-        if ($value === null) {
-            return 'null';
-        }
-
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-
-        if ($value instanceof \Stringable) {
-            return (string) $value;
-        }
-
-        throw new TypeError('Locale option cannot be converted to a string.');
-    }
-
-    /** @param array<array-key, mixed>|object $options */
     private static function applyStringKeywordOption(
         LocaleIdentifier $identifier,
-        array|object $options,
+        LocaleOptions $options,
         string $optionName,
         string $key,
     ): void {
-        $option = self::readOption($options, $optionName);
+        $option = $options->read($optionName);
         if (!$option->present) {
             return;
         }
 
-        $value = self::toStringValue($option->value);
+        $value = EcmaValue::toString($option->value);
         if (preg_match('/\A[A-Za-z0-9]{3,8}(?:-[A-Za-z0-9]{3,8})*\z/', $value) !== 1) {
             throw new RangeError(sprintf('Invalid %s option: "%s".', $optionName, $value));
         }
@@ -303,37 +278,35 @@ class Locale
     }
 
     /**
-     * @param array<array-key, mixed>|object $options
      * @param list<string> $allowed
      */
     private static function applyClosedKeywordOption(
         LocaleIdentifier $identifier,
-        array|object $options,
+        LocaleOptions $options,
         string $optionName,
         string $key,
         array $allowed,
     ): void {
-        $option = self::readOption($options, $optionName);
+        $option = $options->read($optionName);
         if (!$option->present) {
             return;
         }
 
-        $value = self::toStringValue($option->value);
+        $value = EcmaValue::toString($option->value);
         if (!in_array($value, $allowed, true)) {
             throw new RangeError(sprintf('Invalid %s option: "%s".', $optionName, $value));
         }
         $identifier->setKeyword($key, $value);
     }
 
-    /** @param array<array-key, mixed>|object $options */
-    private static function applyFirstDayOfWeekOption(LocaleIdentifier $identifier, array|object $options): void
+    private static function applyFirstDayOfWeekOption(LocaleIdentifier $identifier, LocaleOptions $options): void
     {
-        $option = self::readOption($options, 'firstDayOfWeek');
+        $option = $options->read('firstDayOfWeek');
         if (!$option->present) {
             return;
         }
 
-        $value = self::toStringValue($option->value);
+        $value = EcmaValue::toString($option->value);
         $value = match ($value) {
             '0', '7' => 'sun',
             '1' => 'mon',
@@ -350,28 +323,14 @@ class Locale
         $identifier->setKeyword('fw', $value);
     }
 
-    /** @param array<array-key, mixed>|object $options */
-    private static function applyNumericOption(LocaleIdentifier $identifier, array|object $options): void
+    private static function applyNumericOption(LocaleIdentifier $identifier, LocaleOptions $options): void
     {
-        $option = self::readOption($options, 'numeric');
+        $option = $options->read('numeric');
         if (!$option->present) {
             return;
         }
 
-        $identifier->setKeyword('kn', self::toBooleanValue($option->value) ? 'true' : 'false');
-    }
-
-    private static function toBooleanValue(mixed $value): bool
-    {
-        if (is_float($value) && is_nan($value)) {
-            return false;
-        }
-
-        if (is_scalar($value) || $value === null) {
-            return (bool) $value;
-        }
-
-        return true;
+        $identifier->setKeyword('kn', EcmaValue::toBoolean($option->value) ? 'true' : 'false');
     }
 
     /** @return non-empty-list<string> */
