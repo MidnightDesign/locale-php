@@ -29,7 +29,7 @@ jobs:
       windows-x86: ${{ steps.matrix.outputs.windows-x86 }}
       windows-ts: ${{ steps.matrix.outputs.windows-ts }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - id: matrix
         shell: bash
         run: |
@@ -73,7 +73,7 @@ jobs:
       INTL_LOCALE_BRANCH_TRACE: build/ci/branch-trace.json
       INTL_LOCALE_EXTENSION_MODE: ${{ matrix.extensionMode }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Install checksum-pinned PHP x86 and Composer
         shell: pwsh
         run: |
