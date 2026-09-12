@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   nightly:
@@ -19,3 +20,12 @@ jobs:
     uses: ./.github/workflows/ci-quality.yml
     with:
       timeout-minutes: 60
+
+  incident:
+    if: ${{ always() }}
+    needs: [nightly, quality]
+    uses: ./.github/workflows/compatibility-incident.yml
+    with:
+      profile: nightly
+      required-result: ${{ needs.nightly.result }}
+      quality-result: ${{ needs.quality.result }}

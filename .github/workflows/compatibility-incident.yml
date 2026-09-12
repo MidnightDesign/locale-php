@@ -1,0 +1,48 @@
+name: Reusable compatibility incident
+
+on:
+  workflow_call:
+    inputs:
+      profile:
+        type: string
+        required: true
+      required-result:
+        type: string
+        required: true
+      quality-result:
+        type: string
+        default: success
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  incident:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PROFILE: ${{ inputs.profile }}
+      REQUIRED_RESULT: ${{ inputs.required-result }}
+      QUALITY_RESULT: ${{ inputs.quality-result }}
+    steps:
+      - name: Create, refresh, or resolve compatibility incident
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="CI compatibility incident: ${PROFILE}"
+          run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          issue_number="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "in:title ${title}" --limit 100 --json number,title --jq ".[] | select(.title == \"${title}\") | .number" | head -n 1)"
+
+          if [[ "$REQUIRED_RESULT" != "success" || "$QUALITY_RESULT" != "success" ]]; then
+            gh label create compatibility-incident --repo "$GITHUB_REPOSITORY" --color B60205 --description "Required scheduled compatibility evidence is failing" --force
+            body="Required ${PROFILE} compatibility evidence failed. Required result: ${REQUIRED_RESULT}; quality result: ${QUALITY_RESULT}. [Inspect run](${run_url}). This incident blocks releases until a successful rerun closes it."
+            if [[ -n "$issue_number" ]]; then
+              gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "$body"
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --label compatibility-incident --body "$body"
+            fi
+          elif [[ -n "$issue_number" ]]; then
+            gh issue close "$issue_number" --repo "$GITHUB_REPOSITORY" --reason completed --comment "Recovered in [this successful run](${run_url})."
+          fi

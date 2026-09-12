@@ -1,6 +1,6 @@
 # CI evidence
 
-The repository contains reusable GitHub Actions workflows for runtime, quality, scheduled, and release evidence. Pull requests invoke the runtime and quality workflows through `.github/workflows/pull-request.yml`. Scheduled and release entry points remain dormant templates until separately activated.
+The repository contains reusable GitHub Actions workflows for runtime, quality, scheduled, and release evidence. Pull requests invoke the runtime and quality workflows through `.github/workflows/pull-request.yml`. Active nightly, weekly, and manually dispatched release entry points invoke the same reusable workflows.
 
 The runtime matrix comes from `.ci/matrix.json`. It covers PHP 8.2–8.5 on `ubuntu-24.04` x64 and `windows-2022` x64 in absent, disabled, and native extension modes. Because the Homebrew PHP builds on `macos-15` Arm64 link `intl` statically, macOS runs disabled and native modes; it cannot provide honest absent-extension evidence. Every pull request, nightly run, and release runs complete mutation campaigns in all three modes on Ubuntu. The nightly matrix additionally adds Ubuntu Arm64 and PHP 8.6 early-warning coverage. The weekly matrix adds genuine Windows x86, Windows x64 thread-safe builds, and the selected ICU boundaries. Windows x86 remains release-blocking and uses checksum-pinned official PHP archives because the setup action cannot select x86 on a 64-bit runner. The release workflow reruns all evidence and tests the exact Composer archive.
 
@@ -12,6 +12,8 @@ Matrix generation uses the PHP already present on the pinned Ubuntu runner and d
 
 Each runtime lane fixes UTC, the `C` process locale, and the ICU default locale. It retains JSON provenance and a branch trace. The native mode records `no-native-path-implemented` until a native path exists. Adding a native path requires adding its eligibility and execution counters to the trace; the lane fails when an eligible path was not exercised.
 
+Every runtime lane also retains `icu-comparison.json`. The diagnostic compares the pinned release-snapshot first day for `en-AE` with the host ICU result, records the exact ICU version when available, and states that the release data snapshot remains authoritative. The comparison is diagnostic evidence rather than spec-layer coverage: a host difference is recorded, not normalized away or treated as a failure, while the upstream-derived suite continues to prove the public result.
+
 Mutation evidence is split by source ownership. `infection.spec.json5` mutates the spec implementation, its internal support, and shared exceptions using only the generated upstream Test262 suite. `infection.porcelain.json5` mutates the porcelain entry point and its closed-value enums using only porcelain contract tests. Generated release data is excluded from both campaigns. Each campaign retains its own coverage XML, JUnit report, Infection JSON, and text log.
 
 `tools/merge-mutation-reports.php` compares the complete mutant identity multiset across absent, disabled, and native extension modes. Every current mutant must be killed in all three modes; there is no unchecked applicability or suppression mechanism. It records every per-mode obligation in `build/matrix-mutation-score.json` and fails unless every obligation is killed by its attributed test suite. Static-analysis detections do not receive test-kill credit. Escaped, uncovered, timed-out, errored, syntax-error, ignored, skipped, missing, malformed, or inconsistent evidence fails the gate; aggregation failures are themselves retained as machine-readable evidence.
@@ -22,13 +24,10 @@ Until the upstream-derived Test262 roadmap supplies complete spec coverage, pull
 
 The pull-request workflow runs the complete stable runtime matrix and quality suite. Do not configure a check as required until its first hosted run has completed successfully and its retained provenance has been inspected.
 
-## Remaining activation
+## Scheduled incidents and release reruns
 
-Activate scheduled, release, and dependency-update automation in reviewed pull requests:
+Nightly and weekly failures create or refresh a `compatibility-incident` issue with a link to the failing run. A successful rerun closes the matching incident. These incidents do not freeze unrelated pull requests, but the release workflow refuses to start while any remains open. PHP development builds are the only advisory lanes and therefore do not create release-blocking incidents by themselves.
 
-1. Move the `public-nightly.yml`, `public-weekly.yml`, and `public-release.yml` templates from `.github/ci/` into `.github/workflows/`. Move and rename `public-dependabot.yaml.template` to `.github/dependabot.yml`.
-2. Run every scheduled, specialized, ICU, mutation, and packed-artifact lane.
-3. Inspect the retained provenance and confirm the actual runner, architecture, PHP patch, build mode, extensions, ICU version, dependency lock, baseline, and release-data fingerprint.
-4. Configure every non-advisory job as a required check. PHP development builds are the only advisory lanes.
+The release entry point reruns the stable runtime and quality evidence, all scheduled architecture/build/ICU lanes, and the exact packed artifact with a two-hour timeout. Scheduled workflows retain the 60-minute target. If full evidence exceeds those targets, add deterministic sharding rather than removing coverage.
 
-The activation pull request must not claim conformance from the prepared or locally linted workflow files. Hosted results are the evidence.
+After activation is merged, inspect the first hosted nightly and weekly runs and a manual release rerun. Confirm the retained runner, architecture, PHP patch, build mode, extensions, ICU version, dependency lock, baseline, release-data fingerprint, branch trace, and ICU comparison before treating those runs as evidence.

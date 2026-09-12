@@ -21,6 +21,20 @@ final class CiWorkflowContractTest extends TestCase
         self::assertSame([], WorkflowContract::validate(dirname(__DIR__, 2)));
     }
 
+    public function testScheduledReleaseAndDependencyAutomationAreActive(): void
+    {
+        $root = dirname(__DIR__, 2);
+
+        self::assertFileExists($root . '/.github/workflows/nightly.yml');
+        self::assertFileExists($root . '/.github/workflows/weekly.yml');
+        self::assertFileExists($root . '/.github/workflows/release.yml');
+        self::assertFileExists($root . '/.github/dependabot.yml');
+        self::assertFileDoesNotExist($root . '/.github/ci/public-nightly.yml');
+        self::assertFileDoesNotExist($root . '/.github/ci/public-weekly.yml');
+        self::assertFileDoesNotExist($root . '/.github/ci/public-release.yml');
+        self::assertFileDoesNotExist($root . '/.github/ci/public-dependabot.yaml.template');
+    }
+
     public function testPullRequestCiExposesAStableAggregateGate(): void
     {
         $root = $this->fixtureRoot();
@@ -74,7 +88,7 @@ final class CiWorkflowContractTest extends TestCase
         $root = $this->fixtureRoot();
 
         try {
-            $nightly = $root . '/.github/ci/public-nightly.yml';
+            $nightly = $root . '/.github/workflows/nightly.yml';
             $contents = (string) file_get_contents($nightly);
             $contents = preg_replace('/\n  quality:\n(?:    .*\n|      .*\n)*/', "\n", $contents);
             self::assertNotNull($contents);
@@ -95,6 +109,27 @@ final class CiWorkflowContractTest extends TestCase
                 'The nightly template must run nightly compatibility and quality evidence.',
                 $failures,
             );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsDisabledIncidentMaintenanceAndReleaseBlocking(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $nightly = $root . '/.github/workflows/nightly.yml';
+            $contents = (string) file_get_contents($nightly);
+            file_put_contents($nightly, str_replace('issues: write', 'issues: read', $contents));
+
+            $release = $root . '/.github/workflows/release.yml';
+            $contents = (string) file_get_contents($release);
+            file_put_contents($release, str_replace('needs: incident-gate', 'needs: []', $contents));
+
+            $failures = WorkflowContract::validate($root);
+            self::assertContains('Scheduled workflows must be able to maintain compatibility incidents.', $failures);
+            self::assertContains('Release evidence must wait for the compatibility incident gate.', $failures);
         } finally {
             PackageSmoke::removeDirectory($root);
         }
@@ -457,11 +492,12 @@ final class CiWorkflowContractTest extends TestCase
             '.github/workflows/ci-quality.yml',
             '.github/workflows/ci-scheduled.yml',
             '.github/workflows/ci-release.yml',
+            '.github/workflows/compatibility-incident.yml',
             '.github/workflows/pull-request.yml',
-            '.github/ci/public-nightly.yml',
-            '.github/ci/public-weekly.yml',
-            '.github/ci/public-release.yml',
-            '.github/ci/public-dependabot.yaml.template',
+            '.github/workflows/nightly.yml',
+            '.github/workflows/weekly.yml',
+            '.github/workflows/release.yml',
+            '.github/dependabot.yml',
             'composer.json',
             'Dockerfile',
             'infection.spec.json5',

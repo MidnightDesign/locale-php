@@ -20,6 +20,7 @@ final class WorkflowContract
             'quality' => '.github/workflows/ci-quality.yml',
             'scheduled' => '.github/workflows/ci-scheduled.yml',
             'release' => '.github/workflows/ci-release.yml',
+            'incident' => '.github/workflows/compatibility-incident.yml',
         ];
         $workflows = [];
         foreach ($paths as $name => $path) {
@@ -51,6 +52,7 @@ final class WorkflowContract
         self::validateQuality($workflows['quality'], $failures);
         self::validateScheduled($workflows['scheduled'], $failures);
         self::validateRelease($workflows['release'], $failures);
+        self::validateIncident($workflows['incident'], $failures);
         self::validateAdvisoryPolicy($workflows, $failures);
         self::validateToolPins($root, $workflows, $failures);
         self::validateTimeouts($workflows, $failures);
@@ -100,6 +102,7 @@ final class WorkflowContract
             [
                 'php tools/record-ci-provenance.php',
                 'php tools/assert-ci-runtime.php',
+                'php tools/record-icu-comparison.php',
             ],
             'runtime lane workflow',
             $failures,
@@ -401,6 +404,7 @@ final class WorkflowContract
                 'https://getcomposer.org/download/2.10.3/composer.phar',
                 'Get-FileHash -Algorithm SHA256',
                 'php tools/assert-ci-runtime.php 4 false Windows x86',
+                'php tools/record-icu-comparison.php',
             ],
             'scheduled workflow',
             $failures,
@@ -448,6 +452,32 @@ final class WorkflowContract
             $workflow,
             ['timeout-minutes' => 120, 'profile' => 'release'],
             'release workflow',
+            $failures,
+        );
+    }
+
+    /** @param list<string> $failures */
+    private static function validateIncident(Workflow $workflow, array &$failures): void
+    {
+        $incident = $workflow->jobs()['incident'] ?? null;
+        if (
+            !is_array($incident)
+            || ($incident['runs-on'] ?? null) !== 'ubuntu-24.04'
+            || ($incident['timeout-minutes'] ?? null) !== 5
+            || !$workflow->hasSetting('issues', 'write')
+        ) {
+            $failures[] = 'Compatibility incident maintenance must have bounded issue-write access.';
+        }
+        self::requireRuns(
+            $workflow,
+            [
+                'gh label create compatibility-incident',
+                'gh issue create',
+                'gh issue comment',
+                'gh issue close',
+                'GITHUB_RUN_ID',
+            ],
+            'compatibility incident workflow',
             $failures,
         );
     }
@@ -600,9 +630,9 @@ final class WorkflowContract
     {
         $templates = [
             '.github/workflows/pull-request.yml' => ['pull_request'],
-            '.github/ci/public-nightly.yml' => ['schedule', 'workflow_dispatch'],
-            '.github/ci/public-weekly.yml' => ['schedule', 'workflow_dispatch'],
-            '.github/ci/public-release.yml' => ['workflow_dispatch'],
+            '.github/workflows/nightly.yml' => ['schedule', 'workflow_dispatch'],
+            '.github/workflows/weekly.yml' => ['schedule', 'workflow_dispatch'],
+            '.github/workflows/release.yml' => ['workflow_dispatch'],
         ];
         $workflows = [];
         foreach ($templates as $path => $expectedTriggers) {
@@ -651,11 +681,15 @@ final class WorkflowContract
             );
         }
 
-        $nightly = $workflows['.github/ci/public-nightly.yml'] ?? null;
+        $nightly = $workflows['.github/workflows/nightly.yml'] ?? null;
         $nightlyJobs = $nightly?->jobs() ?? [];
         $nightlyJob = $nightlyJobs['nightly'] ?? null;
         $nightlyWith = is_array($nightlyJob) && is_array($nightlyJob['with'] ?? null) ? $nightlyJob['with'] : [];
         $qualityJob = $nightlyJobs['quality'] ?? null;
+        $nightlyIncident = $nightlyJobs['incident'] ?? null;
+        $nightlyIncidentWith = is_array($nightlyIncident) && is_array($nightlyIncident['with'] ?? null)
+            ? $nightlyIncident['with']
+            : [];
         if (
             ($nightlyWith['profile'] ?? null) !== 'nightly'
             || !is_array($qualityJob)
@@ -663,18 +697,63 @@ final class WorkflowContract
         ) {
             $failures[] = 'The nightly template must run nightly compatibility and quality evidence.';
         }
+        if (
+            !$nightly?->hasSetting('issues', 'write')
+            || !is_array($nightlyIncident)
+            || ($nightlyIncident['if'] ?? null) !== '${{ always() }}'
+            || ($nightlyIncident['needs'] ?? null) !== ['nightly', 'quality']
+            || ($nightlyIncident['uses'] ?? null) !== './.github/workflows/compatibility-incident.yml'
+            || ($nightlyIncidentWith['profile'] ?? null) !== 'nightly'
+            || ($nightlyIncidentWith['required-result'] ?? null) !== '${{ needs.nightly.result }}'
+            || ($nightlyIncidentWith['quality-result'] ?? null) !== '${{ needs.quality.result }}'
+        ) {
+            $failures[] = 'Scheduled workflows must be able to maintain compatibility incidents.';
+        }
 
-        $weekly = $workflows['.github/ci/public-weekly.yml'] ?? null;
-        $weeklyJob = $weekly?->jobs()['compatibility'] ?? null;
+        $weekly = $workflows['.github/workflows/weekly.yml'] ?? null;
+        $weeklyJobs = $weekly?->jobs() ?? [];
+        $weeklyJob = $weeklyJobs['compatibility'] ?? null;
         $weeklyWith = is_array($weeklyJob) && is_array($weeklyJob['with'] ?? null) ? $weeklyJob['with'] : [];
         if (($weeklyWith['profile'] ?? null) !== 'weekly') {
             $failures[] = 'The weekly template must run the weekly compatibility profile.';
         }
+        $weeklyIncident = $weeklyJobs['incident'] ?? null;
+        $weeklyIncidentWith = is_array($weeklyIncident) && is_array($weeklyIncident['with'] ?? null)
+            ? $weeklyIncident['with']
+            : [];
+        if (
+            !$weekly?->hasSetting('issues', 'write')
+            || !is_array($weeklyIncident)
+            || ($weeklyIncident['if'] ?? null) !== '${{ always() }}'
+            || ($weeklyIncident['needs'] ?? null) !== ['compatibility', 'quality']
+            || ($weeklyIncident['uses'] ?? null) !== './.github/workflows/compatibility-incident.yml'
+            || ($weeklyIncidentWith['profile'] ?? null) !== 'weekly'
+            || ($weeklyIncidentWith['required-result'] ?? null) !== '${{ needs.compatibility.result }}'
+            || ($weeklyIncidentWith['quality-result'] ?? null) !== '${{ needs.quality.result }}'
+        ) {
+            $failures[] = 'Scheduled workflows must be able to maintain compatibility incidents.';
+        }
+
+        $release = $workflows['.github/workflows/release.yml'] ?? null;
+        $releaseJobs = $release?->jobs() ?? [];
+        $incidentGate = $releaseJobs['incident-gate'] ?? null;
+        $releaseJob = $releaseJobs['release'] ?? null;
+        if (
+            !$release?->hasSetting('issues', 'read')
+            || !is_array($incidentGate)
+            || ($incidentGate['name'] ?? null) !== 'Compatibility incident gate'
+            || ($incidentGate['runs-on'] ?? null) !== 'ubuntu-24.04'
+            || !is_array($releaseJob)
+            || ($releaseJob['needs'] ?? null) !== 'incident-gate'
+            || !$release->hasScalarContaining('label:compatibility-incident')
+        ) {
+            $failures[] = 'Release evidence must wait for the compatibility incident gate.';
+        }
 
         try {
-            $dependabot = Yaml::parseFile($root . '/.github/ci/public-dependabot.yaml.template');
+            $dependabot = Yaml::parseFile($root . '/.github/dependabot.yml');
         } catch (\Throwable $error) {
-            $failures[] = sprintf('Cannot parse .github/ci/public-dependabot.yaml.template: %s', $error->getMessage());
+            $failures[] = sprintf('Cannot parse .github/dependabot.yml: %s', $error->getMessage());
             $dependabot = null;
         }
         $updates = is_array($dependabot) ? $dependabot['updates'] ?? null : null;
@@ -688,11 +767,8 @@ final class WorkflowContract
         }
         foreach (['composer', 'github-actions'] as $ecosystem) {
             if (!in_array($ecosystem, $ecosystems, true)) {
-                $failures[] = sprintf('The Dependabot template must update %s.', $ecosystem);
+                $failures[] = sprintf('Dependabot must update %s.', $ecosystem);
             }
-        }
-        if (is_file($root . '/.github/dependabot.yml')) {
-            $failures[] = 'Dependabot must remain dormant until public activation.';
         }
     }
 
