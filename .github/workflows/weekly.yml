@@ -1,0 +1,35 @@
+name: Weekly compatibility evidence
+
+on:
+  schedule:
+    - cron: '41 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: compatibility-weekly
+  cancel-in-progress: false
+
+jobs:
+  compatibility:
+    uses: ./.github/workflows/ci-scheduled.yml
+    with:
+      profile: weekly
+      timeout-minutes: 60
+
+  quality:
+    uses: ./.github/workflows/ci-quality.yml
+    with:
+      timeout-minutes: 60
+
+  incident:
+    if: ${{ always() }}
+    needs: [compatibility, quality]
+    uses: ./.github/workflows/compatibility-incident.yml
+    with:
+      profile: weekly
+      required-result: ${{ needs.compatibility.result }}
+      quality-result: ${{ needs.quality.result }}

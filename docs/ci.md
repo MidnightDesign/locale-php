@@ -1,8 +1,8 @@
 # CI evidence
 
-The repository contains reusable GitHub Actions workflows for runtime, quality, scheduled, and release evidence. Pull requests invoke the runtime and quality workflows through `.github/workflows/pull-request.yml`. Scheduled and release entry points remain dormant templates until separately activated.
+The repository contains reusable GitHub Actions workflows for runtime, quality, scheduled, and release evidence. Pull requests invoke the runtime and quality workflows through `.github/workflows/pull-request.yml`. Active nightly, weekly, and manually dispatched release entry points invoke the same reusable workflows.
 
-The runtime matrix comes from `.ci/matrix.json`. It covers PHP 8.2–8.5 on `ubuntu-24.04` x64 and `windows-2022` x64 in absent, disabled, and native extension modes. Because the Homebrew PHP builds on `macos-15` Arm64 link `intl` statically, macOS runs disabled and native modes; it cannot provide honest absent-extension evidence. Every pull request, nightly run, and release runs complete mutation campaigns in all three modes on Ubuntu. The nightly matrix additionally adds Ubuntu Arm64 and PHP 8.6 early-warning coverage. The weekly matrix adds genuine Windows x86, Windows x64 thread-safe builds, and the selected ICU boundaries. Windows x86 remains release-blocking and uses checksum-pinned official PHP archives because the setup action cannot select x86 on a 64-bit runner. The release workflow reruns all evidence and tests the exact Composer archive.
+The runtime matrix comes from `.ci/matrix.json`. It covers PHP 8.2–8.5 on `ubuntu-24.04` x64, `windows-2022` x64, and `macos-15` Arm64 in absent, disabled, and native extension modes where the build can represent them honestly. Because the Homebrew PHP builds on `macos-15` Arm64 link `intl` statically, macOS runs disabled and native modes; it cannot provide honest absent-extension evidence. Every pull request, nightly run, and release runs complete mutation campaigns in all three modes on Ubuntu. The nightly matrix additionally adds Ubuntu Arm64 and PHP 8.6 early-warning coverage. The weekly matrix adds genuine Windows x86, Windows x64 thread-safe builds, and the selected ICU boundaries. Windows x86 is provisional, remains release-blocking, and uses checksum-pinned official PHP archives because the setup action cannot select x86 on a 64-bit runner. If reliable x86 provisioning cannot be maintained before 1.0, the project must explicitly drop the 32-bit support promise rather than imply unverified coverage. The release workflow reruns all evidence and tests the exact Composer archive.
 
 The quality workflow also runs the upstream-derived spec suite with `ext-intl` absent after making the entire checkout read-only. PHPUnit result caching is disabled for that run, so passing evidence demonstrates that runtime behavior needs neither host ICU nor writable package storage.
 
@@ -11,6 +11,8 @@ Stable macOS runtime jobs share PHP provisioning and Composer installation betwe
 Matrix generation uses the PHP already present on the pinned Ubuntu runner and directly loads `tools/Ci/Matrix.php`, without installing Composer dependencies. `ci-matrix.php runtime` still lists all logical runtime lanes; `runtime-jobs` groups the macOS modes for execution.
 
 Each runtime lane fixes UTC, the `C` process locale, and the ICU default locale. It retains JSON provenance and a branch trace. The native mode records `no-native-path-implemented` until a native path exists. Adding a native path requires adding its eligibility and execution counters to the trace; the lane fails when an eligible path was not exercised.
+
+Every runtime lane also retains `icu-comparison.json`. The diagnostic compares the release data snapshot's first day for `en-AE` with the host ICU result, records the exact ICU version and named host capabilities when available, and states that the release data snapshot remains authoritative. For every missing capability it executes the corresponding release data snapshot operation and records its operation, locale, and result as fallback evidence. In particular, the PHP 8.4 lanes immediately below and above ICU 74 record whether `IntlTimeZone::getIanaID()` is available. The comparison is diagnostic evidence rather than spec-layer coverage: a host difference is recorded, not normalized away or treated as a failure, while the upstream-derived suite continues to prove the public result.
 
 Mutation evidence is split by source ownership. `infection.spec.json5` mutates the spec implementation, its internal support, and shared exceptions using only the generated upstream Test262 suite. `infection.porcelain.json5` mutates the porcelain entry point and its closed-value enums using only porcelain contract tests. Generated release data is excluded from both campaigns. Each campaign retains its own coverage XML, JUnit report, Infection JSON, and text log.
 
@@ -22,13 +24,14 @@ Until the upstream-derived Test262 roadmap supplies complete spec coverage, pull
 
 The pull-request workflow runs the complete stable runtime matrix and quality suite. Do not configure a check as required until its first hosted run has completed successfully and its retained provenance has been inspected.
 
-## Remaining activation
+## Scheduled incidents and release reruns
 
-Activate scheduled, release, and dependency-update automation in reviewed pull requests:
+Nightly and weekly failures create or refresh a `compatibility-incident` issue with a link to the failing run. A successful rerun closes the matching incident. These incidents do not freeze unrelated pull requests, but the release workflow refuses to start while any remains open. PHP development builds are the only advisory lanes and therefore do not create release-blocking incidents by themselves.
 
-1. Move the `public-nightly.yml`, `public-weekly.yml`, and `public-release.yml` templates from `.github/ci/` into `.github/workflows/`. Move and rename `public-dependabot.yaml.template` to `.github/dependabot.yml`.
-2. Run every scheduled, specialized, ICU, mutation, and packed-artifact lane.
-3. Inspect the retained provenance and confirm the actual runner, architecture, PHP patch, build mode, extensions, ICU version, dependency lock, baseline, and release-data fingerprint.
-4. Configure every non-advisory job as a required check. PHP development builds are the only advisory lanes.
+Required coverage may be quarantined only after explicit approval and only by adding a visible advisory duplicate with a named owner and expiry to the compatibility incident. The original required lane and incident remain in place; neither may be removed, changed to `continue-on-error`, or hidden by the quarantine. Expiry requires reapproval or restoration, never silent extension.
 
-The activation pull request must not claim conformance from the prepared or locally linted workflow files. Hosted results are the evidence.
+Upcoming PHP remains advisory until it is stable and the agreed provisioning/tooling checks pass. Promotion, quarterly platform audits, runner-deprecation monitoring, and two-run successor validation are maintained by issue #36; this activation does not infer that those conditions have been met.
+
+The release entry point reruns the stable runtime and quality evidence, all scheduled architecture/build/ICU lanes, and the exact packed artifact with a two-hour timeout. Scheduled workflows retain the 60-minute target. If full evidence exceeds those targets, add deterministic sharding rather than removing coverage.
+
+After activation is merged, inspect the first hosted nightly and weekly runs and a manual release rerun. Confirm the retained runner, architecture, PHP patch, build mode, extensions, ICU version, dependency lock, baseline, release-data fingerprint, branch trace, and ICU comparison before treating those runs as evidence.

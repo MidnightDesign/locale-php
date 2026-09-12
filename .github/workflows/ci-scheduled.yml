@@ -106,8 +106,12 @@ jobs:
           Set-Content (Join-Path $runtimeRoot 'composer.bat') '@php "%~dp0composer.phar" %*'
           $runtimeRoot | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - run: composer install --no-interaction --no-progress --prefer-dist
-      - run: php tools/assert-ci-runtime.php 4 false Windows x86 "${{ matrix.runtimeVersion }}"
+      - id: runtime_ready
+        run: php tools/assert-ci-runtime.php 4 false Windows x86 "${{ matrix.runtimeVersion }}"
       - run: vendor/bin/phpunit --log-junit build/ci/junit.xml
+      - name: Record ICU comparison
+        if: ${{ !cancelled() && steps.runtime_ready.outcome == 'success' }}
+        run: php tools/record-icu-comparison.php build/ci/icu-comparison.json
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ matrix.php }}" "${{ matrix.runner }}" "${{ matrix.extensionMode }}"
       - if: always()

@@ -1,0 +1,31 @@
+name: Release verification
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  incident-gate:
+    name: Compatibility incident gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Reject unresolved compatibility incidents
+        shell: bash
+        run: |
+          set -euo pipefail
+          incidents="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "label:compatibility-incident" --limit 100 --json number,title,url --jq 'length')"
+          if [[ "$incidents" != "0" ]]; then
+            echo "Release blocked by unresolved compatibility incidents:"
+            gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "label:compatibility-incident" --limit 100
+            exit 1
+          fi
+
+  release:
+    needs: incident-gate
+    uses: ./.github/workflows/ci-release.yml

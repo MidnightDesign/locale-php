@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tools\Ci;
 
-use Symfony\Component\Yaml\Yaml;
-
 final class WorkflowContract
 {
     private const NATIVE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
@@ -20,6 +18,7 @@ final class WorkflowContract
             'quality' => '.github/workflows/ci-quality.yml',
             'scheduled' => '.github/workflows/ci-scheduled.yml',
             'release' => '.github/workflows/ci-release.yml',
+            'incident' => '.github/workflows/compatibility-incident.yml',
         ];
         $workflows = [];
         foreach ($paths as $name => $path) {
@@ -51,10 +50,11 @@ final class WorkflowContract
         self::validateQuality($workflows['quality'], $failures);
         self::validateScheduled($workflows['scheduled'], $failures);
         self::validateRelease($workflows['release'], $failures);
+        self::validateIncident($workflows['incident'], $failures);
         self::validateAdvisoryPolicy($workflows, $failures);
         self::validateToolPins($root, $workflows, $failures);
         self::validateTimeouts($workflows, $failures);
-        self::validateActivationEntries($root, $failures);
+        array_push($failures, ...ActivationWorkflowContract::validate($root));
 
         return $failures;
     }
@@ -100,6 +100,7 @@ final class WorkflowContract
             [
                 'php tools/record-ci-provenance.php',
                 'php tools/assert-ci-runtime.php',
+                'php tools/record-icu-comparison.php',
             ],
             'runtime lane workflow',
             $failures,
@@ -401,6 +402,7 @@ final class WorkflowContract
                 'https://getcomposer.org/download/2.10.3/composer.phar',
                 'Get-FileHash -Algorithm SHA256',
                 'php tools/assert-ci-runtime.php 4 false Windows x86',
+                'php tools/record-icu-comparison.php',
             ],
             'scheduled workflow',
             $failures,
@@ -450,6 +452,58 @@ final class WorkflowContract
             'release workflow',
             $failures,
         );
+    }
+
+    /** @param list<string> $failures */
+    private static function validateIncident(Workflow $workflow, array &$failures): void
+    {
+        $incident = $workflow->jobs()['incident'] ?? null;
+        if (
+            !is_array($incident)
+            || ($incident['runs-on'] ?? null) !== 'ubuntu-24.04'
+            || ($incident['timeout-minutes'] ?? null) !== 5
+            || !$workflow->hasPermission('issues', 'write')
+        ) {
+            $failures[] = 'Compatibility incident maintenance must have bounded issue-write access.';
+        }
+        self::requireRuns(
+            $workflow,
+            [
+                'gh label create compatibility-incident',
+                'gh issue create',
+                'gh issue comment',
+                'gh issue close',
+                'GITHUB_RUN_ID',
+            ],
+            'compatibility incident workflow',
+            $failures,
+        );
+        $reconcilesEveryIncident = false;
+        $discoversEveryIncident = false;
+        $restoresBlockingLabel = false;
+        foreach ($workflow->runs() as $command) {
+            if (str_contains($command, 'mapfile -t issue_numbers') && str_contains($command, '"${issue_numbers[@]}"')) {
+                $reconcilesEveryIncident = true;
+            }
+            if (str_contains($command, 'gh api --paginate --method GET')) {
+                $discoversEveryIncident = true;
+            }
+            if (
+                str_contains($command, 'gh issue edit "$issue_number"')
+                && str_contains($command, '--add-label compatibility-incident')
+            ) {
+                $restoresBlockingLabel = true;
+            }
+        }
+        if (!$reconcilesEveryIncident) {
+            $failures[] = 'Compatibility incident maintenance must reconcile every matching incident.';
+        }
+        if (!$discoversEveryIncident) {
+            $failures[] = 'Compatibility incident maintenance must discover every open incident.';
+        }
+        if (!$restoresBlockingLabel) {
+            $failures[] = 'Compatibility incident maintenance must restore the blocking label on refresh.';
+        }
     }
 
     /**
@@ -595,107 +649,6 @@ final class WorkflowContract
         }
     }
 
-    /** @param list<string> $failures */
-    private static function validateActivationEntries(string $root, array &$failures): void
-    {
-        $templates = [
-            '.github/workflows/pull-request.yml' => ['pull_request'],
-            '.github/ci/public-nightly.yml' => ['schedule', 'workflow_dispatch'],
-            '.github/ci/public-weekly.yml' => ['schedule', 'workflow_dispatch'],
-            '.github/ci/public-release.yml' => ['workflow_dispatch'],
-        ];
-        $workflows = [];
-        foreach ($templates as $path => $expectedTriggers) {
-            try {
-                $workflow = Workflow::fromFile($root . '/' . $path);
-            } catch (\RuntimeException $error) {
-                $failures[] = $error->getMessage();
-
-                continue;
-            }
-            $workflows[$path] = $workflow;
-            if ($workflow->triggers() !== $expectedTriggers) {
-                $failures[] = sprintf('%s has invalid activation triggers.', $path);
-            }
-        }
-
-        $pullRequest = $workflows['.github/workflows/pull-request.yml'] ?? null;
-        $gate = $pullRequest?->jobs()['gate'] ?? null;
-        if (
-            !is_array($gate)
-            || ($gate['name'] ?? null) !== 'CI gate'
-            || ($gate['if'] ?? null) !== '${{ always() }}'
-            || ($gate['needs'] ?? null) !== ['runtime', 'quality']
-            || ($gate['runs-on'] ?? null) !== 'ubuntu-24.04'
-        ) {
-            $failures[] = 'The pull-request workflow must expose the stable CI gate.';
-        }
-        if ($pullRequest !== null) {
-            self::requireNamedStep(
-                $pullRequest,
-                'gate',
-                'Require successful evidence',
-                [
-                    'env' => [
-                        'RUNTIME_RESULT' => '${{ needs.runtime.result }}',
-                        'QUALITY_RESULT' => '${{ needs.quality.result }}',
-                    ],
-                    'run' =>
-                        "if [[ \"\$RUNTIME_RESULT\" != \"success\" || \"\$QUALITY_RESULT\" != \"success\" ]]; then\n"
-                            . "  echo \"Runtime or quality evidence failed.\"\n"
-                            . "  exit 1\n"
-                            . "fi\n",
-                ],
-                'pull-request workflow',
-                $failures,
-            );
-        }
-
-        $nightly = $workflows['.github/ci/public-nightly.yml'] ?? null;
-        $nightlyJobs = $nightly?->jobs() ?? [];
-        $nightlyJob = $nightlyJobs['nightly'] ?? null;
-        $nightlyWith = is_array($nightlyJob) && is_array($nightlyJob['with'] ?? null) ? $nightlyJob['with'] : [];
-        $qualityJob = $nightlyJobs['quality'] ?? null;
-        if (
-            ($nightlyWith['profile'] ?? null) !== 'nightly'
-            || !is_array($qualityJob)
-            || ($qualityJob['uses'] ?? null) !== './.github/workflows/ci-quality.yml'
-        ) {
-            $failures[] = 'The nightly template must run nightly compatibility and quality evidence.';
-        }
-
-        $weekly = $workflows['.github/ci/public-weekly.yml'] ?? null;
-        $weeklyJob = $weekly?->jobs()['compatibility'] ?? null;
-        $weeklyWith = is_array($weeklyJob) && is_array($weeklyJob['with'] ?? null) ? $weeklyJob['with'] : [];
-        if (($weeklyWith['profile'] ?? null) !== 'weekly') {
-            $failures[] = 'The weekly template must run the weekly compatibility profile.';
-        }
-
-        try {
-            $dependabot = Yaml::parseFile($root . '/.github/ci/public-dependabot.yaml.template');
-        } catch (\Throwable $error) {
-            $failures[] = sprintf('Cannot parse .github/ci/public-dependabot.yaml.template: %s', $error->getMessage());
-            $dependabot = null;
-        }
-        $updates = is_array($dependabot) ? $dependabot['updates'] ?? null : null;
-        $ecosystems = [];
-        if (is_array($updates)) {
-            foreach ($updates as $update) {
-                if (is_array($update) && is_string($update['package-ecosystem'] ?? null)) {
-                    $ecosystems[] = $update['package-ecosystem'];
-                }
-            }
-        }
-        foreach (['composer', 'github-actions'] as $ecosystem) {
-            if (!in_array($ecosystem, $ecosystems, true)) {
-                $failures[] = sprintf('The Dependabot template must update %s.', $ecosystem);
-            }
-        }
-        if (is_file($root . '/.github/dependabot.yml')) {
-            $failures[] = 'Dependabot must remain dormant until public activation.';
-        }
-    }
-
     /** @param array<string, mixed> $step */
     private static function setupPhpHasInput(array $step, string $input): bool
     {
@@ -797,39 +750,11 @@ final class WorkflowContract
         string $subject,
         array &$failures,
     ): void {
-        $job = $workflow->jobs()[$jobName] ?? null;
-        $steps = is_array($job) && is_array($job['steps'] ?? null) ? $job['steps'] : [];
-        foreach ($steps as $step) {
-            if (is_array($step) && ($step['name'] ?? null) === $stepName && self::containsSettings($step, $required)) {
-                return;
-            }
+        if ($workflow->hasNamedStep($jobName, $stepName, $required)) {
+            return;
         }
 
         $failures[] = sprintf('%s has an invalid %s step.', $subject, $stepName);
-    }
-
-    /** @param array<mixed> $actual
-     * @param array<mixed> $required
-     */
-    private static function containsSettings(array $actual, array $required): bool
-    {
-        foreach ($required as $key => $value) {
-            if (!array_key_exists($key, $actual)) {
-                return false;
-            }
-            if (is_array($value)) {
-                if (!is_array($actual[$key]) || !self::containsSettings($actual[$key], $value)) {
-                    return false;
-                }
-
-                continue;
-            }
-            if ($actual[$key] !== $value) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
