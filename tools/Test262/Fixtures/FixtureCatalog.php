@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Midnight\Intl\Tools\Test262\Fixtures;
 
 use Midnight\Intl\Tools\Test262\AssertionIdentityExtractor;
+use Midnight\Intl\Tools\Test262\CollationsFixturePipeline;
 use Midnight\Intl\Tools\Test262\ConstructorFixturePipeline;
 use Midnight\Intl\Tools\Test262\ConstructorOptionsScriptTranslator;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
@@ -93,6 +94,11 @@ final readonly class FixtureCatalog
             $this->test262Revision,
             $this->ecma402Revision,
         );
+    }
+
+    public function sourceBoundLocaleMethod(string $method, string $mode, string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound($this->localeMethod($method, $mode), ['php_reflection'], $sourceSha256);
     }
 
     public function removeLikelySubtags(): FixturePipeline
@@ -218,6 +224,15 @@ final readonly class FixtureCatalog
                 $this->test262Revision,
                 $this->ecma402Revision,
             ),
+            ['direct'],
+            $sourceSha256,
+        );
+    }
+
+    public function collations(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new CollationsFixturePipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
             ['direct'],
             $sourceSha256,
         );

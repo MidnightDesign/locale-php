@@ -195,6 +195,15 @@ final class LocaleTest extends TestCase
         self::assertNotContains('injected', $locale->getNumberingSystems());
     }
 
+    public function testItReturnsAFreshCollationList(): void
+    {
+        $locale = new Locale('de');
+        $first = $locale->getCollations();
+        $first[] = 'injected';
+
+        self::assertNotContains('injected', $locale->getCollations());
+    }
+
     public function testItReturnsFreshPorcelainLikelySubtagValues(): void
     {
         $locale = new Locale('zh-Hant');

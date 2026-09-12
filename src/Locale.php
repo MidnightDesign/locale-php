@@ -131,6 +131,12 @@ final class Locale implements \Stringable, \JsonSerializable
         return $this->toSpec()->getNumberingSystems();
     }
 
+    /** @return list<string> */
+    public function getCollations(): array
+    {
+        return $this->toSpec()->getCollations();
+    }
+
     public function maximize(): self
     {
         return self::fromSpec($this->toSpec()->maximize());

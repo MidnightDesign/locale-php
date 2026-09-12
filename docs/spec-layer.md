@@ -16,6 +16,8 @@ The constructor implements the complete Unicode locale-identifier grammar and al
 
 Other locale-information methods remain unfinished, so this package does not claim ECMA-402 conformance.
 
+`getCollations()` returns the pinned CLDR collation availability for the locale after prefix matching. It returns an explicit `co` keyword as a singleton, excludes `standard` and `search` from locale-data results, and returns `['emoji', 'eor']` when no available locale matches. Results are fresh and code-unit sorted.
+
 `getTimeZones()` returns a list of canonical primary IANA identifiers for the locale's explicit region, or `null` when the language identifier has no region. The result uses the pinned release data snapshot and does not consult host ICU or infer a region from likely subtags, `rg`, or `sd`.
 
 Use `Midnight\Intl\Locale::fromSpec()` and `Locale::toSpec()` to cross layers explicitly.
