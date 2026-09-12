@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 use Midnight\Intl\Tools\Test262\Fixtures\FixtureCatalog;
 
@@ -33,6 +34,15 @@ return static function (FixtureCatalog $catalog): array {
     ] as $method => $fixtures) {
         foreach ($fixtures as $fixture => $sha256) {
             $path = 'test/intl402/Locale/prototype/' . $method . '/' . $fixture;
+            if ($fixture === 'branding.js') {
+                $pipelines[$path] = $catalog->branding(
+                    $method,
+                    BrandingFixtureMode::IndividualMethodIncludingConstructor,
+                    $sha256,
+                );
+
+                continue;
+            }
             $pipelines[$path] = $catalog->localePreference($sha256);
         }
     }

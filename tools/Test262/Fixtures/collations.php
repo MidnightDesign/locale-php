@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tools\Test262\Fixtures;
 
+use Midnight\Intl\Tools\Test262\BrandingFixtureMode;
 use Midnight\Intl\Tools\Test262\FixturePipeline;
 
 /** @return array<string, FixturePipeline> */
 return static fn(FixtureCatalog $catalog): array => [
-    'test/intl402/Locale/prototype/getCollations/branding.js' => $catalog->sourceBoundLocaleMethod(
+    'test/intl402/Locale/prototype/getCollations/branding.js' => $catalog->branding(
         'getCollations',
-        'branding',
+        BrandingFixtureMode::IndividualMethodIncludingConstructor,
         'fafbdfbfe51877fd46cd1b3b5adda382dbcfb9f129c547b7486b8f9a474f8813',
     ),
     'test/intl402/Locale/prototype/getCollations/collation-keyword.js' => $catalog->collations(
