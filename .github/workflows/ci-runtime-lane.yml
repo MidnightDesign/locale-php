@@ -97,7 +97,7 @@ jobs:
       - if: always()
         run: php tools/record-ci-provenance.php build/ci/provenance.json "${{ inputs.php }}" "${{ inputs.runner }}" "${{ inputs.extension-mode }}"
       - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: ${{ inputs.artifact-name }}
           path: build/ci
@@ -122,7 +122,7 @@ jobs:
         run: php tools/record-icu-comparison.php build/ci-native/icu-comparison.json
       - name: Upload native evidence
         if: ${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: runtime-${{ inputs.runner }}-php-${{ inputs.php }}-intl-native
           path: build/ci-native

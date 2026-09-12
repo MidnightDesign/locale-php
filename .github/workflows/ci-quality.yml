@@ -37,7 +37,7 @@ jobs:
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: mkdir -p build/analysis && vendor/bin/phpstan analyse --no-progress --memory-limit=512M --error-format=json > build/analysis/phpstan.json
       - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: phpstan-report
           path: build/analysis/phpstan.json
@@ -70,7 +70,7 @@ jobs:
           if [[ "${{ matrix.intlModel }}" == "absent" ]]; then intl_option="--disable-extension=intl"; fi
           vendor/bin/psalm --php-version="${{ matrix.php }}" $intl_option --memory-limit=512M --no-cache --no-diff --no-progress --report=build/analysis/psalm.json
       - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: psalm-php-${{ matrix.php }}-intl-${{ matrix.intlModel }}
           path: build/analysis/psalm.json
@@ -96,7 +96,7 @@ jobs:
       - run: composer install --no-interaction --no-progress --prefer-dist
       - run: mkdir -p build/analysis && vendor/bin/mago --php-version="${{ matrix.php }}" --colors=never analyze --minimum-fail-level=warning --reporting-format=json src > build/analysis/mago.json
       - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: mago-php-${{ matrix.php }}
           path: build/analysis/mago.json
@@ -152,7 +152,7 @@ jobs:
       - run: composer data:check
       - run: composer test262:check
       - run: mkdir -p build/integrity && cp resources/data/manifest.json tests/Test262/baseline.json tests/Test262/evidence.json build/integrity/
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: regeneration-and-source-integrity
           path: build/integrity
@@ -257,7 +257,7 @@ jobs:
         shell: bash
         run: mkdir -p "build/matrix/${{ matrix.campaign }}" && cp "build/infection/${{ matrix.campaign }}/infection.json" "build/matrix/${{ matrix.campaign }}/${{ matrix.extensionMode }}.json"
       - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: mutation-${{ matrix.campaign }}-${{ matrix.extensionMode }}
           path: build
@@ -286,7 +286,7 @@ jobs:
           merge-multiple: true
       - run: php tools/merge-mutation-reports.php build/matrix-mutation-score.json build/downloaded/matrix --expect-failing=.ci/spec-mutation-expected-failure.json
       - if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: matrix-mutation-score
           path: |
