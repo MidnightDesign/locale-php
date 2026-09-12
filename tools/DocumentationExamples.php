@@ -19,13 +19,23 @@ final class DocumentationExamples
     public static function checkPublic(string $repositoryRoot): void
     {
         $temporaryDirectory = PackageSmoke::temporaryDirectory('intl-locale-documentation');
+        $checkedExamples = 0;
 
         try {
-            foreach (self::PUBLIC_DOCUMENTS as $index => $relativePath) {
-                self::checkDocument($repositoryRoot, $relativePath, $temporaryDirectory, $index);
+            foreach (self::PUBLIC_DOCUMENTS as $documentIndex => $relativePath) {
+                $checkedExamples += self::checkDocument(
+                    $repositoryRoot,
+                    $relativePath,
+                    $temporaryDirectory,
+                    $documentIndex,
+                );
             }
         } finally {
             PackageSmoke::removeDirectory($temporaryDirectory);
+        }
+
+        if ($checkedExamples === 0) {
+            throw new \RuntimeException('No runnable PHP documentation examples were found.');
         }
     }
 
@@ -33,8 +43,8 @@ final class DocumentationExamples
         string $repositoryRoot,
         string $relativePath,
         string $temporaryDirectory,
-        int $index,
-    ): void {
+        int $documentIndex,
+    ): int {
         $path = $repositoryRoot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relativePath);
         $markdown = file_get_contents($path);
         if ($markdown === false) {
@@ -42,24 +52,35 @@ final class DocumentationExamples
         }
 
         preg_match_all('/```php[^\r\n]*\R(.*?)\R```/s', $markdown, $matches);
-        if ($matches[1] === []) {
-            return;
+        foreach ($matches[1] as $exampleIndex => $body) {
+            self::checkExample(
+                $repositoryRoot,
+                $relativePath,
+                $temporaryDirectory,
+                $documentIndex,
+                $exampleIndex,
+                $body,
+            );
         }
 
-        $body = implode("\n\n", $matches[1]);
-        preg_match_all('/^use\s+[^;]+;\R?/m', $body, $imports);
-        $body = preg_replace('/^use\s+[^;]+;\R?/m', '', $body);
-        if (!is_string($body)) {
-            throw new \RuntimeException(sprintf('Unable to prepare documentation examples from %s.', $relativePath));
-        }
+        return count($matches[1]);
+    }
 
+    private static function checkExample(
+        string $repositoryRoot,
+        string $relativePath,
+        string $temporaryDirectory,
+        int $documentIndex,
+        int $exampleIndex,
+        string $body,
+    ): void {
         $script = sprintf(
-            "<?php\n\ndeclare(strict_types=1);\n\n%s\nrequire %s;\n\n%s\n",
-            implode('', array_unique($imports[0])),
+            "<?php\n\ndeclare(strict_types=1);\n\nrequire %s;\n\n%s\n",
             var_export($repositoryRoot . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php', true),
             $body,
         );
-        $scriptPath = $temporaryDirectory . DIRECTORY_SEPARATOR . sprintf('example-%d.php', $index);
+        $scriptPath =
+            $temporaryDirectory . DIRECTORY_SEPARATOR . sprintf('example-%d-%d.php', $documentIndex, $exampleIndex);
         if (file_put_contents($scriptPath, $script) === false) {
             throw new \RuntimeException(sprintf('Unable to prepare documentation examples from %s.', $relativePath));
         }

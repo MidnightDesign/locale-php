@@ -55,6 +55,8 @@ Identifiers may contain variants, transformed extensions, Unicode attributes and
 `getNumberingSystems()` returns a fresh, one-element list. An explicit `nu` keyword is returned as-is; otherwise the element is the matched NumberFormat locale's default from the pinned CLDR projection, falling back to `latn` when no projected locale matches.
 
 ```php
+use Midnight\Intl\Locale;
+
 assert((new Locale('fa'))->getNumberingSystems() === ['arabext']);
 assert((new Locale('en-u-nu-thai'))->getNumberingSystems() === ['thai']);
 ```
@@ -62,6 +64,8 @@ assert((new Locale('en-u-nu-thai'))->getNumberingSystems() === ['thai']);
 `getWeekInfo()` returns a fresh immutable `WeekInfo` value with an ISO `firstDay` (`1` for Monday through `7` for Sunday) and a non-empty ascending `weekend` list. The `rg` region override, explicit region, `sd` subdivision, likely-subtag region, and world fallback use the shared region preference order; `fw` overrides only `firstDay`. Results come from the pinned CLDR projection and intentionally omit the obsolete `minimalDays` field.
 
 ```php
+use Midnight\Intl\Locale;
+
 $week = (new Locale('en-AE'))->getWeekInfo();
 
 assert($week->firstDay === 1);
@@ -73,6 +77,8 @@ assert($week->weekend === [6, 7]);
 `maximize()` adds the language, script, and region implied by the pinned release data snapshot. `minimize()` removes only the subtags that can be recovered from that same snapshot. Both return fresh immutable values and preserve variants, extensions, and private use.
 
 ```php
+use Midnight\Intl\Locale;
+
 $locale = new Locale('zh-Hant-u-ca-chinese-x-catalog');
 
 assert($locale->maximize()->toString() === 'zh-Hant-TW-u-ca-chinese-x-catalog');
@@ -82,6 +88,7 @@ assert($locale->minimize()->toString() === 'zh-TW-u-ca-chinese-x-catalog');
 `getTextInfo()` returns a fresh immutable `TextInfo` value. Its nullable `TextDirection` enum is `LeftToRight` (`ltr`) or `RightToLeft` (`rtl`); it is `null` only when the pinned release data snapshot cannot determine a direction. An explicit script takes precedence, otherwise the script is inferred from likely subtags.
 
 ```php
+use Midnight\Intl\Locale;
 use Midnight\Intl\TextDirection;
 
 $direction = (new Locale('ar'))->getTextInfo()->direction;
