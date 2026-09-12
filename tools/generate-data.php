@@ -75,6 +75,154 @@ if ($scriptDirectionsData['format'] !== 1) {
     exit(1);
 }
 
+/**
+ * @param list<array{
+ *     constant: string,
+ *     payloadKey: string,
+ *     type: string,
+ *     value: list<string>|array<array-key, list<string>>
+ * }> $fields
+ */
+function generatePreferenceClass(
+    string $root,
+    string $class,
+    string $errorSubject,
+    int $format,
+    string $cldrRevision,
+    string $upstreamSha512,
+    string $source,
+    array $fields,
+): string {
+    $exports = '';
+    $payload = ['format' => $format];
+    foreach ($fields as $field) {
+        $export = preg_replace('/[ \t]+$/m', '', Midnight\Intl\Tools\PhpExporter::export($field['value']));
+        if ($export === null) {
+            throw new RuntimeException(sprintf('Unable to export the %s projection.', $field['payloadKey']));
+        }
+        $exports .= sprintf(
+            "\n    /** @var %s */\n    public const %s = %s;\n",
+            $field['type'],
+            $field['constant'],
+            $export,
+        );
+        $payload[$field['payloadKey']] = $field['value'];
+    }
+    $sourceSha256 = hash('sha256', $source);
+    $payloadSha256 = hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR));
+    $generated = <<<PHP
+        <?php
+
+        declare(strict_types=1);
+
+        namespace Midnight\Intl\Internal\Data;
+
+        enum {$class}
+        {
+            public const FORMAT = {$format};
+
+            /** @var string */
+            public const CLDR_REVISION = '{$cldrRevision}';
+
+            /** @var string */
+            public const CLDR_CORE_SHA512 = '{$upstreamSha512}';
+
+            /** @var string */
+            public const SOURCE_SHA256 = '{$sourceSha256}';
+
+            private const PAYLOAD_SHA256 = '{$payloadSha256}';
+        {$exports}
+            /** @psalm-api */
+            public static function assertIntegrity(): void
+            {
+                /** @var bool|null \$verified */
+                static \$verified = null;
+                if (\$verified === true) {
+                    return;
+                }
+
+                \$actual = hash('sha256', json_encode(self::payload(), JSON_THROW_ON_ERROR));
+                if (\$actual !== self::PAYLOAD_SHA256) {
+                    throw new \UnexpectedValueException('The bundled {$errorSubject} data is corrupt or incompatible.');
+                }
+                \$verified = true;
+            }
+
+            /** @return array<string, mixed> */
+            private static function payload(): array
+            {
+                return [
+                    'format' => self::FORMAT,
+        PHP;
+    foreach ($fields as $field) {
+        $generated .= sprintf("            '%s' => self::%s,\n", $field['payloadKey'], $field['constant']);
+    }
+    $generated .= <<<'PHP'
+                ];
+            }
+        }
+        PHP;
+    $generated .= "\n";
+
+    return MagoFormatter::format($root, 'src/Internal/Data/' . $class . '.php', $generated);
+}
+
+$calendarSource = file_get_contents($root . '/resources/data/calendar-preferences.json');
+if ($calendarSource === false) {
+    throw new RuntimeException('Unable to read the calendar-preferences projection source.');
+}
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, available: list<string>, preferences: array<array-key, list<string>>} $calendarData */
+$calendarData = json_decode($calendarSource, true, flags: JSON_THROW_ON_ERROR);
+if ($calendarData['format'] !== 1) {
+    throw new RuntimeException('The calendar-preferences projection format is incompatible.');
+}
+$calendarGenerated = generatePreferenceClass(
+    $root,
+    'CalendarPreferences',
+    'calendar preference',
+    $calendarData['format'],
+    $calendarData['cldrRevision'],
+    $calendarData['upstreamSha512'],
+    $calendarSource,
+    [
+        [
+            'constant' => 'AVAILABLE',
+            'payloadKey' => 'available',
+            'type' => 'list<string>',
+            'value' => $calendarData['available'],
+        ],
+        [
+            'constant' => 'PREFERENCES',
+            'payloadKey' => 'preferences',
+            'type' => 'array<array-key, list<string>>',
+            'value' => $calendarData['preferences'],
+        ],
+    ],
+);
+$hourCycleSource = file_get_contents($root . '/resources/data/hour-cycle-preferences.json');
+if ($hourCycleSource === false) {
+    throw new RuntimeException('Unable to read the hour-cycle-preferences projection source.');
+}
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, preferences: array<array-key, list<string>>} $hourCycleData */
+$hourCycleData = json_decode($hourCycleSource, true, flags: JSON_THROW_ON_ERROR);
+if ($hourCycleData['format'] !== 1) {
+    throw new RuntimeException('The hour-cycle-preferences projection format is incompatible.');
+}
+$hourCycleGenerated = generatePreferenceClass(
+    $root,
+    'HourCyclePreferences',
+    'hour-cycle preference',
+    $hourCycleData['format'],
+    $hourCycleData['cldrRevision'],
+    $hourCycleData['upstreamSha512'],
+    $hourCycleSource,
+    [[
+        'constant' => 'PREFERENCES',
+        'payloadKey' => 'preferences',
+        'type' => 'array<array-key, list<string>>',
+        'value' => $hourCycleData['preferences'],
+    ]],
+);
 $constants = '';
 foreach ([
     'LANGUAGE' => ['language', 'array<string, string>'],
@@ -315,6 +463,18 @@ $generatedArtifacts = [
         'label' => 'primary time-zone',
         'target' => 'src/Internal/Data/PrimaryTimeZones.php',
     ],
+    [
+        'sourceSha256' => hash('sha256', $calendarSource),
+        'generated' => $calendarGenerated,
+        'label' => 'calendar preference',
+        'target' => 'src/Internal/Data/CalendarPreferences.php',
+    ],
+    [
+        'sourceSha256' => hash('sha256', $hourCycleSource),
+        'generated' => $hourCycleGenerated,
+        'label' => 'hour-cycle preference',
+        'target' => 'src/Internal/Data/HourCyclePreferences.php',
+    ],
     $numberingSystemArtifact,
 ];
 if (in_array('--check', $argv, true)) {
@@ -325,14 +485,13 @@ if (in_array('--check', $argv, true)) {
             exit(1);
         }
     }
-
     $manifestSource = file_get_contents($root . '/resources/data/manifest.json');
     if ($manifestSource === false) {
         fwrite(STDERR, "Unable to read the release data manifest.\n");
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -342,11 +501,13 @@ if (in_array('--check', $argv, true)) {
         'localeAliasesProjection' => $sourceSha256,
         'likelySubtagsProjection' => $mapArtifacts['likelySubtags']['sourceSha256'],
         'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']['sourceSha256'],
+        'calendarPreferencesProjection' => hash('sha256', $calendarSource),
+        'hourCyclePreferencesProjection' => hash('sha256', $hourCycleSource),
         'primaryTimeZonesProjection' => $timeZoneSourceSha256,
         'numberingSystemsProjection' => $numberingSystemSourceSha256,
     ], JSON_THROW_ON_ERROR));
     if (
-        $manifest['format'] !== 5
+        $manifest['format'] !== 6
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
         || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemArtifact['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint
@@ -363,6 +524,10 @@ if (in_array('--check', $argv, true)) {
             'sha256',
             $mapArtifacts['scriptDirections']['generated'],
         )
+        || $manifest['projections']['calendarPreferences']['sourceSha256'] !== hash('sha256', $calendarSource)
+        || $manifest['projections']['calendarPreferences']['generatedSha256'] !== hash('sha256', $calendarGenerated)
+        || $manifest['projections']['hourCyclePreferences']['sourceSha256'] !== hash('sha256', $hourCycleSource)
+        || $manifest['projections']['hourCyclePreferences']['generatedSha256'] !== hash('sha256', $hourCycleGenerated)
         || $manifest['projections']['primaryTimeZones']['sourceSha256'] !== $timeZoneSourceSha256
         || $manifest['projections']['primaryTimeZones']['generatedSha256'] !== hash('sha256', $timeZoneGenerated)
         || $manifest['projections']['numberingSystems']['sourceSha256'] !== $numberingSystemSourceSha256

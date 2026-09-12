@@ -10,6 +10,7 @@ use Midnight\Intl\Internal\Data\PrimaryTimeZones;
 use Midnight\Intl\Internal\EcmaValue;
 use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\LocaleOptions;
+use Midnight\Intl\Internal\LocalePreferences;
 use Midnight\Intl\Internal\UndefinedValue;
 
 /**
@@ -317,6 +318,26 @@ class Locale
         }
 
         $identifier->setKeyword('kn', EcmaValue::toBoolean($option->value) ? 'true' : 'false');
+    }
+
+    /** @return non-empty-list<string> */
+    public function getCalendars(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return LocalePreferences::calendars($this->identifier);
+    }
+
+    /** @return non-empty-list<string> */
+    public function getHourCycles(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return LocalePreferences::hourCycles($this->identifier);
     }
 
     /** @return list<string> */

@@ -20,6 +20,7 @@ use Midnight\Intl\Tools\Test262\LikelySubtagsPipeline;
 use Midnight\Intl\Tools\Test262\LocaleMethodFixturePipeline;
 use Midnight\Intl\Tools\Test262\LocaleObjectModelPipeline;
 use Midnight\Intl\Tools\Test262\LocaleObjectPipeline;
+use Midnight\Intl\Tools\Test262\LocalePreferenceFixturePipeline;
 use Midnight\Intl\Tools\Test262\MappedConstructorOptionPipeline;
 use Midnight\Intl\Tools\Test262\MappedLocaleStatePipeline;
 use Midnight\Intl\Tools\Test262\NumberingSystemsFixturePipeline;
@@ -275,6 +276,19 @@ final readonly class FixtureCatalog
             $kind,
             $this->test262Revision,
             $this->ecma402Revision,
+        );
+    }
+
+    public function localePreference(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new LocalePreferenceFixturePipeline(
+                $this->assertionIdentities,
+                $this->test262Revision,
+                $this->ecma402Revision,
+            ),
+            ['direct'],
+            $sourceSha256,
         );
     }
 

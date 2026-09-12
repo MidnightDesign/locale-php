@@ -141,7 +141,7 @@ final class TimeZoneDataImporter
         preg_match_all('/<type\s+([^>]+?)\/>/', $source, $matches, PREG_SET_ORDER);
         $regions = [];
         foreach ($matches as $match) {
-            $attributes = self::xmlAttributes($match[1]);
+            $attributes = CldrXml::attributes($match[1]);
             $name = strtolower($attributes['name'] ?? '');
             $region = strtoupper($attributes['region'] ?? substr($name, 0, 2));
             if (preg_match('/^[A-Z]{2}$/D', $region) !== 1) {
@@ -157,17 +157,5 @@ final class TimeZoneDataImporter
         }
 
         return $regions;
-    }
-
-    /** @return array<string, string> */
-    private static function xmlAttributes(string $source): array
-    {
-        preg_match_all('/([A-Za-z][A-Za-z0-9]*)="([^"]*)"/', $source, $matches, PREG_SET_ORDER);
-        $attributes = [];
-        foreach ($matches as $match) {
-            $attributes[$match[1]] = html_entity_decode($match[2], ENT_QUOTES | ENT_XML1);
-        }
-
-        return $attributes;
     }
 }
