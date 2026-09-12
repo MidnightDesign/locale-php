@@ -87,7 +87,7 @@ if ($scriptDirectionsData['format'] !== 1) {
  *     constant: string,
  *     payloadKey: string,
  *     type: string,
- *     value: list<string>|array<array-key, list<string>>
+ *     value: array<array-key, mixed>
  * }> $fields
  */
 function generatePreferenceClass(
@@ -229,6 +229,38 @@ $hourCycleGenerated = generatePreferenceClass(
         'type' => 'array<array-key, list<string>>',
         'value' => $hourCycleData['preferences'],
     ]],
+);
+$weekInfoSource = file_get_contents($root . '/resources/data/week-info.json');
+if ($weekInfoSource === false) {
+    throw new RuntimeException('Unable to read the week-info projection source.');
+}
+/** @var array{format: int, cldrRevision: string, upstreamSha512: string, sourceEntries: array<string, string>, firstDay: array<string, int>, weekend: array<string, non-empty-list<int>>} $weekInfoData */
+$weekInfoData = json_decode($weekInfoSource, true, flags: JSON_THROW_ON_ERROR);
+if ($weekInfoData['format'] !== 1) {
+    throw new RuntimeException('The week-info projection format is incompatible.');
+}
+$weekInfoGenerated = generatePreferenceClass(
+    $root,
+    'WeekInfoData',
+    'week-information',
+    $weekInfoData['format'],
+    $weekInfoData['cldrRevision'],
+    $weekInfoData['upstreamSha512'],
+    $weekInfoSource,
+    [
+        [
+            'constant' => 'FIRST_DAY',
+            'payloadKey' => 'firstDay',
+            'type' => 'array<string, int<1, 7>>',
+            'value' => $weekInfoData['firstDay'],
+        ],
+        [
+            'constant' => 'WEEKEND',
+            'payloadKey' => 'weekend',
+            'type' => 'array<string, non-empty-list<int<1, 7>>>',
+            'value' => $weekInfoData['weekend'],
+        ],
+    ],
 );
 
 /** @var array{
@@ -583,6 +615,12 @@ $artifacts = [
         'hour-cycle preference',
         'src/Internal/Data/HourCyclePreferences.php',
     ),
+    'weekInfo' => new GeneratedDataArtifact(
+        $weekInfoSource,
+        $weekInfoGenerated,
+        'week-information',
+        'src/Internal/Data/WeekInfoData.php',
+    ),
     'primaryTimeZones' => new GeneratedDataArtifact(
         $timeZoneSource,
         $timeZoneGenerated,
@@ -604,7 +642,7 @@ if (in_array('--check', $argv, true)) {
         exit(1);
     }
 
-    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, collations: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
+    /** @var array{format: int, releaseDataFingerprint: string, inputs: array{unicode: array{sha512: string}, cldr: array{sha512: string}, languageRegistry: array{sha256: string}, tzdb: array{sha512: string}}, projections: array{localeAliases: array{sourceSha256: string, generatedSha256: string}, likelySubtags: array{sourceSha256: string, generatedSha256: string}, scriptDirections: array{sourceSha256: string, generatedSha256: string}, calendarPreferences: array{sourceSha256: string, generatedSha256: string}, hourCyclePreferences: array{sourceSha256: string, generatedSha256: string}, weekInfo: array{sourceSha256: string, generatedSha256: string}, collations: array{sourceSha256: string, generatedSha256: string}, primaryTimeZones: array{sourceSha256: string, generatedSha256: string}, numberingSystems: array{sourceSha256: string, generatedSha256: string}}, generators: array<string, string>} $manifest */
     $manifest = json_decode($manifestSource, true, flags: JSON_THROW_ON_ERROR);
     $fingerprint = hash('sha256', json_encode([
         'unicode' => $manifest['inputs']['unicode']['sha512'],
@@ -616,12 +654,13 @@ if (in_array('--check', $argv, true)) {
         'scriptDirectionsProjection' => $mapArtifacts['scriptDirections']->sourceSha256,
         'calendarPreferencesProjection' => $artifacts['calendarPreferences']->sourceSha256,
         'hourCyclePreferencesProjection' => $artifacts['hourCyclePreferences']->sourceSha256,
+        'weekInfoProjection' => $artifacts['weekInfo']->sourceSha256,
         'collationsProjection' => $artifacts['collations']->sourceSha256,
         'primaryTimeZonesProjection' => $artifacts['primaryTimeZones']->sourceSha256,
         'numberingSystemsProjection' => $numberingSystemArtifact->sourceSha256,
     ], JSON_THROW_ON_ERROR));
     if (
-        $manifest['format'] !== 6
+        $manifest['format'] !== 7
         || $manifest['inputs']['cldr']['sha512'] !== $data['upstreamSha512']
         || $manifest['inputs']['cldr']['sha512'] !== $numberingSystemProjection['upstreamSha512']
         || $manifest['releaseDataFingerprint'] !== $fingerprint

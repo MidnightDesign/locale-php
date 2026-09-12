@@ -15,7 +15,11 @@ final class LocaleMethodFixturePipeline implements FixturePipeline
         private readonly string $test262Revision,
         private readonly string $ecma402Revision,
     ) {
-        if (!in_array($method, ['getCollations', 'getTextInfo', 'getTimeZones', 'maximize', 'minimize'], true)) {
+        if (!in_array(
+            $method,
+            ['getCollations', 'getTextInfo', 'getTimeZones', 'getWeekInfo', 'maximize', 'minimize'],
+            true,
+        )) {
             throw new \InvalidArgumentException(sprintf('Unsupported Locale method "%s".', $method));
         }
         if (!in_array($kind, ['length', 'name', 'property'], true)) {

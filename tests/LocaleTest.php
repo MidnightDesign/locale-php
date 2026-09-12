@@ -10,6 +10,7 @@ use Midnight\Intl\Locale;
 use Midnight\Intl\Spec\Locale as SpecLocale;
 use Midnight\Intl\TextDirection;
 use Midnight\Intl\TextInfo;
+use Midnight\Intl\WeekInfo;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -239,5 +240,28 @@ final class LocaleTest extends TestCase
         self::assertNull($info->direction);
         self::assertTrue((new \ReflectionClass(TextInfo::class))->isReadOnly());
         self::assertTrue((new \ReflectionProperty(TextInfo::class, 'direction'))->isReadOnly());
+    }
+
+    public function testItReturnsFreshTypedWeekInformation(): void
+    {
+        $locale = new Locale('en-AE');
+
+        $first = $locale->getWeekInfo();
+        $second = $locale->getWeekInfo();
+
+        self::assertInstanceOf(WeekInfo::class, $first);
+        self::assertNotSame($first, $second);
+        self::assertSame('en-AE', $locale->toString());
+    }
+
+    public function testWeekInformationIsReadonlyAndExcludesMinimalDays(): void
+    {
+        $info = new WeekInfo(4, [6, 7]);
+
+        self::assertTrue((new \ReflectionClass(WeekInfo::class))->isReadOnly());
+        self::assertTrue((new \ReflectionProperty(WeekInfo::class, 'firstDay'))->isReadOnly());
+        self::assertTrue((new \ReflectionProperty(WeekInfo::class, 'weekend'))->isReadOnly());
+        // @phpstan-ignore function.impossibleType (runtime porcelain contract)
+        self::assertFalse(property_exists($info, 'minimalDays'));
     }
 }

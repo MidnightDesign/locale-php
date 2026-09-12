@@ -154,6 +154,13 @@ final class Locale implements \Stringable, \JsonSerializable
         return new TextInfo($direction === null ? null : TextDirection::from($direction));
     }
 
+    public function getWeekInfo(): WeekInfo
+    {
+        $info = $this->toSpec()->getWeekInfo();
+
+        return new WeekInfo($info['firstDay'], $info['weekend']);
+    }
+
     #[\Override]
     public function __toString(): string
     {

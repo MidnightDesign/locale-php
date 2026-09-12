@@ -1,7 +1,7 @@
 {
-    "format": 6,
-    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-calendar-hour-cycle-collations-primary-time-zones-and-numbering-systems",
-    "releaseDataFingerprint": "8ded0b13cef7c2f9a971fba47d990028c42e04c4a229cba07f71432121a0d219",
+    "format": 7,
+    "scope": "unicode-locale-identifier-canonicalization-likely-subtags-script-directions-calendar-hour-cycle-week-information-collations-primary-time-zones-and-numbering-systems",
+    "releaseDataFingerprint": "4b5073f20699258c41315c9c28f76feb5ecbe46b313c54c27304111afc3834c7",
     "inputs": {
         "unicode": {
             "version": "17.0.0",
@@ -60,6 +60,12 @@
             "generated": "src/Internal/Data/HourCyclePreferences.php",
             "generatedSha256": "95ee7f5d5656740bf3b1be0358c2746aceaa15f7ee586d0acee831eebf651cd2"
         },
+        "weekInfo": {
+            "source": "resources/data/week-info.json",
+            "sourceSha256": "cb9feb247e37bfa475a0cdb1320e0f3be6cd0d4d911d72bf19564fe416889e9b",
+            "generated": "src/Internal/Data/WeekInfoData.php",
+            "generatedSha256": "75bcd729453aefbebf0a3da86c543473d06c5bed6219ab1043209cab32d811cf"
+        },
         "collations": {
             "source": "resources/data/collations.json",
             "sourceSha256": "9338192991e4810cbb0586395897d9a43e141c85d9793d73b0a573a88e1fd9f9",
@@ -80,10 +86,10 @@
         }
     },
     "generators": {
-        "tools/import-cldr-aliases.php": "8029fdef7758eb7659b0caf77316ed3112b0dfa0160825e56c971af3eee47c52",
-        "tools/CldrLocalePreferenceProjector.php": "ef45ab70920801a9ff17c53b40de631ee1fd258080f93f68e67eb2cd8408fd9f",
+        "tools/import-cldr-aliases.php": "28765e0032a1369bd595e7bdf50c406a6390135c60aa7ef2b6ad844624f2ee15",
+        "tools/CldrLocalePreferenceProjector.php": "143c97bf5e6b14357c4f7dbb2dac176cee15737b40d01c261c5c2623bbaae687",
         "tools/CldrXml.php": "0162b6cc53a4199567cb597a3d69aa053ea1473d1c41377e68e900341fca0945",
-        "tools/generate-data.php": "1c0548b044a535e219426a7fb57c14d1d6c1d09f551bfde53205cb7790860ecb",
+        "tools/generate-data.php": "4993820e4ad474dab206e5da7c8286fbece24254de1cce5a102c4f340ee1810c",
         "tools/GeneratedDataArtifact.php": "f615f76ab40d07d1982dabd2ec1e12dc9e1e4ed371c5acd0011a0524e603d28d",
         "tools/import-numbering-systems.php": "be68d7d42b70a808fad8f2c4964aa732f56322f4730006d1b0b6a60c1fcb77de",
         "tools/NumberingSystemDataImporter.php": "38ea37b33139fc3209d82c0ae9a2ae14c65c0153b84221a0a0b0f6b36f2116cd",

@@ -87,6 +87,8 @@ $localePreferencesCatalog = require __DIR__ . '/Test262/Fixtures/locale-preferen
 $numberingSystemsCatalog = require __DIR__ . '/Test262/Fixtures/numbering-systems.php';
 /** @var Closure(FixtureCatalog): array<string, FixturePipeline> $collationsCatalog */
 $collationsCatalog = require __DIR__ . '/Test262/Fixtures/collations.php';
+/** @var Closure(FixtureCatalog): array<string, FixturePipeline> $weekInfoCatalog */
+$weekInfoCatalog = require __DIR__ . '/Test262/Fixtures/week-info.php';
 /** @var array<string, FixturePipeline> $fixturePipelines */
 $fixturePipelines = [
     ...$localeStateAndOpenKeywordCatalog($catalog),
@@ -97,6 +99,7 @@ $fixturePipelines = [
     ...$localePreferencesCatalog($catalog),
     ...$numberingSystemsCatalog($catalog),
     ...$collationsCatalog($catalog),
+    ...$weekInfoCatalog($catalog),
 ];
 
 $fixtureSources = [];

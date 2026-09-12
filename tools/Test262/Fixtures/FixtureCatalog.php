@@ -32,6 +32,7 @@ use Midnight\Intl\Tools\Test262\TagStringConversionPipeline;
 use Midnight\Intl\Tools\Test262\TextInfoFixturePipeline;
 use Midnight\Intl\Tools\Test262\TimeZonesFixturePipeline;
 use Midnight\Intl\Tools\Test262\UndefinedConstructorOptionPipeline;
+use Midnight\Intl\Tools\Test262\WeekInfoFixturePipeline;
 
 final readonly class FixtureCatalog
 {
@@ -302,6 +303,15 @@ final readonly class FixtureCatalog
     {
         return $this->sourceBound(
             new CollationsFixturePipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
+            ['direct'],
+            $sourceSha256,
+        );
+    }
+
+    public function weekInfo(string $sourceSha256): FixturePipeline
+    {
+        return $this->sourceBound(
+            new WeekInfoFixturePipeline($this->assertionIdentities, $this->test262Revision, $this->ecma402Revision),
             ['direct'],
             $sourceSha256,
         );

@@ -16,7 +16,9 @@ The constructor implements the complete Unicode locale-identifier grammar and al
 
 `getNumberingSystems()` returns the explicit `nu` Unicode keyword when present. Otherwise it uses prefix matching against the pinned NumberFormat locale availability projection and returns that locale's inherited CLDR default, with the specified `latn` fallback. The result is always a fresh one-element list.
 
-Other locale-information methods remain unfinished, so this package does not claim ECMA-402 conformance.
+`getWeekInfo()` returns a fresh associative record with exactly `firstDay` and `weekend`. Days use ISO Monday `1` through Sunday `7`; `weekend` is non-empty and ascending. It applies the shared `rg`, explicit-region, `sd`, likely-subtag, and world selection rules, with `fw` overriding `firstDay`, against the pinned CLDR week-data projection.
+
+Other conformance work remains unfinished, so this package does not claim ECMA-402 conformance.
 
 `getCollations()` returns the pinned CLDR collation availability for the locale after prefix matching. It returns an explicit `co` keyword as a singleton, excludes `standard` and `search` from locale-data results, and returns `['emoji', 'eor']` when no available locale matches. Results are fresh and code-unit sorted.
 

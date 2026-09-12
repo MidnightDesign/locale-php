@@ -13,6 +13,7 @@ use Midnight\Intl\Internal\LocaleIdentifier;
 use Midnight\Intl\Internal\LocaleOptions;
 use Midnight\Intl\Internal\LocalePreferences;
 use Midnight\Intl\Internal\UndefinedValue;
+use Midnight\Intl\Internal\WeekInformation;
 
 /**
  * @property-read string $baseName
@@ -248,6 +249,16 @@ class Locale
         }
 
         return ['direction' => $this->identifier->textDirection()];
+    }
+
+    /** @return array{firstDay: int<1, 7>, weekend: non-empty-list<int<1, 7>>} */
+    public function getWeekInfo(): array
+    {
+        if (!$this->initialized) {
+            throw new TypeError('Locale is not initialized.');
+        }
+
+        return WeekInformation::forLocale($this->identifier);
     }
 
     private static function initializedTag(self $locale): string

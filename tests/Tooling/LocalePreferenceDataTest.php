@@ -6,11 +6,13 @@ namespace Midnight\Intl\Tests\Tooling;
 
 use Midnight\Intl\Internal\Data\CalendarPreferences;
 use Midnight\Intl\Internal\Data\HourCyclePreferences;
+use Midnight\Intl\Internal\Data\WeekInfoData;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CalendarPreferences::class)]
 #[CoversClass(HourCyclePreferences::class)]
+#[CoversClass(WeekInfoData::class)]
 final class LocalePreferenceDataTest extends TestCase
 {
     public function testPinnedCalendarPreferenceProjectionIsCompleteAndInternallyConsistent(): void
@@ -48,5 +50,32 @@ final class LocalePreferenceDataTest extends TestCase
         $source = file_get_contents(dirname(__DIR__, 2) . '/resources/data/hour-cycle-preferences.json');
         self::assertNotFalse($source);
         self::assertSame(HourCyclePreferences::SOURCE_SHA256, hash('sha256', $source));
+    }
+
+    public function testPinnedWeekInfoProjectionIsCompleteAndInternallyConsistent(): void
+    {
+        WeekInfoData::assertIntegrity();
+
+        self::assertSame('11299982335beb974c1c63c45265184e759c0f41', WeekInfoData::CLDR_REVISION);
+        self::assertCount(150, WeekInfoData::FIRST_DAY);
+        self::assertCount(19, WeekInfoData::WEEKEND);
+        self::assertSame(1, WeekInfoData::FIRST_DAY['001']);
+        self::assertSame(1, WeekInfoData::FIRST_DAY['AE']);
+        self::assertSame([4, 5], WeekInfoData::WEEKEND['AF']);
+        self::assertSame([5], WeekInfoData::WEEKEND['IR']);
+        self::assertSame([7], WeekInfoData::WEEKEND['UG']);
+
+        $root = dirname(__DIR__, 2);
+        $source = file_get_contents($root . '/resources/data/week-info.json');
+        self::assertNotFalse($source);
+        self::assertSame(WeekInfoData::SOURCE_SHA256, hash('sha256', $source));
+
+        /** @var array{projections: array{weekInfo: array{source: string}}} $manifest */
+        $manifest = json_decode(
+            (string) file_get_contents($root . '/resources/data/manifest.json'),
+            true,
+            flags: JSON_THROW_ON_ERROR,
+        );
+        self::assertSame('resources/data/week-info.json', $manifest['projections']['weekInfo']['source']);
     }
 }

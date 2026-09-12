@@ -49,4 +49,30 @@ final class CldrLocalePreferenceProjectorTest extends TestCase
             CldrLocalePreferenceProjector::hourCycles($supplementalData),
         );
     }
+
+    public function testWeekProjectionExpandsTerritoriesAndIgnoresAlternateRows(): void
+    {
+        $supplementalData = <<<'XML'
+            <weekData>
+                <firstDay day="mon" territories="001 AE"/>
+                <firstDay day="sat" territories="AE" alt="variant"/>
+                <weekendStart day="sat" territories="001 AE"/>
+                <weekendStart day="fri" territories="IR"/>
+                <weekendEnd day="sun" territories="001 AE"/>
+                <weekendEnd day="fri" territories="IR"/>
+            </weekData>
+            XML;
+
+        self::assertSame(
+            [
+                'firstDay' => ['001' => 1, 'AE' => 1],
+                'weekend' => [
+                    '001' => [6, 7],
+                    'AE' => [6, 7],
+                    'IR' => [5],
+                ],
+            ],
+            CldrLocalePreferenceProjector::weekInfo($supplementalData),
+        );
+    }
 }
