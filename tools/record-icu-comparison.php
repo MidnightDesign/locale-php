@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Midnight\Intl\Spec\Locale;
+use Midnight\Intl\Spec\Locale as SpecLocale;
 use Midnight\Intl\Tools\Ci\IcuComparison;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -13,10 +13,17 @@ if ($argc !== 2) {
 }
 
 $locale = 'en-AE';
-$releaseSnapshotFirstDay = (new Locale($locale))->getWeekInfo()['firstDay'];
+$releaseDataSnapshotFirstDay = (new SpecLocale($locale))->getWeekInfo()['firstDay'];
+$intlLoaded = extension_loaded('intl');
+$hostCapabilities = [
+    'intl-calendar-week-info' => $intlLoaded && class_exists(IntlCalendar::class),
+    'intl-time-zone-iana-id' => $intlLoaded && method_exists(IntlTimeZone::class, 'getIanaID'),
+    'locale-likely-subtags' => $intlLoaded && method_exists(Locale::class, 'addLikelySubtags'),
+    'locale-text-direction' => $intlLoaded && method_exists(Locale::class, 'isRightToLeft'),
+];
 $hostIcuVersion = null;
 $hostIcuFirstDay = null;
-if (extension_loaded('intl') && defined('INTL_ICU_VERSION')) {
+if ($intlLoaded && defined('INTL_ICU_VERSION')) {
     $calendar = IntlCalendar::createInstance(null, str_replace('-', '_', $locale));
     $hostIcuVersion = INTL_ICU_VERSION;
     $hostIcuFirstDay = (($calendar->getFirstDayOfWeek() + 5) % 7) + 1;
@@ -25,7 +32,13 @@ if (extension_loaded('intl') && defined('INTL_ICU_VERSION')) {
     }
 }
 
-$evidence = IcuComparison::evidence($locale, $releaseSnapshotFirstDay, $hostIcuVersion, $hostIcuFirstDay);
+$evidence = IcuComparison::evidence(
+    $locale,
+    $releaseDataSnapshotFirstDay,
+    $hostIcuVersion,
+    $hostIcuFirstDay,
+    $hostCapabilities,
+);
 $path = $argv[1];
 $directory = dirname($path);
 if (!is_dir($directory) && !mkdir($directory, 0777, true) && !is_dir($directory)) {

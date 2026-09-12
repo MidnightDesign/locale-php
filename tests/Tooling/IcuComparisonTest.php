@@ -16,13 +16,23 @@ final class IcuComparisonTest extends TestCase
         self::assertSame(
             [
                 'locale' => 'en-AE',
-                'releaseSnapshotFirstDay' => 1,
+                'releaseDataSnapshotFirstDay' => 1,
                 'hostIcuVersion' => '72.1',
                 'hostIcuFirstDay' => 6,
-                'result' => 'host-differs-from-release-snapshot',
+                'result' => 'host-differs-from-release-data-snapshot',
                 'semanticAuthority' => 'release-data-snapshot',
+                'hostCapabilities' => [
+                    'intl-calendar-week-info' => true,
+                    'intl-time-zone-iana-id' => false,
+                ],
+                'missingCapabilityFallbacks' => [
+                    'intl-time-zone-iana-id' => 'release-data-snapshot',
+                ],
             ],
-            IcuComparison::evidence('en-AE', 1, '72.1', 6),
+            IcuComparison::evidence('en-AE', 1, '72.1', 6, [
+                'intl-calendar-week-info' => true,
+                'intl-time-zone-iana-id' => false,
+            ]),
         );
     }
 
@@ -31,13 +41,17 @@ final class IcuComparisonTest extends TestCase
         self::assertSame(
             [
                 'locale' => 'en-AE',
-                'releaseSnapshotFirstDay' => 1,
+                'releaseDataSnapshotFirstDay' => 1,
                 'hostIcuVersion' => null,
                 'hostIcuFirstDay' => null,
                 'result' => 'host-icu-unavailable',
                 'semanticAuthority' => 'release-data-snapshot',
+                'hostCapabilities' => ['intl-calendar-week-info' => false],
+                'missingCapabilityFallbacks' => [
+                    'intl-calendar-week-info' => 'release-data-snapshot',
+                ],
             ],
-            IcuComparison::evidence('en-AE', 1, null, null),
+            IcuComparison::evidence('en-AE', 1, null, null, ['intl-calendar-week-info' => false]),
         );
     }
 }
