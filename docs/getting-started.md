@@ -14,6 +14,8 @@ $locale->language; // de
 $locale->script;   // Latn
 $locale->region;   // DE
 $locale->calendar; // gregory
+$locale->getCalendars(); // ['gregory']
+$locale->getHourCycles(); // [HourCycle::H23, HourCycle::H12]
 $locale->getTimeZones(); // ['Europe/Berlin', 'Europe/Busingen']
 $locale->getNumberingSystems(); // ['latn']
 
@@ -42,6 +44,8 @@ The constructor accepts named `language`, `script`, `region`, `variants`, `calen
 Identifiers may contain variants, transformed extensions, Unicode attributes and keywords, other singleton extensions, and private-use subtags. Parsing is strict ASCII and structural: syntactically valid unregistered subtags are accepted, while duplicate variants, duplicate extension singletons, and malformed extension sequences are rejected.
 
 `getTimeZones()` returns the pinned release data snapshot's canonical primary identifiers for an explicitly present region. It returns `null` when the locale has no region and never infers one from likely subtags or `rg`/`sd` keywords. Each call returns a fresh, unique, code-unit-sorted list; a present region with no known entries returns an empty list.
+
+`getCalendars()` and `getHourCycles()` return fresh preference-ordered lists from the pinned CLDR snapshot. An explicit `ca` or `hc` keyword produces a singleton list. Otherwise, an `rg` override is tried before the region selected from the explicit region, canonical `sd` subdivision, likely subtags, or world fallback. Language-region data takes priority over region-only data. Calendar values are canonical strings; porcelain hour cycles are `HourCycle` enum cases.
 
 `getNumberingSystems()` returns a fresh, one-element list. An explicit `nu` keyword is returned as-is; otherwise the element is the matched NumberFormat locale's default from the pinned CLDR projection, falling back to `latn` when no projected locale matches.
 
