@@ -13,13 +13,43 @@ if ($argc !== 2) {
 }
 
 $locale = 'en-AE';
-$releaseDataSnapshotFirstDay = (new SpecLocale($locale))->getWeekInfo()['firstDay'];
+$releaseDataSnapshotLocale = new SpecLocale($locale);
+$releaseDataSnapshotWeekInfo = $releaseDataSnapshotLocale->getWeekInfo();
+$releaseDataSnapshotFirstDay = $releaseDataSnapshotWeekInfo['firstDay'];
 $intlLoaded = extension_loaded('intl');
-$hostCapabilities = [
-    'intl-calendar-week-info' => $intlLoaded && class_exists(IntlCalendar::class),
-    'intl-time-zone-iana-id' => $intlLoaded && method_exists(IntlTimeZone::class, 'getIanaID'),
-    'locale-likely-subtags' => $intlLoaded && method_exists(Locale::class, 'addLikelySubtags'),
-    'locale-text-direction' => $intlLoaded && method_exists(Locale::class, 'isRightToLeft'),
+$capabilityDefinitions = [
+    'intl-calendar-week-info' => [
+        'available' => $intlLoaded && class_exists(IntlCalendar::class),
+        'fallbackEvidence' => [
+            'operation' => 'getWeekInfo',
+            'locale' => $locale,
+            'result' => $releaseDataSnapshotWeekInfo,
+        ],
+    ],
+    'intl-time-zone-iana-id' => [
+        'available' => $intlLoaded && method_exists(IntlTimeZone::class, 'getIanaID'),
+        'fallbackEvidence' => [
+            'operation' => 'getTimeZones',
+            'locale' => $locale,
+            'result' => $releaseDataSnapshotLocale->getTimeZones(),
+        ],
+    ],
+    'locale-likely-subtags' => [
+        'available' => $intlLoaded && method_exists(Locale::class, 'addLikelySubtags'),
+        'fallbackEvidence' => [
+            'operation' => 'maximize',
+            'locale' => 'zh-TW',
+            'result' => (new SpecLocale('zh-TW'))->maximize()->toString(),
+        ],
+    ],
+    'locale-text-direction' => [
+        'available' => $intlLoaded && method_exists(Locale::class, 'isRightToLeft'),
+        'fallbackEvidence' => [
+            'operation' => 'getTextInfo',
+            'locale' => 'ar',
+            'result' => (new SpecLocale('ar'))->getTextInfo(),
+        ],
+    ],
 ];
 $hostIcuVersion = null;
 $hostIcuFirstDay = null;
@@ -32,12 +62,22 @@ if ($intlLoaded && defined('INTL_ICU_VERSION')) {
     }
 }
 
+$hostCapabilities = [];
+$fallbackEvidence = [];
+foreach ($capabilityDefinitions as $capability => $definition) {
+    $hostCapabilities[$capability] = $definition['available'];
+    if (!$definition['available']) {
+        $fallbackEvidence[$capability] = $definition['fallbackEvidence'];
+    }
+}
+
 $evidence = IcuComparison::evidence(
     $locale,
     $releaseDataSnapshotFirstDay,
     $hostIcuVersion,
     $hostIcuFirstDay,
     $hostCapabilities,
+    $fallbackEvidence,
 );
 $path = $argv[1];
 $directory = dirname($path);

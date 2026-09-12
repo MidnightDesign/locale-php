@@ -119,9 +119,46 @@ final class Workflow
         return self::nodeHasSetting($this->data, $key, $expected);
     }
 
+    public function hasPermission(string $permission, string $access): bool
+    {
+        $permissions = $this->data['permissions'] ?? null;
+
+        return is_array($permissions) && ($permissions[$permission] ?? null) === $access;
+    }
+
+    /** @return array<string, mixed> */
+    public function concurrency(): array
+    {
+        $concurrency = $this->data['concurrency'] ?? null;
+        if (!is_array($concurrency)) {
+            return [];
+        }
+
+        /** @var array<string, mixed> $concurrency */
+        return $concurrency;
+    }
+
     public function hasScalarContaining(string $text): bool
     {
         return self::nodeHasScalarContaining($this->data, $text);
+    }
+
+    /** @param array<string, mixed> $required */
+    public function hasNamedStep(string $jobName, string $stepName, array $required): bool
+    {
+        $job = $this->jobs()[$jobName] ?? null;
+        $steps = is_array($job) && is_array($job['steps'] ?? null) ? $job['steps'] : [];
+        foreach ($steps as $step) {
+            if (
+                is_array($step)
+                && ($step['name'] ?? null) === $stepName
+                && self::nodeContainsSettings($step, $required)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** @param array<mixed> $node */
@@ -152,5 +189,29 @@ final class Workflow
         }
 
         return false;
+    }
+
+    /** @param array<mixed> $actual
+     * @param array<mixed> $required
+     */
+    private static function nodeContainsSettings(array $actual, array $required): bool
+    {
+        foreach ($required as $key => $value) {
+            if (!array_key_exists($key, $actual)) {
+                return false;
+            }
+            if (is_array($value)) {
+                if (!is_array($actual[$key]) || !self::nodeContainsSettings($actual[$key], $value)) {
+                    return false;
+                }
+
+                continue;
+            }
+            if ($actual[$key] !== $value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

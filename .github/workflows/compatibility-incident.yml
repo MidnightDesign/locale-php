@@ -33,16 +33,25 @@ jobs:
           set -euo pipefail
           title="CI compatibility incident: ${PROFILE}"
           run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          issue_number="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "in:title ${title}" --limit 100 --json number,title --jq ".[] | select(.title == \"${title}\") | .number" | head -n 1)"
+          issue_numbers_output="$(gh api --paginate --method GET "repos/${GITHUB_REPOSITORY}/issues" -f state=open -f per_page=100 --jq ".[] | select(.title == \"${title}\" and (.pull_request | not)) | .number")"
+          issue_numbers=()
+          if [[ -n "$issue_numbers_output" ]]; then
+            mapfile -t issue_numbers <<< "$issue_numbers_output"
+          fi
 
           if [[ "$REQUIRED_RESULT" != "success" || "$QUALITY_RESULT" != "success" ]]; then
             gh label create compatibility-incident --repo "$GITHUB_REPOSITORY" --color B60205 --description "Required scheduled compatibility evidence is failing" --force
             body="Required ${PROFILE} compatibility evidence failed. Required result: ${REQUIRED_RESULT}; quality result: ${QUALITY_RESULT}. [Inspect run](${run_url}). This incident blocks releases until a successful rerun closes it."
-            if [[ -n "$issue_number" ]]; then
-              gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "$body"
+            if (( ${#issue_numbers[@]} > 0 )); then
+              for issue_number in "${issue_numbers[@]}"; do
+                gh issue edit "$issue_number" --repo "$GITHUB_REPOSITORY" --add-label compatibility-incident
+                gh issue comment "$issue_number" --repo "$GITHUB_REPOSITORY" --body "$body"
+              done
             else
               gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --label compatibility-incident --body "$body"
             fi
-          elif [[ -n "$issue_number" ]]; then
-            gh issue close "$issue_number" --repo "$GITHUB_REPOSITORY" --reason completed --comment "Recovered in [this successful run](${run_url})."
+          else
+            for issue_number in "${issue_numbers[@]}"; do
+              gh issue close "$issue_number" --repo "$GITHUB_REPOSITORY" --reason completed --comment "Recovered in [this successful run](${run_url})."
+            done
           fi

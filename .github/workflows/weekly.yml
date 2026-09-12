@@ -9,6 +9,10 @@ permissions:
   contents: read
   issues: write
 
+concurrency:
+  group: compatibility-weekly
+  cancel-in-progress: false
+
 jobs:
   compatibility:
     uses: ./.github/workflows/ci-scheduled.yml

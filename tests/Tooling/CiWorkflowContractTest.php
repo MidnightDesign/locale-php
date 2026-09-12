@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Midnight\Intl\Tests\Tooling;
 
+use Midnight\Intl\Tools\Ci\ActivationWorkflowContract;
 use Midnight\Intl\Tools\Ci\PackageSmoke;
 use Midnight\Intl\Tools\Ci\WorkflowContract;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -11,6 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(WorkflowContract::class)]
+#[CoversClass(ActivationWorkflowContract::class)]
 final class CiWorkflowContractTest extends TestCase
 {
     private const NATIVE_FOLLOW_UP_GUARD = "\${{ !cancelled() && inputs.run-native && steps.runtime_ready.outcome == 'success' }}";
@@ -130,6 +132,104 @@ final class CiWorkflowContractTest extends TestCase
             $failures = WorkflowContract::validate($root);
             self::assertContains('Scheduled workflows must be able to maintain compatibility incidents.', $failures);
             self::assertContains('Release evidence must wait for the compatibility incident gate.', $failures);
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsPermissionsPlacedOutsideTheWorkflowPermissionBoundary(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $nightly = $root . '/.github/workflows/nightly.yml';
+            $contents = (string) file_get_contents($nightly);
+            $contents = str_replace(
+                "  issues: write\n\nconcurrency:",
+                "\nenv:\n  issues: write\n\nconcurrency:",
+                $contents,
+            );
+            file_put_contents($nightly, $contents);
+
+            $incident = $root . '/.github/workflows/compatibility-incident.yml';
+            $contents = (string) file_get_contents($incident);
+            $contents = str_replace("  issues: write\n\njobs:", "\nenv:\n  issues: write\n\njobs:", $contents);
+            file_put_contents($incident, $contents);
+
+            $release = $root . '/.github/workflows/release.yml';
+            $contents = (string) file_get_contents($release);
+            $contents = str_replace("  issues: read\n\njobs:", "\nenv:\n  issues: read\n\njobs:", $contents);
+            file_put_contents($release, $contents);
+
+            $failures = WorkflowContract::validate($root);
+            self::assertContains('Compatibility incident maintenance must have bounded issue-write access.', $failures);
+            self::assertContains('Scheduled workflows must be able to maintain compatibility incidents.', $failures);
+            self::assertContains('Release evidence must wait for the compatibility incident gate.', $failures);
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsUnserializedScheduledIncidentMaintenance(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $nightly = $root . '/.github/workflows/nightly.yml';
+            $contents = (string) file_get_contents($nightly);
+            $contents = str_replace(
+                "concurrency:\n  group: compatibility-nightly\n  cancel-in-progress: false\n\n",
+                '',
+                $contents,
+            );
+            file_put_contents($nightly, $contents);
+
+            self::assertContains(
+                'Scheduled compatibility workflows must serialize incident maintenance per profile.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsSingleIssueIncidentReconciliation(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $incident = $root . '/.github/workflows/compatibility-incident.yml';
+            $contents = (string) file_get_contents($incident);
+            file_put_contents($incident, str_replace('mapfile -t issue_numbers', 'issue_numbers=()', $contents));
+
+            self::assertContains(
+                'Compatibility incident maintenance must reconcile every matching incident.',
+                WorkflowContract::validate($root),
+            );
+        } finally {
+            PackageSmoke::removeDirectory($root);
+        }
+    }
+
+    public function testItRejectsPartialIncidentDiscoveryAndUnlabelledRefreshes(): void
+    {
+        $root = $this->fixtureRoot();
+
+        try {
+            $incident = $root . '/.github/workflows/compatibility-incident.yml';
+            $contents = (string) file_get_contents($incident);
+            $contents = str_replace('gh api --paginate --method GET', 'gh issue list', $contents);
+            $contents = str_replace('gh issue edit "$issue_number"', 'gh issue view "$issue_number"', $contents);
+            file_put_contents($incident, $contents);
+
+            self::assertContains(
+                'Compatibility incident maintenance must discover every open incident.',
+                WorkflowContract::validate($root),
+            );
+            self::assertContains(
+                'Compatibility incident maintenance must restore the blocking label on refresh.',
+                WorkflowContract::validate($root),
+            );
         } finally {
             PackageSmoke::removeDirectory($root);
         }
